@@ -1,0 +1,324 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGUID>{3A8287F1-BB5E-3135-BA46-46D937742048}</ProjectGUID>
+    <Keyword>Win32Proj</Keyword>
+    <Platform>x64</Platform>
+    <ProjectName>server</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+ <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+ <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+    <PropertyGroup>
+      <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">F:\mango_project\bin\server\</OutDir>
+     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">server.dir\Debug\</IntDir>
+     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">server_d</TargetName>
+     <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.exe</TargetExt>
+     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
+     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</GenerateManifest>
+     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">F:\mango_project\bin\server\</OutDir>
+     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">server.dir\Release\</IntDir>
+     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">server</TargetName>
+     <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.exe</TargetExt>
+     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
+     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</GenerateManifest>
+    </PropertyGroup>
+ <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalOptions>%(AdditionalOptions)  /bigobj /bigobj</AdditionalOptions>
+      <AdditionalIncludeDirectories>F:\mango_project\inc;F:\mango_project\inc\common;F:\mango_project\thirdparty;F:\mango_project\thirdparty\lua\inc;F:\mango_project\thirdparty\toluapp\inc;F:\mango_project\thirdparty\tbase;F:\mango_project\thirdparty\tbase\include;F:\mango_project\src\server;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>Debug/</AssemblerListingLocation>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>
+      </ExceptionHandling>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile> stdafx.h</PrecompiledHeaderFile>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <TreatWChar_tAsBuiltInType>false</TreatWChar_tAsBuiltInType>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;WIN32;WIN64;_WINDOWS;CMAKE_INTDIR="Debug";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;WIN32;WIN64;_WINDOWS;CMAKE_INTDIR=\"Debug\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>F:\mango_project\inc;F:\mango_project\inc\common;F:\mango_project\thirdparty;F:\mango_project\thirdparty\lua\inc;F:\mango_project\thirdparty\toluapp\inc;F:\mango_project\thirdparty\tbase;F:\mango_project\thirdparty\tbase\include;F:\mango_project\src\server;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>F:\mango_project\inc;F:\mango_project\inc\common;F:\mango_project\thirdparty;F:\mango_project\thirdparty\lua\inc;F:\mango_project\thirdparty\toluapp\inc;F:\mango_project\thirdparty\tbase;F:\mango_project\thirdparty\tbase\include;F:\mango_project\src\server;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalOptions>%(AdditionalOptions)  /machine:x64</AdditionalOptions>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;lua.lib;toluappd.lib;common_d.lib;libcomm_d.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>F:/mango_project/lib;F:/mango_project/lib/$(Configuration);F:/mango_project/thirdparty;F:/mango_project/thirdparty/$(Configuration);F:/mango_project/thirdparty/lua/lib;F:/mango_project/thirdparty/lua/lib/$(Configuration);F:/mango_project/thirdparty/toluapp/lib;F:/mango_project/thirdparty/toluapp/lib/$(Configuration);F:/mango_project/thirdparty/tbase/lib;F:/mango_project/thirdparty/tbase/lib/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>Debug</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>F:/mango_project/build/universe/server/Debug/server_d.lib</ImportLibrary>
+      <ProgramDataBaseFile>F:/mango_project/bin/server/server_d.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+      <Version></Version>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+ <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalOptions>%(AdditionalOptions)  /bigobj /bigobj</AdditionalOptions>
+      <AdditionalIncludeDirectories>F:\mango_project\inc;F:\mango_project\inc\common;F:\mango_project\thirdparty;F:\mango_project\thirdparty\lua\inc;F:\mango_project\thirdparty\toluapp\inc;F:\mango_project\thirdparty\tbase;F:\mango_project\thirdparty\tbase\include;F:\mango_project\src\server;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>Release/</AssemblerListingLocation>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>
+      </ExceptionHandling>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile> stdafx.h</PrecompiledHeaderFile>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <TreatWChar_tAsBuiltInType>false</TreatWChar_tAsBuiltInType>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;WIN32;WIN64;_WINDOWS;CMAKE_INTDIR="Release";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;WIN32;WIN64;_WINDOWS;CMAKE_INTDIR=\"Release\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>F:\mango_project\inc;F:\mango_project\inc\common;F:\mango_project\thirdparty;F:\mango_project\thirdparty\lua\inc;F:\mango_project\thirdparty\toluapp\inc;F:\mango_project\thirdparty\tbase;F:\mango_project\thirdparty\tbase\include;F:\mango_project\src\server;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>F:\mango_project\inc;F:\mango_project\inc\common;F:\mango_project\thirdparty;F:\mango_project\thirdparty\lua\inc;F:\mango_project\thirdparty\toluapp\inc;F:\mango_project\thirdparty\tbase;F:\mango_project\thirdparty\tbase\include;F:\mango_project\src\server;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalOptions>%(AdditionalOptions)  /machine:x64</AdditionalOptions>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;lua.lib;toluapp.lib;common.lib;libcomm.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>F:/mango_project/lib;F:/mango_project/lib/$(Configuration);F:/mango_project/thirdparty;F:/mango_project/thirdparty/$(Configuration);F:/mango_project/thirdparty/lua/lib;F:/mango_project/thirdparty/lua/lib/$(Configuration);F:/mango_project/thirdparty/toluapp/lib;F:/mango_project/thirdparty/toluapp/lib/$(Configuration);F:/mango_project/thirdparty/tbase/lib;F:/mango_project/thirdparty/tbase/lib/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>No</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>F:/mango_project/build/universe/server/Release/server.lib</ImportLibrary>
+      <ProgramDataBaseFile>F:/mango_project/bin/server/server.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+      <Version></Version>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="F:\mango_project\src\server\script\npc.pkg">
+     <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Generating F:/mango_project/src/server/script/tolua_npc.cpp</Message>
+     <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+cd F:\mango_project\src\server\script
+if %errorlevel% neq 0 goto :cmEnd
+F:
+if %errorlevel% neq 0 goto :cmEnd
+F:\mango_project\tools\toluapp\toluapp -s -o tolua_npc.cpp npc.pkg
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+     <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">F:/mango_project/src/server/script/npc.pkg;F:\mango_project\inc\define\npc.h;F:\mango_project\src\server\script\npc.pkg;%(AdditionalInputs)</AdditionalInputs>
+     <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">F:\mango_project\src\server\script\tolua_npc.cpp</Outputs>
+     <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+     <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Generating F:/mango_project/src/server/script/tolua_npc.cpp</Message>
+     <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+cd F:\mango_project\src\server\script
+if %errorlevel% neq 0 goto :cmEnd
+F:
+if %errorlevel% neq 0 goto :cmEnd
+F:\mango_project\tools\toluapp\toluapp -s -o tolua_npc.cpp npc.pkg
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+     <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">F:/mango_project/src/server/script/npc.pkg;F:\mango_project\inc\define\npc.h;F:\mango_project\src\server\script\npc.pkg;%(AdditionalInputs)</AdditionalInputs>
+     <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">F:\mango_project\src\server\script\tolua_npc.cpp</Outputs>
+     <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="F:\mango_project\src\server\script\role.pkg">
+     <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Generating F:/mango_project/src/server/script/tolua_role.cpp</Message>
+     <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+cd F:\mango_project\src\server\script
+if %errorlevel% neq 0 goto :cmEnd
+F:
+if %errorlevel% neq 0 goto :cmEnd
+F:\mango_project\tools\toluapp\toluapp -s -o tolua_role.cpp role.pkg
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+     <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">F:/mango_project/src/server/script/role.pkg;F:\mango_project\inc\define\role.h;F:\mango_project\src\server\script\role.pkg;%(AdditionalInputs)</AdditionalInputs>
+     <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">F:\mango_project\src\server\script\tolua_role.cpp</Outputs>
+     <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+     <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Generating F:/mango_project/src/server/script/tolua_role.cpp</Message>
+     <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+cd F:\mango_project\src\server\script
+if %errorlevel% neq 0 goto :cmEnd
+F:
+if %errorlevel% neq 0 goto :cmEnd
+F:\mango_project\tools\toluapp\toluapp -s -o tolua_role.cpp role.pkg
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+     <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">F:/mango_project/src/server/script/role.pkg;F:\mango_project\inc\define\role.h;F:\mango_project\src\server\script\role.pkg;%(AdditionalInputs)</AdditionalInputs>
+     <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">F:\mango_project\src\server\script\tolua_role.cpp</Outputs>
+     <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="F:\mango_project\build\server\CMakeLists.txt">
+     <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule F:/mango_project/build/server/CMakeLists.txt</Message>
+     <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -HF:/mango_project/build -BF:/mango_project/build/universe --check-stamp-file F:/mango_project/build/universe/server/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+     <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">F:/mango_project/build/server/CMakeLists.txt;F:\mango_project\build\server\CMakeLists.txt;F:\mango_project\build\server\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+     <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">F:\mango_project\build\universe\server\CMakeFiles\generate.stamp</Outputs>
+     <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+     <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule F:/mango_project/build/server/CMakeLists.txt</Message>
+     <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -HF:/mango_project/build -BF:/mango_project/build/universe --check-stamp-file F:/mango_project/build/universe/server/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+     <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">F:/mango_project/build/server/CMakeLists.txt;F:\mango_project\build\server\CMakeLists.txt;F:\mango_project\build\server\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+     <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">F:\mango_project\build\universe\server\CMakeFiles\generate.stamp</Outputs>
+     <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="F:\mango_project\src\server\stdafx.h" />
+    <ClCompile Include="F:\mango_project\src\server\script\script_func.cpp" >
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stdafx.h</ForcedIncludeFiles>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">F:/mango_project/build/universe/server/server_cxx_pch/stdafx.pch</PrecompiledHeaderOutputFile>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdafx.h</ForcedIncludeFiles>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">F:/mango_project/build/universe/server/server_cxx_pch/stdafx.pch</PrecompiledHeaderOutputFile>
+    </ClCompile>
+    <ClCompile Include="F:\mango_project\src\server\script\tolua_npc.cpp" >
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stdafx.h</ForcedIncludeFiles>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">F:/mango_project/build/universe/server/server_cxx_pch/stdafx.pch</PrecompiledHeaderOutputFile>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdafx.h</ForcedIncludeFiles>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">F:/mango_project/build/universe/server/server_cxx_pch/stdafx.pch</PrecompiledHeaderOutputFile>
+    </ClCompile>
+    <ClCompile Include="F:\mango_project\src\server\script\tolua_role.cpp" >
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stdafx.h</ForcedIncludeFiles>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">F:/mango_project/build/universe/server/server_cxx_pch/stdafx.pch</PrecompiledHeaderOutputFile>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdafx.h</ForcedIncludeFiles>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">F:/mango_project/build/universe/server/server_cxx_pch/stdafx.pch</PrecompiledHeaderOutputFile>
+    </ClCompile>
+    <ClCompile Include="F:\mango_project\src\server\stdafx.cpp" >
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">F:/mango_project/build/universe/server/server_cxx_pch/stdafx.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">F:/mango_project/build/universe/server/server_cxx_pch/stdafx.pch</PrecompiledHeaderOutputFile>
+    </ClCompile>
+    <ClCompile Include="F:\mango_project\src\server\test.cpp" >
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stdafx.h</ForcedIncludeFiles>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">F:/mango_project/build/universe/server/server_cxx_pch/stdafx.pch</PrecompiledHeaderOutputFile>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdafx.h</ForcedIncludeFiles>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">F:/mango_project/build/universe/server/server_cxx_pch/stdafx.pch</PrecompiledHeaderOutputFile>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="F:\mango_project\build\universe\ZERO_CHECK.vcxproj">
+      <Project>4D0E9A51-4490-3A22-B663-11F2C1232984</Project>
+      <Name>ZERO_CHECK</Name>
+    </ProjectReference>
+    <ProjectReference Include="F:\mango_project\build\universe\common\common.vcxproj">
+      <Project>43C3A351-DB6E-354B-ABF9-AA688ECC7189</Project>
+      <Name>common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

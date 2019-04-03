@@ -1,0 +1,96 @@
+﻿生成启动时间为 2019/4/3 11:22:51。
+     1>项目“F:\mango_project\build\universe\server\server.vcxproj”在节点 2 上(Build 个目标)。
+     1>ClCompile:
+         D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\x86_amd64\CL.exe /c /IF:\mango_project\inc /IF:\mango_project\inc\common /IF:\mango_project\thirdparty /IF:\mango_project\thirdparty\lua\inc /IF:\mango_project\thirdparty\toluapp\inc /IF:\mango_project\thirdparty\tbase /IF:\mango_project\thirdparty\tbase\include /IF:\mango_project\src\server /Zi /nologo /W3 /WX- /MP /Od /Ob0 /D WIN32 /D _WINDOWS /D WIN32 /D WIN64 /D _WINDOWS /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /RTC1 /MTd /GS /fp:fast /Zc:wchar_t- /Zc:forScope /Zc:inline /GR- /Yu"stdafx.h" /Fp"F:/mango_project/build/universe/server/server_cxx_pch/stdafx.pch" /Fo"server.dir\Debug\\" /Fd"server.dir\Debug\vc140.pdb" /Gd /TP /FIstdafx.h /errorReport:prompt   /bigobj /bigobj F:\mango_project\src\server\script\tolua_npc.cpp F:\mango_project\src\server\script\tolua_role.cpp
+         tolua_npc.cpp
+         tolua_role.cpp
+       Link:
+         D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"F:\mango_project\bin\server\server_d.exe" /INCREMENTAL /NOLOGO /LIBPATH:F:/mango_project/lib /LIBPATH:F:/mango_project/lib/Debug /LIBPATH:F:/mango_project/thirdparty /LIBPATH:F:/mango_project/thirdparty/Debug /LIBPATH:F:/mango_project/thirdparty/lua/lib /LIBPATH:F:/mango_project/thirdparty/lua/lib/Debug /LIBPATH:F:/mango_project/thirdparty/toluapp/lib /LIBPATH:F:/mango_project/thirdparty/toluapp/lib/Debug /LIBPATH:F:/mango_project/thirdparty/tbase/lib /LIBPATH:F:/mango_project/thirdparty/tbase/lib/Debug kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib lua.lib toluappd.lib common_d.lib libcomm_d.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"F:/mango_project/bin/server/server_d.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"F:/mango_project/build/universe/server/Debug/server_d.lib" /MACHINE:X64   /machine:x64 server.dir\Debug\script_func.obj
+         server.dir\Debug\tolua_npc.obj
+         server.dir\Debug\tolua_role.obj
+         server.dir\Debug\stdafx.obj
+         server.dir\Debug\test.obj
+     1>libpal_d.lib(terrno.obj) : warning LNK4099: 未找到 PDB“libvc14pal_d.pdb”(使用“libpal_d.lib(terrno.obj)”或在“F:\mango_project\bin\server\libvc14pal_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libpal_d.lib(tfile.obj) : warning LNK4099: 未找到 PDB“libvc14pal_d.pdb”(使用“libpal_d.lib(tfile.obj)”或在“F:\mango_project\bin\server\libvc14pal_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libpal_d.lib(tipc.obj) : warning LNK4099: 未找到 PDB“libvc14pal_d.pdb”(使用“libpal_d.lib(tipc.obj)”或在“F:\mango_project\bin\server\libvc14pal_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libpal_d.lib(tlock.obj) : warning LNK4099: 未找到 PDB“libvc14pal_d.pdb”(使用“libpal_d.lib(tlock.obj)”或在“F:\mango_project\bin\server\libvc14pal_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libpal_d.lib(tmmap.obj) : warning LNK4099: 未找到 PDB“libvc14pal_d.pdb”(使用“libpal_d.lib(tmmap.obj)”或在“F:\mango_project\bin\server\libvc14pal_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libpal_d.lib(tnet.obj) : warning LNK4099: 未找到 PDB“libvc14pal_d.pdb”(使用“libpal_d.lib(tnet.obj)”或在“F:\mango_project\bin\server\libvc14pal_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libpal_d.lib(tos.obj) : warning LNK4099: 未找到 PDB“libvc14pal_d.pdb”(使用“libpal_d.lib(tos.obj)”或在“F:\mango_project\bin\server\libvc14pal_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libpal_d.lib(tshm.obj) : warning LNK4099: 未找到 PDB“libvc14pal_d.pdb”(使用“libpal_d.lib(tshm.obj)”或在“F:\mango_project\bin\server\libvc14pal_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libpal_d.lib(tsignal.obj) : warning LNK4099: 未找到 PDB“libvc14pal_d.pdb”(使用“libpal_d.lib(tsignal.obj)”或在“F:\mango_project\bin\server\libvc14pal_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libpal_d.lib(tsocket.obj) : warning LNK4099: 未找到 PDB“libvc14pal_d.pdb”(使用“libpal_d.lib(tsocket.obj)”或在“F:\mango_project\bin\server\libvc14pal_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libpal_d.lib(tstring.obj) : warning LNK4099: 未找到 PDB“libvc14pal_d.pdb”(使用“libpal_d.lib(tstring.obj)”或在“F:\mango_project\bin\server\libvc14pal_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libpal_d.lib(ttime.obj) : warning LNK4099: 未找到 PDB“libvc14pal_d.pdb”(使用“libpal_d.lib(ttime.obj)”或在“F:\mango_project\bin\server\libvc14pal_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libpal_d.lib(shortcut.obj) : warning LNK4099: 未找到 PDB“libvc14pal_d.pdb”(使用“libpal_d.lib(shortcut.obj)”或在“F:\mango_project\bin\server\libvc14pal_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libtlog_d.lib(tlog.obj) : warning LNK4099: 未找到 PDB“libvc14tlog_d.pdb”(使用“libtlog_d.lib(tlog.obj)”或在“F:\mango_project\bin\server\libvc14tlog_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libtlog_d.lib(tlog_bill.obj) : warning LNK4099: 未找到 PDB“libvc14tlog_d.pdb”(使用“libtlog_d.lib(tlog_bill.obj)”或在“F:\mango_project\bin\server\libvc14tlog_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libtlog_d.lib(tlog_category.obj) : warning LNK4099: 未找到 PDB“libvc14tlog_d.pdb”(使用“libtlog_d.lib(tlog_category.obj)”或在“F:\mango_project\bin\server\libvc14tlog_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libtlog_d.lib(tlog_layout.obj) : warning LNK4099: 未找到 PDB“libvc14tlog_d.pdb”(使用“libtlog_d.lib(tlog_layout.obj)”或在“F:\mango_project\bin\server\libvc14tlog_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libtlog_d.lib(tlog_priority.obj) : warning LNK4099: 未找到 PDB“libvc14tlog_d.pdb”(使用“libtlog_d.lib(tlog_priority.obj)”或在“F:\mango_project\bin\server\libvc14tlog_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libtlog_d.lib(tlogany.obj) : warning LNK4099: 未找到 PDB“libvc14tlog_d.pdb”(使用“libtlog_d.lib(tlogany.obj)”或在“F:\mango_project\bin\server\libvc14tlog_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libtlog_d.lib(tlogbin.obj) : warning LNK4099: 未找到 PDB“libvc14tlog_d.pdb”(使用“libtlog_d.lib(tlogbin.obj)”或在“F:\mango_project\bin\server\libvc14tlog_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libtlog_d.lib(tlogconf.obj) : warning LNK4099: 未找到 PDB“libvc14tlog_d.pdb”(使用“libtlog_d.lib(tlogconf.obj)”或在“F:\mango_project\bin\server\libvc14tlog_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libtlog_d.lib(tlogfile.obj) : warning LNK4099: 未找到 PDB“libvc14tlog_d.pdb”(使用“libtlog_d.lib(tlogfile.obj)”或在“F:\mango_project\bin\server\libvc14tlog_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libtlog_d.lib(tlogfilter.obj) : warning LNK4099: 未找到 PDB“libvc14tlog_d.pdb”(使用“libtlog_d.lib(tlogfilter.obj)”或在“F:\mango_project\bin\server\libvc14tlog_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libtlog_d.lib(tlogmem.obj) : warning LNK4099: 未找到 PDB“libvc14tlog_d.pdb”(使用“libtlog_d.lib(tlogmem.obj)”或在“F:\mango_project\bin\server\libvc14tlog_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libtlog_d.lib(tlognet.obj) : warning LNK4099: 未找到 PDB“libvc14tlog_d.pdb”(使用“libtlog_d.lib(tlognet.obj)”或在“F:\mango_project\bin\server\libvc14tlog_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libtlog_d.lib(tlogterm.obj) : warning LNK4099: 未找到 PDB“libvc14tlog_d.pdb”(使用“libtlog_d.lib(tlogterm.obj)”或在“F:\mango_project\bin\server\libvc14tlog_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libtlog_d.lib(tlogvec.obj) : warning LNK4099: 未找到 PDB“libvc14tlog_d.pdb”(使用“libtlog_d.lib(tlogvec.obj)”或在“F:\mango_project\bin\server\libvc14tlog_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libtdr_xml_d.lib(tdr_auxtools.obj) : warning LNK4099: 未找到 PDB“libvc14tsf4g_d.pdb”(使用“libtdr_xml_d.lib(tdr_auxtools.obj)”或在“F:\mango_project\bin\server\libvc14tsf4g_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libtdr_xml_d.lib(tdr_ctypes_info.obj) : warning LNK4099: 未找到 PDB“libvc14tsf4g_d.pdb”(使用“libtdr_xml_d.lib(tdr_ctypes_info.obj)”或在“F:\mango_project\bin\server\libvc14tsf4g_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libtdr_xml_d.lib(tdr_data_io.obj) : warning LNK4099: 未找到 PDB“libvc14tsf4g_d.pdb”(使用“libtdr_xml_d.lib(tdr_data_io.obj)”或在“F:\mango_project\bin\server\libvc14tsf4g_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libtdr_xml_d.lib(tdr_error.obj) : warning LNK4099: 未找到 PDB“libvc14tsf4g_d.pdb”(使用“libtdr_xml_d.lib(tdr_error.obj)”或在“F:\mango_project\bin\server\libvc14tsf4g_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libtdr_xml_d.lib(tdr_error_detail.obj) : warning LNK4099: 未找到 PDB“libvc14tsf4g_d.pdb”(使用“libtdr_xml_d.lib(tdr_error_detail.obj)”或在“F:\mango_project\bin\server\libvc14tsf4g_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libtdr_xml_d.lib(tdr_error_i.obj) : warning LNK4099: 未找到 PDB“libvc14tsf4g_d.pdb”(使用“libtdr_xml_d.lib(tdr_error_i.obj)”或在“F:\mango_project\bin\server\libvc14tsf4g_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libtdr_xml_d.lib(tdr_iostream_i.obj) : warning LNK4099: 未找到 PDB“libvc14tsf4g_d.pdb”(使用“libtdr_xml_d.lib(tdr_iostream_i.obj)”或在“F:\mango_project\bin\server\libvc14tsf4g_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libtdr_xml_d.lib(tdr_md5.obj) : warning LNK4099: 未找到 PDB“libvc14tsf4g_d.pdb”(使用“libtdr_xml_d.lib(tdr_md5.obj)”或在“F:\mango_project\bin\server\libvc14tsf4g_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libtdr_xml_d.lib(tdr_metalib_init.obj) : warning LNK4099: 未找到 PDB“libvc14tsf4g_d.pdb”(使用“libtdr_xml_d.lib(tdr_metalib_init.obj)”或在“F:\mango_project\bin\server\libvc14tsf4g_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libtdr_xml_d.lib(tdr_metalib_manage_i.obj) : warning LNK4099: 未找到 PDB“libvc14tsf4g_d.pdb”(使用“libtdr_xml_d.lib(tdr_metalib_manage_i.obj)”或在“F:\mango_project\bin\server\libvc14tsf4g_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libtdr_xml_d.lib(tdr_os.obj) : warning LNK4099: 未找到 PDB“libvc14tsf4g_d.pdb”(使用“libtdr_xml_d.lib(tdr_os.obj)”或在“F:\mango_project\bin\server\libvc14tsf4g_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libtdr_xml_d.lib(tdr_strptime.obj) : warning LNK4099: 未找到 PDB“libvc14tsf4g_d.pdb”(使用“libtdr_xml_d.lib(tdr_strptime.obj)”或在“F:\mango_project\bin\server\libvc14tsf4g_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libtdr_xml_d.lib(JSON_parser.obj) : warning LNK4099: 未找到 PDB“libvc14tsf4g_d.pdb”(使用“libtdr_xml_d.lib(JSON_parser.obj)”或在“F:\mango_project\bin\server\libvc14tsf4g_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libtdr_xml_d.lib(tdr_XMLMetaLib.obj) : warning LNK4099: 未找到 PDB“libvc14tsf4g_d.pdb”(使用“libtdr_xml_d.lib(tdr_XMLMetaLib.obj)”或在“F:\mango_project\bin\server\libvc14tsf4g_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libtdr_xml_d.lib(tdr_check_xml_format.obj) : warning LNK4099: 未找到 PDB“libvc14tsf4g_d.pdb”(使用“libtdr_xml_d.lib(tdr_check_xml_format.obj)”或在“F:\mango_project\bin\server\libvc14tsf4g_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libtdr_xml_d.lib(tdr_data_inoutput.obj) : warning LNK4099: 未找到 PDB“libvc14tsf4g_d.pdb”(使用“libtdr_xml_d.lib(tdr_data_inoutput.obj)”或在“F:\mango_project\bin\server\libvc14tsf4g_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libtdr_xml_d.lib(tdr_json_parser.obj) : warning LNK4099: 未找到 PDB“libvc14tsf4g_d.pdb”(使用“libtdr_xml_d.lib(tdr_json_parser.obj)”或在“F:\mango_project\bin\server\libvc14tsf4g_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libtdr_xml_d.lib(tdr_metalib_entry_manage_i.obj) : warning LNK4099: 未找到 PDB“libvc14tsf4g_d.pdb”(使用“libtdr_xml_d.lib(tdr_metalib_entry_manage_i.obj)”或在“F:\mango_project\bin\server\libvc14tsf4g_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libtdr_xml_d.lib(tdr_metalib_meta_manage_i.obj) : warning LNK4099: 未找到 PDB“libvc14tsf4g_d.pdb”(使用“libtdr_xml_d.lib(tdr_metalib_meta_manage_i.obj)”或在“F:\mango_project\bin\server\libvc14tsf4g_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libtdr_xml_d.lib(tdr_metalib_param_i.obj) : warning LNK4099: 未找到 PDB“libvc14tsf4g_d.pdb”(使用“libtdr_xml_d.lib(tdr_metalib_param_i.obj)”或在“F:\mango_project\bin\server\libvc14tsf4g_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libtdr_xml_d.lib(tdr_scew_if.obj) : warning LNK4099: 未找到 PDB“libvc14tsf4g_d.pdb”(使用“libtdr_xml_d.lib(tdr_scew_if.obj)”或在“F:\mango_project\bin\server\libvc14tsf4g_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libscew_d.lib(attribute.obj) : warning LNK4099: 未找到 PDB“libvc14tsf4g_d.pdb”(使用“libscew_d.lib(attribute.obj)”或在“F:\mango_project\bin\server\libvc14tsf4g_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libscew_d.lib(element.obj) : warning LNK4099: 未找到 PDB“libvc14tsf4g_d.pdb”(使用“libscew_d.lib(element.obj)”或在“F:\mango_project\bin\server\libvc14tsf4g_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libscew_d.lib(error.obj) : warning LNK4099: 未找到 PDB“libvc14tsf4g_d.pdb”(使用“libscew_d.lib(error.obj)”或在“F:\mango_project\bin\server\libvc14tsf4g_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libscew_d.lib(parser.obj) : warning LNK4099: 未找到 PDB“libvc14tsf4g_d.pdb”(使用“libscew_d.lib(parser.obj)”或在“F:\mango_project\bin\server\libvc14tsf4g_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libscew_d.lib(str.obj) : warning LNK4099: 未找到 PDB“libvc14tsf4g_d.pdb”(使用“libscew_d.lib(str.obj)”或在“F:\mango_project\bin\server\libvc14tsf4g_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libscew_d.lib(tree.obj) : warning LNK4099: 未找到 PDB“libvc14tsf4g_d.pdb”(使用“libscew_d.lib(tree.obj)”或在“F:\mango_project\bin\server\libvc14tsf4g_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libscew_d.lib(writer.obj) : warning LNK4099: 未找到 PDB“libvc14tsf4g_d.pdb”(使用“libscew_d.lib(writer.obj)”或在“F:\mango_project\bin\server\libvc14tsf4g_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libscew_d.lib(xattribute.obj) : warning LNK4099: 未找到 PDB“libvc14tsf4g_d.pdb”(使用“libscew_d.lib(xattribute.obj)”或在“F:\mango_project\bin\server\libvc14tsf4g_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libscew_d.lib(xerror.obj) : warning LNK4099: 未找到 PDB“libvc14tsf4g_d.pdb”(使用“libscew_d.lib(xerror.obj)”或在“F:\mango_project\bin\server\libvc14tsf4g_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libscew_d.lib(xhandler.obj) : warning LNK4099: 未找到 PDB“libvc14tsf4g_d.pdb”(使用“libscew_d.lib(xhandler.obj)”或在“F:\mango_project\bin\server\libvc14tsf4g_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libscew_d.lib(xparser.obj) : warning LNK4099: 未找到 PDB“libvc14tsf4g_d.pdb”(使用“libscew_d.lib(xparser.obj)”或在“F:\mango_project\bin\server\libvc14tsf4g_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libscew_d.lib(xprint.obj) : warning LNK4099: 未找到 PDB“libvc14tsf4g_d.pdb”(使用“libscew_d.lib(xprint.obj)”或在“F:\mango_project\bin\server\libvc14tsf4g_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libexpat_d.lib(xmlparse.obj) : warning LNK4099: 未找到 PDB“libvc14expat_d.pdb”(使用“libexpat_d.lib(xmlparse.obj)”或在“F:\mango_project\bin\server\libvc14expat_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libexpat_d.lib(xmlrole.obj) : warning LNK4099: 未找到 PDB“libvc14expat_d.pdb”(使用“libexpat_d.lib(xmlrole.obj)”或在“F:\mango_project\bin\server\libvc14expat_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libexpat_d.lib(xmltok.obj) : warning LNK4099: 未找到 PDB“libvc14expat_d.pdb”(使用“libexpat_d.lib(xmltok.obj)”或在“F:\mango_project\bin\server\libvc14expat_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libtmng_d.lib(err_stack.obj) : warning LNK4099: 未找到 PDB“libvc14tmng_d.pdb”(使用“libtmng_d.lib(err_stack.obj)”或在“F:\mango_project\bin\server\libvc14tmng_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libtmng_d.lib(tmetabase.obj) : warning LNK4099: 未找到 PDB“libvc14tmng_d.pdb”(使用“libtmng_d.lib(tmetabase.obj)”或在“F:\mango_project\bin\server\libvc14tmng_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libtmng_d.lib(tmib.obj) : warning LNK4099: 未找到 PDB“libvc14tmng_d.pdb”(使用“libtmng_d.lib(tmib.obj)”或在“F:\mango_project\bin\server\libvc14tmng_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libtmng_d.lib(toffset_array.obj) : warning LNK4099: 未找到 PDB“libvc14tmng_d.pdb”(使用“libtmng_d.lib(toffset_array.obj)”或在“F:\mango_project\bin\server\libvc14tmng_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libtmng_d.lib(toffset_hash.obj) : warning LNK4099: 未找到 PDB“libvc14tmng_d.pdb”(使用“libtmng_d.lib(toffset_hash.obj)”或在“F:\mango_project\bin\server\libvc14tmng_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libtmng_d.lib(tpage_align.obj) : warning LNK4099: 未找到 PDB“libvc14tmng_d.pdb”(使用“libtmng_d.lib(tpage_align.obj)”或在“F:\mango_project\bin\server\libvc14tmng_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libtmng_d.lib(tsm_base.obj) : warning LNK4099: 未找到 PDB“libvc14tmng_d.pdb”(使用“libtmng_d.lib(tsm_base.obj)”或在“F:\mango_project\bin\server\libvc14tmng_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libtmng_d.lib(tsm_hash.obj) : warning LNK4099: 未找到 PDB“libvc14tmng_d.pdb”(使用“libtmng_d.lib(tsm_hash.obj)”或在“F:\mango_project\bin\server\libvc14tmng_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libtmng_d.lib(tsm_head.obj) : warning LNK4099: 未找到 PDB“libvc14tmng_d.pdb”(使用“libtmng_d.lib(tsm_head.obj)”或在“F:\mango_project\bin\server\libvc14tmng_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libtmng_d.lib(tsm_index.obj) : warning LNK4099: 未找到 PDB“libvc14tmng_d.pdb”(使用“libtmng_d.lib(tsm_index.obj)”或在“F:\mango_project\bin\server\libvc14tmng_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libtmng_d.lib(tsm_shm.obj) : warning LNK4099: 未找到 PDB“libvc14tmng_d.pdb”(使用“libtmng_d.lib(tsm_shm.obj)”或在“F:\mango_project\bin\server\libvc14tmng_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libtmng_d.lib(tsm_tdr.obj) : warning LNK4099: 未找到 PDB“libvc14tmng_d.pdb”(使用“libtmng_d.lib(tsm_tdr.obj)”或在“F:\mango_project\bin\server\libvc14tmng_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libtmng_d.lib(tsm_tdr_i.obj) : warning LNK4099: 未找到 PDB“libvc14tmng_d.pdb”(使用“libtmng_d.lib(tsm_tdr_i.obj)”或在“F:\mango_project\bin\server\libvc14tmng_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libtmng_d.lib(tsm_uri_i.obj) : warning LNK4099: 未找到 PDB“libvc14tmng_d.pdb”(使用“libtmng_d.lib(tsm_uri_i.obj)”或在“F:\mango_project\bin\server\libvc14tmng_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+     1>libtloghelp_d.lib(tlogload.obj) : warning LNK4099: 未找到 PDB“libvc14tloghelp_d.pdb”(使用“libtloghelp_d.lib(tlogload.obj)”或在“F:\mango_project\bin\server\libvc14tloghelp_d.pdb”中寻找)；正在链接对象，如同没有调试信息一样
+         server.vcxproj -> F:\mango_project\bin\server\server_d.exe
+     1>已完成生成项目“F:\mango_project\build\universe\server\server.vcxproj”(Build 个目标)的操作。
+
+已成功生成。
+
+已用时间 00:00:02.36

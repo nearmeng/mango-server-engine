@@ -1,0 +1,11 @@
+$hfile "../../../inc/define/role.h"
+
+class CRole 
+{
+public:
+	inline const char* get_name() { return m_szName; };
+	inline void set_name(const char* pcszName) { strxcpy(m_szName, pcszName, sizeof(m_szName)); };
+
+	inline int32_t get_age(void) { return m_nAge; };
+	inline void set_age(int32_t nAge) { m_nAge = nAge; };
+};

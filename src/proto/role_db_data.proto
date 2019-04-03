@@ -1,0 +1,12 @@
+package ROLE_DB;
+
+message BASE_DATA
+{
+	required uint64   role_id       = 1;
+	required uint64   user_id       = 2;
+}
+
+message ROLE_DATA
+{
+	optional BASE_DATA  base_data = 1;
+}

@@ -1,0 +1,10 @@
+﻿生成启动时间为 2019/4/3 10:36:56。
+     1>项目“F:\mango_project\build\universe\ALL_BUILD.vcxproj”在节点 2 上(Rebuild 个目标)。
+     1>CustomBuild:
+         Building Custom Rule F:/mango_project/build/CMakeLists.txt
+         CMake does not need to re-run because F:/mango_project/build/universe/CMakeFiles/generate.stamp is up-to-date.
+     1>已完成生成项目“F:\mango_project\build\universe\ALL_BUILD.vcxproj”(Rebuild 个目标)的操作。
+
+已成功生成。
+
+已用时间 00:00:00.77

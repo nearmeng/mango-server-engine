@@ -1,0 +1,36 @@
+20190402 16:30:58.604882 [INFO    ] --game log is begin--
+20190402 16:30:58.604893 [INFO    ] begin to init script
+20190402 16:30:58.604941 [INFO    ] begin to new script
+20190402 16:30:58.705881 [INFO    ] lua print info log: this is a lua log
+
+20190402 16:30:58.705945 [INFO    ] loaded lua script test.lua successfully
+20190402 17:20:23.472872 [INFO    ] --game log is begin--
+20190402 17:20:23.472881 [INFO    ] begin to init script
+20190402 17:20:23.472932 [INFO    ] begin to new script
+20190402 17:20:23.575627 [INFO    ] lua print info log: this is a lua log
+
+20190402 17:20:23.575774 [INFO    ] loaded lua script test.lua successfully
+20190402 17:20:23.575877 [INFO    ] lua print info log: age is 0
+
+20190402 17:20:23.575884 [INFO    ] lua print info log: age is 10
+
+20190403 11:24:43.155489 [INFO    ] --game log is begin--
+20190403 11:24:43.155489 [INFO    ] begin to init script
+20190403 11:24:43.155489 [INFO    ] begin to new script
+20190403 11:24:43.262489 [INFO    ] lua print info log: this is a lua log
+
+20190403 11:24:43.262489 [INFO    ] loaded lua script test.lua successfully
+20190403 11:24:43.262489 [INFO    ] lua print info log: age is 0
+
+20190403 11:24:43.262489 [INFO    ] lua print info log: age is 10
+
+20190403 11:25:07.055489 [INFO    ] --game log is begin--
+20190403 11:25:07.055489 [INFO    ] begin to init script
+20190403 11:25:07.055489 [INFO    ] begin to new script
+20190403 11:25:07.163489 [INFO    ] lua print info log: this is a lua log
+
+20190403 11:25:07.163489 [INFO    ] loaded lua script test.lua successfully
+20190403 11:25:07.163489 [INFO    ] lua print info log: age is 0
+
+20190403 11:25:07.163489 [INFO    ] lua print info log: age is 10
+

@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="F:\mango_project\src\common\file\ifile.cpp">
+      <Filter>file</Filter>
+    </ClCompile>
+    <ClCompile Include="F:\mango_project\src\common\file\tab_file.cpp">
+      <Filter>file</Filter>
+    </ClCompile>
+    <ClCompile Include="F:\mango_project\src\common\log\log.cpp">
+      <Filter>log</Filter>
+    </ClCompile>
+    <ClCompile Include="F:\mango_project\src\common\lua\lua_script.cpp">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="F:\mango_project\src\common\lua\script_mgr.cpp">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="F:\mango_project\src\common\math\crc32.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="F:\mango_project\src\common\math\crc32c_fast.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="F:\mango_project\src\common\math\hash.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="F:\mango_project\src\common\shm\id_object_pool.cpp">
+      <Filter>shm</Filter>
+    </ClCompile>
+    <ClCompile Include="F:\mango_project\src\common\shm\rb_tree.cpp">
+      <Filter>shm</Filter>
+    </ClCompile>
+    <ClCompile Include="F:\mango_project\src\common\shm\shm_pool.cpp">
+      <Filter>shm</Filter>
+    </ClCompile>
+    <ClCompile Include="F:\mango_project\src\common\stdafx.cpp">
+      <Filter>main</Filter>
+    </ClCompile>
+    <ClCompile Include="F:\mango_project\src\common\string\string_ex.cpp">
+      <Filter>string</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="F:\mango_project\src\common\stdafx.h">
+      <Filter>main</Filter>
+    </ClInclude>
+    <ClInclude Include="F:\mango_project\inc\common\common_inc.h">
+      <Filter>main</Filter>
+    </ClInclude>
+    <ClInclude Include="F:\mango_project\inc\common\file\ifile.h">
+      <Filter>file</Filter>
+    </ClInclude>
+    <ClInclude Include="F:\mango_project\inc\common\file\tab_file.h">
+      <Filter>file</Filter>
+    </ClInclude>
+    <ClInclude Include="F:\mango_project\inc\common\log\log.h">
+      <Filter>log</Filter>
+    </ClInclude>
+    <ClInclude Include="F:\mango_project\inc\common\lua\lua_script.h">
+      <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="F:\mango_project\inc\common\lua\script_mgr.h">
+      <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="F:\mango_project\inc\common\math\crc32.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="F:\mango_project\inc\common\math\crc32c_fast.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="F:\mango_project\inc\common\math\hash.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="F:\mango_project\inc\common\math\utf8.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="F:\mango_project\inc\common\process_error\process_error.h">
+      <Filter>process_error</Filter>
+    </ClInclude>
+    <ClInclude Include="F:\mango_project\inc\common\shm\id_object_pool.h">
+      <Filter>shm</Filter>
+    </ClInclude>
+    <ClInclude Include="F:\mango_project\inc\common\shm\rb_tree.h">
+      <Filter>shm</Filter>
+    </ClInclude>
+    <ClInclude Include="F:\mango_project\inc\common\shm\rb_tree_inl.h">
+      <Filter>shm</Filter>
+    </ClInclude>
+    <ClInclude Include="F:\mango_project\inc\common\shm\shm_pool.h">
+      <Filter>shm</Filter>
+    </ClInclude>
+    <ClInclude Include="F:\mango_project\inc\common\shm\shm_pool_def.h">
+      <Filter>shm</Filter>
+    </ClInclude>
+    <ClInclude Include="F:\mango_project\inc\common\shm\shm_pool_inl.h">
+      <Filter>shm</Filter>
+    </ClInclude>
+    <ClInclude Include="F:\mango_project\inc\common\string\string_ex.h">
+      <Filter>string</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="F:\mango_project\build\common\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="file">
+      <UniqueIdentifier>{586D7C45-5B54-3B2D-944C-1BFD1F3B6132}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="log">
+      <UniqueIdentifier>{5FD6DA5D-13DF-38F6-B0B5-5C5C4F6E3100}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lua">
+      <UniqueIdentifier>{5DBAB997-8424-3F62-8ECD-DF904DEB3FC8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="math">
+      <UniqueIdentifier>{080E545B-E8CD-3D0D-BDD1-73749375C9D0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shm">
+      <UniqueIdentifier>{D252D7AB-9C58-35EA-830B-C4BBD137B377}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="main">
+      <UniqueIdentifier>{D5D7231A-A5AD-3B77-B547-4078CCD67828}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="string">
+      <UniqueIdentifier>{17EDEA40-A706-3705-9D1E-9F09D781B247}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="process_error">
+      <UniqueIdentifier>{AC74A3AC-0E8A-3414-823B-C3FD44BAB60D}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

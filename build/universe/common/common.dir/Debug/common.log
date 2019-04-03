@@ -1,0 +1,113 @@
+﻿生成启动时间为 2019/4/3 11:12:57。
+     1>项目“F:\mango_project\build\universe\common\common.vcxproj”在节点 2 上(Build 个目标)。
+     1>ClCompile:
+         D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\x86_amd64\CL.exe /c /IF:\mango_project\inc /IF:\mango_project\inc\common /IF:\mango_project\thirdparty /IF:\mango_project\thirdparty\lua\inc /IF:\mango_project\thirdparty\toluapp\inc /IF:\mango_project\thirdparty\tbase /IF:\mango_project\thirdparty\tbase\include /IF:\mango_project\src\common /Zi /nologo /W3 /WX- /MP /Od /Ob0 /D WIN32 /D _WINDOWS /D WIN32 /D WIN64 /D _WINDOWS /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /RTC1 /MTd /GS /fp:fast /Zc:wchar_t- /Zc:forScope /Zc:inline /GR- /Yc"stdafx.h" /Fp"F:/mango_project/build/universe/common/common_cxx_pch/stdafx.pch" /Fo"common.dir\Debug\\" /Fd"common.dir\Debug\common.pdb" /Gd /TP /errorReport:prompt   /bigobj /bigobj F:\mango_project\src\common\stdafx.cpp
+         stdafx.cpp
+     1>F:\mango_project\thirdparty\tbase\include\pal/pal.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+     1>F:\mango_project\thirdparty\tbase\include\tbus/tbus_macros.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+     1>D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\xlocale(341): warning C4530: 使用了 C++ 异常处理程序，但未启用展开语义。请指定 /EHsc
+     1>f:\mango_project\inc\common\shm\shm_pool_def.h(47): warning C4200: 使用了非标准扩展: 结构/联合中的零大小数组
+         f:\mango_project\inc\common\shm\shm_pool_def.h(47): note: 当 UDT 包含大小为零的数组时，无法生成复制构造函数或副本赋值运算符
+     1>D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\limits(214): warning C4577: 'noexcept' used with no exception handling mode specified; termination on exception is not guaranteed. Specify /EHsc
+         D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\x86_amd64\CL.exe /c /IF:\mango_project\inc /IF:\mango_project\inc\common /IF:\mango_project\thirdparty /IF:\mango_project\thirdparty\lua\inc /IF:\mango_project\thirdparty\toluapp\inc /IF:\mango_project\thirdparty\tbase /IF:\mango_project\thirdparty\tbase\include /IF:\mango_project\src\common /Zi /nologo /W3 /WX- /MP /Od /Ob0 /D WIN32 /D _WINDOWS /D WIN32 /D WIN64 /D _WINDOWS /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /RTC1 /MTd /GS /fp:fast /Zc:wchar_t- /Zc:forScope /Zc:inline /GR- /Yu"stdafx.h" /Fp"F:/mango_project/build/universe/common/common_cxx_pch/stdafx.pch" /Fo"common.dir\Debug\\" /Fd"common.dir\Debug\common.pdb" /Gd /TP /FIstdafx.h /errorReport:prompt   /bigobj /bigobj F:\mango_project\src\common\file\ifile.cpp F:\mango_project\src\common\file\tab_file.cpp F:\mango_project\src\common\log\log.cpp F:\mango_project\src\common\lua\lua_script.cpp F:\mango_project\src\common\lua\script_mgr.cpp F:\mango_project\src\common\math\crc32.cpp F:\mango_project\src\common\math\crc32c_fast.cpp F:\mango_project\src\common\math\hash.cpp F:\mango_project\src\common\shm\id_object_pool.cpp F:\mango_project\src\common\shm\rb_tree.cpp F:\mango_project\src\common\shm\shm_pool.cpp F:\mango_project\src\common\string\string_ex.cpp
+         ifile.cpp
+         tab_file.cpp
+     1>F:\mango_project\src\common\file\ifile.cpp(52): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+         C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\stdio.h(205): note: 参见“fopen”的声明
+         log.cpp
+     1>F:\mango_project\src\common\file\ifile.cpp(156): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+         C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\stdio.h(205): note: 参见“fopen”的声明
+         lua_script.cpp
+     1>F:\mango_project\src\common\file\ifile.cpp(175): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+         C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\stdio.h(205): note: 参见“fopen”的声明
+     1>F:\mango_project\src\common\file\ifile.cpp(181): warning C4996: 'fileno': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _fileno. See online help for details.
+         C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\stdio.h(2450): note: 参见“fileno”的声明
+     1>F:\mango_project\src\common\file\ifile.cpp(205): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+         C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\stdio.h(205): note: 参见“fopen”的声明
+     1>F:\mango_project\src\common\file\ifile.cpp(211): warning C4996: 'fileno': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _fileno. See online help for details.
+         C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\stdio.h(2450): note: 参见“fileno”的声明
+         script_mgr.cpp
+         crc32.cpp
+         crc32c_fast.cpp
+     1>C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\signal.h(21): warning C4005: “NSIG”: 宏重定义 (编译源文件 F:\mango_project\src\common\lua\lua_script.cpp)
+         F:\mango_project\thirdparty\tbase\include\pal/tsignal.h(81): note: 参见“NSIG”的前一个定义 (编译源文件 F:\mango_project\src\common\lua\lua_script.cpp)
+     1>C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\signal.h(24): warning C4005: “SIGINT”: 宏重定义 (编译源文件 F:\mango_project\src\common\lua\lua_script.cpp)
+         F:\mango_project\thirdparty\tbase\include\pal/tsignal.h(84): note: 参见“SIGINT”的前一个定义 (编译源文件 F:\mango_project\src\common\lua\lua_script.cpp)
+     1>C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\signal.h(25): warning C4005: “SIGILL”: 宏重定义 (编译源文件 F:\mango_project\src\common\lua\lua_script.cpp)
+         F:\mango_project\thirdparty\tbase\include\pal/tsignal.h(86): note: 参见“SIGILL”的前一个定义 (编译源文件 F:\mango_project\src\common\lua\lua_script.cpp)
+     1>C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\signal.h(26): warning C4005: “SIGFPE”: 宏重定义 (编译源文件 F:\mango_project\src\common\lua\lua_script.cpp)
+         F:\mango_project\thirdparty\tbase\include\pal/tsignal.h(91): note: 参见“SIGFPE”的前一个定义 (编译源文件 F:\mango_project\src\common\lua\lua_script.cpp)
+     1>C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\signal.h(27): warning C4005: “SIGSEGV”: 宏重定义 (编译源文件 F:\mango_project\src\common\lua\lua_script.cpp)
+         F:\mango_project\thirdparty\tbase\include\pal/tsignal.h(94): note: 参见“SIGSEGV”的前一个定义 (编译源文件 F:\mango_project\src\common\lua\lua_script.cpp)
+     1>C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\signal.h(28): warning C4005: “SIGTERM”: 宏重定义 (编译源文件 F:\mango_project\src\common\lua\lua_script.cpp)
+         F:\mango_project\thirdparty\tbase\include\pal/tsignal.h(98): note: 参见“SIGTERM”的前一个定义 (编译源文件 F:\mango_project\src\common\lua\lua_script.cpp)
+     1>C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\signal.h(30): warning C4005: “SIGABRT”: 宏重定义 (编译源文件 F:\mango_project\src\common\lua\lua_script.cpp)
+         F:\mango_project\thirdparty\tbase\include\pal/tsignal.h(88): note: 参见“SIGABRT”的前一个定义 (编译源文件 F:\mango_project\src\common\lua\lua_script.cpp)
+     1>C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\signal.h(35): warning C4005: “SIG_DFL”: 宏重定义 (编译源文件 F:\mango_project\src\common\lua\lua_script.cpp)
+         F:\mango_project\thirdparty\tbase\include\pal/tsignal.h(121): note: 参见“SIG_DFL”的前一个定义 (编译源文件 F:\mango_project\src\common\lua\lua_script.cpp)
+     1>C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\signal.h(36): warning C4005: “SIG_IGN”: 宏重定义 (编译源文件 F:\mango_project\src\common\lua\lua_script.cpp)
+         F:\mango_project\thirdparty\tbase\include\pal/tsignal.h(123): note: 参见“SIG_IGN”的前一个定义 (编译源文件 F:\mango_project\src\common\lua\lua_script.cpp)
+     1>C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\signal.h(47): warning C4005: “SIG_ERR”: 宏重定义 (编译源文件 F:\mango_project\src\common\lua\lua_script.cpp)
+         F:\mango_project\thirdparty\tbase\include\pal/tsignal.h(122): note: 参见“SIG_ERR”的前一个定义 (编译源文件 F:\mango_project\src\common\lua\lua_script.cpp)
+     1>C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\signal.h(21): warning C4005: “NSIG”: 宏重定义 (编译源文件 F:\mango_project\src\common\lua\script_mgr.cpp)
+         F:\mango_project\thirdparty\tbase\include\pal/tsignal.h(81): note: 参见“NSIG”的前一个定义 (编译源文件 F:\mango_project\src\common\lua\script_mgr.cpp)
+     1>C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\signal.h(24): warning C4005: “SIGINT”: 宏重定义 (编译源文件 F:\mango_project\src\common\lua\script_mgr.cpp)
+         F:\mango_project\thirdparty\tbase\include\pal/tsignal.h(84): note: 参见“SIGINT”的前一个定义 (编译源文件 F:\mango_project\src\common\lua\script_mgr.cpp)
+     1>C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\signal.h(25): warning C4005: “SIGILL”: 宏重定义 (编译源文件 F:\mango_project\src\common\lua\script_mgr.cpp)
+         F:\mango_project\thirdparty\tbase\include\pal/tsignal.h(86): note: 参见“SIGILL”的前一个定义 (编译源文件 F:\mango_project\src\common\lua\script_mgr.cpp)
+     1>C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\signal.h(26): warning C4005: “SIGFPE”: 宏重定义 (编译源文件 F:\mango_project\src\common\lua\script_mgr.cpp)
+         F:\mango_project\thirdparty\tbase\include\pal/tsignal.h(91): note: 参见“SIGFPE”的前一个定义 (编译源文件 F:\mango_project\src\common\lua\script_mgr.cpp)
+     1>C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\signal.h(27): warning C4005: “SIGSEGV”: 宏重定义 (编译源文件 F:\mango_project\src\common\lua\script_mgr.cpp)
+         F:\mango_project\thirdparty\tbase\include\pal/tsignal.h(94): note: 参见“SIGSEGV”的前一个定义 (编译源文件 F:\mango_project\src\common\lua\script_mgr.cpp)
+     1>C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\signal.h(28): warning C4005: “SIGTERM”: 宏重定义 (编译源文件 F:\mango_project\src\common\lua\script_mgr.cpp)
+         F:\mango_project\thirdparty\tbase\include\pal/tsignal.h(98): note: 参见“SIGTERM”的前一个定义 (编译源文件 F:\mango_project\src\common\lua\script_mgr.cpp)
+     1>C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\signal.h(30): warning C4005: “SIGABRT”: 宏重定义 (编译源文件 F:\mango_project\src\common\lua\script_mgr.cpp)
+         F:\mango_project\thirdparty\tbase\include\pal/tsignal.h(88): note: 参见“SIGABRT”的前一个定义 (编译源文件 F:\mango_project\src\common\lua\script_mgr.cpp)
+     1>C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\signal.h(35): warning C4005: “SIG_DFL”: 宏重定义 (编译源文件 F:\mango_project\src\common\lua\script_mgr.cpp)
+         F:\mango_project\thirdparty\tbase\include\pal/tsignal.h(121): note: 参见“SIG_DFL”的前一个定义 (编译源文件 F:\mango_project\src\common\lua\script_mgr.cpp)
+     1>C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\signal.h(36): warning C4005: “SIG_IGN”: 宏重定义 (编译源文件 F:\mango_project\src\common\lua\script_mgr.cpp)
+         F:\mango_project\thirdparty\tbase\include\pal/tsignal.h(123): note: 参见“SIG_IGN”的前一个定义 (编译源文件 F:\mango_project\src\common\lua\script_mgr.cpp)
+     1>C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\signal.h(47): warning C4005: “SIG_ERR”: 宏重定义 (编译源文件 F:\mango_project\src\common\lua\script_mgr.cpp)
+         F:\mango_project\thirdparty\tbase\include\pal/tsignal.h(122): note: 参见“SIG_ERR”的前一个定义 (编译源文件 F:\mango_project\src\common\lua\script_mgr.cpp)
+         hash.cpp
+         id_object_pool.cpp
+         rb_tree.cpp
+     1>F:\mango_project\src\common\lua\lua_script.cpp(298): warning C4267: “+=”: 从“size_t”转换到“int32_t”，可能丢失数据
+     1>F:\mango_project\src\common\lua\lua_script.cpp(352): warning C4267: “=”: 从“size_t”转换到“int32_t”，可能丢失数据
+         shm_pool.cpp
+     1>F:\mango_project\src\common\lua\lua_script.cpp(345): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+         C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\stdio.h(205): note: 参见“fopen”的声明
+         string_ex.cpp
+     1>F:\mango_project\src\common\lua\lua_script.cpp(1271): warning C4996: 'gethostbyname': Use getaddrinfo() or GetAddrInfoW() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
+         C:\Program Files (x86)\Windows Kits\8.1\Include\um\winsock2.h(2238): note: 参见“gethostbyname”的声明
+     1>F:\mango_project\src\common\lua\lua_script.cpp(1272): warning C4996: 'inet_ntoa': Use inet_ntop() or InetNtop() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
+         C:\Program Files (x86)\Windows Kits\8.1\Include\um\winsock2.h(1868): note: 参见“inet_ntoa”的声明
+     1>F:\mango_project\src\common\string\string_ex.cpp(195): warning C4244: “初始化”: 从“__int64”转换到“int32_t”，可能丢失数据
+     1>F:\mango_project\src\common\string\string_ex.cpp(229): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+     1>F:\mango_project\src\common\string\string_ex.cpp(229): warning C4267: “初始化”: 从“size_t”转换到“const int”，可能丢失数据
+     1>F:\mango_project\src\common\string\string_ex.cpp(283): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+     1>F:\mango_project\src\common\string\string_ex.cpp(283): warning C4267: “初始化”: 从“size_t”转换到“const int”，可能丢失数据
+     1>D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\xstring(1743): warning C4577: 'noexcept' used with no exception handling mode specified; termination on exception is not guaranteed. Specify /EHsc (编译源文件 F:\mango_project\src\common\string\string_ex.cpp)
+     1>D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\map(371): warning C4577: 'noexcept' used with no exception handling mode specified; termination on exception is not guaranteed. Specify /EHsc (编译源文件 F:\mango_project\src\common\lua\script_mgr.cpp)
+       Lib:
+         D:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\x86_amd64\Lib.exe /OUT:"F:\mango_project\lib\common_d.lib" /NOLOGO /MACHINE:X64   /machine:x64 common.dir\Debug\ifile.obj
+         common.dir\Debug\tab_file.obj
+         common.dir\Debug\log.obj
+         common.dir\Debug\lua_script.obj
+         common.dir\Debug\script_mgr.obj
+         common.dir\Debug\crc32.obj
+         common.dir\Debug\crc32c_fast.obj
+         common.dir\Debug\hash.obj
+         common.dir\Debug\id_object_pool.obj
+         common.dir\Debug\rb_tree.obj
+         common.dir\Debug\shm_pool.obj
+         common.dir\Debug\stdafx.obj
+         common.dir\Debug\string_ex.obj
+     1>rb_tree.obj : warning LNK4221: 此对象文件未定义任何之前未定义的公共符号，因此任何耗用此库的链接操作都不会使用此文件
+     1>id_object_pool.obj : warning LNK4221: 此对象文件未定义任何之前未定义的公共符号，因此任何耗用此库的链接操作都不会使用此文件
+         common.vcxproj -> F:\mango_project\lib\common_d.lib
+     1>已完成生成项目“F:\mango_project\build\universe\common\common.vcxproj”(Build 个目标)的操作。
+
+已成功生成。
+
+已用时间 00:00:02.26
