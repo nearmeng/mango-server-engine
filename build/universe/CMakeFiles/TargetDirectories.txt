@@ -1,4 +1,0 @@
-F:/mango_project/build/universe/CMakeFiles/ALL_BUILD.dir
-F:/mango_project/build/universe/CMakeFiles/ZERO_CHECK.dir
-F:/mango_project/build/universe/common/CMakeFiles/common.dir
-F:/mango_project/build/universe/server/CMakeFiles/server.dir
