@@ -234,6 +234,8 @@ int main()
 Exit1:
 	return 0;
 
+	// this is the test code
+
 Exit0:
 	return 0;
 }
