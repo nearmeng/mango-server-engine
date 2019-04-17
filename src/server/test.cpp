@@ -61,6 +61,19 @@ struct TEST_DATA
 	int32_t a;
 	int32_t b;
 };
+
+class GLOBAL_DATA
+{
+public:
+	inline char* get_name() { return m_szName; };
+	inline int32_t get_type() { return m_nType; };
+	inline void set_name(const char* pcszName) { strncpy(m_szName, pcszName, sizeof(m_szName)); };
+	inline void set_type(int32_t nType) { m_nType = nType; };
+
+private:
+	char m_szName[128];
+	int32_t m_nType;
+};
 	
 struct TRAVERSE_DATA
 {
@@ -84,6 +97,7 @@ int main()
 	int32_t size = 500 * 1024 * 1024;
 
 	CShmObjectPool<TEST_DATA, int32_t> test_pool;
+	CShmObject<GLOBAL_DATA> global_data;
 
 	result[0] = get_tick_count();
 
@@ -113,6 +127,16 @@ int main()
 	}
 
 	test_pool.init(stdType1, unit_count, false);
+	global_data.init(stdType2, false);
+	
+	GLOBAL_DATA* pData = global_data.get_obj();
+	LOG_PROCESS_ERROR(pData);
+
+	pData->set_name("test_name");
+	pData->set_type(2);
+
+	INF("data is %s", pData->get_name());
+	INF("type is %d", pData->get_type());
 	
 	result[1] = get_tick_count();
 
@@ -121,7 +145,6 @@ int main()
 		TEST_DATA* test_data = test_pool.new_object(i);
 		if(test_data == NULL)
 		{
-			ERR("new obj failed");
 			ERR("new obj failed");
 			return -1;
 		}
@@ -164,6 +187,7 @@ int main()
 	
 	result[5] = get_tick_count();
 
+	
 /*
 
 	CIDObjectPool<TEST_DATA, int32_t> m_TestPool;

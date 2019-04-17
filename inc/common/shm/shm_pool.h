@@ -26,6 +26,20 @@ private:
 	SHM_POOL_MGR* pool_mgr;
 };
 
+template<class T>
+class CShmObject
+{
+public:
+	CShmObject() { m_shm_type = 0; }
+	~CShmObject() {};
+
+	int32_t init(int32_t shm_type, bool is_resume);
+	T* get_obj(void);
+
+private:
+	int32_t m_shm_type;
+};
+
 template<class T, class N>
 class CShmObjectPool
 {

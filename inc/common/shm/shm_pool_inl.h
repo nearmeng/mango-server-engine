@@ -319,5 +319,87 @@ Exit0:
 	return 0;
 }
 
+template<class T>
+int32_t CShmObject<T>::init(int32_t shm_type, bool is_resume)
+{
+	SHM_POOL* pool = NULL;
+	SHM_POOL_MGR* pool_mgr = NULL;
+	uint64_t pool_size = sizeof(SHM_POOL) + sizeof(SHM_UNIT_DATA<T>);
+
+	LOG_PROCESS_ERROR_DETAIL(shm_type > stdInvalid, "shm_type is %d", shm_type);
+	LOG_PROCESS_ERROR_DETAIL(shm_type < stdTotal, "shm type is %d", shm_type);
+	
+	m_shm_type = shm_type;
+	
+	if(!is_resume)
+	{
+		pool_mgr = CShmMgr::get_instance().get_shm_pool_mgr();
+		LOG_PROCESS_ERROR(pool_mgr != NULL);
+		LOG_PROCESS_ERROR(pool_mgr->curr_offset + pool_size <= pool_mgr->shm_size);
+
+		pool = (SHM_POOL*)OFFSET2PTR(pool_mgr->curr_offset);
+		LOG_PROCESS_ERROR(pool != NULL);
+		LOG_PROCESS_ERROR(pool_mgr->pool_offset[shm_type] == 0);
+		LOG_PROCESS_ERROR(pool_mgr->pool_address[shm_type] == 0);
+
+		pool_mgr->pool_offset[shm_type] = pool_mgr->curr_offset;
+		pool_mgr->pool_address[shm_type] = pool;
+		pool_mgr->curr_offset += pool_size;
+
+		memset(pool, 0, pool_size);
+		pool->shm_type = shm_type;
+		pool->unit_data_size = sizeof(SHM_UNIT_DATA<T>);
+		pool->total_unit_count = 1;
+		pool->hash_map_count = 0;
+		pool->index_offset = 0;
+		pool->data_offset = PTR2OFFSET(pool->hash_map_root);
+
+		pool->free_unit_count = 1;
+		pool->free_unit_head_offset = pool->index_offset;
+
+		{
+			SHM_UNIT_DATA<T>* unit_data = (SHM_UNIT_DATA<T>*)OFFSET2PTR(pool->data_offset);
+#if defined(_DEBUG)
+			unit_data->fence = FENCE_NUM;
+#endif
+			new (&(unit_data->data)) T;
+		}
+	}
+	else
+	{
+		SHM_UNIT_DATA<T>* unit_data = (SHM_UNIT_DATA<T>*)OFFSET2PTR(pool->data_offset);
+#if defined(_DEBUG)
+		assert(unit_data->fence == FENCE_NUM);
+#endif
+		new (&(unit_data->data)) T;
+	}
+
+	return 0;
+Exit0:
+	return -1;
+}
+
+template<class T>
+T* CShmObject<T>::get_obj(void)
+{
+	SHM_POOL_MGR* pool_mgr = NULL;
+	SHM_POOL* pool = NULL;
+	SHM_UNIT_DATA<T>* unit_data = NULL;
+
+	pool_mgr = CShmMgr::get_instance().get_shm_pool_mgr();
+	LOG_PROCESS_ERROR(pool_mgr);
+
+	pool = pool_mgr->pool_address[m_shm_type];
+	LOG_PROCESS_ERROR(pool);
+
+	unit_data = (SHM_UNIT_DATA<T>*)OFFSET2PTR(pool->data_offset);
+	LOG_PROCESS_ERROR(unit_data);
+
+	return &(unit_data->data);
+
+Exit0:
+	return NULL;
+}
+
 #endif   /* ----- #ifndef _SHM_POOL_INL_H_  ----- */
 
