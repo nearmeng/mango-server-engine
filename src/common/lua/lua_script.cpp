@@ -341,6 +341,11 @@ BOOL CLuaScript::_save_into_cache(const char* pcszCacheName, uint32_t dwFileCRC)
 	LOG_PROCESS_ERROR(nRetCode == 0);
 
 	lua_pop(m_pLuaState, 1);
+	
+	if (access(CACHE_PATH, 0) != 0)
+	{
+		LOG_PROCESS_ERROR(mkdir(CACHE_PATH, S_IRWXU | S_IRWXG) == 0);
+	}
 
 	pFile = fopen(szCacheFileName, "wb");
 	LOG_PROCESS_ERROR(pFile);
@@ -785,7 +790,7 @@ void CLuaScript::_get_crc(const char* pszFileName, int32_t nLevel)
 			CScriptMgr::instance().get_include_path(i), pszFileName);
 		pFile = open_file(szFileName, "rb");
 	}
-	PROCESS_ERROR(pFile);
+	LOG_PROCESS_ERROR(pFile);
 
 	dwSize = pFile->size();
 	PROCESS_ERROR(dwSize > 0);

@@ -14,6 +14,10 @@ enum SHM_TYPE_DEF
 
 	stdType1,
 	stdType2,
+	stdBtCtx,
+	stdBtMgrData,
+	stdBtEvent,
+	stdBtGlobalEventList,
 
 	stdTotal = MAX_SHM_TYPE_COUNT,
 };

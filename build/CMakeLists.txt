@@ -99,4 +99,5 @@ preprocess_proto("src/proto")
 
 #project directories
 add_subdirectory (common)
+add_subdirectory (game_data)
 add_subdirectory (server)

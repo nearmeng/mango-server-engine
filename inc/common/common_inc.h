@@ -29,6 +29,7 @@
 #include "math/hash.h"
 #include "math/crc32.h"
 #include "math/crc32c_fast.h"
+#include "math/math_ex.h"
 
 #include "process_error/process_error.h"
 #include "file/ifile.h"

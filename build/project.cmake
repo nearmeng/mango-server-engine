@@ -100,6 +100,7 @@ function (post_project)
 				readline
 				tdr
 				ncurses
+				game_data
 			)
 		endif ()
 	elseif (MSVC)
@@ -116,6 +117,8 @@ function (post_project)
 				optimized common.lib
 				debug libcomm_d.lib	
 				optimized libcomm.lib
+				debug game_data_d.lib
+				optimized game_data.lib
 			)
 		endif ()
 	endif ()

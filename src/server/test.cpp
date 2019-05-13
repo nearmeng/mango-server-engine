@@ -4,6 +4,7 @@
 #include "tloghelp/tlogload.h"
 #include "lua/lua_script.h"
 #include "lua/script_mgr.h"
+#include "game_data/global_config.h"
 
 #include "define/role.h"
 
@@ -23,6 +24,7 @@ void init_script(void)
 	LOG_PROCESS_ERROR(nRetCode);
 
 	CScriptMgr::instance().add_include_path("../script");
+	CScriptMgr::instance().add_include_path("../server_config");
 
 	for(int32_t i = 0; g_RegPackageList[i].pFunc; i++)
 	{
@@ -118,6 +120,11 @@ int main()
 	INF("--game log is begin--");
 	
 	init_script();
+
+	ret = load_global_server_config();
+	LOG_PROCESS_ERROR(ret);
+
+	INF("server config test value is %d", g_ServerConfig.Common.nTestValue);
 
 	ret = CShmMgr::get_instance().init(key, size, false);
 	if(ret != 0)
