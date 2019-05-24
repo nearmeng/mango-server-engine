@@ -11,7 +11,7 @@ public:
 	CBTMgr() {};
 	virtual ~CBTMgr() {};
 
-	BOOL init(BOOL bResume);
+	BOOL init(REG_BT_OWNER_FUNC pFunc, BOOL bResume);
 	BOOL uninit(void);
 	inline static CBTMgr& instance(void);
 
@@ -68,11 +68,11 @@ private:
 	MAP_ACTION_NAME_2_FUNC	m_ActionName2Func;
 
 	typedef std::map<uint32_t, BT_TREE*> MAP_CRC_2_TREE;
-	MAP_CRC_2_TREE m_CRC2Tree;
+	MAP_CRC_2_TREE			m_CRC2Tree;
 
-	struct TRAVERSE_BT_CTX
+	struct TRAVERSE_BT_CTX_PROCESS
 	{
-		BT_CTX* m_pCtx;
+		BT_CTX* m_pCtx; //用于执行出问题的时候的定位
 		BOOL operator()(uint32_t dwBtCtx, BT_CTX* pCtx);
 	};
 
@@ -86,6 +86,13 @@ private:
 		GET_OWNER_VAR	pGetOwnerVarFunc;
 	};
 	OWNER_DATA m_OwnerDataList[botTotal];
+	
+	struct TRAVERSE_BT_CTX_RESUME
+	{
+		OWNER_DATA* pOwnerDataList;
+		BOOL operator()(uint32_t dwBtCtx, BT_CTX* pCtx);
+	};
+
 
 	BT_MGR_DATA*	m_pMgrData;	
 	char m_szSpaceInfo[BT_DEBUG_INFO_LEN];

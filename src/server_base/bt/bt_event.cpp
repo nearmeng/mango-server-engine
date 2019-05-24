@@ -39,11 +39,6 @@ BOOL CEventMgr::init(BOOL bResume)
 	nRetCode = _init_event_def();
 	LOG_PROCESS_ERROR(nRetCode);
 
-	if (bResume)
-	{
-		
-	}
-
 	return TRUE;
 Exit0:
 	return FALSE;
@@ -181,6 +176,21 @@ Exit0:
 BOOL CBTEventList::uninit(void)
 {
 	return TRUE;
+}
+	
+BOOL CBTEventList::resume(void)
+{
+	int32_t nRetCode = 0;
+
+	for (int32_t i = 0; i < m_nEventCount; i++)
+	{
+		m_EventInfo[i].pEvent = CEventMgr::instance().find_event(m_EventInfo[i].nEventID);
+		LOG_PROCESS_ERROR_DETAIL(m_EventInfo[i].pEvent, "can not find event %d", m_EventInfo[i].nEventID);
+	}
+
+	return TRUE;
+Exit0:
+	return FALSE;
 }
 
 BOOL CBTEventList::register_event(int32_t nEventID)
@@ -349,6 +359,16 @@ Exit0:
 	return FALSE;
 }
 
+BOOL CGlobalEventListMgr::TRAVERSE_BT_EVENT_LIST_RESUME::operator()(uint64_t qwEventListID, CBTEventList* pEventList)
+{
+	int32_t nRetCode = 0;
+
+	pEventList->resume();
+
+	return TRUE;
+Exit0:
+	return FALSE;
+}
 
 BOOL CGlobalEventListMgr::init(BOOL bResume)
 {
@@ -356,6 +376,12 @@ BOOL CGlobalEventListMgr::init(BOOL bResume)
 
 	nRetCode = m_GlobalEventListPool.init(stdBtGlobalEventList, g_ServerConfig.Common.nInitBtGlobalEventListCount, bResume);
 	LOG_PROCESS_ERROR(nRetCode == 0);
+
+	if (bResume)
+	{
+		TRAVERSE_BT_EVENT_LIST_RESUME TraverseBtEventListResume;
+		m_GlobalEventListPool.traverse(TraverseBtEventListResume);
+	}
 
 	return TRUE;
 Exit0:

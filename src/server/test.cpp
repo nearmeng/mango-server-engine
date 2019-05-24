@@ -17,6 +17,7 @@ extern LUA_FUNC g_ServerBasePackageList[];
 extern LUA_FUNC g_ServerBaseLuaFunc[];
 
 extern BOOL reg_bt_action(void);
+extern BOOL reg_bt_owner(void);
 
 CRole role;
 
@@ -150,7 +151,7 @@ int main()
 		return ret;
 	}
 	
-	nRetCode = CBTMgr::instance().init(FALSE);
+	nRetCode = CBTMgr::instance().init(reg_bt_owner, FALSE);
 	LOG_PROCESS_ERROR(nRetCode);
 
 	CBTMgr::instance().set_debug_mode(TRUE);
@@ -160,8 +161,11 @@ int main()
 
 	nRetCode = CGlobalEventListMgr::instance().init(FALSE);
 	LOG_PROCESS_ERROR(nRetCode);
-
+	
 	nRetCode = reg_bt_action();
+	LOG_PROCESS_ERROR(nRetCode);
+
+	nRetCode = reg_bt_owner();
 	LOG_PROCESS_ERROR(nRetCode);
 	
 	init_script();

@@ -27,15 +27,20 @@ static const char* s_szRetValueNameList[] =
 	"Running",
 };
 
-BOOL CBTMgr::init(BOOL bResume)
+BOOL CBTMgr::init(REG_BT_OWNER_FUNC pFunc, BOOL bResume)
 {
 	int32_t nRetCode = 0;
+
+	LOG_PROCESS_ERROR(pFunc);
 	
 	nRetCode = m_BtCtx.init(stdBtCtx, g_ServerConfig.Common.nInitBtCtxCount, bResume);
 	LOG_PROCESS_ERROR(nRetCode == 0);
 
 	nRetCode = m_BtMgrData.init(stdBtMgrData, bResume);
 	LOG_PROCESS_ERROR(nRetCode == 0);
+
+	nRetCode = (*pFunc)();
+	LOG_PROCESS_ERROR(nRetCode);
 	
 	m_pMgrData = m_BtMgrData.get_obj();
 	LOG_PROCESS_ERROR(m_pMgrData);
@@ -47,6 +52,17 @@ BOOL CBTMgr::init(BOOL bResume)
 		m_pMgrData->nBtNodeUsedCount = 1;
 		m_pMgrData->nBtTreeUsedCount = 1;
 	}
+	else
+	{
+		TRAVERSE_BT_CTX_RESUME TraverseBtCtxResume;
+		TraverseBtCtxResume.pOwnerDataList = m_OwnerDataList;
+		m_BtCtx.traverse(TraverseBtCtxResume);
+
+		for (int32_t i = 0; i < m_pMgrData->nBtTreeUsedCount; i++)
+		{
+			m_pMgrData->stBtTree[i].pScript = CScriptMgr::instance().find_script(m_pMgrData->stBtTree[i].qwScriptNameHash);
+		}
+	}
 
 	//build the index
 	for (int32_t nIndex = 0; nIndex < btTotal; nIndex++)
@@ -56,6 +72,14 @@ BOOL CBTMgr::init(BOOL bResume)
 			m_ActionName2Func.insert(std::make_pair(
 				m_pMgrData->ActionDefList[nIndex].szName, m_pMgrData->ActionDefList + nIndex));
 		}
+	}
+
+	for (int32_t nIndex = 0; nIndex < m_pMgrData->nBtTreeUsedCount; nIndex++)
+	{
+		uint32_t dwCRC = 0;
+		_get_crc(m_pMgrData->stBtTree[nIndex].dwRootNode, 0, dwCRC);
+
+		m_CRC2Tree[dwCRC] = m_pMgrData->stBtTree + nIndex;
 	}
 
 	nRetCode = _init_c_action();
@@ -820,9 +844,28 @@ Exit0:
 	return;
 }
 
-BOOL CBTMgr::TRAVERSE_BT_CTX::operator()(uint32_t dwBtCtx, BT_CTX* pCtx)
+BOOL CBTMgr::TRAVERSE_BT_CTX_RESUME::operator()(uint32_t dwBtCtx, BT_CTX* pCtx)
 {
 	int32_t nRetCode = 0;
+
+	LOG_PROCESS_ERROR(pOwnerDataList);
+
+	pCtx->pOwner = pOwnerDataList[pCtx->uOwnerType].pGetOwnerFunc(pCtx->qwOwnerID);
+	LOG_PROCESS_ERROR(pCtx->pOwner);
+
+	pCtx->pScript = CScriptMgr::instance().find_script(pCtx->qwScriptNameHash);
+	LOG_PROCESS_ERROR(pCtx->pScript);
+
+	return TRUE;
+Exit0:
+	return FALSE;
+}
+
+BOOL CBTMgr::TRAVERSE_BT_CTX_PROCESS::operator()(uint32_t dwBtCtx, BT_CTX* pCtx)
+{
+	int32_t nRetCode = 0;
+
+	m_pCtx = pCtx;
 
 	nRetCode = CBTMgr::instance()._process_bt_ctx(pCtx);
 	if (!nRetCode)
@@ -836,7 +879,7 @@ BOOL CBTMgr::TRAVERSE_BT_CTX::operator()(uint32_t dwBtCtx, BT_CTX* pCtx)
 BOOL CBTMgr::process_bt_ctx(void)
 {
 	int32_t nRetCode = 0;
-	TRAVERSE_BT_CTX TraverseBtCtx;
+	TRAVERSE_BT_CTX_PROCESS TraverseBtCtx;
 
 	m_BtCtx.traverse(TraverseBtCtx);
 
@@ -933,7 +976,7 @@ int32_t CBTMgr::call_node_func(BT_CTX& rCtx, BT_NODE* pNode)
 				break;
 			}
 			case bptRoleVar:
-			//case xxx:
+			case bptSceneVar:
 			{
 				LOG_PROCESS_ERROR(m_OwnerDataList[rCtx.uOwnerType].pGetOwnerVarFunc);
 				nParam[nIndex] = m_OwnerDataList[rCtx.uOwnerType].pGetOwnerVarFunc(rCtx.qwOwnerID, uVarType, nIndex);
@@ -1066,6 +1109,11 @@ void CBTMgr::print(uint32_t dwNode, int32_t nLayer)
 			case bptRoleVar:
 			{
 				snprintf(szParam[nIndex], BT_COMMON_LEN, "RoleVar%d", pNode->nParam[nIndex]);
+				break;
+			}
+			case bptSceneVar:
+			{
+				snprintf(szParam[nIndex], BT_COMMON_LEN, "SceneVar%d", pNode->nParam[nIndex]);
 				break;
 			}
 			default:

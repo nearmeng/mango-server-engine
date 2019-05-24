@@ -34,6 +34,11 @@
 	nRetCode |= CEventMgr::instance().register_event_def(__type__, #__type__, __owner__, __start_type__, __end_type__); \
 	LOG_PROCESS_ERROR(nRetCode);
 
+#define REG_BT_OWNER(__type__, __class_name__, __get_owner_func__, __get_owner_var_func__) \
+	nRetCode |= CBTMgr::instance().register_owner_data(__type__, __class_name__, __get_owner_func__, __get_owner_var_func__); \
+	LOG_PROCESS_ERROR(nRetCode)
+
+
 //tolua_begin
 
 enum BT_PARAM_TYPE
@@ -45,6 +50,7 @@ enum BT_PARAM_TYPE
 	bptLocalEventVar,
 	bptLocalTriggerVar,
 	bptRoleVar,
+	bptSceneVar,
 
 	bptTotal
 };
@@ -241,9 +247,31 @@ struct BT_MGR_DATA
 	
 	BT_ACTION_FUNC_DEF ActionDefList[btTotal];
 };
+
+//事件基础信息
+struct BT_EVENT
+{
+	int32_t			nEventID;			// 事件ID
+	int32_t			nEventType;			// 事件类型
+	int32_t			nEventTemplateID;	// 事件的模板ID
+	int32_t			nEventParam;		// 事件参数
+	int32_t			nTreeID;			// 触发的行为树ID
+	uint64_t		qwSourceID;			// 事件源ID
+	int64_t			llEventVar[2];		// 事件注册参数
+};
+	
+//事件基本定义
+struct BT_EVENT_DEF
+{
+	int32_t			nEventType;
+	char			szName[BT_ACTION_NAME_LEN];
+	int32_t			nOwnerType;
+	int32_t			nStartEventType;
+	int32_t			nEndEventType;
+};
 	
 typedef void* (*GET_OWNER)(uint64_t qwOwnerID);
-typedef int32_t(*GET_OWNER_VAR)(uint64_t qwOwnerID, int32_t nVarType, int32_t nVarIndex);
-
+typedef int32_t (*GET_OWNER_VAR)(uint64_t qwOwnerID, int32_t nVarType, int32_t nVarIndex);
+typedef int32_t (*REG_BT_OWNER_FUNC)(void);
 
 #endif
