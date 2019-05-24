@@ -101,6 +101,7 @@ function (post_project)
 				tdr
 				ncurses
 				game_data
+				server_base
 			)
 		endif ()
 	elseif (MSVC)
@@ -109,6 +110,8 @@ function (post_project)
 			optimized lua.lib
 			debug toluappd.lib
 			optimized toluapp.lib
+			debug server_base_d.lib
+			optimized server_base.lib
 		)
 
 		if (TARGET_TYPE STREQUAL "RUNTIME")
@@ -158,6 +161,13 @@ function (post_project)
 			if ((PARENT_DIR STREQUAL "") AND (${SRC_FILE} MATCHES ".*tolua_.*[.]cpp$"))
 				set(PARENT_DIR "generated")
 			endif ()
+
+			#lua file parent dir
+			if (${SRC_FILE} MATCHES ".*[.]lua")
+				get_filename_component (PARENT_DIR "${SRC_FILE}" PATH)
+				get_filename_component (PARENT_DIR "${PARENT_DIR}" NAME)
+				set(PARENT_DIR "lua\\${PARENT_DIR}")	
+			endif()
 
 			#default parent dir
 			if (PARENT_DIR STREQUAL "")

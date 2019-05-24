@@ -6,10 +6,17 @@
 #include "lua/script_mgr.h"
 #include "game_data/global_config.h"
 
+#include "bt/bt_mgr.h"
+#include "bt/bt_event.h"
+
 #include "define/role.h"
 
 extern LUA_FUNC g_RegPackageList[];
 extern LUA_FUNC g_RegLuaFunc[];
+extern LUA_FUNC g_ServerBasePackageList[];
+extern LUA_FUNC g_ServerBaseLuaFunc[];
+
+extern BOOL reg_bt_action(void);
 
 CRole role;
 
@@ -25,6 +32,12 @@ void init_script(void)
 
 	CScriptMgr::instance().add_include_path("../script");
 	CScriptMgr::instance().add_include_path("../server_config");
+	
+	for(int32_t i = 0; g_ServerBasePackageList[i].pFunc; i++)
+	{
+		nRetCode = CScriptMgr::instance().register_package(g_ServerBasePackageList[i].pcszFuncName, g_ServerBasePackageList[i].pFunc);
+		LOG_PROCESS_ERROR(nRetCode);
+	}
 
 	for(int32_t i = 0; g_RegPackageList[i].pFunc; i++)
 	{
@@ -32,11 +45,14 @@ void init_script(void)
 		LOG_PROCESS_ERROR(nRetCode);
 	}
 
+	nRetCode = CScriptMgr::instance().register_func_list(g_ServerBaseLuaFunc);
+	LOG_PROCESS_ERROR(nRetCode);
+
 	nRetCode = CScriptMgr::instance().register_func_list(g_RegLuaFunc);
 	LOG_PROCESS_ERROR(nRetCode);
 
 	INF("begin to new script");
-
+	
 	pScript = CScriptMgr::instance().new_script("test.lua");
 	LOG_PROCESS_ERROR(pScript);
 
@@ -89,8 +105,11 @@ struct TRAVERSE_DATA
 
 LPTLOGCTX pLogCtx = NULL;
 
+
+
 int main()
 {
+	int32_t nRetCode = 0;
 	uint64_t result[6] = { 0 };
 	int32_t unit_count = 1000000;
 
@@ -117,9 +136,7 @@ int main()
 		return -1;
 	}
 
-	INF("--game log is begin--");
-	
-	init_script();
+	INF("-------------------------------------game log is begin------------------------------------");
 
 	ret = load_global_server_config();
 	LOG_PROCESS_ERROR(ret);
@@ -132,6 +149,25 @@ int main()
 		ERR("shm mgr init failed, ret %d", ret);
 		return ret;
 	}
+	
+	nRetCode = CBTMgr::instance().init(FALSE);
+	LOG_PROCESS_ERROR(nRetCode);
+
+	CBTMgr::instance().set_debug_mode(TRUE);
+
+	nRetCode = CEventMgr::instance().init(FALSE);
+	LOG_PROCESS_ERROR(nRetCode);
+
+	nRetCode = CGlobalEventListMgr::instance().init(FALSE);
+	LOG_PROCESS_ERROR(nRetCode);
+
+	nRetCode = reg_bt_action();
+	LOG_PROCESS_ERROR(nRetCode);
+	
+	init_script();
+
+	nRetCode = CGlobalEventListMgr::instance().trigger_global_event(evtRoleKillNpc, 10, 0, &role, 123);
+	LOG_PROCESS_ERROR(nRetCode);
 
 	test_pool.init(stdType1, unit_count, false);
 	global_data.init(stdType2, false);

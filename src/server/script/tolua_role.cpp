@@ -1,6 +1,6 @@
 /*
 ** Lua binding: role
-** Generated automatically by toluapp-1.0.94 on Sun May 12 21:07:05 2019.
+** Generated automatically by toluapp-1.0.94 on Thu May 23 14:37:18 2019.
 */
 
 #include "stdafx.h"
@@ -152,6 +152,71 @@ static int tolua_role_CRole_set_age00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: get_level of class  CRole */
+#ifndef TOLUA_DISABLE_tolua_role_CRole_get_level00
+static int tolua_role_CRole_get_level00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CRole",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CRole* self = (CRole*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'get_level'", NULL);
+#endif
+ {
+  int32_t tolua_ret = (int32_t)  self->get_level();
+ tolua_pushinteger(tolua_S,(lua_Integer)tolua_ret);
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'get_level'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: set_level of class  CRole */
+#ifndef TOLUA_DISABLE_tolua_role_CRole_set_level00
+static int tolua_role_CRole_set_level00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CRole",0,&tolua_err) ||
+ !tolua_isinteger(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CRole* self = (CRole*)  tolua_tousertype(tolua_S,1,0);
+  int32_t nLevel = ((int32_t)  tolua_tointeger(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'set_level'", NULL);
+#endif
+ {
+  self->set_level(nLevel);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'set_level'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* Open function */
 TOLUA_API int tolua_role_open (lua_State* tolua_S)
 {
@@ -159,6 +224,9 @@ TOLUA_API int tolua_role_open (lua_State* tolua_S)
  tolua_reg_types(tolua_S);
  tolua_module(tolua_S,NULL,0);
  tolua_beginmodule(tolua_S,NULL);
+  tolua_constant(tolua_S,"rttInvalid",rttInvalid);
+  tolua_constant(tolua_S,"rttType1",rttType1);
+  tolua_constant(tolua_S,"rttTotal",rttTotal);
  tolua_cclass(tolua_S,"CRole","CRole","",NULL);
  tolua_beginmodule(tolua_S,"CRole");
 #ifndef TOLUA_DISABLE_tolua_role_CRole_get_name00
@@ -172,6 +240,12 @@ TOLUA_API int tolua_role_open (lua_State* tolua_S)
 #endif //#ifndef TOLUA_DISABLE
 #ifndef TOLUA_DISABLE_tolua_role_CRole_set_age00
   tolua_function(tolua_S,"set_age",tolua_role_CRole_set_age00);
+#endif //#ifndef TOLUA_DISABLE
+#ifndef TOLUA_DISABLE_tolua_role_CRole_get_level00
+  tolua_function(tolua_S,"get_level",tolua_role_CRole_get_level00);
+#endif //#ifndef TOLUA_DISABLE
+#ifndef TOLUA_DISABLE_tolua_role_CRole_set_level00
+  tolua_function(tolua_S,"set_level",tolua_role_CRole_set_level00);
 #endif //#ifndef TOLUA_DISABLE
  tolua_endmodule(tolua_S);
  tolua_endmodule(tolua_S);

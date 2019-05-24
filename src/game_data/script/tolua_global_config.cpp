@@ -1,6 +1,6 @@
 /*
 ** Lua binding: global_config
-** Generated automatically by toluapp-1.0.94 on Sun May 12 21:07:00 2019.
+** Generated automatically by toluapp-1.0.94 on Thu May 23 14:37:18 2019.
 */
 
 #include "stdafx.h"
@@ -19,10 +19,10 @@ TOLUA_API int tolua_global_config_open (lua_State* tolua_S);
 /* function to register type */
 static void tolua_reg_types (lua_State* tolua_S)
 {
- tolua_usertype(tolua_S,"SHARED_CONFIG");
- tolua_usertype(tolua_S,"SERVER_CONFIG::GS_CONFIG");
- tolua_usertype(tolua_S,"SERVER_CONFIG::COMMON");
  tolua_usertype(tolua_S,"SERVER_CONFIG");
+ tolua_usertype(tolua_S,"SHARED_CONFIG");
+ tolua_usertype(tolua_S,"SERVER_CONFIG::COMMON");
+ tolua_usertype(tolua_S,"SERVER_CONFIG::GS_CONFIG");
 }
 
 /* get function: dwLoginTag of class  SHARED_CONFIG */

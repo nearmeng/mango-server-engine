@@ -8,4 +8,7 @@ public:
 
 	inline int32_t get_age(void) { return m_nAge; };
 	inline void set_age(int32_t nAge) { m_nAge = nAge; };
+	
+	inline int32_t get_level(void) { return m_nLevel; };
+	inline void set_level(int32_t nLevel) { m_nLevel = nLevel; };
 };

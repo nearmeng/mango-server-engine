@@ -24,6 +24,16 @@
 
 #define LOAD_BT_FUNC_NAME		"load_behavior_tree"
 
+#define GET_RETURN_STR(__value__)	(s_szRetValueNameList[__value__ - brvError])
+
+#define REG_BT_C_ACTION(__type__, __func__)  \
+	nRetCode = CBTMgr::instance().register_c_action(#__type__, __type__, __func__); \
+	LOG_PROCESS_ERROR(nRetCode);
+
+#define REG_EVENT_DEF(__type__, __owner__, __start_type__, __end_type__)  \
+	nRetCode |= CEventMgr::instance().register_event_def(__type__, #__type__, __owner__, __start_type__, __end_type__); \
+	LOG_PROCESS_ERROR(nRetCode);
+
 //tolua_begin
 
 enum BT_PARAM_TYPE
@@ -145,9 +155,10 @@ enum BT_ACTION_TYPE
 
 	batSetLocalVar,
 	batGetLocalVar,
+	batCheckRoleLevel,
+	batRoleRun,
 
 	batEnd
-
 };
 
 //tolua_end
@@ -178,7 +189,6 @@ struct BT_CTX
 	uint64_t	qwOwnerID;
 	CLuaScript* pScript;
 	uint64_t	qwScriptNameHash;
-	int32_t		nEventID;
 	uint8_t		byReturnValue;
 	uint8_t		byCallFrameCount;
 	uint8_t		byRepeatCounter;
@@ -211,6 +221,7 @@ struct BT_TREE
 	int32_t nTreeID;
 	uint32_t dwRootNode;
 	uint32_t dwCRC;
+	uint64_t qwScriptNameHash;
 	CLuaScript* pScript;
 };
 

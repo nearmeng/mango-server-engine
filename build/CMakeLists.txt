@@ -79,6 +79,7 @@ endif ()
 include_directories (
 	${BASE_DIR}/inc
 	${BASE_DIR}/inc/common
+	${BASE_DIR}/inc/server_base
 	${BASE_DIR}/thirdparty
 	${BASE_DIR}/thirdparty/lua/inc
 	${BASE_DIR}/thirdparty/toluapp/inc
@@ -100,4 +101,5 @@ preprocess_proto("src/proto")
 #project directories
 add_subdirectory (common)
 add_subdirectory (game_data)
+add_subdirectory (server_base)
 add_subdirectory (server)
