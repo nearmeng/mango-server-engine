@@ -22,6 +22,9 @@ public:
 	inline int64_t get_time_usec(void);
 	inline int64_t get_time_msec(void);
 	inline int64_t get_tick(void);
+	
+	static const char* get_time_str(uint32_t dwTime);
+	static int32_t get_day_count(int32_t nTime, int32_t nTimeZone, int32_t nOffset);
 
 	//timer
 	BOOL add_timer(int32_t nFirstInterval, int32_t nRepeatInterval, int32_t nRepeatTimes, 

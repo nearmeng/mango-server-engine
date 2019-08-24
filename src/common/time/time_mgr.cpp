@@ -325,3 +325,26 @@ void CTimeMgr::_cascade(LINK_HEAD* pTimerList)
 Exit0:
 	return;
 }
+
+const char* CTimeMgr::get_time_str(uint32_t dwTime)
+{
+	static char s_szTime[64];
+	time_t t = dwTime;
+
+	struct tm* stCurrenttm = localtime(&t);
+	if (stCurrenttm)
+	{
+		snprintf(s_szTime, 64, "%d-%02d-%02d_%02d-%02d-%02d", (stCurrenttm->tm_year + 1900),
+			(stCurrenttm->tm_mon + 1), stCurrenttm->tm_mday, stCurrenttm->tm_hour, stCurrenttm->tm_min, stCurrenttm->tm_sec);
+	}
+	else
+	{
+		snprintf(s_szTime, 64, "%d", dwTime);
+	}
+	return s_szTime;
+}
+	
+int32_t CTimeMgr::get_day_count(int32_t nTime, int32_t nTimeZone, int32_t nOffset)
+{
+	return (nTime + nTimeZone - nOffset) / 86400;
+}
