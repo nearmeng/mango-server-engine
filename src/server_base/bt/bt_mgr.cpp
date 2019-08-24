@@ -27,19 +27,19 @@ static const char* s_szRetValueNameList[] =
 	"Running",
 };
 
-BOOL CBTMgr::init(REG_BT_OWNER_FUNC pFunc, BOOL bResume)
+BOOL CBTMgr::init(REG_BT_OWNER_FUNC pBtOwnerFunc, BOOL bResume)
 {
 	int32_t nRetCode = 0;
 
-	LOG_PROCESS_ERROR(pFunc);
+	LOG_PROCESS_ERROR(pBtOwnerFunc);
 	
 	nRetCode = m_BtCtx.init(stdBtCtx, g_ServerConfig.Common.nInitBtCtxCount, bResume);
-	LOG_PROCESS_ERROR(nRetCode == 0);
+	LOG_PROCESS_ERROR(nRetCode);
 
 	nRetCode = m_BtMgrData.init(stdBtMgrData, bResume);
-	LOG_PROCESS_ERROR(nRetCode == 0);
+	LOG_PROCESS_ERROR(nRetCode);
 
-	nRetCode = (*pFunc)();
+	nRetCode = (*pBtOwnerFunc)();
 	LOG_PROCESS_ERROR(nRetCode);
 	
 	m_pMgrData = m_BtMgrData.get_obj();

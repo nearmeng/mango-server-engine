@@ -34,7 +34,7 @@ BOOL CEventMgr::init(BOOL bResume)
 	int32_t nRetCode = 0;
 
 	nRetCode = m_EventPool.init(stdBtEvent, g_ServerConfig.Common.nInitBtEventCount, bResume);
-	LOG_PROCESS_ERROR(nRetCode == 0);
+	LOG_PROCESS_ERROR(nRetCode);
 	
 	nRetCode = _init_event_def();
 	LOG_PROCESS_ERROR(nRetCode);
@@ -375,7 +375,7 @@ BOOL CGlobalEventListMgr::init(BOOL bResume)
 	int32_t nRetCode = 0;
 
 	nRetCode = m_GlobalEventListPool.init(stdBtGlobalEventList, g_ServerConfig.Common.nInitBtGlobalEventListCount, bResume);
-	LOG_PROCESS_ERROR(nRetCode == 0);
+	LOG_PROCESS_ERROR(nRetCode);
 
 	if (bResume)
 	{

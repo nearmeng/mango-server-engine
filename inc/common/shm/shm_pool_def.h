@@ -1,25 +1,19 @@
 #ifndef  _SHM_POOL_DEF_H_
 #define  _SHM_POOL_DEF_H_
 
-#define MAX_SHM_TYPE_COUNT 	512
-#define UNIT_MAGIC          0xabcddcba
-#define FENCE_NUM			0xABCDEF0123456789
+#include "define/shm_def.h"
 
-#define OFFSET2PTR(offset) ((int64_t)pool_mgr + (int64_t)(offset))
-#define PTR2OFFSET(ptr) ((int64_t)(ptr) - (int64_t)pool_mgr)
+#define FENCE_NUM          0xabcddcba
+#define UNIT_SERIAL_MASK	0x3FFFF
 
-enum SHM_TYPE_DEF
+#define OFFSET2PTR(offset) ((int64_t)CShmMgr::get_instance()._get_pool_mgr() + (int64_t)(offset))
+#define PTR2OFFSET(ptr) ((int64_t)(ptr) - (int64_t)CShmMgr::get_instance()._get_pool_mgr())
+
+struct SHM_UNIT_MID
 {
-	stdInvalid = -1,
-
-	stdType1,
-	stdType2,
-	stdBtCtx,
-	stdBtMgrData,
-	stdBtEvent,
-	stdBtGlobalEventList,
-
-	stdTotal = MAX_SHM_TYPE_COUNT,
+	uint64_t shm_type		: 10;		// shm type
+	uint64_t unit_serial	: 18;		// unit serial
+	uint64_t unit_offset	: 36;		// unit offset
 };
 
 template<class N>
@@ -33,9 +27,8 @@ template<class T>
 struct SHM_UNIT_DATA
 {
 	T        data;
-#if defined(_DEBUG)
-	uint64_t fence;
-#endif
+	uint32_t fence;					// check overflow
+	uint32_t unit_serial;			// check mid valid
 };
 
 struct SHM_POOL 
@@ -47,6 +40,7 @@ struct SHM_POOL
 	int64_t  free_unit_head_offset;
 	int64_t  index_offset;
 	int64_t  data_offset;
+	uint32_t serial_generator;
 	int32_t  hash_map_count;
 	char     hash_map_root[0];
 };

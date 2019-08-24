@@ -1,0 +1,15 @@
+
+
+enum CS_MESSAGE_ID
+{
+	cs_message_begin	=	0;
+
+	cs_message_end		=	0xFFFF;
+}
+
+enum SC_MESSAGE_ID
+{
+	sc_message_begin	=	0;
+
+	sc_message_end		=	0xFFFF;
+}

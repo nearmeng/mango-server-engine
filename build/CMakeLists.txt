@@ -80,11 +80,15 @@ include_directories (
 	${BASE_DIR}/inc
 	${BASE_DIR}/inc/common
 	${BASE_DIR}/inc/server_base
+	${BASE_DIR}/game_data
+	${BASE_DIR}/src/proto
 	${BASE_DIR}/thirdparty
 	${BASE_DIR}/thirdparty/lua/inc
 	${BASE_DIR}/thirdparty/toluapp/inc
 	${BASE_DIR}/thirdparty/tbase
 	${BASE_DIR}/thirdparty/tbase/include
+	${BASE_DIR}/thirdparty/protobuf/include
+	${BASE_DIR}/thirdparty/tconnd/include
 )
 
 link_directories (
@@ -93,6 +97,8 @@ link_directories (
 	${BASE_DIR}/thirdparty/lua/lib
 	${BASE_DIR}/thirdparty/toluapp/lib
 	${BASE_DIR}/thirdparty/tbase/lib
+	${BASE_DIR}/thirdparty/protobuf/lib
+	${BASE_DIR}/thirdparty/tconnd/lib
 )
 
 pre_toluapp(${BASE_DIR}/src)

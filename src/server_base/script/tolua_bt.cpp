@@ -1,6 +1,6 @@
 /*
 ** Lua binding: bt
-** Generated automatically by toluapp-1.0.94 on Thu May 23 14:37:18 2019.
+** Generated automatically by toluapp-1.0.94 on Wed Aug 21 14:20:36 2019.
 */
 
 #include "stdafx.h"
@@ -34,6 +34,7 @@ TOLUA_API int tolua_bt_open (lua_State* tolua_S)
   tolua_constant(tolua_S,"bptLocalEventVar",bptLocalEventVar);
   tolua_constant(tolua_S,"bptLocalTriggerVar",bptLocalTriggerVar);
   tolua_constant(tolua_S,"bptRoleVar",bptRoleVar);
+  tolua_constant(tolua_S,"bptSceneVar",bptSceneVar);
   tolua_constant(tolua_S,"bptTotal",bptTotal);
   tolua_constant(tolua_S,"brvError",brvError);
   tolua_constant(tolua_S,"brvFail",brvFail);

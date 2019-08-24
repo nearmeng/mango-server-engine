@@ -5,6 +5,12 @@ if (MSVC)
 		"${BASE_DIR}/inc/define/*.h"
 		"${BASE_DIR}/bin/server_config/*.lua"
 		"${BASE_DIR}/bin/script/*.lua"
+		"${BASE_DIR}/src/proto/db/*.proto"
+		"${BASE_DIR}/src/proto/db/*.h"
+		"${BASE_DIR}/src/proto/db/*.cc"
+		"${BASE_DIR}/src/proto/protocol/*.proto"
+		"${BASE_DIR}/src/proto/protocol/*.h"
+		"${BASE_DIR}/src/proto/protocol/*.cc"
 	)
 	set (SRC_FILES ${SRC_FILES} ${DEF_FILES})
 

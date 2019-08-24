@@ -11,6 +11,8 @@
 
 #include "define/role.h"
 
+#include "app/server_app.h"
+
 extern LUA_FUNC g_RegPackageList[];
 extern LUA_FUNC g_RegLuaFunc[];
 extern LUA_FUNC g_ServerBasePackageList[];
@@ -106,10 +108,41 @@ struct TRAVERSE_DATA
 
 LPTLOGCTX pLogCtx = NULL;
 
-
-
-int main()
+BOOL server_init(BOOL bResume)
 {
+	int32_t nRetCode = 0;
+
+	INF("server is init");
+
+	return TRUE;
+Exit0:
+	return FALSE;
+}
+
+BOOL server_fini(BOOL bResume)
+{
+	int32_t nRetCode = 0;
+
+	INF("server is fini");
+
+	return TRUE;
+Exit0:
+	return FALSE;
+}
+
+BOOL server_proc(BOOL bResume)
+{
+	return TRUE;
+}
+
+BOOL server_reload(BOOL bResume)
+{
+	return TRUE;
+}
+
+int main(int argc, char* argv[])
+{
+#if 0
 	int32_t nRetCode = 0;
 	uint64_t result[6] = { 0 };
 	int32_t unit_count = 1000000;
@@ -130,8 +163,8 @@ int main()
 		return -1;
 	}
 
-	g_pLogCategory = tlog_get_category(pLogCtx, "text");
-	if(g_pLogCategory == NULL)
+	g_pSvrLogCat = tlog_get_category(pLogCtx, "text");
+	if(g_pSvrLogCat == NULL)
 	{
 		printf("log init failed");
 		return -1;
@@ -306,6 +339,9 @@ Exit1:
 	return 0;
 
 	// this is the test code
+#endif
+
+	mg_app_main(argc, argv, server_init, server_fini, server_proc, server_reload, NULL, NULL, TRUE);
 
 Exit0:
 	return 0;

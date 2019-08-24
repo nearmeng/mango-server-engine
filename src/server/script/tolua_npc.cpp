@@ -1,6 +1,6 @@
 /*
 ** Lua binding: npc
-** Generated automatically by toluapp-1.0.94 on Thu May 23 14:37:18 2019.
+** Generated automatically by toluapp-1.0.94 on Wed Aug 21 14:20:36 2019.
 */
 
 #include "stdafx.h"

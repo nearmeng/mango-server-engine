@@ -4,4 +4,4 @@ add_project()
 
 post_project()
 
-add_dependencies (${TARGET_NAME} common game_data server_base )
+add_dependencies (${TARGET_NAME} common game_data server_base)

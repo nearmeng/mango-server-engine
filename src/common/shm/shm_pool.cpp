@@ -86,7 +86,7 @@ Exit0:
 	return -1;
 }
 
-int32_t CShmMgr::init(int32_t shm_key, int32_t shm_size, bool is_resume)
+BOOL CShmMgr::init(int32_t shm_key, int32_t shm_size, BOOL is_resume)
 {
 	int32_t ret_code = 0;
 
@@ -101,9 +101,9 @@ int32_t CShmMgr::init(int32_t shm_key, int32_t shm_size, bool is_resume)
 		LOG_PROCESS_ERROR_DETAIL(ret_code == 0, "shm_key %d shm_size %d", shm_key, shm_size);
 	}
 
-	return 0;
+	return TRUE;
 Exit0:
-	return -1;
+	return FALSE;
 }
 
 int32_t CShmMgr::uninit(void)
@@ -117,6 +117,26 @@ int32_t CShmMgr::uninit(void)
 #endif
 	}
 
-	return 0;
+	return TRUE;
 }
 
+SHM_POOL* CShmMgr::init_pool(int32_t shm_type, int32_t pool_size)
+{
+	SHM_POOL* pool = NULL;
+
+	LOG_PROCESS_ERROR_DETAIL(shm_type > stdInvalid && shm_type < stdTotal, "shm_type is error %d", shm_type);
+	LOG_PROCESS_ERROR(pool_mgr->curr_offset + pool_size <= pool_mgr->shm_size);
+
+	pool = (SHM_POOL*)OFFSET2PTR(pool_mgr->curr_offset);
+	LOG_PROCESS_ERROR(pool != NULL);
+	LOG_PROCESS_ERROR(pool_mgr->pool_offset[shm_type] == 0);
+	LOG_PROCESS_ERROR(pool_mgr->pool_address[shm_type] == 0);
+
+	pool_mgr->pool_offset[shm_type] = pool_mgr->curr_offset;
+	pool_mgr->pool_address[shm_type] = pool;
+	pool_mgr->curr_offset += pool_size;
+
+	return pool;
+Exit0:
+	return NULL;
+}

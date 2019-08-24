@@ -87,6 +87,8 @@ function (post_project)
 			dl
 			lua
 			toluapp
+			protobuf
+			tconnapi
 		)
 		
 		if (TARGET_TYPE STREQUAL "RUNTIME")
@@ -110,8 +112,10 @@ function (post_project)
 			optimized lua.lib
 			debug toluappd.lib
 			optimized toluapp.lib
-			debug server_base_d.lib
-			optimized server_base.lib
+			debug libprotobufd.lib
+			optimized libprotobuf.lib
+			debug libtconnapi_d.lib
+			optimized libtconnapi.lib
 		)
 
 		if (TARGET_TYPE STREQUAL "RUNTIME")
@@ -122,6 +126,8 @@ function (post_project)
 				optimized libcomm.lib
 				debug game_data_d.lib
 				optimized game_data.lib
+				debug server_base_d.lib
+				optimized server_base.lib
 			)
 		endif ()
 	endif ()

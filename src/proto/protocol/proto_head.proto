@@ -1,0 +1,14 @@
+
+message CS_HEAD
+{
+	required	int32	msgid	=	1;
+	optional	int32	seqid	=	2;
+}
+
+message SS_HEAD
+{
+	required	int32	msgid		=	1;
+	required	int32	src_addr	=	2;
+	optional	fixed64 router_id	=	3;
+}
+
