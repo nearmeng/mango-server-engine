@@ -108,7 +108,7 @@ struct TRAVERSE_DATA
 
 LPTLOGCTX pLogCtx = NULL;
 
-BOOL server_init(BOOL bResume)
+BOOL server_init(TAPPCTX* pCtx, BOOL bResume)
 {
 	int32_t nRetCode = 0;
 
@@ -119,7 +119,7 @@ Exit0:
 	return FALSE;
 }
 
-BOOL server_fini(BOOL bResume)
+BOOL server_fini(TAPPCTX* pCtx, BOOL bResume)
 {
 	int32_t nRetCode = 0;
 
@@ -130,12 +130,12 @@ Exit0:
 	return FALSE;
 }
 
-BOOL server_proc(BOOL bResume)
+BOOL server_frame(TAPPCTX* pCtx, BOOL bResume)
 {
 	return TRUE;
 }
 
-BOOL server_reload(BOOL bResume)
+BOOL server_reload(TAPPCTX* pCtx, BOOL bResume)
 {
 	return TRUE;
 }
@@ -341,7 +341,7 @@ Exit1:
 	// this is the test code
 #endif
 
-	mg_app_main(argc, argv, server_init, server_fini, server_proc, server_reload, NULL, NULL, TRUE);
+	mg_app_main(argc, argv, server_init, server_fini, server_frame, server_reload, NULL, NULL, TRUE);
 
 Exit0:
 	return 0;

@@ -7,7 +7,7 @@
 #include "protocol/proto_head.pb.h"
 #include "protocol/proto_msgid.pb.h"
 
-#include "app/server_tbus.h"
+#include "tbus/tbus_wrapper.h"
 
 #define MAX_MESSAGE_ID			(65535)
 #define MAX_CONN_EVENT_COUNT	(64)

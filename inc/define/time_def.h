@@ -22,12 +22,12 @@
 #define TV4_IDX(tick)	(((tick) >> (TVR_BITS + 2 * TVN_BITS)) & TVN_MASK)
 #define TV5_IDX(tick)	(((tick) >> (TVR_BITS + 3 * TVN_BITS)) & TVN_MASK)
 
-#define TICK_PER_SECOND	(50)
+#define TICK_PER_SECOND	(1000)
 #define MS_PER_TICK		(1000 / TICK_PER_SECOND)
 
-#define SEC2MS(s) (s * 1000)
-#define SEC2TICK(s) (s * TICK_PER_SECOND)
-#define MS2TICK(ms) (ms / MS_PER_TICK)
+#define SEC2MS(s) ((s) * 1000)
+#define SEC2TICK(s) ((s) * TICK_PER_SECOND)
+#define MS2TICK(ms) ((int64_t)(ms) / MS_PER_TICK)
 #define TICK2MS(tick) ((int64_t(tick)) * MS_PER_TICK)
 
 #define MAX_TIMER_TYPE_COUNT	(512)
@@ -78,6 +78,8 @@ struct TIME_MGR_DATA
 enum TIMER_TYPE
 {
 	ttInvalid,
+
+	ttGameFrame,
 
 	ttTotal
 };

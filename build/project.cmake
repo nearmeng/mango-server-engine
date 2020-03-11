@@ -103,6 +103,7 @@ function (post_project)
 				tdr
 				ncurses
 				game_data
+				router_client
 				server_base
 			)
 		endif ()
@@ -126,6 +127,8 @@ function (post_project)
 				optimized libcomm.lib
 				debug game_data_d.lib
 				optimized game_data.lib
+				debug router_client_d.lib
+				optimized router_client.lib
 				debug server_base_d.lib
 				optimized server_base.lib
 			)

@@ -17,6 +17,7 @@ public:
 	//time
 	void refresh_time(void);
 	int64_t get_real_time_tick(void);
+	uint64_t get_server_tick(void);
 
 	inline int32_t get_time_sec(void);
 	inline int64_t get_time_usec(void);

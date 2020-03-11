@@ -8,6 +8,17 @@
 
 CTimeMgr CTimeMgr::ms_Instance;
 
+uint64_t CTimeMgr::get_server_tick(void)
+{
+#if defined(WIN32)
+	return GetTickCount64();
+#else
+	struct timespec ts;
+	clock_gettime(CLOCK_MONOTONIC, &ts);
+	return ts.tv_nsec / 1000000 + ts.tv_sec * 1000;
+#endif	// WIN32
+}
+
 BOOL CTimeMgr::init(BOOL bResume)
 {
 	int32_t nRetCode = 0;
@@ -97,8 +108,8 @@ BOOL CTimeMgr::add_timer(int32_t nFirstInterval, int32_t nRepeatInterval, int32_
 	LOG_PROCESS_ERROR(nRepeatInterval > 0);
 	LOG_PROCESS_ERROR(nRepeatTimes > 0);
 	LOG_PROCESS_ERROR(nTimerType > ttInvalid && nTimerType < ttTotal);
-	LOG_PROCESS_ERROR(nCbDataLen < MAX_TIMER_CB_DATA_LEN);
 	LOG_PROCESS_ERROR(m_pTimeMgr->pTimeoutFunc[nTimerType]);
+	LOG_PROCESS_ERROR_DETAIL(nCbDataLen < MAX_TIMER_CB_DATA_LEN, "data size %d", nCbDataLen);
 
 	if (nCbDataLen > 0)
 		LOG_PROCESS_ERROR(pCbData);
@@ -123,6 +134,9 @@ BOOL CTimeMgr::add_timer(int32_t nFirstInterval, int32_t nRepeatInterval, int32_
 	
 	qwHandlerMid = CShmMgr::get_instance().ptr2mid<TIMER_HANDLER>(pTimerHandler);
 	add_tail<TIMER_HANDLER>(pLinkList, qwHandlerMid);
+
+	INF("add timer, type %d, interval %d expires %d", pTimerHandler->wTimerType, 
+			pTimerHandler->nInterval, pTimerHandler->llExpires);
 
 	return TRUE;
 Exit0:
@@ -284,6 +298,8 @@ void CTimeMgr::_internal_run_timer(void)
 			del_node<TIMER_HANDLER>(pTimerList, qwTimerMid);
 			add_tail<TIMER_HANDLER>(pNewList, qwTimerMid);
 		}
+
+		//INF("timer called, type %d new expires %d", pTimerHandler->wTimerType, pTimerHandler->llExpires);
 	}
 
 Exit0:

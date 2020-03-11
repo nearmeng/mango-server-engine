@@ -19,12 +19,25 @@ struct SERVER_CONFIG
 		int32_t nInitTimerPoolCount;
 
 		int32_t nInitShmSize;
+
+		int32_t nServerStopTimeout;
+		int32_t nServerEndWaitTimeout;
     } Common;
 
     struct GS_CONFIG
     {
     	int32_t nTestValue;
 	} GS;
+
+	struct SERVICE_CONFIG
+	{
+		int32_t nInitObjMgrCount;
+		int32_t nHeartBeatTimeOut;
+		int32_t nRouterReportInterval;
+		int32_t nRouterHeartBeatInterval;
+		int32_t nRouterDownReportTimeInterval;
+		BOOL	bRouterLogEnable;
+	} SC;
 };
 
 extern SERVER_CONFIG g_ServerConfig;

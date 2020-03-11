@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "string/string_ex.h"
 
+#include <vector>
+
 size_t strxcpy(char *dst, const char *src, size_t size)
 {
     const char *d = dst;
@@ -426,3 +428,54 @@ int base64_encode(const char *sourcedata, size_t srclength,char *base64)
 //    
 //    return i > 0 ? j-1:0;
 //}
+
+std::vector<std::string> strsep(const std::string &sStr, const std::string &sSep, bool withEmpty)
+{
+    std::vector<std::string> vt;
+
+    std::string::size_type pos = 0;
+    std::string::size_type pos1 = 0;
+
+    while (true)
+    {
+        std::string s;
+        pos1 = sStr.find_first_of(sSep, pos);
+        if (pos1 == std::string::npos)
+        {
+            if (pos + 1 <= sStr.length())
+            {
+                s = sStr.substr(pos);
+            }
+        }
+        else if (pos1 == pos)
+        {
+            s = "";
+        }
+        else
+        {
+            s = sStr.substr(pos, pos1 - pos);
+            pos = pos1;
+        }
+
+        if (withEmpty)
+        {
+            vt.push_back(s);
+        }
+        else
+        {
+            if (!s.empty())
+            {
+                vt.push_back(s);
+            }
+        }
+
+        if (pos1 == std::string::npos)
+        {
+            break;
+        }
+
+        pos++;
+    }
+
+    return vt;
+}

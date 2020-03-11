@@ -37,5 +37,10 @@
 
 #include "shm/shm_pool.h"
 
+#include <algorithm>
+#include <vector>
+#include <string>
+#include <map>
+
 #endif   /* ----- #ifndef _COMMON_INC_H_  ----- */
 

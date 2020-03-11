@@ -58,7 +58,7 @@ private:
 
 	struct BT_ACTION_LTSTR
 	{
-		bool operator()(const char* s1, const char* s2)
+		bool operator()(const char* s1, const char* s2) const
 		{
 			return strncmp(s1, s2, BT_ACTION_NAME_LEN) < 0;
 		}

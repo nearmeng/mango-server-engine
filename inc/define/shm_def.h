@@ -16,6 +16,16 @@ enum SHM_TYPE_DEF
 	stdTimeMgr,
 	stdTimerPool,
 	stdGuidMgr,
+	stdRouterAliveData,
+	stdRouterObj,
+	stdRouterServiceMgr,
+	stdRouterServiceData,
+	stdMsgQueue,
+	stdSMMsgData,
+	stdSMSObj,
+	stdSMSServiceData,
+	stdSMSRouterMgr,
+	stdSMSTrans,
 
 	stdTotal = MAX_SHM_TYPE_COUNT,
 };

@@ -11,9 +11,8 @@
 
 struct SHM_UNIT_MID
 {
-	uint64_t shm_type		: 10;		// shm type
-	uint64_t unit_serial	: 18;		// unit serial
-	uint64_t unit_offset	: 36;		// unit offset
+	uint64_t unit_serial	: 28;		// unit serial 
+	uint64_t unit_offset	: 36;		// unit offset 64G
 };
 
 template<class N>

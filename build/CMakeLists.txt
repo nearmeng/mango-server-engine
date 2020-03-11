@@ -89,6 +89,8 @@ include_directories (
 	${BASE_DIR}/thirdparty/tbase/include
 	${BASE_DIR}/thirdparty/protobuf/include
 	${BASE_DIR}/thirdparty/tconnd/include
+	${BASE_DIR}/thirdparty/lmdb/include
+	${BASE_DIR}/thirdparty/libevent/include
 )
 
 link_directories (
@@ -99,6 +101,8 @@ link_directories (
 	${BASE_DIR}/thirdparty/tbase/lib
 	${BASE_DIR}/thirdparty/protobuf/lib
 	${BASE_DIR}/thirdparty/tconnd/lib
+	${BASE_DIR}/thirdparty/lmdb/lib
+	${BASE_DIR}/thirdparty/libevent/lib
 )
 
 pre_toluapp(${BASE_DIR}/src)
@@ -108,4 +112,7 @@ preprocess_proto("src/proto")
 add_subdirectory (common)
 add_subdirectory (game_data)
 add_subdirectory (server_base)
+add_subdirectory (router_client)
 add_subdirectory (server)
+add_subdirectory (router_server)
+add_subdirectory (service_mgr_server)

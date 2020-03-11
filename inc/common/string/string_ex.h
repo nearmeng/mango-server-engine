@@ -2,6 +2,7 @@
 #define _STRING_EX_H_
 
 #include <string>
+#include <vector>
 #include "common/common_inc.h"
 
 size_t strxcpy(char *dst, const char *src, size_t size);
@@ -17,6 +18,7 @@ std::string UriEncode(const std::string & sSrc);
 std::string UriDecode(const std::string & sSrc);
 int base64_encode(const char * sourcedata, size_t srclength,char * base64);
 //int base64_decode(const char *str, size_t length, char* desStr);
+std::vector<std::string> strsep(const std::string &sStr, const std::string &sSep, bool withEmpty = false);
 
 
 #if defined(WIN32) & !defined(snprintf)

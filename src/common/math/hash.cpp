@@ -1082,3 +1082,15 @@ uint32_t hash_string(const char* pcszString)
 
 	return hashword((uint32_t*)s_szBuffer, nIndex / 4, 0xFFEEDDCC);
 }
+
+int32_t jump_consist_hash(int32_t nNodeCount, uint64_t qwKey)
+{
+    int64_t b = -1, j = 0;
+    while (j < nNodeCount) {
+		b = j;
+		qwKey = qwKey * 2862933555777941757ULL + 1;
+		j = (b + 1) * (double(1LL << 31) / double((qwKey >> 33) + 1));
+    }
+	
+	return b;
+}

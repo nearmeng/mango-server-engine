@@ -377,9 +377,7 @@ inline CShmMgr& CShmMgr::get_instance(void)
 template<class T>
 inline uint64_t CShmMgr::ptr2mid(T * object)
 {
-	SHM_POOL* pool = NULL;
 	int64_t unit_offset = 0;
-	int32_t shm_type = 0;
 	SHM_UNIT_MID mid = { 0 };
 	SHM_UNIT_DATA<T>* unit_data = NULL;
 	
@@ -387,26 +385,13 @@ inline uint64_t CShmMgr::ptr2mid(T * object)
 
 	unit_offset = PTR2OFFSET(object);
 	
-	for (int32_t i = 0; i < MAX_SHM_TYPE_COUNT; i++)
-	{
-		if (unit_offset >= pool_mgr->pool_offset[i] &&
-			unit_offset <= pool_mgr->pool_offset[i + 1])
-		{
-			shm_type = i;
-			pool = pool_mgr->pool_address[i];
-			break;
-		}
-	}
-	
-	LOG_PROCESS_ERROR(pool);
-	LOG_PROCESS_ERROR(unit_offset >= pool->data_offset);
-	LOG_PROCESS_ERROR(unit_offset <= (pool->data_offset + pool->unit_data_size * pool->total_unit_count));
+	LOG_PROCESS_ERROR(unit_offset > 0);
+	LOG_PROCESS_ERROR(unit_offset < pool_mgr->curr_offset);
 
 	unit_data = (SHM_UNIT_DATA<T>*)object;
 	LOG_PROCESS_ERROR(unit_data->fence == FENCE_NUM);
 	LOG_PROCESS_ERROR(unit_data->unit_serial > 0);
 
-	mid.shm_type = shm_type;
 	mid.unit_offset = unit_offset;
 	mid.unit_serial = unit_data->unit_serial;
 
@@ -422,7 +407,6 @@ inline T * CShmMgr::mid2ptr(uint64_t mid)
 	SHM_UNIT_DATA<T>* unit_data = NULL;
 
 	PROCESS_ERROR(mid > 0);
-	LOG_PROCESS_ERROR(unit_mid->shm_type > stdInvalid && unit_mid->shm_type < stdTotal);
 
 	unit_data = (SHM_UNIT_DATA<T>*)OFFSET2PTR(unit_mid->unit_offset);
 	LOG_PROCESS_ERROR(unit_data->fence == FENCE_NUM);
