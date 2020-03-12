@@ -1,0 +1,32 @@
+<TbusGCIM>
+<BusinessID>0</BusinessID>
+<AddrTemplet>10.4.6.12</AddrTemplet>
+<GCIMShmKey>669001</GCIMShmKey>
+<Channels>
+    <Priority>8</Priority>
+    <Address>10.0.1.1</Address>
+    <Address>10.0.2.1</Address>
+    <SendSize>4096000</SendSize>
+    <RecvSize>4096000</RecvSize>
+    <Desc>tconnd1_to_game_server1</Desc>
+</Channels>
+
+<Channels>
+    <Priority>8</Priority>
+    <Address>10.0.2.1</Address>
+    <Address>10.0.3.1</Address>
+    <SendSize>4096000</SendSize>
+    <RecvSize>4096000</RecvSize>
+    <Desc>gs_to_router</Desc>
+</Channels>
+
+<Channels>
+    <Priority>8</Priority>
+    <Address>10.0.3.1</Address>
+    <Address>10.0.4.1</Address>
+    <SendSize>4096000</SendSize>
+    <RecvSize>4096000</RecvSize>
+    <Desc>router_to_sms</Desc>
+</Channels>
+
+</TbusGCIM>
