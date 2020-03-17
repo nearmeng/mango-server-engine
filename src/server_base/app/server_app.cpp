@@ -288,14 +288,43 @@ static int32_t server_app_stop(TAPPCTX* pCtx, void* pArg)
 {
 	//used to process stop procedure
 	int32_t nRetCode = 0;
-	
-	if (pUserStop)
+	uint64_t qwCurrTick = CTimeMgr::instance().get_server_tick();
+
+	switch (mg_get_state())
 	{
-		nRetCode = pUserStop(pCtx, is_app_resume(pCtx));
-		LOG_PROCESS_ERROR(nRetCode);
+	case svstInit:
+	case svstInService:
+	{
+        if (mg_get_stop_timer() == 0)
+        {
+            mg_set_stop_timer(qwCurrTick + g_ServerConfig.Common.nServerStopTimeout);
+		}
+		else if (qwCurrTick > mg_get_stop_timer())
+        {
+            INF("wait for stop msg timeout, begin to server complete");
+			mg_set_stop_timer(0);
+            mg_set_state(svstEndService);
+        }
+		break;
+	}
+	case svstEndService:
+	{
+		if (pUserStop)
+		{
+			if (pUserStop(pCtx, is_app_resume(pCtx)))
+			{
+				return 0;
+			}
+		}
+		else
+			return 0;
+
+		break;
+	}
+	default:
+		LOG_PROCESS_ERROR(FALSE);
 	}
 
-	return 0;
 Exit0:
 	return -1;
 }

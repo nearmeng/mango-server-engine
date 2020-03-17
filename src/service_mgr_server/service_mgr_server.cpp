@@ -73,40 +73,16 @@ BOOL server_stop(TAPPCTX* pCtx, BOOL bResume)
 {
 	int32_t nRetCode = 0;
 	uint64_t qwCurrTick = CTimeMgr::instance().get_server_tick();
-
-	switch (mg_get_state())
-	{
-	case svstInService:
-	case svstInit:
-	{
-        if (mg_get_stop_timer() == 0)
-        {
-            mg_set_stop_timer(qwCurrTick + g_ServerConfig.Common.nServerStopTimeout);
-		}
-		else if (qwCurrTick > mg_get_stop_timer())
-		{
-			INF("wait for stop msg timeout, begin to server complete");
-			mg_set_state(svstEndService);
-		}
-		break;
-	}
-	case svstEndService:
-	{
+        
+	if (mg_get_stop_timer() == 0)
+    {
+		// delay for server unregister
 		mg_set_stop_timer(qwCurrTick + g_ServerConfig.Common.nServerEndWaitTimeout);
-		mg_set_state(svstInvalid);
-		break;
 	}
-	case svstInvalid:
+	else if (qwCurrTick > mg_get_stop_timer())
 	{
-		if (qwCurrTick > mg_get_stop_timer())
-		{
-			INF("begin to finish stop");
-			return TRUE;
-		}
-		break;
-	}
-	default:
-		LOG_PROCESS_ERROR(FALSE);
+		INF("begin to finish stop");
+		return TRUE;
 	}
 
 Exit0:
