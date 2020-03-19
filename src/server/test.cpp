@@ -12,6 +12,10 @@
 #include "define/role.h"
 
 #include "app/server_app.h"
+#include "app/server_msg_handler.h"
+
+#include "protocol/common_message.h"
+#include "router_client/router_client_api.h"
 
 extern LUA_FUNC g_RegPackageList[];
 extern LUA_FUNC g_RegLuaFunc[];
@@ -132,7 +136,17 @@ Exit0:
 
 BOOL server_frame(TAPPCTX* pCtx, BOOL bResume)
 {
+	int32_t nRetCode = 0;
+	TEST_SEND_DATA msg;
+
+	msg.nData = 123;
+
+	nRetCode = send_server_msg_by_routerid(0, 5, 263, &msg, sizeof(msg));
+	LOG_PROCESS_ERROR(nRetCode);
+	
 	return TRUE;
+Exit0:
+	return FALSE;
 }
 
 BOOL server_reload(TAPPCTX* pCtx, BOOL bResume)

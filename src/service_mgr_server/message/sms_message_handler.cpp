@@ -9,9 +9,9 @@
 #include "game_data/global_config.h"
 #include "tbus/tbus_wrapper.h"
 
-#include "proto/common_message.h"
-#include "proto/service_manage_message.h"
-#include "proto/router_message.h"
+#include "protocol/common_message.h"
+#include "protocol/service_manage_message.h"
+#include "protocol/router_message.h"
 #include "service_mgr/service_mgr.h"
 #include "object_mgr/sms_object_mgr.h"
 #include "trans/sms_trans.h"
@@ -377,7 +377,6 @@ BOOL CSMSMessageHandler::do_control_ack(int32_t nResult, const char * pDesc, int
 
 	pRouterMsg->wMsg = router_send_by_addr;
 	pRouterMsg->nDstServerAddr = nDstAddr;
-	pRouterMsg->nDataSize = sizeof(msg);
 	memcpy(pRouterMsg->szData, &msg, sizeof(msg));
 
 	pRouterInfo = CServiceMgr::get_instance().get_rand_router();

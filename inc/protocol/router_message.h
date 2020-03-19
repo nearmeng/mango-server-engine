@@ -1,7 +1,7 @@
 #ifndef  _ROUTER_MESSAGE_H_
 #define  _ROUTER_MESSAGE_H_
 
-#include "proto/internal_message_header.h"
+#include "protocol/internal_message_header.h"
 
 #pragma pack(push, 1)
 
@@ -41,7 +41,6 @@ struct ROUTER_SEND_BY_ROUTERID : INTERNAL_MESSAGE_HEADER
 {
 	uint64_t	qwRouterID;
 	int32_t		nServiceType;
-	int32_t		nDataSize;
 	int32_t		nTransferHandleType;
 	char		szData[0];
 };
@@ -49,7 +48,6 @@ struct ROUTER_SEND_BY_ROUTERID : INTERNAL_MESSAGE_HEADER
 struct ROUTER_SEND_BY_SERVICE_TYPE : INTERNAL_MESSAGE_HEADER
 {
 	int32_t		nServiceType;
-	int32_t		nDataSize;
 	char		szData[0];
 };
 
@@ -57,34 +55,29 @@ struct ROUTER_SEND_BY_SERVICE_INST: INTERNAL_MESSAGE_HEADER
 {
 	int32_t		nServiceType;
 	int32_t		nServiceInst;
-	int32_t		nDataSize;
 	char		szData[0];
 };
 
 struct ROUTER_SEND_BY_ADDR : INTERNAL_MESSAGE_HEADER
 {
 	int32_t		nDstServerAddr;
-	int32_t		nDataSize;
 	char		szData[0];
 };
 
 struct ROUTER_SEND_BY_OBJID : INTERNAL_MESSAGE_HEADER
 {
 	uint64_t	qwObjID;
-	int32_t		nDataSize;
 	char		szData[0];
 };
 
 struct ROUTER_SEND_BY_LOAD : INTERNAL_MESSAGE_HEADER
 {
 	int32_t		nServiceType;
-	int32_t		nDataSize;
 	char		szData[0];
 };
 
 struct ROUTER_SEND_TO_MGR : INTERNAL_MESSAGE_HEADER
 {
-	int32_t		nDataSize;
 	char		szData[0];
 };
 

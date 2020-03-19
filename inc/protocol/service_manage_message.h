@@ -1,7 +1,7 @@
 #ifndef  _SERVICE_MANAGE_MESSAGE_H_
 #define  _SERVICE_MANAGE_MESSAGE_H_
 
-#include "proto/internal_message_header.h"
+#include "protocol/internal_message_header.h"
 #include "define/service_def.h"
 
 #pragma pack(push, 1)

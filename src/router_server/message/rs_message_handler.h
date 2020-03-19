@@ -1,7 +1,7 @@
 #ifndef _RS_MESSAGE_HANDLER_H_
 #define _RS_MESSAGE_HANDLER_H_
 
-#include "proto/internal_message_header.h"
+#include "protocol/internal_message_header.h"
 #include "shm/shm_pool.h"
 #include "queue/async_msg_queue.h"
 
@@ -55,6 +55,7 @@ public:
 private:
 	BOOL _init_msgid(void);
 	BOOL send(int32_t nDstAddr, const void* pBuffer, size_t dwSize);
+	BOOL send(int32_t nDstAddr, const void* pHeader, size_t dwHeaderSize, const void* pBuffer, size_t dwSize);
 	BOOL send_to_mgr(const void* pBuffer, size_t dwSize);
 	BOOL send_to_all_mgr(const void* pBuffer, size_t dwSize);
 	BOOL broadcast_to_local_server(const void* pBuffer, size_t dwSize);

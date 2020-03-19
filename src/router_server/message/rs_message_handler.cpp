@@ -8,9 +8,9 @@
 #include "define/error_def.h"
 
 #include "game_data/global_config.h"
-#include "proto/common_message.h"
-#include "proto/router_message.h"
-#include "proto/service_manage_message.h"
+#include "protocol/common_message.h"
+#include "protocol/router_message.h"
+#include "protocol/service_manage_message.h"
 
 #include "tbus/tbus_wrapper.h"
 
@@ -216,6 +216,28 @@ Exit0:
 	CRI("[router network]: failed to send to %s by tbus", tbus_get_str(nDstAddr));
     return FALSE;
 }
+
+BOOL CRSMessageHandler::send(int32_t nDstAddr, const void* pHeader, size_t dwHeaderSize, const void* pBuffer, size_t dwSize)
+{
+	int32_t nRetCode = 0;
+	struct iovec vecs[2];
+
+	LOG_PROCESS_ERROR(pHeader);
+	LOG_PROCESS_ERROR(pBuffer);
+
+	vecs[0].iov_base = (void*)pHeader;
+	vecs[0].iov_len = dwHeaderSize;
+	vecs[0].iov_base = (void*)pBuffer;
+	vecs[0].iov_len = dwSize;
+
+	nRetCode = tbus_sendv(m_nTbusHandle, &m_nTbusAddr, &nDstAddr, vecs, 2, 0);
+	LOG_PROCESS_ERROR(nRetCode == TBUS_SUCCESS);
+
+	return TRUE;
+Exit0:
+	return FALSE;
+}
+	
 	
 BOOL CRSMessageHandler::broadcast_to_local_server(const void* pBuffer, size_t dwSize)
 {
@@ -404,18 +426,12 @@ Exit0:
 BOOL CRSMessageHandler::do_router_send_by_addr(int32_t nRouterAddr, int32_t nDstServerAddr, const char* pBuffer, uint32_t dwSize)
 {
 	int32_t nRetCode = 0;
-	ROUTER_SEND_BY_ADDR* msg = NULL;
-	uint32_t dwMsgSize = sizeof(ROUTER_SEND_BY_ADDR) + dwSize;
+	ROUTER_SEND_BY_ADDR msg;
 
-	msg = (ROUTER_SEND_BY_ADDR*)alloca(dwMsgSize);
-	LOG_PROCESS_ERROR(msg);
+	msg.wMsg = router_send_by_addr;
+	msg.nDstServerAddr = nDstServerAddr;
 
-	msg->wMsg = router_send_by_addr;
-	msg->nDstServerAddr = nDstServerAddr;
-	msg->nDataSize = dwSize;
-	memcpy(msg->szData, pBuffer, dwSize);
-
-	nRetCode = send(nRouterAddr, msg, dwMsgSize);
+	nRetCode = send(nRouterAddr, &msg, sizeof(msg), pBuffer, dwSize);
 	LOG_PROCESS_ERROR(nRetCode);
 
 	return TRUE;
@@ -683,16 +699,10 @@ void CRSMessageHandler::on_router_send_by_routerid(const char* pBuffer, size_t d
 	}
 
 	LOG_PROCESS_ERROR(pServerInfo->nRouterAddr > 0);
-	
-	if (tbus_get_type(nSrcAddr) != svrRouter)
-	{
-		INTERNAL_MESSAGE_HEADER* pHeader = (INTERNAL_MESSAGE_HEADER*)msg->szData;
-		pHeader->nMsgSrcAddr = nSrcAddr;
-	}
 
 	if (pServerInfo->nRouterAddr == m_nTbusAddr)
 	{
-		nRetCode = send(nTargetServerAddr, msg->szData, msg->nDataSize);
+		nRetCode = send(nTargetServerAddr, msg->szData, dwSize - sizeof(ROUTER_SEND_BY_ROUTERID));
 		LOG_PROCESS_ERROR(nRetCode);
 
 		if(g_ServerConfig.SC.bRouterLogEnable)
@@ -700,7 +710,7 @@ void CRSMessageHandler::on_router_send_by_routerid(const char* pBuffer, size_t d
 	}
 	else
 	{
-		nRetCode = do_router_send_by_addr(pServerInfo->nRouterAddr, nTargetServerAddr, msg->szData, msg->nDataSize);
+		nRetCode = do_router_send_by_addr(pServerInfo->nRouterAddr, nTargetServerAddr, msg->szData, dwSize - sizeof(ROUTER_SEND_BY_ROUTERID));
 		LOG_PROCESS_ERROR(nRetCode);
 		
 		if(g_ServerConfig.SC.bRouterLogEnable)
@@ -720,12 +730,6 @@ void CRSMessageHandler::on_router_send_by_service_type(const char* pBuffer, size
 	
 	pServiceInfo = CRouterMgr::get_instance().get_service_info(msg->nServiceType);
 	LOG_PROCESS_ERROR(pServiceInfo);
-	
-	if (tbus_get_type(nSrcAddr) != svrRouter)
-	{
-		INTERNAL_MESSAGE_HEADER* pHeader = (INTERNAL_MESSAGE_HEADER*)msg->szData;
-		pHeader->nMsgSrcAddr = nSrcAddr;
-	}
 
 	for (int32_t i = 0; i < pServiceInfo->nServiceServerCount; i++)
 	{
@@ -738,7 +742,7 @@ void CRSMessageHandler::on_router_send_by_service_type(const char* pBuffer, size
 		{
 			if (pServerInfo->nRouterAddr == m_nTbusAddr)
 			{
-				nRetCode = send(pServerInfo->nTbusAddr, msg->szData, msg->nDataSize);
+				nRetCode = send(pServerInfo->nTbusAddr, msg->szData, dwSize - sizeof(ROUTER_SEND_BY_SERVICE_TYPE));
 				LOG_PROCESS_ERROR(nRetCode);
 			}
 			else
@@ -769,12 +773,6 @@ void CRSMessageHandler::on_router_send_by_service_inst(const char * pBuffer, siz
 	pServiceInfo = CRouterMgr::get_instance().get_service_info(msg->nServiceType);
 	LOG_PROCESS_ERROR(pServiceInfo);
 
-	if (tbus_get_type(nSrcAddr) != svrRouter)
-	{
-		INTERNAL_MESSAGE_HEADER* pHeader = (INTERNAL_MESSAGE_HEADER*)msg->szData;
-		pHeader->nMsgSrcAddr = nSrcAddr;
-	}
-
 	for (int32_t i = 0; i < pServiceInfo->nServiceServerCount; i++)
 	{
 		SERVER_INFO* pServerInfo = NULL;
@@ -786,7 +784,7 @@ void CRSMessageHandler::on_router_send_by_service_inst(const char * pBuffer, siz
 		{
 			if (pServerInfo->nRouterAddr == m_nTbusAddr)
 			{
-				nRetCode = send(pServerInfo->nTbusAddr, msg->szData, msg->nDataSize);
+				nRetCode = send(pServerInfo->nTbusAddr, msg->szData, dwSize - sizeof(ROUTER_SEND_BY_SERVICE_INST));
 				LOG_PROCESS_ERROR(nRetCode);
 			}
 			else
@@ -810,15 +808,9 @@ void CRSMessageHandler::on_router_send_by_addr(const char* pBuffer, size_t dwSiz
 	nRouterAddr = CRouterMgr::get_instance().get_router_by_server_addr(msg->nDstServerAddr);
 	LOG_PROCESS_ERROR(nRouterAddr > 0);
 
-	if (tbus_get_type(nSrcAddr) != svrRouter)
-	{
-		INTERNAL_MESSAGE_HEADER* pHeader = (INTERNAL_MESSAGE_HEADER*)msg->szData;
-		pHeader->nMsgSrcAddr = nSrcAddr;
-	}
-
 	if (nRouterAddr == m_nTbusAddr)
 	{
-		nRetCode = send(msg->nDstServerAddr, msg->szData, msg->nDataSize);
+		nRetCode = send(msg->nDstServerAddr, msg->szData, dwSize - sizeof(ROUTER_SEND_BY_ADDR));
 		LOG_PROCESS_ERROR(nRetCode);
 	}
 	else
@@ -847,16 +839,10 @@ void CRSMessageHandler::on_router_send_by_objid(const char* pBuffer, size_t dwSi
 
 	nRouterAddr = CRouterMgr::get_instance().get_router_by_server_addr(pObj->nTbusAddr);
 	LOG_PROCESS_ERROR(nRouterAddr > 0);
-	
-	if (tbus_get_type(nSrcAddr) != svrRouter)
-	{
-		INTERNAL_MESSAGE_HEADER* pHeader = (INTERNAL_MESSAGE_HEADER*)msg->szData;
-		pHeader->nMsgSrcAddr = nSrcAddr;
-	}
 
 	if (nRouterAddr == m_nTbusAddr)
 	{
-		nRetCode = send(pObj->nTbusAddr, msg->szData, msg->nDataSize);
+		nRetCode = send(pObj->nTbusAddr, msg->szData, dwSize - sizeof(ROUTER_SEND_BY_OBJID));
 		LOG_PROCESS_ERROR(nRetCode);
 	}
 	else
@@ -921,16 +907,10 @@ void CRSMessageHandler::on_router_send_by_load(const char * pBuffer, size_t dwSi
 
 	nRouterAddr = CRouterMgr::get_instance().get_router_by_server_addr(nTargetAddr);
 	LOG_PROCESS_ERROR(nRouterAddr > 0);
-	
-	if (tbus_get_type(nSrcAddr) != svrRouter)
-	{
-		INTERNAL_MESSAGE_HEADER* pHeader = (INTERNAL_MESSAGE_HEADER*)msg->szData;
-		pHeader->nMsgSrcAddr = nSrcAddr;
-	}
 
 	if (nRouterAddr == m_nTbusAddr)
 	{
-		nRetCode = send(nTargetAddr, msg->szData, msg->nDataSize);
+		nRetCode = send(nTargetAddr, msg->szData, dwSize - sizeof(ROUTER_SEND_BY_LOAD));
 		LOG_PROCESS_ERROR(nRetCode);
 	}
 	else
@@ -947,14 +927,8 @@ void CRSMessageHandler::on_router_send_to_mgr(const char * pBuffer, size_t dwSiz
 {
 	int32_t nRetCode = 0;
 	ROUTER_SEND_TO_MGR* msg = (ROUTER_SEND_TO_MGR*)pBuffer;
-	
-	if (tbus_get_type(nSrcAddr) != svrRouter)
-	{
-		INTERNAL_MESSAGE_HEADER* pHeader = (INTERNAL_MESSAGE_HEADER*)msg->szData;
-		pHeader->nMsgSrcAddr = nSrcAddr;
-	}
 
-	nRetCode = send_to_mgr(msg->szData, msg->nDataSize);
+	nRetCode = send_to_mgr(msg->szData, dwSize - sizeof(ROUTER_SEND_TO_MGR));
 	LOG_PROCESS_ERROR(nRetCode);
 
 Exit0:

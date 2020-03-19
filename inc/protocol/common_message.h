@@ -64,6 +64,11 @@ struct A2A_CONTROL_ACK : INTERNAL_MESSAGE_HEADER
     char szDesc[MAX_GM_COMMAND_LEN];
 };
 
+struct TEST_SEND_DATA
+{
+	int32_t nData;
+};
+
 // tolua_end
 #pragma pack(pop)
 #endif	// _COMMON_MESSAGE_H_

@@ -5,7 +5,7 @@
 #include "define/service_def.h"
 #include "define/raft_def.h"
 
-#include "proto/internal_message_header.h"
+#include "protocol/internal_message_header.h"
 #include "shm/shm_pool.h"
 #include "queue/async_msg_queue.h"
 

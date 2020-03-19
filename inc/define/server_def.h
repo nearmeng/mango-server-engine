@@ -12,6 +12,7 @@ enum SERVER_TYPE
 	svrGS			=	2,
 	svrRouter		=	3,
 	svrServiceMgr	=	4,
+	svrFS			=	5,
 
 	svrTotal
 };

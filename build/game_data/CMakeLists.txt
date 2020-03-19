@@ -3,6 +3,7 @@ pre_project (STATIC)
 if (MSVC)
 	file (GLOB_RECURSE DEF_FILES 
 		"${BASE_DIR}/inc/define/*.h"
+		"${BASE_DIR}/inc/protocol/*.h"
 		"${BASE_DIR}/bin/server_config/*.lua"
 		"${BASE_DIR}/bin/script/*.lua"
 		"${BASE_DIR}/src/proto/db/*.proto"

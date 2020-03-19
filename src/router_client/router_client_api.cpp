@@ -9,8 +9,8 @@
 #include "tbus/tbus_wrapper.h"
 #include "time/time_mgr.h"
 
-#include "proto/common_message.h"
-#include "proto/router_message.h"
+#include "protocol/common_message.h"
+#include "protocol/router_message.h"
 
 CRouterClient CRouterClient::ms_RouterClient;
 
@@ -145,22 +145,30 @@ BOOL CRouterClient::mainloop(void)
 BOOL CRouterClient::send_by_addr(int32_t nDstServerAddr, const void* pBuffer, size_t dwSize)
 {
 	int32_t nRetCode = 0;
-	uint32_t dwAllSize = 0;
-	ROUTER_SEND_BY_ADDR* msg = NULL;
-	INTERNAL_MESSAGE_HEADER* pHeader = NULL;
+	ROUTER_SEND_BY_ADDR msg;
 
-	pHeader = (INTERNAL_MESSAGE_HEADER*)pBuffer;
-	dwAllSize = sizeof(ROUTER_SEND_BY_ADDR) + dwSize;
+	msg.wMsg = router_send_by_addr;
+	msg.nMsgSrcAddr = m_nTbusID;
+	msg.nDstServerAddr = nDstServerAddr;
 
-	msg = (ROUTER_SEND_BY_ADDR*)alloca(dwAllSize);
-	LOG_PROCESS_ERROR(msg);
+	nRetCode = _send_to_router(&msg, sizeof(msg), pBuffer, dwSize);
+	LOG_PROCESS_ERROR(nRetCode);
 
-	msg->wMsg = router_send_by_addr;
-	msg->nDstServerAddr = nDstServerAddr;
-	msg->nDataSize = dwSize;
-	memcpy(msg->szData, pBuffer, dwSize);
+	return TRUE;
+Exit0:
+	return FALSE;
+}
 
-	nRetCode = _send_to_router(msg, dwAllSize);
+BOOL CRouterClient::sendv_by_addr(int32_t nDstServerAddr, const struct iovec* pVec, int32_t nVecCount)
+{
+	int32_t nRetCode = 0;
+	ROUTER_SEND_BY_ADDR msg;
+
+	msg.wMsg = router_send_by_addr;
+	msg.nMsgSrcAddr = m_nTbusID;
+	msg.nDstServerAddr = nDstServerAddr;
+
+	nRetCode = _send_to_router(&msg, sizeof(msg), pVec, nVecCount);
 	LOG_PROCESS_ERROR(nRetCode);
 
 	return TRUE;
@@ -171,20 +179,30 @@ Exit0:
 BOOL CRouterClient::send_by_service_type(int32_t nServiceType, const void* pBuffer, size_t dwSize)
 {
 	int32_t nRetCode = 0;
-	uint32_t dwAllSize = 0;
-	ROUTER_SEND_BY_SERVICE_TYPE* msg = NULL;
+	ROUTER_SEND_BY_SERVICE_TYPE msg;
 
-	dwAllSize = sizeof(ROUTER_SEND_BY_SERVICE_TYPE) + dwSize;
+	msg.wMsg = router_send_by_service_type;
+	msg.nMsgSrcAddr = m_nTbusID;
+	msg.nServiceType = nServiceType;
 
-	msg = (ROUTER_SEND_BY_SERVICE_TYPE*)alloca(dwAllSize);
-	LOG_PROCESS_ERROR(msg);
+	nRetCode = _send_to_router(&msg, sizeof(msg), pBuffer, dwSize);
+	LOG_PROCESS_ERROR(nRetCode);
 
-	msg->wMsg = router_send_by_service_type;
-	msg->nServiceType = nServiceType;
-	msg->nDataSize = dwSize;
-	memcpy(msg->szData, pBuffer, dwSize);
+	return TRUE;
+Exit0:
+	return FALSE;
+}
 
-	nRetCode = _send_to_router(msg, dwAllSize);
+BOOL CRouterClient::sendv_by_service_type(int32_t nServiceType, const struct iovec* pVec, int32_t nVecCount)
+{
+	int32_t nRetCode = 0;
+	ROUTER_SEND_BY_SERVICE_TYPE msg;
+
+	msg.wMsg = router_send_by_service_type;
+	msg.nMsgSrcAddr = m_nTbusID;
+	msg.nServiceType = nServiceType;
+
+	nRetCode = _send_to_router(&msg, sizeof(msg), pVec, nVecCount);
 	LOG_PROCESS_ERROR(nRetCode);
 
 	return TRUE;
@@ -195,21 +213,14 @@ Exit0:
 BOOL CRouterClient::send_by_service_inst(int32_t nServiceType, int32_t nInstID, const void* pBuffer, size_t dwSize)
 {
 	int32_t nRetCode = 0;
-	uint32_t dwAllSize = 0;
-	ROUTER_SEND_BY_SERVICE_INST* msg = NULL;
+	ROUTER_SEND_BY_SERVICE_INST msg;
 
-	dwAllSize = sizeof(ROUTER_SEND_BY_SERVICE_INST) + dwSize;
+	msg.wMsg = router_send_by_service_inst;
+	msg.nMsgSrcAddr = m_nTbusID;
+	msg.nServiceType = nServiceType;
+	msg.nServiceInst = nInstID;
 
-	msg = (ROUTER_SEND_BY_SERVICE_INST*)alloca(dwAllSize);
-	LOG_PROCESS_ERROR(msg);
-
-	msg->wMsg = router_send_by_service_inst;
-	msg->nServiceType = nServiceType;
-	msg->nServiceInst = nInstID;
-	msg->nDataSize = dwSize;
-	memcpy(msg->szData, pBuffer, dwSize);
-
-	nRetCode = _send_to_router(msg, dwAllSize);
+	nRetCode = _send_to_router(&msg, sizeof(msg), pBuffer, dwSize);
 	LOG_PROCESS_ERROR(nRetCode);
 
 	return TRUE;
@@ -217,50 +228,92 @@ Exit0:
 	return FALSE;
 }
 
-BOOL CRouterClient::send_by_routerid(uint64_t qwRouterID, int32_t nServerType, const void* pBuffer, size_t dwSize,
-		int32_t nTransferHandleType)
+BOOL CRouterClient::sendv_by_service_inst(int32_t nServiceType, int32_t nInstID, const struct iovec* pVec, int32_t nVecCount)
 {
 	int32_t nRetCode = 0;
-	uint32_t dwAllSize = 0;
-	ROUTER_SEND_BY_ROUTERID* msg = NULL;
+	ROUTER_SEND_BY_SERVICE_INST msg;
 
-	dwAllSize = sizeof(ROUTER_SEND_BY_ROUTERID) + dwSize;
+	msg.wMsg = router_send_by_service_inst;
+	msg.nMsgSrcAddr = m_nTbusID;
+	msg.nServiceType = nServiceType;
+	msg.nServiceInst = nInstID;
 
-	msg = (ROUTER_SEND_BY_ROUTERID*)alloca(dwAllSize);
-	LOG_PROCESS_ERROR(msg);
-
-	msg->wMsg = router_send_by_routerid;
-	msg->qwRouterID = qwRouterID;
-	msg->nServiceType = nServerType;
-	msg->nTransferHandleType = nTransferHandleType;
-	msg->nDataSize = dwSize;
-	memcpy(msg->szData, pBuffer, dwSize);
-
-	nRetCode = _send_to_router(msg, dwAllSize);
+	nRetCode = _send_to_router(&msg, sizeof(msg), pVec, nVecCount);
 	LOG_PROCESS_ERROR(nRetCode);
 
 	return TRUE;
 Exit0:
 	return FALSE;
+}
+
+BOOL CRouterClient::send_by_routerid(uint64_t qwRouterID, int32_t nServiceType, const void* pBuffer, size_t dwSize,
+		int32_t nTransferHandleType)
+{
+	int32_t nRetCode = 0;
+	ROUTER_SEND_BY_ROUTERID msg;
+
+	msg.wMsg = router_send_by_routerid;
+	msg.nMsgSrcAddr = m_nTbusID;
+	msg.qwRouterID = qwRouterID;
+	msg.nServiceType = nServiceType;
+	msg.nTransferHandleType = nTransferHandleType;
+
+	nRetCode = _send_to_router(&msg, sizeof(msg), pBuffer, dwSize);
+	LOG_PROCESS_ERROR(nRetCode);
+
+	return TRUE;
+Exit0:
+	return FALSE;
+}
+
+BOOL CRouterClient::sendv_by_routerid(uint64_t qwRouterID, int32_t nServiceType, const struct iovec* pVec, int32_t nVecCount,
+	int32_t nTransferHandleType)
+{
+	int32_t nRetCode = 0;
+	ROUTER_SEND_BY_ROUTERID msg;
+	
+	msg.wMsg = router_send_by_routerid;
+	msg.nMsgSrcAddr = m_nTbusID;
+	msg.qwRouterID = qwRouterID;
+	msg.nServiceType = nServiceType;
+	msg.nTransferHandleType = nTransferHandleType;
+
+	nRetCode = _sendv_to_router(&msg, sizeof(msg), pVec, nVecCount);
+	LOG_PROCESS_ERROR(nRetCode);
+
+	return TRUE;
+Exit0:
+	return FALSE;
+	
 }
 
 BOOL CRouterClient::send_by_objid(uint64_t qwObjID, const void* pBuffer, size_t dwSize)
 {
 	int32_t nRetCode = 0;
-	uint32_t dwAllSize = 0;
-	ROUTER_SEND_BY_OBJID* msg = NULL;
+	ROUTER_SEND_BY_OBJID msg;
 
-	dwAllSize = sizeof(ROUTER_SEND_BY_OBJID) + dwSize;
+	msg.wMsg = router_send_by_objid;
+	msg.nMsgSrcAddr = m_nTbusID;
+	msg.qwObjID = qwObjID;
 
-	msg = (ROUTER_SEND_BY_OBJID*)alloca(dwAllSize);
-	LOG_PROCESS_ERROR(msg);
+	nRetCode = _send_to_router(&msg, sizeof(msg), pBuffer, dwSize);
+	LOG_PROCESS_ERROR(nRetCode);
 
-	msg->wMsg = router_send_by_objid;
-	msg->qwObjID = qwObjID;
-	msg->nDataSize = dwSize;
-	memcpy(msg->szData, pBuffer, dwSize);
+	return TRUE;
+Exit0:
+	return FALSE;
+}
 
-	nRetCode = _send_to_router(msg, dwAllSize);
+BOOL CRouterClient::sendv_by_objid(uint64_t qwObjID, const struct iovec* pVec, int32_t nVecCount)
+{
+	int32_t nRetCode = 0;
+	ROUTER_SEND_BY_OBJID msg;
+
+	msg.wMsg = router_send_by_objid;
+	msg.nMsgSrcAddr = m_nTbusID;
+	msg.qwObjID = qwObjID;
+
+	nRetCode = _send_to_router(&msg, sizeof(msg), pVec, nVecCount);
 	LOG_PROCESS_ERROR(nRetCode);
 
 	return TRUE;
@@ -271,20 +324,30 @@ Exit0:
 BOOL CRouterClient::send_by_load(int32_t nServiceType, const void* pBuffer, size_t dwSize)
 {
 	int32_t nRetCode = 0;
-	uint32_t dwAllSize = 0;
-	ROUTER_SEND_BY_LOAD* msg = NULL;
+	ROUTER_SEND_BY_LOAD msg;
 
-	dwAllSize = sizeof(ROUTER_SEND_BY_LOAD) + dwSize;
-	
-	msg = (ROUTER_SEND_BY_LOAD*)alloca(dwAllSize);
-	LOG_PROCESS_ERROR(msg);
+	msg.wMsg = router_send_by_load;
+	msg.nMsgSrcAddr = m_nTbusID;
+	msg.nServiceType = nServiceType;
 
-	msg->wMsg = router_send_by_load;
-	msg->nServiceType = nServiceType;
-	msg->nDataSize = dwSize;
-	memcpy(msg->szData, pBuffer, dwSize);
+	nRetCode = _send_to_router(&msg, sizeof(msg), pBuffer, dwSize);
+	LOG_PROCESS_ERROR(nRetCode);
 
-	nRetCode = _send_to_router(msg, dwAllSize);
+	return TRUE;
+Exit0:
+	return FALSE;
+}
+
+BOOL CRouterClient::sendv_by_load(int32_t nServiceType, const struct iovec* pVec, int32_t nVecCount)
+{
+	int32_t nRetCode = 0;
+	ROUTER_SEND_BY_LOAD msg;
+
+	msg.wMsg = router_send_by_load;
+	msg.nMsgSrcAddr = m_nTbusID;
+	msg.nServiceType = nServiceType;
+
+	nRetCode = _send_to_router(&msg, sizeof(msg), pVec, nVecCount);
 	LOG_PROCESS_ERROR(nRetCode);
 
 	return TRUE;
@@ -295,18 +358,28 @@ Exit0:
 BOOL CRouterClient::send_to_mgr(const void* pBuffer, size_t dwSize)
 {
 	int32_t nRetCode = 0;
-	uint32_t dwAllSize = 0;
-	ROUTER_SEND_TO_MGR* msg = NULL;
+	ROUTER_SEND_TO_MGR msg;
 
-	dwAllSize = sizeof(ROUTER_SEND_TO_MGR) + dwSize;
-	msg = (ROUTER_SEND_TO_MGR*)alloca(dwAllSize);
-	LOG_PROCESS_ERROR(msg);
+	msg.wMsg = router_send_to_mgr;
+	msg.nMsgSrcAddr = m_nTbusID;
 
-	msg->wMsg = router_send_to_mgr;
-	msg->nDataSize = dwSize;
-	memcpy(msg->szData, pBuffer, dwSize);
+	nRetCode = _send_to_router(&msg, sizeof(msg), pBuffer, dwSize);
+	LOG_PROCESS_ERROR(nRetCode);
 
-	nRetCode = _send_to_router(msg, dwAllSize);
+	return TRUE;
+Exit0:
+	return FALSE;
+}
+
+BOOL CRouterClient::sendv_to_mgr(const struct iovec* pVec, int32_t nVecCount)
+{
+	int32_t nRetCode = 0;
+	ROUTER_SEND_TO_MGR msg;
+
+	msg.wMsg = router_send_to_mgr;
+	msg.nMsgSrcAddr = m_nTbusID;
+
+	nRetCode = _send_to_router(&msg, sizeof(msg), pVec, nVecCount);
 	LOG_PROCESS_ERROR(nRetCode);
 
 	return TRUE;
@@ -324,6 +397,69 @@ BOOL CRouterClient::_send_to_router(const void* pBuffer, size_t dwSize)
 	return TRUE;
 Exit0:
 	CRI("tbus send failed, ret code %d", nRetCode);
+	return FALSE;
+}
+	
+BOOL CRouterClient::_send_to_router(const void* pHeader, int32_t nHeaderSize, const void* pMsgData, int32_t nDataSize)
+{
+	int32_t nRetCode = 0;
+	struct iovec vecs[2];
+
+	LOG_PROCESS_ERROR(pHeader);
+	
+	vecs[0].iov_len = nHeaderSize;
+	vecs[0].iov_base = (void*)pHeader;
+	vecs[1].iov_len = nDataSize;
+	vecs[1].iov_base = (void*)pMsgData;
+
+	nRetCode = _sendv_to_router(vecs, 2);
+	LOG_PROCESS_ERROR(nRetCode);
+
+	return TRUE;
+Exit0:
+	return FALSE;
+}
+	
+BOOL CRouterClient::_sendv_to_router(const void* pHeader, int32_t nHeaderSize, const struct iovec* pVec, int32_t nVecCount)
+{
+	int32_t nRetCode = 0;
+	struct iovec* pNewVec = NULL; 
+
+	LOG_PROCESS_ERROR(pHeader);
+	LOG_PROCESS_ERROR(pVec);
+	LOG_PROCESS_ERROR(nVecCount > 0);
+	
+	pNewVec = (struct iovec*)alloca(sizeof(struct iovec) * (nVecCount + 1));
+	LOG_PROCESS_ERROR(pNewVec);
+
+	pNewVec[0].iov_base = (void*)pHeader;
+	pNewVec[0].iov_len = nHeaderSize;
+
+	for (int32_t i = 0; i < nVecCount; i++)
+	{
+		pNewVec[i + 1] = pVec[i];
+	}
+
+	nRetCode = _sendv_to_router(pNewVec, nVecCount + 1);
+	LOG_PROCESS_ERROR(nRetCode);
+
+	return TRUE;
+Exit0:
+	return FALSE;
+}
+	
+BOOL CRouterClient::_sendv_to_router(const struct iovec* pVec, int32_t nVecCount)
+{
+	int32_t nRetCode = 0;
+
+	LOG_PROCESS_ERROR(pVec);
+	LOG_PROCESS_ERROR(nVecCount > 0);
+
+	nRetCode = tbus_sendv(m_nTbusHandle, &m_nTbusID, &m_nRouterTbusID, pVec, nVecCount, 0);
+	LOG_PROCESS_ERROR(nRetCode == TBUS_SUCCESS);
+
+	return TRUE;
+Exit0:
 	return FALSE;
 }
 
@@ -550,3 +686,4 @@ void CRouterClient::get_service_info(int32_t nServiceType)
 Exit0:
 	return;
 }
+	

@@ -6,26 +6,28 @@
 
 #include "protocol/proto_head.pb.h"
 #include "protocol/proto_msgid.pb.h"
+#include "protocol/internal_message_header.h"
 
 #include "tbus/tbus_wrapper.h"
+#include "app/server_app.h"
+
+#include "router_client/router_client_api.h"
 
 #define MAX_MESSAGE_ID			(65535)
 #define MAX_CONN_EVENT_COUNT	(64)
-
-enum MSG_TYPE_DEF 
-{
-	mtdInvalid,
-
-	mtdClient,
-	mtdServer,
-
-	mtdTotal
-};
+#define MAX_SS_MSG_LEN			(256 * 1024)
 
 static CONN_MSG_HANDLER g_ConnMsgHandler[MAX_CONN_EVENT_COUNT];
 static CLIENT_MSG_HANDLER g_ClientMsgHandler[MAX_MESSAGE_ID];
 static SERVER_MSG_HANDLER g_ServerMsgHandler[MAX_MESSAGE_ID];
 static Message* g_CacheMsgInst[MAX_MESSAGE_ID];
+
+#define INIT_INTERNAL_MSG_VEC()					\
+	INTERNAL_MESSAGE_HEADER stHeader; struct iovec vecs[2];				\
+	stHeader.wMsg = nMsgID;	 stHeader.nMsgSrcAddr = mg_get_tbus_addr();	\
+	vecs[0].iov_base = (void*)(&stHeader);	vecs[0].iov_len = sizeof(stHeader);	\
+	vecs[1].iov_base = (void*)pBuffer;		vecs[1].iov_len = dwSize;
+	
 
 static Message* get_msg_inst(int32_t nMsgID)
 {
@@ -59,7 +61,7 @@ Exit0:
 	return pMessage;
 }
 
-static BOOL pack_msg(int32_t nMsgType, char* pBuff, int32_t* nSize, const Message* pHead, const Message* pMsg)
+static BOOL pack_msg(char* pBuff, int32_t* nSize, const Message* pHead, const Message* pMsg)
 {
 	int32_t nRetCode = 0;
 	int32_t nHeadLen = 0;
@@ -89,40 +91,24 @@ Exit0:
 }
 
 
-static BOOL unpack_msg(int32_t nMsgType, const char* pBuff, int32_t nSize, Message* pHead, Message** pMsg)
+static BOOL unpack_msg(const char* pBuff, int32_t nSize, Message* pHead, Message** pMsg)
 {
 	int32_t nRetCode = 0;
 	char byHeadlen = 0;
 	int32_t nBodyLen = 0;
 	int32_t nMsgID = 0;
 	Message* pMsgInst = NULL;
+	CS_HEAD* pCSHead = (CS_HEAD*)pHead;
 
 	LOG_PROCESS_ERROR(pHead);
 	LOG_PROCESS_ERROR(nSize > 0);
 
 	byHeadlen = *(char*)pBuff;
-	
+
 	nRetCode = pHead->ParseFromArray(pBuff + 1, byHeadlen);
 	LOG_PROCESS_ERROR(nRetCode);
-
-	switch(nMsgType)
-	{
-	case mtdClient:
-	{
-		CS_HEAD* pCSHead = (CS_HEAD*)pHead;
-		nMsgID = pCSHead->msgid();
-		break;
-	}
-	case mtdServer:
-	{
-		SS_HEAD* pSSHead = (SS_HEAD*)pHead;
-		nMsgID = pSSHead->msgid();
-		break;
-	}
-	default:
-		LOG_PROCESS_ERROR(FALSE);
-	}
-		
+	
+	nMsgID = pCSHead->msgid();
 	pMsgInst = get_msg_inst(nMsgID);
 	LOG_PROCESS_ERROR(pMsgInst);
 
@@ -146,7 +132,7 @@ static void recv_client_msg_proc(int32_t nSrcAddr, TFRAMEHEAD* rFramHead, const 
 	LOG_PROCESS_ERROR(pBuff);
 	LOG_PROCESS_ERROR(nSize > 0);
 
-	nRetCode = unpack_msg(mtdClient, pBuff, nSize, &CsHead, &pMsg);
+	nRetCode = unpack_msg(pBuff, nSize, &CsHead, &pMsg);
 	LOG_PROCESS_ERROR(nRetCode);
 	LOG_PROCESS_ERROR_DETAIL(g_ClientMsgHandler[CsHead.msgid()], "client msg is not registerd, msgid: %d", CsHead.msgid());
 
@@ -186,17 +172,14 @@ Exit0:
 BOOL recv_server_msg_proc(int32_t nSrcAddr, const char* pBuff, int32_t nSize)
 {
 	int32_t nRetCode = 0;
-	SS_HEAD SSHead;
-	Message* pMsg = NULL;
+	INTERNAL_MESSAGE_HEADER* pHeader = (INTERNAL_MESSAGE_HEADER*)pBuff;
 
 	LOG_PROCESS_ERROR(pBuff);
 	LOG_PROCESS_ERROR(nSize > 0);
+	LOG_PROCESS_ERROR(pHeader->wMsg >= internal_message_begin && pHeader->wMsg <= internal_message_end);
+	LOG_PROCESS_ERROR(g_ServerMsgHandler[pHeader->wMsg]);
 
-	nRetCode = unpack_msg(mtdServer, pBuff, nSize, &SSHead, &pMsg);
-	LOG_PROCESS_ERROR(nRetCode);
-	LOG_PROCESS_ERROR_DETAIL(g_ServerMsgHandler[SSHead.msgid()], "client msg is not registerd, msgid: %d", SSHead.msgid());
-
-	g_ServerMsgHandler[SSHead.msgid()](nSrcAddr, &SSHead, pMsg);
+	g_ServerMsgHandler[pHeader->wMsg](pHeader->nMsgSrcAddr, pBuff + sizeof(INTERNAL_MESSAGE_HEADER), nSize - sizeof(INTERNAL_MESSAGE_HEADER));
 
 	return TRUE;
 Exit0:
@@ -255,8 +238,93 @@ BOOL register_server_msg_handler(int32_t nSSMsgID, SERVER_MSG_HANDLER pMsgHandle
 {
 	LOG_PROCESS_ERROR(nSSMsgID > 0 && nSSMsgID < MAX_MESSAGE_ID);
 	LOG_PROCESS_ERROR(g_ServerMsgHandler[nSSMsgID] == NULL);
+	LOG_PROCESS_ERROR(pMsgHandler);
 
 	g_ServerMsgHandler[nSSMsgID] = pMsgHandler;
+
+	return TRUE;
+Exit0:
+	return FALSE;
+}
+
+BOOL send_server_msg_by_routerid(uint64_t qwRouterID, int32_t nServiceType, int32_t nMsgID, const void* pBuffer, size_t dwSize)
+{
+	int32_t nRetCode = 0;
+
+	INIT_INTERNAL_MSG_VEC();
+
+	nRetCode = CRouterClient::instance().sendv_by_routerid(qwRouterID, nServiceType, vecs, 2);
+	LOG_PROCESS_ERROR(nRetCode);
+
+	return TRUE;
+Exit0:
+	return FALSE;
+}
+
+BOOL send_server_msg_by_service_type(int32_t nServiceType, int32_t nMsgID, const void* pBuffer, size_t dwSize)
+{
+	int32_t nRetCode = 0;
+
+	INIT_INTERNAL_MSG_VEC();
+
+	nRetCode = CRouterClient::instance().send_by_service_type(nServiceType, vecs, 2);
+	LOG_PROCESS_ERROR(nRetCode);
+
+	return TRUE;
+Exit0:
+	return FALSE;
+}
+
+BOOL send_server_msg_by_service_inst(int32_t nServiceType, int32_t nInstID, int32_t nMsgID, const void* pBuffer, size_t dwSize)
+{
+	int32_t nRetCode = 0;
+
+	INIT_INTERNAL_MSG_VEC();
+
+	nRetCode = CRouterClient::instance().send_by_service_inst(nServiceType, nInstID, vecs, 2);
+	LOG_PROCESS_ERROR(nRetCode);
+
+	return TRUE;
+Exit0:
+	return FALSE;
+}
+
+BOOL send_server_msg_by_addr(int32_t nDstServerAddr, int32_t nMsgID, const void* pBuffer, size_t dwSize)
+{
+	int32_t nRetCode = 0;
+
+	INIT_INTERNAL_MSG_VEC();
+
+	nRetCode = CRouterClient::instance().send_by_addr(nDstServerAddr, vecs, 2);
+	LOG_PROCESS_ERROR(nRetCode);
+
+	return TRUE;
+Exit0:
+	return FALSE;
+}
+
+BOOL send_server_msg_by_objid(uint64_t qwObjID, int32_t nMsgID, const void* pBuffer, size_t dwSize)
+{
+	int32_t nRetCode = 0;
+
+	INIT_INTERNAL_MSG_VEC();
+
+	nRetCode = CRouterClient::instance().send_by_objid(qwObjID, vecs, 2);
+	LOG_PROCESS_ERROR(nRetCode);
+
+	return TRUE;
+Exit0:
+	return FALSE;
+}
+
+BOOL send_server_msg_by_load(int32_t nServiceType, int32_t nMsgID, const void* pBuffer, size_t dwSize)
+{
+	int32_t nRetCode = 0;
+
+	INIT_INTERNAL_MSG_VEC();
+
+	nRetCode = CRouterClient::instance().send_by_load(nServiceType, vecs, 2);
+	LOG_PROCESS_ERROR(nRetCode);
 
 	return TRUE;
 Exit0:

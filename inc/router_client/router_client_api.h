@@ -37,11 +37,24 @@ public:
 	BOOL send_by_objid(uint64_t qwObjID, const void* pBuffer, size_t dwSize);
 	BOOL send_by_load(int32_t nServiceType, const void* pBuffer, size_t dwSize);
 	BOOL send_to_mgr(const void* pBuffer, size_t dwSize); 
+	
+	BOOL sendv_by_routerid(uint64_t qwRouterID, int32_t nServiceType, const struct iovec* pVec, int32_t nVecCount, 
+							int32_t nTransferHandleType = rtnhtCache);
+	BOOL sendv_by_service_type(int32_t nServiceType, const struct iovec* pVec, int32_t nVecCount);
+	BOOL sendv_by_service_inst(int32_t nServiceType, int32_t nInstID, const struct iovec* pVec, int32_t nVecCount);
+	BOOL sendv_by_addr(int32_t nDstServerAddr, const struct iovec* pVec, int32_t nVecCount);
+	BOOL sendv_by_objid(uint64_t qwObjID, const struct iovec* pVec, int32_t nVecCount);
+	BOOL sendv_by_load(int32_t nServiceType, const struct iovec* pVec, int32_t nVecCount);
+	BOOL sendv_to_mgr(const struct iovec* pVec, int32_t nVecCount); 
 
 private:
 	BOOL _init_internal_msgid(void);
 
 	BOOL _send_to_router(const void* pBuffer, size_t dwSize);
+	BOOL _send_to_router(const void* pHeader, int32_t nHeaderSize, const void* pMsgData, int32_t nDataSize);
+	BOOL _sendv_to_router(const void* pHeader, int32_t nHeaderSize, const struct iovec* pVec, int32_t nVecCount);
+	BOOL _sendv_to_router(const struct iovec* pVec, int32_t nVecCount);
+
 	BOOL _send_register(BOOL bResume);
 	BOOL _send_heart_beat(void);
 	BOOL _send_load_report(void);

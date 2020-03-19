@@ -22,6 +22,15 @@
 
 <Channels>
     <Priority>8</Priority>
+    <Address>10.0.5.1</Address>
+    <Address>10.0.3.1</Address>
+    <SendSize>4096000</SendSize>
+    <RecvSize>4096000</RecvSize>
+    <Desc>gs_to_router</Desc>
+</Channels>
+
+<Channels>
+    <Priority>8</Priority>
     <Address>10.0.3.1</Address>
     <Address>10.0.4.1</Address>
     <SendSize>4096000</SendSize>
