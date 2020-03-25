@@ -6,6 +6,7 @@
 
 #include "protocol/proto_head.pb.h"
 #include "protocol/proto_msgid.pb.h"
+#include "protocol/external_message.pb.h"
 #include "protocol/internal_message_header.h"
 
 #include "tbus/tbus_wrapper.h"
@@ -53,7 +54,7 @@ static Message* get_msg_inst(int32_t nMsgID)
     LOG_PROCESS_ERROR(pType);
 
     pMessage = pType->New();
-    LOG_PROCESS_ERROR(msg);
+    LOG_PROCESS_ERROR(pMessage);
 
 	g_CacheMsgInst[nMsgID] = pMessage;
 
@@ -189,14 +190,14 @@ Exit0:
 BOOL send_conn_msg(int32_t nDstAddr, TFRAMEHEAD * pFrameHead, const char * pBuff, int32_t nBuffLen)
 {
 	int32_t nRetCode = 0;
-	char szHeadBuff[sizeof(TFRAMEHEAD)];
+	char szHeadBuff[sizeof(TFRAMEHEAD) * 2];
 	int32_t nHeadLen = sizeof(szHeadBuff);
 	struct iovec vecs[2];
 
 	LOG_PROCESS_ERROR(pFrameHead);
 
 	nRetCode = tconnapi_encode(szHeadBuff, &nHeadLen, pFrameHead);
-	LOG_PROCESS_ERROR(nRetCode);
+	LOG_PROCESS_ERROR(nRetCode == 0);
 
 	vecs[0].iov_len = nHeadLen;
 	vecs[0].iov_base = szHeadBuff;
@@ -212,7 +213,7 @@ Exit0:
 
 BOOL register_conn_msg_handler(int32_t nEventType, CONN_MSG_HANDLER pMsgHandler)
 {
-	LOG_PROCESS_ERROR(nEventType > 0 && nEventType < MAX_CONN_EVENT_COUNT);
+	LOG_PROCESS_ERROR(nEventType >= 0 && nEventType < MAX_CONN_EVENT_COUNT);
 	LOG_PROCESS_ERROR(g_ConnMsgHandler[nEventType] == NULL);
 
 	g_ConnMsgHandler[nEventType] = pMsgHandler;

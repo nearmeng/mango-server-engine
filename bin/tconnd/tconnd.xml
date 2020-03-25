@@ -34,7 +34,7 @@
         <Count>1 </Count>
         <Listeners>
     	    <Name>default</Name>
-    	    <Url>tcp://0.0.0.0:7001?reuse=1</Url>
+    	    <Url>tcp://0.0.0.0:8888?reuse=1</Url>
             <SendBuff>65536 </SendBuff>
             <RecvBuff>8192 </RecvBuff>
             <MaxIdle>300</MaxIdle>

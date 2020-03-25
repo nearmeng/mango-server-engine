@@ -21,9 +21,13 @@ enum tagTSF4G_SEC_AUTH
     TSF4G_SEC_AUTH_QQUNIFIED = 3, 
     TSF4G_SEC_AUTH_AP = 4, 	/* 基于auth proxy的鉴权模式 */
     TSF4G_SEC_AUTH_PT = 5, 	/* 基于ptlogin的鉴权模式 */
+    TSF4G_SEC_AUTH_ITOP = 4096, 	/* ITOP鉴权 */
     TSF4G_SEC_AUTH_WX_O2_CODE = 4097, 	/* 微信 OAuth 2.0 CODE */
     TSF4G_SEC_AUTH_WX_O2_RTK = 4098, 	/* 微信 OAuth 2.0 refresh token */
     TSF4G_SEC_AUTH_QQ_O2_ATK = 4099, 	/* qq OAuth 2.0 access token */
+    TSF4G_SEC_AUTH_PC = 4100, 	/* PC鉴权 */
+    TSF4G_SEC_AUTH_WEGAME = 4101, 	/* wegame auth type */
+    TSF4G_SEC_AUTH_PC_MSDK_V5 = 4102, 	/* PC V5 */
     TSF4G_SEC_AUTH_QQ_CT_LOGIN = 8193, 	/* 特指走APS的QQ CTLOGIN(也就是TSF4G_SEC_AUTH_QQUNIFIED)鉴权模式 */
     TSF4G_SEC_AUTH_NULL = 65535, 
 };

@@ -1,0 +1,6 @@
+
+message CS_MESSAGE_LOGIN
+{
+	optional	int32	userid		=	1;
+	optional	string	password	=	2;
+}

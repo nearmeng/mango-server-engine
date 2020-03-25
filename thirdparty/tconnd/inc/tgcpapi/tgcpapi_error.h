@@ -58,7 +58,16 @@ typedef enum {
     TGCP_ERR_CREATE_SIG_FAIL            = -53,
     TGCP_ERR_INVLD_ROUTE_TYPE           = -54,
     TGCP_ERR_INVLD_PROTOCOL_VERSION     = -55,
-    TGCP_ERR_MERGE_PACKET_TOO_BIG       = -56,//收到的合并包太大      
+    //[-56, -65] is reserved by lwip tgcp api
+    TGCP_ERR_NOT_SUPPORT				= -56,
+    TGCP_ERR_ALREADY_INITED				= -57,
+    TGCP_ERR_FAILED_TO_ALLOCATE_SOCKET  = -58,
+    TGCP_ERR_FAILED_TO_CONNECT_SOCKET   = -59,
+    TGCP_ERR_INVALID_SOCKET             = -60,
+    TGCP_ERR_FAILED_TO_SEND_UDP			= -61,
+
+    TGCP_ERR_MERGE_PACKET_TOO_BIG       = -66,//收到的合并包太大
+    TGCP_HAVE_RECV_GCP_INNER_MSG        = -67,//收到GCP协议内部消息，压测工具在收到这个返回码时要尝试继续收包
 } TGCP_ERROR;
 
 

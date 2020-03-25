@@ -4,6 +4,8 @@ enum CS_MESSAGE_ID
 {
 	cs_message_begin	=	0;
 
+	cs_message_login	=	1;
+
 	cs_message_end		=	0xFFFF;
 }
 

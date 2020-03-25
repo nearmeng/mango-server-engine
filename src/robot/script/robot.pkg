@@ -1,0 +1,29 @@
+$hfile "../robot_user.h"
+
+class CRobotUser
+{
+public:
+	
+	BOOL init(const char* pcszName);
+	BOOL fini(void);
+
+	BOOL connect(const char* pcszSvrUrl);
+	BOOL disconnect(void);
+
+	BOOL send(int32_t nMsgId, lua_State* L);
+	BOOL set_lua_wait_msgid(int32_t nMsgId1, int32_t nMsgId2);
+	
+};
+
+class CRobotUserMgr
+{
+public:
+
+    BOOL init(void);
+    BOOL fini(void);
+
+    inline static CRobotUserMgr& instance(void);
+
+    CRobotUser* find_user(int32_t nUserID);
+	CRobotUser* rand_user();
+};

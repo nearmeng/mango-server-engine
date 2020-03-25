@@ -8,11 +8,11 @@
 
 
 #ifndef TDR_METALIB_TFRAMEHEAD_VERSION 
-#define TDR_METALIB_TFRAMEHEAD_VERSION 	28 /*version of metalib*/
+#define TDR_METALIB_TFRAMEHEAD_VERSION 	32 /*version of metalib*/
 #endif
 
 #ifndef TDR_METALIB_TFRAMEHEAD_HASH 
-#define TDR_METALIB_TFRAMEHEAD_HASH 	"8a4926faddca02b32f51b378014cc339" /*hash of metalib*/
+#define TDR_METALIB_TFRAMEHEAD_HASH 	"5d157b55ca7438485c0e6d7d750208c8" /*hash of metalib*/
 #endif
 
 /*   Define c types.   */
@@ -101,10 +101,14 @@ enum tagTFRAMEHEAD_CMD_ID
     TFRAMEHEAD_CMD_MULTICAST_ADD_IDENT_REQ = 40, 	/* 往组播组添加连接请求 */
     TFRAMEHEAD_CMD_MULTICAST_ADD_IDENT_RESP = 41, 	/* 往组播组添加连接响应 */
     TFRAMEHEAD_CMD_MULTICAST_DELIVER_MSG_REQ = 42, 	/* 发送组播消息 */
-    TFRAMEHEAD_CMD_MULTICAST_QUERY_IDENT_REQ = 43, 	/* 查询某个组内所有连接请求 */
-    TFRAMEHEAD_CMD_MULTICAST_QUERY_IDENT_RESP = 44, 	/* 查询某个组内所有连接响应 */
+    TFRAMEHEAD_CMD_MULTICAST_QUERY_IDENT_REQ = 43, 	/* 查询某个组内所有连接请求,即将废弃,集群化模式下不支持改请求 */
+    TFRAMEHEAD_CMD_MULTICAST_QUERY_IDENT_RESP = 44, 	/* 查询某个组内所有连接响应,即将废弃,集群化模式下不支持该请求 */
     TFRAMEHEAD_CMD_BROADCAST = 45, 	/* 广播包，下行 */
     TFRAMEHEAD_CMD_BROADCAST_RSP = 46, 	/* 广播应答包，用于回应广播包是否发送成功，上行 */
+    TFRAMEHEAD_CMD_MULTICAST_QUERY_IDENT_COUNT_REQ = 47, 	/* 查询某个组内所有连接请求,支持集群化模式和tbus模式 */
+    TFRAMEHEAD_CMD_MULTICAST_QUERY_IDENT_COUNT_RESP = 48, 	/* 查询某个组内所有连接响应,支持集群化模式和tbus模式 */
+    TFRAMEHEAD_CMD_NOTIFY_OVERLOAD = 49, 	/* 集群化模式下，gamesvr通知tconnd已过载，tconnd收到此消息时，新的请求不会发给该svr，已有连接会继续发送消息 */
+    TFRAMEHEAD_CMD_NOTIFY_SEND_BUFFER_EXCEED = 50, 	/* lwip mode，tconnd 通知gamesvr发送缓冲区达到使用比例上限(可配置) */
 };
 
 /* TCONNAPI_AUTH*/
@@ -125,6 +129,7 @@ enum tagTCONNAPI_ACCOUNT
     TCONNAPI_ACCOUNT_QQ_UIN_PTLOGIN = 2, 
     TCONNAPI_ACCOUNT_WX_OPENID = 4098, 
     TCONNAPI_ACCOUNT_QQ_OPENID = 4099, 
+    TCONNAPI_ACCOUNT_QQ_OPENID_HL = 4100, 
     TCONNAPI_ACCOUNT_IOS_GUEST = 8193, 	/* IOS游客模式 */
     TCONNAPI_ACCOUNT_FACEBOOK = 32769, 
     TCONNAPI_ACCOUNT_GOOGLEPLAY = 32770, 
@@ -153,6 +158,13 @@ enum tagTCONNAPI_CLIENT_TYPE
     TCONNAPI_CLIENT_TYPE_IOS = 102, 	/* 移动终端ios */
 };
 
+/* TCONNAPI_LISTEN_TYPE*/
+enum tagTCONNAPI_LISTEN_TYPE 
+{
+    TCONNAPI_LISTEN_TYPE_TCP = 0, 	/* TCP */
+    TCONNAPI_LISTEN_TYPE_LWIP = 1, 	/* LWIP */
+};
+
 /* TFRAMEHEAD_CLUSTER_SETROUTING_TYPE*/
 enum tagTFRAMEHEAD_CLUSTER_SETROUTING_TYPE 
 {
@@ -168,6 +180,8 @@ enum tagTFRAMEHEAD_CLUSTER_SETROUTING_TYPE
 #define MAX_BROADCAST_ALL_MSG_LEN                        	10240 	/* 一个广播消息包的最大大小 */
 #define MAX_BROADCAST_ALL_MSG_NUM                        	100 	/* 广播消息包缓冲区能容纳的广播消息包的最大个数 */
 #define MAX_CLIENT_NUM_ONCE_SEND                         	100 	/* 一次给多少个客户端发送广播包 */
+#define MAX_MULTICAST_MSG_LEN                            	10240 	/* 一个组播消息包的最大大小 */
+#define MAX_MULTICAST_MSG_NUM                            	1024 	/* 组播消息包缓冲区能容纳的组播消息包的最大个数 */
 
 /* TFRAMEHEAD_STOP_REASON*/
 enum tagTFRAMEHEAD_STOP_REASON 
@@ -175,7 +189,7 @@ enum tagTFRAMEHEAD_STOP_REASON
     TFRAMEHEAD_REASON_NONE = 0, 	/* success */
     TFRAMEHEAD_REASON_IDLE_CLOSE = 1, 	/* 连接空闲关闭 */
     TFRAMEHEAD_REASON_PEER_CLOSE = 2, 	/* 客户端通过关闭SOCKET主动关闭 */
-    TFRAMEHEAD_REASON_NETWORK_FAIL = 3, 	/* 网络异常关闭，很有可能是客户端崩溃导致 */
+    TFRAMEHEAD_REASON_NETWORK_FAIL = 3, 	/* 网络异常关闭，也有可能是客户端崩溃导致 */
     TFRAMEHEAD_REASON_BAD_PKGLEN = 4, 	/* 请求包长度异常关闭 */
     TFRAMEHEAD_REASON_EXCEED_LIMIT = 5, 	/* 客户端发送速度超过限制 */
     TFRAMEHEAD_REASON_TCONND_SHUTDOWN = 6, 	/* tconnd重启 */
@@ -208,7 +222,8 @@ enum tagTFRAMEHEAD_STOP_REASON
     TFRAMEHEAD_REASON_CLUSTER_PUSH_QUEUE_FAILED = 33, 	/* 集群化模式下，入队列失败 */
     TFRAMEHEAD_REASON_AUTH_PARAM_INVALID_IN_REQUEST = 34, 	/* websocket模式下，客户端鉴权请求参数缺失或非法 */
     TFRAMEHEAD_REASON_GET_CLUSTER_ROUTE_FAILED = 35, 	/* websocket集群模式下，获取路由信息失败 */
-    TFRAMEHEAD_REASON_COUNT = 36, 	/* 加错误码后记得改内部和外部两个tconnapi.cpp里的tconnd_close_string[] */
+    TFRAMEHEAD_REASON_CLOSE_DETECT = 36, 	/* 探测包正常关闭 */
+    TFRAMEHEAD_REASON_COUNT = 37, 	/* 加错误码后记得改内部和外部两个tconnapi.cpp里的tconnd_close_string[] */
 };
 
 /* TFRAMEHEAD_SETROUTING_RESULT*/
@@ -237,6 +252,8 @@ enum tagTCONND_MULTICAST_RESULT
     MULTICAST_RESULT_SESSION_CONNECTION_NOT_MATCH = 9, 	/* 所在的会话和连接id不匹配 */
     MULTICAST_RESULT_SESSION_NOT_ACTIVE = 10, 	/* 会话不是active状态的 */
     MULTICAST_RESULT_CONN_GROUP_EXCEED = 11, 	/* 一个连接最多可以放入128个组播组 */
+    MULTICAST_RESULT_IDENTS_EXCEED = 12, 	/* 查询最多512个成员 */
+    MULTICAST_RESULT_QUEYR_IDENT_NOT_SUPPORTED_IN_CLUSTER_MODE = 13, 	/* 集群化模式下不支持query_ident只支持query_ident_count */
     MULTICAST_RESULT_SYS_ERR = 20, 	/* 内部未知错误 */
 };
 
@@ -264,6 +281,7 @@ enum tagTFRAMEHEAD_RELAYFLAG
 #define TFRAMEHEAD_CONNECTKEY_LEN                        	16
 #define TFRAMEHEAD_IDENTITY_LEN                          	16
 #define TFRAMEHEAD_MAX_SIG_LEN                           	1024
+#define TFRAMEHEAD_MAX_SIG_LEN_BIG                       	4096
 #define TFRAMEHEAD_MAX_ROUTING_ARGS_LEN                  	128
 
 /* TFRAMEHEAD_FLAG*/
@@ -292,6 +310,8 @@ enum tagTFRAMEHEAD_ID
 #define TWEB_ACCOUNT_LEN                                 	31 	/* 帐户名称，留了'\0'的位置。 */
 #define TWEB_TOKEN_LEN                                   	201 	/* Token长度，留了一个'\0'的位置。 */
 #define TWEB_PASSPORT_LEN                                	20 	/* 增值位，20byte */
+#define TWEB_OPENID_LEN                                  	128 	/* qq互联openid长度 */
+#define TWEB_ACCESS_TOKEN_LEN                            	256 	/* qq互联accesstoken长度 */
 #define TCONND_MULTICAST_GROUPNAME_LEN                   	64 	/* 组播组名字最大允许长度64字节 */
 
 /* TWEB_USERINFO_TYPE*/
@@ -300,6 +320,7 @@ enum tagTWEB_USERINFO_TYPE
     TWEB_USER_UNKNOWN = 0, 	/* 未知状态，用于初始默认值 */
     TWEB_USER_QQSIMPLE = 1, 
     TWEB_USER_COMMON = 2, 
+    TWEB_USER_QQ_OPEN = 3, 
 };
 #define TFRAMEHEAD_MAX_ID_LENGTH                         	256 	/* 字符串账号最大长度 */
 #define TCONND_WAP_MAX_KEY_LEN                           	30
@@ -323,6 +344,10 @@ typedef struct tagQQUserSimp                                       	*LPQQUSERSIM
 struct tagCommUser;
 typedef struct tagCommUser                                         	COMMUSER;
 typedef struct tagCommUser                                         	*LPCOMMUSER;
+
+struct tagQQOpenUser;
+typedef struct tagQQOpenUser                                       	QQOPENUSER;
+typedef struct tagQQOpenUser                                       	*LPQQOPENUSER;
 
 union tagWebUserInfo;
 typedef union  tagWebUserInfo                                      	WEBUSERINFO;
@@ -400,6 +425,10 @@ struct tagTFrameIdent;
 typedef struct tagTFrameIdent                                      	TFRAMEIDENT;
 typedef struct tagTFrameIdent                                      	*LPTFRAMEIDENT;
 
+struct tagLwipDataInfo;
+typedef struct tagLwipDataInfo                                     	LWIPDATAINFO;
+typedef struct tagLwipDataInfo                                     	*LPLWIPDATAINFO;
+
 struct tagTFrameCmdInProc;
 typedef struct tagTFrameCmdInProc                                  	TFRAMECMDINPROC;
 typedef struct tagTFrameCmdInProc                                  	*LPTFRAMECMDINPROC;
@@ -435,6 +464,14 @@ typedef struct tagTFrameCmdMultiCastQueryIdentReq                  	*LPTFRAMECMD
 struct tagTFrameCmdMultiCastQueryIdentResp;
 typedef struct tagTFrameCmdMultiCastQueryIdentResp                 	TFRAMECMDMULTICASTQUERYIDENTRESP;
 typedef struct tagTFrameCmdMultiCastQueryIdentResp                 	*LPTFRAMECMDMULTICASTQUERYIDENTRESP;
+
+struct tagTFrameCmdMultiCastQueryIdentCountReq;
+typedef struct tagTFrameCmdMultiCastQueryIdentCountReq             	TFRAMECMDMULTICASTQUERYIDENTCOUNTREQ;
+typedef struct tagTFrameCmdMultiCastQueryIdentCountReq             	*LPTFRAMECMDMULTICASTQUERYIDENTCOUNTREQ;
+
+struct tagTFrameCmdMultiCastQueryIdentCountResp;
+typedef struct tagTFrameCmdMultiCastQueryIdentCountResp            	TFRAMECMDMULTICASTQUERYIDENTCOUNTRESP;
+typedef struct tagTFrameCmdMultiCastQueryIdentCountResp            	*LPTFRAMECMDMULTICASTQUERYIDENTCOUNTRESP;
 
 struct tagTFrameCmdMultiCastDeliverMsgReq;
 typedef struct tagTFrameCmdMultiCastDeliverMsgReq                  	TFRAMECMDMULTICASTDELIVERMSGREQ;
@@ -524,6 +561,14 @@ struct tagTFrameCmdTconndProbe;
 typedef struct tagTFrameCmdTconndProbe                             	TFRAMECMDTCONNDPROBE;
 typedef struct tagTFrameCmdTconndProbe                             	*LPTFRAMECMDTCONNDPROBE;
 
+struct tagTFrameCmdNotifyOverload;
+typedef struct tagTFrameCmdNotifyOverload                          	TFRAMECMDNOTIFYOVERLOAD;
+typedef struct tagTFrameCmdNotifyOverload                          	*LPTFRAMECMDNOTIFYOVERLOAD;
+
+struct tagTFrameCmdNotifySendBuffExceed;
+typedef struct tagTFrameCmdNotifySendBuffExceed                    	TFRAMECMDNOTIFYSENDBUFFEXCEED;
+typedef struct tagTFrameCmdNotifySendBuffExceed                    	*LPTFRAMECMDNOTIFYSENDBUFFEXCEED;
+
 union tagTFrameCmdData;
 typedef union  tagTFrameCmdData                                    	TFRAMECMDDATA;
 typedef union  tagTFrameCmdData                                    	*LPTFRAMECMDDATA;
@@ -547,7 +592,7 @@ typedef struct tagTFrameHead                                       	*LPTFRAMEHEA
 struct tagTFRAMEHEADAuthData
 {
     uint16_t wAuthLen;                               
-    uint8_t szAuthInfo[TFRAMEHEAD_MAX_SIG_LEN];      
+    uint8_t szAuthInfo[TFRAMEHEAD_MAX_SIG_LEN_BIG];  
 };
 
 /* QQ用户的识别信息，简单版 */
@@ -565,10 +610,21 @@ struct tagCommUser
     char szToken[TWEB_TOKEN_LEN];                     	/*   用户凭据，主要用于验证用户登录状态和身份 */
 };
 
+/* QQ开放平台帐号 */
+struct tagQQOpenUser
+{
+    char szOpenID[TWEB_OPENID_LEN];                   	/*   openid */
+    char szToken[TWEB_ACCESS_TOKEN_LEN];              	/*   access token */
+    uint64_t ullUid;                                  	/*   在打开Tconnd帐号映射功能时，赋值为映射后的ID */
+    uint32_t dwReserve1;                              	/*   保留字段1 */
+    uint64_t ullReserve2;                             	/*   保留字段2 */
+};
+
 union tagWebUserInfo
 {
     QQUSERSIMP stQQUserSimple;                        	/* TWEB_USER_QQSIMPLE,   */
     COMMUSER stCommonUser;                            	/* TWEB_USER_COMMON,   */
+    QQOPENUSER stQQOpen;                              	/* TWEB_USER_QQ_OPEN,   */
 };
 
 /* ID */
@@ -636,9 +692,10 @@ struct tagTWapDownload2
 
 struct tagTIPInfo
 {
-    int16_t nFamily;                                 
+    int16_t nFamily;                                  	/*   PF_INET表示ipv4, PF_INET6表示ipv6 */
     uint16_t wPort;                                  
     tdr_ip_t ulIp;                                   
+    uint32_t ipv6_padding[3];                         	/*  Ver.31 ipv6地址总共占4个int，为了兼容老代码，ipv6分成ip,ipv6_padding两部分 */
 };
 
 union tagTFrameHeadData
@@ -660,7 +717,7 @@ struct tagTFrameAuthQQ
 struct tagTFrameAuthAPS
 {
     uint16_t wAtkLen;                                 	/*   Atk长度 */
-    uint8_t szAtk[TFRAMEHEAD_MAX_SIG_LEN];            	/*   Atk(鉴权票据)内容，注意:无\0结尾 */
+    uint8_t szAtk[TFRAMEHEAD_MAX_SIG_LEN_BIG];        	/*   Atk(鉴权票据)内容，注意:无\0结尾 */
     uint32_t dwAtkExpireIn;                           	/*   atk有效期(剩余秒数),0XFFFFFFFF表示无法确定有效期，或没有有效期，0表示已过期 */
     uint16_t wAuthExDataVer;                          	/*   鉴权附加数据版本信息 */
     uint16_t wAuthExDataLen;                          	/*   鉴权附加数据长度 */
@@ -703,6 +760,8 @@ struct tagTFrameCmdStart
     uint8_t bIsUidNew;                                	/*  Ver.19 当使用账号映射功能时，标识Uid是否第一次被映射出来 */
     TIPINFO stSIPInfo;                                	/* TFRAMEHEAD_EXTRA_IP, Ver.21 TCONND的监听地址 */
     TIPINFO stOriClientIPInfo;                        	/*  Ver.28 在经过某些代理环节(stgw)后，TCONND获取的客户端IP可能是代理层IP，在这种情况下，把获取到的真实IP放在这里 */
+    uint32_t dwConnectExtInt;                         	/*  Ver.29 客户端设置的透传数据，在start或relay包中传给GameSvr */
+    uint32_t dwListenType;                            	/*  Ver.32 tconnd的监听类型,0:tcp, 1:lwip Bind Macrosgroup:TCONNAPI_LISTEN_TYPE,*/
 };
 
 /* 连接断开包 */
@@ -721,6 +780,15 @@ struct tagTFrameIdent
     uint64_t ullCallBack;                             	/*  Ver.25 FrameHead里的CallBack信息，在组播包中使用，在Relay包中无意义 */
 };
 
+struct tagLwipDataInfo
+{
+    uint16_t wMtu;                                    	/*   客户端MTU值 */
+    int32_t iReserve1;                                	/*   保留字段 */
+    int32_t iReserve2;                                	/*   保留字段 */
+    int32_t iReserve3;                                	/*   保留字段 */
+    int32_t iReserve4;                                	/*   保留字段 */
+};
+
 struct tagTFrameCmdInProc
 {
     int8_t chValid;                                   	/*   是否组播,0:单播 1:组播 */
@@ -730,6 +798,8 @@ struct tagTFrameCmdInProc
     TFRAMEHEADACCOUNT stUserAccount;                  	/*  Ver.20  */
     int16_t nCount;                                   	/*   组播个数 */
     TFRAMEIDENT astIdents[TFRAMEHEAD_MAX_BATCH_IDENT];
+    uint8_t bHaveLwipData;                            	/*  Ver.30 是否携带LWIP相关信息 */
+    LWIPDATAINFO stLwipDataInfo;                      	/*  Ver.30 LWIP连接信息 */
 };
 
 struct tagTFrameCmdMultiCastRemoveGroupReq
@@ -778,6 +848,18 @@ struct tagTFrameCmdMultiCastQueryIdentResp
     TFRAMEIDENT astIdents[TFRAMEHEAD_MAX_BATCH_IDENT];
 };
 
+struct tagTFrameCmdMultiCastQueryIdentCountReq
+{
+    char szGroupName[TCONND_MULTICAST_GROUPNAME_LEN];
+};
+
+struct tagTFrameCmdMultiCastQueryIdentCountResp
+{
+    int32_t iResult;                                  	/*    Bind Macrosgroup:TCONND_MULTICAST_RESULT,*/
+    char szGroupName[TCONND_MULTICAST_GROUPNAME_LEN];
+    int32_t iIdentCount;                              	/*   返回的组内连接数量 */
+};
+
 struct tagTFrameCmdMultiCastDeliverMsgReq
 {
     char szGroupName[TCONND_MULTICAST_GROUPNAME_LEN]; 	/*   需要发消息的组播组名 */
@@ -793,6 +875,7 @@ struct tagTFrameCmdRelay
     TFRAMEIDENT stNew;                               
     TFRAMEHEADACCOUNT stUserAccount;                  	/*  Ver.17  */
     TIPINFO stSIPInfo;                                	/* TFRAMEHEAD_EXTRA_IP, Ver.21  */
+    uint32_t dwConnectExtInt;                         	/*  Ver.29 客户端设置的透传数据，在start或relay包中传给GameSvr */
 };
 
 struct tagTFrameCmdSetRouting
@@ -931,7 +1014,7 @@ struct tagTFrameCmdWebBroadcastAllRsp
 struct tagTFrameCmdAuthRefreshNotify
 {
     uint16_t wAtkLen;                                 	/*   Atk长度 */
-    uint8_t szAtk[TFRAMEHEAD_MAX_SIG_LEN];            	/*   Atk(鉴权票据)内容 */
+    uint8_t szAtk[TFRAMEHEAD_MAX_SIG_LEN_BIG];        	/*   Atk(鉴权票据)内容 */
     uint32_t dwAtkExpireIn;                           	/*   atk有效期 */
     TFRAMEHEADACCOUNT stUserAccount;                  	/*  Ver.24  */
 };
@@ -939,6 +1022,19 @@ struct tagTFrameCmdAuthRefreshNotify
 struct tagTFrameCmdTconndProbe
 {
     uint32_t dwReserved;                              	/*   保留字段 */
+};
+
+struct tagTFrameCmdNotifyOverload
+{
+    int8_t chStatus;                                  	/*   当前状态，0：正常，非0：GameSvr不可用 */
+    uint32_t dwCtrlTime;                              	/*   单位秒，当Status非0时，表示不可用状态持续时间，0表示永久；当Status为0时无意义 */
+    uint32_t dwReserved;                              	/*   保留字段 */
+};
+
+struct tagTFrameCmdNotifySendBuffExceed
+{
+    uint32_t dwUsedBytes;                             	/*   单位byte，lwip send buffer used bytes */
+    uint32_t dwTotalBytes;                            	/*   单位byte，lwip send buffer total bytes */
 };
 
 union tagTFrameCmdData
@@ -977,6 +1073,10 @@ union tagTFrameCmdData
     TFRAMECMDMULTICASTQUERYIDENTRESP stMulticastQueryIdentResp; 	/* TFRAMEHEAD_CMD_MULTICAST_QUERY_IDENT_RESP, Ver.27 查询组播组内所有连接响应 */
     TFRAMECMDWEBBROADCASTALL stBroadcast;             	/* TFRAMEHEAD_CMD_BROADCAST, Ver.27 广播，下行 */
     TFRAMECMDWEBBROADCASTALLRSP stBroadcastRsp;       	/* TFRAMEHEAD_CMD_BROADCAST_RSP, Ver.27 广播应答包，上行 */
+    TFRAMECMDMULTICASTQUERYIDENTCOUNTREQ stMulticastQueryIdentCountReq; 	/* TFRAMEHEAD_CMD_MULTICAST_QUERY_IDENT_COUNT_REQ, Ver.27 查询组播组内所有连接请求,只返回个数 */
+    TFRAMECMDMULTICASTQUERYIDENTCOUNTRESP stMulticastQueryIdentCountResp; 	/* TFRAMEHEAD_CMD_MULTICAST_QUERY_IDENT_COUNT_RESP, Ver.27 查询组播组内所有连接响应,只返回个数 */
+    TFRAMECMDNOTIFYOVERLOAD stNotifyOverload;         	/* TFRAMEHEAD_CMD_NOTIFY_OVERLOAD, Ver.27 gamesvr通知tconnd已过载，下行 */
+    TFRAMECMDNOTIFYSENDBUFFEXCEED stNotifySendBuffExceed; 	/* TFRAMEHEAD_CMD_NOTIFY_SEND_BUFFER_EXCEED, Ver.32 lwip mode,tconnd通知gamesvr发送缓冲区超过限制 */
 };
 
 struct tagTTimeVal

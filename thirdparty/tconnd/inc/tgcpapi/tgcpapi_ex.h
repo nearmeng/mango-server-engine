@@ -100,9 +100,9 @@ int tgcpapi_create_and_init(HTGCPAPI* ppHandler,
     const char* pszAppId, int iAppIdLen,
     int iMaxMessageBuffSize,
     LPTGCPACCOUNT pAccount,
-    const char* pszAccessToken, int iAccessTokenLen
+    const char* pszAccessToken, int iAccessTokenLen,
+    eAuthType iAuthType=TGCP_AUTH_VER_2
     );
-
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /// @brief  设置验证相关信息
@@ -165,7 +165,17 @@ int tgcpapi_set_refresh_token_expire(HTGCPAPI pHandler, int iExpire);
 ///         !0, fail, 调用tgcpapi_error_string()获取错误原因
 int tgcpapi_set_auth_code(HTGCPAPI pHandler, const char* pszAuthCode, int iCodeLen);
 
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/// @brief  设置Start包透传信息
+///
+/// @param[in, out]  a_pHandle tgcpapi句柄指针
+/// @param[in]  iReserveInt     透传Int字段
+/// @param[in]  pszData         透传消息内容
+/// @param[in]  iDataLen        透传消息长度
+///
+/// @return =0, success
+/// 
+int tgcpapi_set_start_transdata(HTGCPAPI pHandler, int iReserveInt, const char* pszData, int iDataLen);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /// @brief  设置新帐号（一般用于帐号切换）

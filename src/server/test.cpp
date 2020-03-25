@@ -17,6 +17,11 @@
 #include "protocol/common_message.h"
 #include "router_client/router_client_api.h"
 
+#include "tconnd/inc/tconnapi/tframehead.h"
+
+#include "protocol/proto_msgid.pb.h"
+#include "protocol/external_message.pb.h"
+
 extern LUA_FUNC g_RegPackageList[];
 extern LUA_FUNC g_RegLuaFunc[];
 extern LUA_FUNC g_ServerBasePackageList[];
@@ -112,11 +117,30 @@ struct TRAVERSE_DATA
 
 LPTLOGCTX pLogCtx = NULL;
 
+void on_conn_start(int32_t nSrcAddr, TFRAMEHEAD* pFrameHead, const char* pBuff, int32_t nSize)
+{
+	INF("recv start conn");
+
+	pFrameHead->iID = pFrameHead->iConnIdx;
+	send_conn_msg(nSrcAddr, pFrameHead, NULL, 0);
+}
+
+void on_login(int32_t nSrcAddr, CS_HEAD* pHead, const Message* pMsg)
+{
+	CS_MESSAGE_LOGIN msg1;
+	CS_MESSAGE_LOGIN* msg = (CS_MESSAGE_LOGIN*)pMsg;
+
+	INF("login msg, id %d password %s", msg->userid(), msg->password().c_str());
+}
+
 BOOL server_init(TAPPCTX* pCtx, BOOL bResume)
 {
 	int32_t nRetCode = 0;
 
 	INF("server is init");
+
+	register_conn_msg_handler(TFRAMEHEAD_CMD_START, on_conn_start);
+	register_client_msg_handler(cs_message_login, on_login);
 
 	return TRUE;
 Exit0:
@@ -137,12 +161,12 @@ Exit0:
 BOOL server_frame(TAPPCTX* pCtx, BOOL bResume)
 {
 	int32_t nRetCode = 0;
-	TEST_SEND_DATA msg;
+	//TEST_SEND_DATA msg;
 
-	msg.nData = 123;
+	//msg.nData = 123;
 
-	nRetCode = send_server_msg_by_routerid(0, 5, 263, &msg, sizeof(msg));
-	LOG_PROCESS_ERROR(nRetCode);
+	//nRetCode = send_server_msg_by_routerid(0, 5, 263, &msg, sizeof(msg));
+	//LOG_PROCESS_ERROR(nRetCode);
 	
 	return TRUE;
 Exit0:
@@ -354,6 +378,7 @@ Exit1:
 
 	// this is the test code
 #endif
+
 
 	mg_app_main(argc, argv, server_init, server_fini, server_frame, server_reload, NULL, NULL, TRUE);
 

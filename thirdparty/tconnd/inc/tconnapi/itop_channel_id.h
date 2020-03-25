@@ -1,0 +1,15 @@
+#ifndef ITOP_CHANNEL_ID_H
+#define ITOP_CHANNEL_ID_H
+
+/*
+* 当tconnd start包中AuthType为0x1000时，表示是ITOP鉴权模式，此时AccountType为ITOP定义的渠道ID
+* 以下是基本渠道ID定义
+*/
+#define TCONND_ITOP_CHANNEL_WX 1
+#define TCONND_ITOP_CHANNEL_QQ 2
+#define TCONND_ITOP_CHANNEL_GUEST 3
+#define TCONND_ITOP_CHANNEL_FACEBOOK 4
+#define TCONND_ITOP_CHANNEL_GAME_CENTER 5
+#define TCONND_ITOP_CHANNEL_GOOGLE 6
+
+#endif /* ITOP_CHANNEL_ID_H */

@@ -194,6 +194,7 @@ extern LPTDRMETA g_pstConnapiFrameHead;
      *@retval     = -2 Tbus 发送失败
      *@retval     = -3 广播消息中有(小于0的)非法的 iConnIdx 值
      *@retval     = -4 输入参数非法
+	 *@retval     = -10 TFRAMEHEAD结构体有非法数据
      */
     int tconnapi_send(IN TCONNDHANDLE iHandle, IN  int iDst, IN char* pszBuff,IN  int iBuff,IN TFRAMEHEAD* pstHead);
 
@@ -274,6 +275,21 @@ extern LPTDRMETA g_pstConnapiFrameHead;
      *@param iFlag[IN]  是否带时间戳的标志位, 0表示不带时间戳，非0表示带时间戳
      */
     void tconnapi_set_send_with_timestamp_flag(IN TCONNDHANDLE iHandle, IN int iFlag);	
+
+    /**
+     *@brief 获取上一个消息从进入 tbus 通道到当前时间的时间间隔(单位：ms)
+     *@param iHandle[IN]  句柄指针
+     *@param pllMsTime[OUT]     上一个消息从进入 tbus 通道到当前时间的时间间隔(单位：ms)
+     *@param pstCurrentTime[IN]  	当前系统的时间，如果不为NULL，api 内部会使用此参数作为当前时间；
+     *                              如果为NULL，api 内部会调用 gettimeofday 获取当前时间
+     *
+     *@retval   =0:success
+     *@retval   =-1 输入参数非法
+     *@retval   =-2 当前时间比上一条消息进入 tbus 通道的时间更早
+     *@retval   =-3 收到的上一条消息并未开启时间戳
+     *@retval   =-4 其他错误
+     */
+    int tconnapi_get_lastmsg_timestamp(IN TCONNDHANDLE iHandle, OUT long long* pllMsTime, IN struct timeval* pstCurrentTime);
     /** @} */
 
 #ifdef __cplusplus

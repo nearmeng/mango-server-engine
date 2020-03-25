@@ -27,6 +27,9 @@ typedef enum tagAuthType {
     TGCP_AUTH_WX_O2_RTK,        //微信 OAuth 2.0 refresh token
     TGCP_AUTH_QQ_O2_ATK,        //手Q  OAuth 2.0 acess token
     TGCP_AUTH_QQ_CT_LOGIN,      //QQ CTLogin鉴权方式
+    TGCP_AUTH_ITOP = 0x1000,     //itop鉴权方式
+    TGCP_AUTH_PC = 0x1004,     //pc鉴权方式
+    TGCP_AUTH_WEGAME = 0x1005,     //wegame auth type
 
     TGCP_AUTH_VER_2 = 0x7fff,      //新的帐号鉴权方式，2014.03.07
 } eAuthType;
@@ -108,10 +111,10 @@ typedef union tagTGCPAccountValue {
 } TGCPACCOUNTVALUE;
 
 struct tagTGCPAccount {
-    unsigned short uType;               //账号类型
-    eAccountFormat bFormat;             //账号格式
-    TGCPACCOUNTVALUE stAccountValue;    //账号信息
-    tgcp_ulonglong llUid;               //帐号映射的uid
+    unsigned short uType;            //账号类型,itop鉴权模式下,不要使用eAccountType,而是直接使用渠道号
+    eAccountFormat bFormat;          //账号格式
+    TGCPACCOUNTVALUE stAccountValue; //账号信息
+    tgcp_ulonglong llUid;            //帐号映射的uid
     tagTGCPAccount()
         :uType(0)
         ,bFormat(TGCP_ACCOUNT_FORMAT_QQ_32)
@@ -300,6 +303,16 @@ int tgcpapi_set_appid(HTGCPAPI a_pHandle, const char* a_pszAppID, int a_iLen);
 /// @Warning  与tgcapi_ex.h定义的接口冲突，
 ///           严禁在调用tgcpapi_create_and_init的地方调用此接口
 int tgcpapi_set_token(HTGCPAPI a_pHandle, const char* a_pszToken, int a_iLen);
+
+/// @brief  设置Start包扩展字段
+///
+/// @param[in]  a_pHandle   tgcpapi句柄
+/// @param[in]  a_iExt      扩展字段
+///
+/// @return =0, success
+///         !0, fail, 调用tgcpapi_error_string()获取错误原因
+///
+int tgcpapi_set_synreserved(HTGCPAPI a_pHandle, int a_iExt);
 
 
 /// @brief  设置AcessToken的有效期
@@ -776,6 +789,7 @@ int tgcpapi_flush(HTGCPAPI a_pHandle);
 ///
 /// @note 返回值为TGCP_ERR_PEER_STOPPED_SESSION时，表明服务端主动终止会话
 /// @note 返回值为TGCP_ERR_PKG_NOT_COMPLETE时，表明收包不完整，建议上层调用此时不要关闭连接
+/// @note 返回值为TGCP_HAVE_RECV_GCP_INNER_MSG时，表明收到gcp内部消息，已经在内部处理掉，但是后续可能还有业务包，要继续尝试接受
 /// @note 即使tgcpapi_send或tgcpapi_flush返回失败，调用此接口仍然可以接收数据。
 ///
 /// @see tgcpapi_query_stopped

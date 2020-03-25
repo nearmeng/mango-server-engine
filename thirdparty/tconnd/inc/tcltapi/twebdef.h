@@ -12,7 +12,7 @@
 #endif
 
 #ifndef TDR_METALIB_TCONND_WEBDEF_HASH 
-#define TDR_METALIB_TCONND_WEBDEF_HASH 	"e6f4a7a7c3a5fab41c0afa607b633e66" /*hash of metalib*/
+#define TDR_METALIB_TCONND_WEBDEF_HASH 	"dec2ec5153bd78adef023f13edf00045" /*hash of metalib*/
 #endif
 
 /*   Define c types.   */
@@ -66,6 +66,8 @@
 #define TWEB_ACCOUNT_LENGTH                              	31 	/* 帐户名称，留了'\0'的位置。 */
 #define TWEB_TOKEN_LENGTH                                	201 	/* Token长度，留了一个'\0'的位置。 */
 #define TWEB_PASSPORT_LENGTH                             	20 	/* 增值位，20byte */
+#define TWEB_OPENID_LENGTH                               	128 	/* qq互联openid长度 */
+#define TWEB_ACCESS_TOKEN_LENGTH                         	256 	/* qq互联accesstoken长度 */
 
 /* TWEB_USERDATA_TYPE*/
 enum tagTWEB_USERDATA_TYPE 
@@ -73,6 +75,7 @@ enum tagTWEB_USERDATA_TYPE
     TWEB_USERDATA_UNKNOWN = 0, 	/* 未知状态，用于初始默认值 */
     TWEB_USERDATA_QQSIMPLE = 1, 
     TWEB_USERDATA_COMMON = 2, 
+    TWEB_USERDATA_QQ_OPEN = 3, 
 };
 
 /* TWEB_CMD*/
@@ -111,6 +114,10 @@ typedef struct tagQQUserSim                                        	*LPQQUSERSIM
 struct tagCommUsr;
 typedef struct tagCommUsr                                          	COMMUSR;
 typedef struct tagCommUsr                                          	*LPCOMMUSR;
+
+struct tagQQOpenUsr;
+typedef struct tagQQOpenUsr                                        	QQOPENUSR;
+typedef struct tagQQOpenUsr                                        	*LPQQOPENUSR;
 
 union tagWebUserInfo2;
 typedef union  tagWebUserInfo2                                     	WEBUSERINFO2;
@@ -178,10 +185,20 @@ struct tagCommUsr
     char szToken[TWEB_TOKEN_LENGTH];                  	/*   用户凭据，主要用于验证用户登录状态和身份 */
 };
 
+/* QQ开放平台帐号 */
+struct tagQQOpenUsr
+{
+    char szOpenID[TWEB_OPENID_LENGTH];                	/*   openid */
+    char szToken[TWEB_ACCESS_TOKEN_LENGTH];           	/*   access token */
+    uint32_t dwReserve1;                              	/*   保留字段1 */
+    uint64_t ullReserve2;                             	/*   保留字段2 */
+};
+
 union tagWebUserInfo2
 {
     QQUSERSIM stQQUserSimple;                         	/* TWEB_USERDATA_QQSIMPLE,   */
     COMMUSR stCommonUser;                             	/* TWEB_USERDATA_COMMON,   */
+    QQOPENUSR stQQOpen;                               	/* TWEB_USERDATA_QQ_OPEN,   */
 };
 
 /* 连接终止(双向) */

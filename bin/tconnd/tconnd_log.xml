@@ -53,7 +53,7 @@
             <Type>FILE </Type>
             <Device type="TLOGDevSelector">
                 <File type="TLOGDevFile">
-                    <Pattern>.\tconnd.log</Pattern>
+                    <Pattern>.\tconnd.exe_10.0.1.1.log</Pattern>
                     <BuffSize>0 </BuffSize>
                     <SizeLimit>10485760 </SizeLimit>
                     <Precision>1 </Precision>
@@ -82,7 +82,7 @@
             <Type>FILE </Type>
             <Device type="TLOGDevSelector">
                 <File type="TLOGDevFile">
-                    <Pattern>.\tconnd.error</Pattern>
+                    <Pattern>.\tconnd.exe_10.0.1.1.error</Pattern>
                     <BuffSize>0 </BuffSize>
                     <SizeLimit>10485760 </SizeLimit>
                     <Precision>1 </Precision>
@@ -111,7 +111,7 @@
             <Type>FILE </Type>
             <Device type="TLOGDevSelector">
                 <File type="TLOGDevFile">
-                    <Pattern>.\tconnd_tbus.log</Pattern>
+                    <Pattern>.\tconnd.exe_10.0.1.1_tbus.log</Pattern>
                     <BuffSize>0 </BuffSize>
                     <SizeLimit>5242880 </SizeLimit>
                     <Precision>1 </Precision>
@@ -140,7 +140,7 @@
             <Type>FILE </Type>
             <Device type="TLOGDevSelector">
                 <File type="TLOGDevFile">
-                    <Pattern>.\tconnd_rundata.log</Pattern>
+                    <Pattern>.\tconnd.exe_10.0.1.1_rundata.log</Pattern>
                     <BuffSize>0 </BuffSize>
                     <SizeLimit>20971520 </SizeLimit>
                     <Precision>1 </Precision>
@@ -169,7 +169,7 @@
             <Type>FILE </Type>
             <Device type="TLOGDevSelector">
                 <File type="TLOGDevFile">
-                    <Pattern>.\tconnd.bill</Pattern>
+                    <Pattern>.\tconnd.exe_10.0.1.1.bill</Pattern>
                     <BuffSize>0 </BuffSize>
                     <SizeLimit>20971520 </SizeLimit>
                     <Precision>1 </Precision>
