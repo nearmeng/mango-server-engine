@@ -17,6 +17,7 @@
 #define MAX_MESSAGE_ID			(65535)
 #define MAX_CONN_EVENT_COUNT	(64)
 #define MAX_SS_MSG_LEN			(256 * 1024)
+#define MAX_SEND_DATA_BUFF_LEN	(512 * 1024)
 
 static CONN_MSG_HANDLER g_ConnMsgHandler[MAX_CONN_EVENT_COUNT];
 static CLIENT_MSG_HANDLER g_ClientMsgHandler[MAX_MESSAGE_ID];
@@ -187,11 +188,13 @@ Exit0:
 	return FALSE;
 }
 
-BOOL send_conn_msg(int32_t nDstAddr, TFRAMEHEAD * pFrameHead, const char * pBuff, int32_t nBuffLen)
+BOOL send_conn_msg(int32_t nDstAddr, TFRAMEHEAD * pFrameHead, const SC_HEAD* pHead, const Message* pMsg)
 {
 	int32_t nRetCode = 0;
 	char szHeadBuff[sizeof(TFRAMEHEAD) * 2];
 	int32_t nHeadLen = sizeof(szHeadBuff);
+	char szDataBuff[MAX_SEND_DATA_BUFF_LEN];
+	int32_t nDataLen = sizeof(szDataBuff);
 	struct iovec vecs[2];
 
 	LOG_PROCESS_ERROR(pFrameHead);
@@ -199,10 +202,15 @@ BOOL send_conn_msg(int32_t nDstAddr, TFRAMEHEAD * pFrameHead, const char * pBuff
 	nRetCode = tconnapi_encode(szHeadBuff, &nHeadLen, pFrameHead);
 	LOG_PROCESS_ERROR(nRetCode == 0);
 
+		LOG_PROCESS_ERROR(nRetCode);
+	}
+	else
+		nDataLen = 0;
+
 	vecs[0].iov_len = nHeadLen;
 	vecs[0].iov_base = szHeadBuff;
-	vecs[1].iov_len = nBuffLen;
-	vecs[1].iov_base = (char*)pBuff;
+	vecs[1].iov_len = nDataLen;
+	vecs[1].iov_base = (char*)szDataBuff;
 
 	return tbus_sendv_data(nDstAddr, vecs, 2);
 

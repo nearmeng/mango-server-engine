@@ -23,7 +23,8 @@ static void lua_pushrepeatedfield(lua_State* L, const google::protobuf::Message&
 	const google::protobuf::FieldDescriptor* pFieldDes, int32_t nFieldIndex);
 static void lua_pushfield(lua_State* L, const google::protobuf::Message& rMessage,
 	const google::protobuf::FieldDescriptor* pFieldDes);
-static BOOL unpack_protobuf(CRobotUser* pUser, const char* pszData, int32_t nDataSize, CLuaScript* pLuaScript);
+static BOOL unpack_protobuf(CRobotUser* pUser, const SC_HEAD* pHead, const google::protobuf::Message* pMessage, CLuaScript* pLuaScript);
+static BOOL unpack_data(const char* pszData, int32_t nDataSize, SC_HEAD* pHead, google::protobuf::Message** pMsg);
 
 BOOL CRobotConnMgr::init()
 {
@@ -511,13 +512,28 @@ Exit0:
     return FALSE;
 }
 	
-BOOL CRobotConnMgr::send(ROBOT_CONNECTION* pConn, const char* pBuff, int32_t nLen)
+BOOL CRobotConnMgr::send(ROBOT_CONNECTION* pConn, int32_t nMsgID, google::protobuf::Message& msg)
 {
 	int32_t nRetCode = 0;
+	CS_HEAD Head;
+	int32_t nHeadLen = 0;
+	static char szSendBuff[128 * 1024];
 
 	LOG_PROCESS_ERROR(pConn);
 
-	nRetCode = tgcpapi_send(pConn->pHandle, pBuff, nLen, 0);
+	Head.set_msgid(nMsgID);
+	Head.set_seqid(0);
+
+	nRetCode = Head.SerializeToArray(szSendBuff + 1, sizeof(szSendBuff) - 1);
+	LOG_PROCESS_ERROR(nRetCode);
+
+	nHeadLen = Head.GetCachedSize();
+	szSendBuff[0] = nHeadLen;
+
+	nRetCode = msg.SerializeToArray(szSendBuff + 1 + nHeadLen, sizeof(szSendBuff) - 1 - nHeadLen);
+	LOG_PROCESS_ERROR(nRetCode);
+
+	nRetCode = tgcpapi_send(pConn->pHandle, szSendBuff, 1 + nHeadLen + msg.GetCachedSize(), 0);
 	LOG_PROCESS_ERROR(nRetCode == 0);
 
 	return TRUE;
@@ -581,34 +597,20 @@ BOOL CRobotConnMgr::recv(CRobotUser* pUser)
 	{
 		if (stEvent.iEvents & TGCP_EVENT_DATA_OUT && pConn->state == CONNECT_STATE_INIT)
 		{
-			//if (check_local_wait_msgid(pConn, CONNECTED_FLAG))
-			//{
-			//	pConn->Callback(pUser, pszData + sizeof(*pHeader), nDataSize - sizeof(*pHeader));
-			//}
-
 			//if (check_lua_wait_msgid(pConn, CONNECTED_FLAG))
 			//{
 			//	notify_lua_event(pConn, pUser, CONNECTED_FLAG, g_pScript);
 			//}
 
+			CClientMessageHandler::instance().on_conn_start(pConn);
 			pConn->state = CONNECT_STATE_CONNECTED;
-
-			INF("conn connected!");
-			{
-				CS_MESSAGE_LOGIN msg;
-
-				msg.set_userid(12345);
-				msg.set_password("pass");
-
-				nRetCode = pUser->send(cs_message_login, msg);
-				LOG_PROCESS_ERROR(nRetCode);
-			}
 		}
 
 		if (stEvent.iEvents & TGCP_EVENT_SSTOPED)
 		{
 			nErrorCode = tgcpapi_get_sstop_reason(pConn->pHandle);
 
+			CClientMessageHandler::instance().on_conn_stop(pConn);
 			INF("user[%d] peer stoped connection for reason: %d", pUser->get_user_id(), nErrorCode);
 			bIsConnClosed = TRUE;
 
@@ -618,6 +620,7 @@ BOOL CRobotConnMgr::recv(CRobotUser* pUser)
 		if (stEvent.iEvents & TGCP_EVENT_SVR_IS_FULL)
 		{
 			CRI("server is full occured");
+			CClientMessageHandler::instance().on_conn_stop(pConn);
 			bIsConnClosed = TRUE;
 
 			PROCESS_ERROR(FALSE);
@@ -627,6 +630,9 @@ BOOL CRobotConnMgr::recv(CRobotUser* pUser)
 		{
 			while (nRecvTime++ < MAX_RECV_TIMES_PER_USER)
 			{
+				SC_HEAD Head;
+				google::protobuf::Message* pMessage = NULL;
+
 				PROCESS_ERROR(CRobotConnMgr::instance().get_conn(nConnID));
 
 				nRetCode = tgcpapi_peek(pConn->pHandle, &pszData, &nDataSize, 0);
@@ -638,12 +644,10 @@ BOOL CRobotConnMgr::recv(CRobotUser* pUser)
 					LOG_PROCESS_ERROR(FALSE);
 				}
 
-				//if (check_local_wait_msgid(pConn, pHeader->wMsg))
-				//{
-					//pConn->Callback(pUser, pszData + sizeof(*pHeader), nDataSize - sizeof(*pHeader));
-				//}
+				nRetCode = unpack_data(pszData, nDataSize, &Head, &pMessage);
+				LOG_PROCESS_ERROR(nRetCode);
 
-				CClientMessageHandler::instance().recv(pszData, nDataSize, pUser);
+				CClientMessageHandler::instance().recv(&Head, pMessage, pUser);
 
 				//if (check_lua_wait_msgid(pConn, pHeader->wMsg))
 				//{
@@ -652,6 +656,8 @@ BOOL CRobotConnMgr::recv(CRobotUser* pUser)
 					//nRetCode = unpack_protobuf(pUser, pszData, nDataSize, g_pScript);
 					//LOG_PROCESS_ERROR(nRetCode);
 				//}
+
+				SAFE_DELETE(pMessage);
 
 				// user may be invalid by lua
 				PROCESS_ERROR(pUser->get_conn());
@@ -684,40 +690,6 @@ BOOL CRobotConnMgr::check_lua_wait_msgid(ROBOT_CONNECTION* pConn, int32_t nMsgID
 		pConn->vLuaWaitMsgId.erase(it);
 		return TRUE;
 	}
-Exit0:
-	return FALSE;
-}
-
-BOOL CRobotConnMgr::set_local_wait_msgid(int32_t nConnID, std::vector<int32_t> &vMsgId, WAIT_MSG_CALLBACK Callback)
-{
-	int32_t nRetCode = 0;
-	ROBOT_CONNECTION* pConn = NULL;
-
-	pConn = get_conn(nConnID);
-	LOG_PROCESS_ERROR(pConn);
-
-	pConn->vLocalWaitMsgId.clear();
-	for(int32_t i = 0; i < vMsgId.size(); ++i)
-	{
-		if(vMsgId[i] != 0)
-			pConn->vLocalWaitMsgId.push_back(vMsgId[i]);
-	}
-	pConn->Callback = Callback;
-
-	return TRUE;
-Exit0:
-	return FALSE;
-}
-
-BOOL CRobotConnMgr::check_local_wait_msgid(ROBOT_CONNECTION *pConn, int32_t nMsgID)
-{
-	std::vector<int32_t>::iterator it;
-
-	PROCESS_ERROR(pConn);
-
-	it = find(pConn->vLocalWaitMsgId.begin(), pConn->vLocalWaitMsgId.end(), nMsgID);
-	if (it != pConn->vLocalWaitMsgId.end())
-		return TRUE;
 Exit0:
 	return FALSE;
 }
@@ -925,41 +897,32 @@ static BOOL lua_pushmessage(lua_State* L, const google::protobuf::Message& rMess
 	return TRUE;
 }
 
-static BOOL unpack_protobuf(CRobotUser* pUser, const char* pszData, int32_t nDataSize, CLuaScript* pLuaScript)
+static BOOL unpack_data(const char* pszData, int32_t nDataSize, SC_HEAD* pHead, google::protobuf::Message** pMsg)
 {
-	uint32_t nMsgId = 0;
+	int32_t nRetCode = 0;
+	char byHeadlen = 0;
+	int32_t nBodyLen = 0;
+	int32_t nMsgID = 0;
 	std::string sOldMsgStr;
 	std::string sMsgStr;
-	bool bSuccess = false;
-	int32_t nRetCode = 0;
-	lua_State *L = NULL;
-	int32_t nStackTop = -1;
-	int32_t nHeadLen = 0;
-	SC_HEAD Head;
 	const google::protobuf::Descriptor* pDescriptor = NULL;
 	const google::protobuf::Message* pType = NULL;
 	const google::protobuf::Reflection* pRef = NULL;
 	google::protobuf::Message* pMessage = NULL;
+	SC_HEAD* pSCHead = (SC_HEAD*)pHead;
 
-	LOG_PROCESS_ERROR(pszData);
-	LOG_PROCESS_ERROR(pLuaScript);
-	LOG_PROCESS_ERROR(pUser);
-	
-	L = pLuaScript->get_lua_state();
-	LOG_PROCESS_ERROR(L);
+	LOG_PROCESS_ERROR(pHead);
+	LOG_PROCESS_ERROR(nDataSize > 0);
 
-	nStackTop = lua_gettop(L);
+	byHeadlen = *(char*)pszData;
 
-	nHeadLen = *(char*)pszData;
-
-	nRetCode = Head.ParseFromArray(pszData + 1, nHeadLen);
+	nRetCode = pHead->ParseFromArray(pszData+ 1, byHeadlen);
 	LOG_PROCESS_ERROR(nRetCode);
-	nMsgId = Head.msgid();
-
-	sMsgStr = SC_MESSAGE_ID_Name((SC_MESSAGE_ID)nMsgId);
+	
+	nMsgID = pSCHead->msgid();
+	sMsgStr = SC_MESSAGE_ID_Name((SC_MESSAGE_ID)nMsgID);
 
 	//INF("recv robot[%d] msg id[%d] msg_str[%s] data_size[%d]\n", pUser->get_user_id(), nMsgId, sMsgStr.c_str(), nDataSize);
-	//g_pMainWnd->upate_case_detail_log("recv robot[%d] msg id[%d] msg_str[%s] data_size[%d]\n", nUserID, nMsgId, sMsgStr.c_str(), nDataSize);
 
 	sOldMsgStr = sMsgStr;
 	transform(sMsgStr.begin(), sMsgStr.end(), sMsgStr.begin(), ::toupper);
@@ -973,11 +936,37 @@ static BOOL unpack_protobuf(CRobotUser* pUser, const char* pszData, int32_t nDat
 	pMessage = pType->New();
 	LOG_PROCESS_ERROR(pMessage);
 
-	pRef = pMessage->GetReflection();
-	LOG_PROCESS_ERROR(pRef);
+	nBodyLen = nDataSize - 1 - byHeadlen;
 
-	bSuccess = pMessage->ParseFromArray(pszData+ 1 + nHeadLen, nDataSize - 1 - nHeadLen);
-	LOG_PROCESS_ERROR(bSuccess);
+	nRetCode = pMessage->ParseFromArray(pszData+ 1 + byHeadlen, nBodyLen);
+	LOG_PROCESS_ERROR(nRetCode);
+
+	*pMsg = pMessage;
+
+	return TRUE;
+Exit0:
+	return FALSE;
+}
+
+static BOOL unpack_protobuf(CRobotUser* pUser, const SC_HEAD* pHead, const google::protobuf::Message* pMessage, CLuaScript* pLuaScript)
+{
+	uint32_t nMsgId = 0;
+	std::string sOldMsgStr;
+	std::string sMsgStr;
+	bool bSuccess = false;
+	int32_t nRetCode = 0;
+	lua_State *L = NULL;
+	int32_t nStackTop = -1;
+	int32_t nHeadLen = 0;
+	SC_HEAD Head;
+
+	LOG_PROCESS_ERROR(pLuaScript);
+	LOG_PROCESS_ERROR(pUser);
+	
+	L = pLuaScript->get_lua_state();
+	LOG_PROCESS_ERROR(L);
+
+	nStackTop = lua_gettop(L);
 
 	//INF("unpack success, begin to do detail unpack");
 	
@@ -997,7 +986,6 @@ static BOOL unpack_protobuf(CRobotUser* pUser, const char* pszData, int32_t nDat
 	lua_settop(L, nStackTop);
 
 Exit0:
-	SAFE_DELETE(pMessage);
 	if (nStackTop != -1)
 		lua_settop(L, nStackTop);
 

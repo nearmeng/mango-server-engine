@@ -15,14 +15,19 @@ public:
 	BOOL uninit(void);
 	inline static CClientMessageHandler& instance(void);
 
-	void recv(const char* pBuffer, int32_t nSize, CRobotUser *pUser);
-	virtual BOOL send(int32_t nConnID, int32_t nMsgID, google::protobuf::Message& Msg);
+	void recv(SC_HEAD* pScHead, google::protobuf::Message* pMsg, CRobotUser *pUser);
+	virtual BOOL send(CRobotUser* pUser, int32_t nMsgID, google::protobuf::Message& Msg);
+
+	void on_conn_start(ROBOT_CONNECTION* pConn);
+	void on_conn_stop(ROBOT_CONNECTION* pConn);
+
+	void on_login(SC_HEAD* pSCHead, google::protobuf::Message* pMsg, CRobotUser* pUser);
 
 private:
 	static CClientMessageHandler ms_Instance;
 
 	typedef void (CClientMessageHandler::*MESSAGE_FUNC)(SC_HEAD* pSCHead, google::protobuf::Message* pMsg, CRobotUser* pUser);
-	MESSAGE_FUNC	MessageFuncList[MAX_MESSAGE_ID];
+	MESSAGE_FUNC	s_MessageFuncList[MAX_MESSAGE_ID];
 };
 
 inline CClientMessageHandler& CClientMessageHandler::instance(void)

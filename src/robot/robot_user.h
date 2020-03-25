@@ -24,7 +24,6 @@ public:
     BOOL send(int32_t nMsgId, lua_State* L);
     BOOL send(int32_t nMsgID, google::protobuf::Message& Msg);
     BOOL set_lua_wait_msgid(int32_t nMsgId1, int32_t nMsgId2);
-    BOOL set_local_wait_msgid(int32_t nMsgId1, int32_t nMsgId2, WAIT_MSG_CALLBACK Callback);
 
     inline const char* get_coname(void);
     inline void set_coname(const char* pcszCoName);

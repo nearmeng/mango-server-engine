@@ -34,6 +34,15 @@ static BOOL do_init(void)
 	nRetCode = CClientMessageHandler::instance().init();
 	LOG_PROCESS_ERROR(nRetCode);
 
+	{
+		CRobotUser* pUser = NULL;
+
+		pUser = CRobotUserMgr::instance().create_user("test");
+		LOG_PROCESS_ERROR(pUser);
+
+		nRetCode = pUser->connect("tcp://127.0.0.1:8888");
+		LOG_PROCESS_ERROR(nRetCode);
+	}
 	
 	return TRUE;
 Exit0:

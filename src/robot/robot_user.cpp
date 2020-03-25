@@ -73,26 +73,10 @@ Exit0:
 BOOL CRobotUser::send(int32_t nMsgID, google::protobuf::Message& Msg)
 {
 	int32_t nRetCode = 0;
-	CS_HEAD CSHead;
-	int32_t nHeadLen = 0;
-	static char szSendBuffer[MAX_SEND_BUFFER_SIZE];
 	
 	LOG_PROCESS_ERROR(m_pConnection);
 
-	CSHead.set_msgid(nMsgID);
-	CSHead.set_seqid(0);
-
-	nRetCode = CSHead.SerializeToArray(szSendBuffer + 1, sizeof(szSendBuffer) - 1);
-	LOG_PROCESS_ERROR(nRetCode);
-
-	nHeadLen = CSHead.GetCachedSize();
-
-	szSendBuffer[0] = nHeadLen;
-	
-	nRetCode = Msg.SerializeToArray(szSendBuffer + 1 + nHeadLen, sizeof(szSendBuffer) - 1 - nHeadLen);
-	LOG_PROCESS_ERROR(nRetCode);
-
-	nRetCode = CRobotConnMgr::instance().send(m_pConnection, (const char*)szSendBuffer, 1 + nHeadLen + Msg.GetCachedSize());
+	nRetCode = CRobotConnMgr::instance().send(m_pConnection, nMsgID, Msg);
 	LOG_PROCESS_ERROR(nRetCode);
 	
 	return TRUE;
@@ -121,23 +105,6 @@ int32_t CRobotUser::generate_user_id(void)
 {
 	g_nUserIDGen++;
 	return g_nUserIDGen;
-}
-
-BOOL CRobotUser::set_local_wait_msgid(int32_t nMsgId1, int32_t nMsgId2, WAIT_MSG_CALLBACK Callback)
-{
-	int32_t nRetCode = 0;
-	std::vector<int32_t> vMsgID;
-	
-	LOG_PROCESS_ERROR(this->m_nConnID != 0);
-	
-	vMsgID.push_back(nMsgId1);
-	vMsgID.push_back(nMsgId2);
-	nRetCode = CRobotConnMgr::instance().set_local_wait_msgid(this->m_nConnID, vMsgID, Callback);
-	LOG_PROCESS_ERROR(nRetCode);
-
-	return TRUE;
-Exit0:
-	return FALSE;
 }
 
 BOOL CRobotUser::set_lua_wait_msgid(int32_t nMsgId1, int32_t nMsgId2)
@@ -291,15 +258,6 @@ void CRobotUserMgr::mainloop(void)
 		}
 
 		CRobotConnMgr::instance().recv(pUser);
-
-		if (pUser->get_coname()[0])
-		{
-			//g_pScript->call_function("coro_check", "s:b", pUser->get_coname(), &bRun);
-			//if (!bRun)
-			//{
-					//pUser->set_coname("");
-			//}
-		}
 	}
 
 Exit0:

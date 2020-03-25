@@ -21,6 +21,7 @@
 
 #include "protocol/proto_msgid.pb.h"
 #include "protocol/external_message.pb.h"
+#include "protocol/proto_head.pb.h"
 
 extern LUA_FUNC g_RegPackageList[];
 extern LUA_FUNC g_RegLuaFunc[];
@@ -116,21 +117,44 @@ struct TRAVERSE_DATA
 };
 
 LPTLOGCTX pLogCtx = NULL;
+static int conn = 0;
 
 void on_conn_start(int32_t nSrcAddr, TFRAMEHEAD* pFrameHead, const char* pBuff, int32_t nSize)
 {
 	INF("recv start conn");
 
 	pFrameHead->iID = pFrameHead->iConnIdx;
-	send_conn_msg(nSrcAddr, pFrameHead, NULL, 0);
+	conn = pFrameHead->iID;
+	send_conn_msg(nSrcAddr, pFrameHead, NULL, NULL);
 }
 
-void on_login(int32_t nSrcAddr, CS_HEAD* pHead, const Message* pMsg)
+void on_login(int32_t nSrcAddr, const CS_HEAD* pHead, const Message* pMsg)
 {
-	CS_MESSAGE_LOGIN msg1;
+	int32_t nRetCode = 0;
 	CS_MESSAGE_LOGIN* msg = (CS_MESSAGE_LOGIN*)pMsg;
 
 	INF("login msg, id %d password %s", msg->userid(), msg->password().c_str());
+
+	SC_HEAD Head;
+	TFRAMEHEAD FrameHead;
+
+	FrameHead.chCmd = TFRAMEHEAD_CMD_INPROC;
+	FrameHead.stCmdData.stInProc.chValid = 0;
+	FrameHead.iConnIdx = conn;
+	FrameHead.iID = conn;
+
+	Head.set_msgid(sc_message_login);
+	Head.set_seqid(0);
+
+	SC_MESSAGE_LOGIN rsp;
+	rsp.set_answer("this is rsp");
+
+	nRetCode = send_conn_msg(nSrcAddr, &FrameHead, &Head, &rsp);
+	LOG_PROCESS_ERROR(nRetCode);
+
+Exit0:
+	return;
+
 }
 
 BOOL server_init(TAPPCTX* pCtx, BOOL bResume)

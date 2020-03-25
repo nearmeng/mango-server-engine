@@ -49,15 +49,12 @@ public:
 	int32_t connect(int32_t nUserID, const char* pcszUserName, const char* pcszSvrUrl);
 	BOOL disconnect(int32_t nConnID);
 
-	BOOL send(ROBOT_CONNECTION* pConn, const char* pBuff, int32_t nLen);
+	BOOL send(ROBOT_CONNECTION* pConn, int32_t nMsgID, google::protobuf::Message& msg);
 	BOOL send(ROBOT_CONNECTION* pConn, int32_t nMsgID, lua_State* L);
 	BOOL recv(CRobotUser* pUser);
 
 	BOOL set_lua_wait_msgid(int32_t nConnID, std::vector<int32_t> &vMsgId);
 	BOOL check_lua_wait_msgid(ROBOT_CONNECTION* pConn, int32_t nMsgID);
-
-	BOOL set_local_wait_msgid(int32_t nConnID, std::vector<int32_t> &vMsgId, WAIT_MSG_CALLBACK Callback);
-	BOOL check_local_wait_msgid(ROBOT_CONNECTION *pConn, int32_t nMsgID);
 	
 	ROBOT_CONNECTION* get_conn(int32_t nConnID);
 private:
