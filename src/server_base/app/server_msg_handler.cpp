@@ -202,6 +202,9 @@ BOOL send_conn_msg(int32_t nDstAddr, TFRAMEHEAD * pFrameHead, const SC_HEAD* pHe
 	nRetCode = tconnapi_encode(szHeadBuff, &nHeadLen, pFrameHead);
 	LOG_PROCESS_ERROR(nRetCode == 0);
 
+	if (pHead && pMsg)
+	{
+		nRetCode = pack_msg(szDataBuff, &nDataLen, pHead, pMsg);
 		LOG_PROCESS_ERROR(nRetCode);
 	}
 	else
