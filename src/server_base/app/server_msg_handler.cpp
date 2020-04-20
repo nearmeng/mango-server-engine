@@ -49,7 +49,7 @@ static Message* get_msg_inst(int32_t nMsgID)
     transform(sMsgName.begin(), sMsgName.end(), sMsgName.begin(), ::toupper);
 
     pDescriptor = google::protobuf::DescriptorPool::generated_pool()->FindMessageTypeByName(sMsgName.c_str());
-    LOG_PROCESS_ERROR(pDescriptor);
+    LOG_PROCESS_ERROR_DETAIL(pDescriptor, "msg name: %s", sMsgName);
 
     pType = google::protobuf::MessageFactory::generated_factory()->GetPrototype(pDescriptor);
     LOG_PROCESS_ERROR(pType);

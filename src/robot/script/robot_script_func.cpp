@@ -2,6 +2,7 @@
 
 #include "robot_conn.h"
 #include "robot_user.h"
+#include "robot_interact.h"
 
 extern int tolua_robot_open(lua_State* tolua_S);
 
@@ -11,6 +12,7 @@ int32_t lua_create_user(lua_State* L)
 	CRobotUser* pUser = NULL;
 	const char* pcszCoName = NULL;
 	const char* pcszUserName = NULL;
+	BOOL bInteractMode = FALSE;
 
 	pcszUserName = lua_tostring(L, 1);
 	LOG_PROCESS_ERROR(pcszUserName);
@@ -18,10 +20,17 @@ int32_t lua_create_user(lua_State* L)
 	pcszCoName = lua_tostring(L, 2);
 	LOG_PROCESS_ERROR(pcszCoName);
 
+	bInteractMode = lua_tointeger(L, 3);
+
 	pUser = CRobotUserMgr::instance().create_user(pcszUserName);
 	LOG_PROCESS_ERROR(pUser);
 
 	pUser->set_coname(pcszCoName);
+
+	if (bInteractMode)
+	{
+		CRobotInteractMgr::instance().set_interact_user(pUser);
+	}
 
 	tolua_pushusertype(L, pUser, "CRobotUser");
 	return 1;

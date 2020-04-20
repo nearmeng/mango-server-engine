@@ -1,4 +1,4 @@
-pre_project (STATIC)
+pre_project (STATIC LIB)
 
 if (MSVC)
 	file (GLOB_RECURSE DEF_FILES 

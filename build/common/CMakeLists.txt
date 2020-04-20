@@ -1,4 +1,4 @@
-pre_project(STATIC)
+pre_project(STATIC LIB)
 
 add_project()
 

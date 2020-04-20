@@ -1,4 +1,4 @@
-function (pre_project TARGET_TYPE)
+function (pre_project TARGET_TYPE APPLICATION_TYPE)
 	get_filename_component (TARGET_NAME ${CMAKE_CURRENT_SOURCE_DIR} NAME)
 	get_filename_component (TARGET_DIR ${BASE_DIR}/src/${TARGET_NAME} ABSOLUTE)
 	get_filename_component (TARGET_INC_DIR ${BASE_DIR}/inc/${TARGET_NAME} ABSOLUTE)
@@ -8,6 +8,7 @@ function (pre_project TARGET_TYPE)
 	set (TARGET_DIR ${TARGET_DIR} PARENT_SCOPE)
 	set (TARGET_INC_DIR ${TARGET_INC_DIR} PARENT_SCOPE)
 	set (TARGET_TYPE ${TARGET_TYPE} PARENT_SCOPE)
+	set (APPLICATION_TYPE ${APPLICATION_TYPE} PARENT_SCOPE)
 
 	#get base src files
 	file (GLOB_RECURSE SRC_FILES
@@ -83,16 +84,17 @@ function (post_project)
 
 	#default link libaray
 	if (UNIX)
-		target_link_libraries (${TARGET_NAME}
-			dl
-			lua
-			toluapp
-			protobuf
-			tconnapi
-		)
+		if (APPLICATION_TYPE STREQUAL "SERVER")
+			target_link_libraries (${TARGET_NAME}
+				server_base
+				game_data
+				router_client
+			)
+		endif ()
 		
 		if (TARGET_TYPE STREQUAL "RUNTIME")
 			target_link_libraries (${TARGET_NAME}
+				tconnapi
 				common
 				rt
 				tsf4g
@@ -102,10 +104,13 @@ function (post_project)
 				readline
 				tdr
 				ncurses
-				game_data
-				router_client
-				server_base
 			)
+		target_link_libraries (${TARGET_NAME}
+			dl
+			lua
+			toluapp
+			protobuf
+		)
 		endif ()
 	elseif (MSVC)
 		target_link_libraries (${TARGET_NAME}
@@ -115,8 +120,6 @@ function (post_project)
 			optimized toluapp.lib
 			debug libprotobufd.lib
 			optimized libprotobuf.lib
-			debug libtconnapi_d.lib
-			optimized libtconnapi.lib
 		)
 
 		if (TARGET_TYPE STREQUAL "RUNTIME")
@@ -125,6 +128,13 @@ function (post_project)
 				optimized common.lib
 				debug libcomm_d.lib	
 				optimized libcomm.lib
+				debug libtconnapi_d.lib
+				optimized libtconnapi.lib
+			)
+		endif ()
+		
+		if (APPLICATION_TYPE STREQUAL "SERVER")
+			target_link_libraries (${TARGET_NAME}
 				debug game_data_d.lib
 				optimized game_data.lib
 				debug router_client_d.lib
@@ -133,6 +143,12 @@ function (post_project)
 				optimized server_base.lib
 			)
 		endif ()
+	endif ()
+		
+	if (APPLICATION_TYPE STREQUAL "SERVER")
+		add_dependencies (${TARGET_NAME} server_base game_data router_client common)
+	else()
+		add_dependencies (${TARGET_NAME} common)
 	endif ()
 
 	#set visual studio filter

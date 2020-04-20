@@ -22,6 +22,8 @@ public:
 	void on_conn_stop(ROBOT_CONNECTION* pConn);
 
 	void on_login(SC_HEAD* pSCHead, google::protobuf::Message* pMsg, CRobotUser* pUser);
+	
+	BOOL do_gm_command(const char* pGMCommand, CRobotUser* pUser);
 
 private:
 	static CClientMessageHandler ms_Instance;

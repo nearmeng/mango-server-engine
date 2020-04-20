@@ -1,4 +1,4 @@
-pre_project(RUNTIME)
+pre_project(RUNTIME SERVER)
 
 add_project()
 
@@ -14,5 +14,3 @@ else ()
 endif ()
 
 post_project()
-
-add_dependencies (${TARGET_NAME} common game_data server_base)

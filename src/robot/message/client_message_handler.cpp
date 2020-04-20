@@ -104,4 +104,14 @@ void CClientMessageHandler::on_login(SC_HEAD* pSCHead, google::protobuf::Message
 
 	INF("get login rsp, %s", msg->answer().c_str());
 }
+	
+BOOL CClientMessageHandler::do_gm_command(const char* pGMCommand, CRobotUser* pUser)
+{
+	int32_t nRetCode = 0;
+	
+
+	return TRUE;
+Exit0:
+	return FALSE;
+}
 //------------------------------------------------------------------

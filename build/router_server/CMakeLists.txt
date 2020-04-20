@@ -1,7 +1,5 @@
-pre_project(RUNTIME)
+pre_project(RUNTIME SERVER)
 
 add_project()
 
 post_project()
-
-add_dependencies (${TARGET_NAME} common game_data server_base router_client)

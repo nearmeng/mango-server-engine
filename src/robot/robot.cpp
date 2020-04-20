@@ -7,7 +7,11 @@
 
 #include "tloghelp/tlogload.h"
 
+#include "robot_interact.h"
+
 LPTLOGCTX pLogCtx = NULL;
+extern LUA_FUNC g_PackageList[];
+extern LUA_FUNC g_LuaFunc[];
 
 static BOOL do_init(void)
 {
@@ -33,17 +37,22 @@ static BOOL do_init(void)
 
 	nRetCode = CClientMessageHandler::instance().init();
 	LOG_PROCESS_ERROR(nRetCode);
+	
+	nRetCode = CScriptMgr::instance().init("robot");
+	LOG_PROCESS_ERROR(nRetCode);
 
+	for (int32_t i = 0; g_PackageList[i].pFunc; i++)
 	{
-		CRobotUser* pUser = NULL;
-
-		pUser = CRobotUserMgr::instance().create_user("test");
-		LOG_PROCESS_ERROR(pUser);
-
-		nRetCode = pUser->connect("tcp://127.0.0.1:8888");
+		nRetCode = CScriptMgr::instance().register_package(g_PackageList[i].pcszFuncName, g_PackageList[i].pFunc);
 		LOG_PROCESS_ERROR(nRetCode);
 	}
-	
+
+	CScriptMgr::instance().register_func_list(g_LuaFunc);
+	CScriptMgr::instance().add_include_path("../script");
+
+	nRetCode = CRobotInteractMgr::instance().init();
+	LOG_PROCESS_ERROR(nRetCode);
+
 	return TRUE;
 Exit0:
 	return FALSE;
@@ -52,6 +61,9 @@ Exit0:
 BOOL do_fini()
 {
 	int32_t nRetCode = 0;
+
+	nRetCode = CRobotInteractMgr::instance().uninit();
+	LOG_PROCESS_ERROR(nRetCode);
 
 	nRetCode = CClientMessageHandler::instance().uninit();
 	LOG_CHECK_ERROR(nRetCode);
@@ -74,6 +86,7 @@ static BOOL do_mainloop(int argc, char** argv)
 	while (true)
 	{
 		CRobotUserMgr::instance().mainloop();
+		CRobotInteractMgr::instance().mainloop();
 	}
 
 	return TRUE;
