@@ -28,6 +28,7 @@ struct SERVER_CONFIG
             BOOL bIsMiniDump;
             int32_t nDumpInterval;
         };
+        DUMP_CONFIG DumpConfig;
 
     } Common;
 
