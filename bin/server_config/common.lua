@@ -10,4 +10,10 @@ ServerConfig.Common =
 		
 	nServerStopTimeout = 20 * 1000;
 	nServerEndWaitTimeout = 3 * 1000;
+
+    DumpConfig =
+    {
+        bIsMiniDump = false,
+        nDumpInterval = 30 * 60 * 1000,
+    },
 }

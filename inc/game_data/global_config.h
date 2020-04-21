@@ -22,6 +22,13 @@ struct SERVER_CONFIG
 
 		int32_t nServerStopTimeout;
 		int32_t nServerEndWaitTimeout;
+
+        struct DUMP_CONFIG
+        {
+            BOOL bIsMiniDump;
+            int32_t nDumpInterval;
+        };
+
     } Common;
 
     struct GS_CONFIG

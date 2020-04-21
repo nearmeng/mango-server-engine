@@ -8,6 +8,7 @@
 #include <string.h>
 
 #include "define/server_def.h"
+#include "define/version.h"
 #include "game_data/global_config.h"
 
 #ifdef __linux__
@@ -77,7 +78,7 @@ void sigseg_handler(int sig, siginfo_t *info, void *data)
 	
 	PROCESS_ERROR(g_stDumperMgr.nStatus == cdsInit);
 
-	g_stDumperMgr.qwCurrTick = get_tick_count();
+	g_stDumperMgr.qwCurrTick = CTimeMgr::instance().get_server_tick();
 	PROCESS_ERROR(g_stDumperMgr.qwLastDumpTime + g_ServerConfig.Common.DumpConfig.nDumpInterval < g_stDumperMgr.qwCurrTick);
 
 	g_stDumperMgr.nDumpCount++;
