@@ -67,6 +67,7 @@ uint64_t guid_alloc(int32_t nType)
 	uint64_t qwGuid = 0;
 	uint32_t dwCurrTime = 0;
 	GUID_GENERATOR* pGen = NULL;
+	GUID_DEF guid = { (uint64_t)0 };
 
 	LOG_PROCESS_ERROR(g_pShmGenMgr);
 	LOG_PROCESS_ERROR(nType > gtdInvalid && nType < gtdTotal);
@@ -84,7 +85,6 @@ uint64_t guid_alloc(int32_t nType)
 	if (pGen->dwLastSerial >= MAX_GUID_SERIAL_NUM)
 		return 0;
 
-	GUID_DEF guid = { (uint64_t)0 };
 	guid.nSerialID = (pGen->dwLastSerial)++;
 	guid.nTimeStamp = pGen->dwLastSec;
 	guid.nType = nType;

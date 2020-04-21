@@ -11,7 +11,7 @@
 #include "game_data/global_config.h"
 
 #ifdef __linux__
-#include "minidump.h"
+#include "core/minidump.h"
 #include <unistd.h>
 #include <sys/statfs.h>
 
