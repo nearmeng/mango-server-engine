@@ -1,15 +1,26 @@
 #include "stdafx.h"
 #include "robot_interact.h"
 
+#if (defined(WIN32) || defined(WIN64))
 #include "windows.h"
 #include "process.h"
+#else
+#include <pthread.h>
+#endif
 
 #include "message/client_message_handler.h"
 
 CRobotInteractMgr CRobotInteractMgr::ms_Instance;
 char   g_nbstdin_buffer[2][1024];
+
+#if (defined(WIN32) || defined(WIN64))
 HANDLE g_input[2];
 HANDLE g_process[2];
+#else
+BOOL g_input[2];
+pthread_cond_t g_process[2];
+pthread_mutex_t g_process_lock[2];
+#endif
 
 BOOL CRobotInteractMgr::init()
 {
@@ -52,7 +63,7 @@ void CRobotInteractMgr::mainloop()
 	pReadData = read_data();
 	if (pReadData)
 	{
-		INF("read user input %s", pReadData);
+		//INF("read user input %s", pReadData);
 		_process_user_input(pReadData);
 	}
 
@@ -60,11 +71,13 @@ Exit0:
 	return;
 }
 	
+#if (defined(WIN32) || defined(WIN64))
 DWORD WINAPI console_input(LPVOID lpParameter)
 {
-	for (;;) {
-		int i;
-		for (i = 0; i < 2; i++) {
+	while (true)
+	{
+		for (int32_t i = 0; i < 2; i++) 
+		{
 			fgets(g_nbstdin_buffer[i], 1024, stdin);
 			SetEvent(g_input[i]);
 			WaitForSingleObject(g_process[i], INFINITE);
@@ -72,10 +85,27 @@ DWORD WINAPI console_input(LPVOID lpParameter)
 	}
 	return 0;
 }
+#else
+void* console_input(void* pParam)
+{
+	while (true)
+	{
+		for (int32_t i = 0; i < 2; i++)
+		{
+			pthread_mutex_lock(&g_process_lock[i]);
+			fgets(g_nbstdin_buffer[i], 1024, stdin);
+			g_input[i] = TRUE;
+			pthread_cond_wait(&g_process[i], &g_process_lock[i]);
+			pthread_mutex_unlock(&g_process_lock[i]);
+		}
+	}
+}
+#endif
 
 BOOL CRobotInteractMgr::_create_thread(void)
 {
 	int32_t nRetCode = 0;
+#if (defined(WIN32) || defined(WIN64))
 	DWORD tid;
 
 	CreateThread(NULL, 1024, &console_input, 0, 0, &tid);
@@ -85,6 +115,20 @@ BOOL CRobotInteractMgr::_create_thread(void)
 		g_process[i] = CreateEvent(NULL, FALSE, FALSE, NULL);
 		g_nbstdin_buffer[i][0] = '\0';
 	}
+#else
+	pthread_t tid;
+
+	nRetCode = pthread_create(&tid, NULL, console_input, NULL);
+	LOG_PROCESS_ERROR(nRetCode == 0);
+
+	for (int32_t i = 0; i < 2; i++)
+	{
+		g_input[i] = 0;
+		pthread_cond_init(&g_process[i], NULL);
+		pthread_mutex_init(&g_process_lock[i], NULL);
+		g_nbstdin_buffer[i][0] = '\0';
+	}
+#endif
 
 	return TRUE;
 Exit0:
@@ -98,6 +142,7 @@ BOOL CRobotInteractMgr::_destroy_thread(void)
 	
 const char* CRobotInteractMgr::read_data(void)
 {
+#if (defined(WIN32) || defined(WIN64))
 	DWORD n = WaitForMultipleObjects(2, g_input, FALSE, 0);
 	if (n == WAIT_OBJECT_0 || n == WAIT_OBJECT_0 + 1) 
 	{
@@ -109,6 +154,18 @@ const char* CRobotInteractMgr::read_data(void)
 	{
 		return NULL;
 	}
+#else
+	for (int32_t i = 0; i < 2; i++)
+	{
+		if (g_input[i])
+		{
+			pthread_cond_signal(&g_process[i]);
+			g_input[i] = FALSE;
+			return g_nbstdin_buffer[i];
+		}
+	}
+	return NULL;
+#endif
 }
 
 void CRobotInteractMgr::_process_user_input(const char* pInput)
@@ -141,6 +198,8 @@ void CRobotInteractMgr::_process_user_input(const char* pInput)
 
 		nRetCode = m_pScript->call_function("gmcommand", "s", pInput);
 		LOG_PROCESS_ERROR(nRetCode);
+
+		printf(">> ");
 	}
 
 Exit0:
