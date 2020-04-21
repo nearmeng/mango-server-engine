@@ -219,3 +219,7 @@ FakesAssemblies/
 GeneratedArtifacts/
 _Pvt_Extensions/
 ModelManifest.xml
+src/proto/protocol/proto_head.pb.cc
+src/proto/protocol/proto_head.pb.h
+src/proto/protocol/proto_msgid.pb.cc
+src/proto/protocol/proto_msgid.pb.h
