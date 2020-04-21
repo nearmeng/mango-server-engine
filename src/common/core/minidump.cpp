@@ -1,6 +1,6 @@
 #ifdef __linux__
 #include "stdafx.h"
-#include "minidump.h"
+#include "core/minidump.h"
 
 #include <execinfo.h>                // for backtrace, backtrace_symbols
 #include <libgen.h>                  // for basename
@@ -11,6 +11,7 @@
 #include <unistd.h>                  // for pid_t, getpid, readlink
 #include <errno.h>
 #include <signal.h>
+
 #include "define/version.h"
 
 struct REG_SET
