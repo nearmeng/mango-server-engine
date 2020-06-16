@@ -161,7 +161,7 @@ class ClusterDeployResult:
         return sorted(self.IDCDeployResult[idcID].ZoneDeployResult)
 
 def getProcArgs(funcName):
-    conf_arg = "--use-bus "
+    conf_arg = ""
 
     if procConfig['proc_list'][funcName].has_key('conf_file_prefix'):
         conf_arg += " --conf-file=./%s_$world.$zone.$function.$instance" % procConfig['proc_list'][funcName]['conf_file_prefix']
@@ -169,12 +169,13 @@ def getProcArgs(funcName):
         conf_arg += " --noloadconf"
 
     if not funcName == "tlogd":
+        conf_arg += " --use-bus "
         if procConfig['proc_list'][funcName].has_key('tlog_file_prefix'):
             conf_arg += " --tlogconf=./%s_$world.$zone.$function.$instance"  % procConfig['proc_list'][FuncName]['tlog_file_prefix']
         else :
-            conf_arg += " --tlogconf=./tlog.xml_$world_$zone.$function.$instance"
+            conf_arg += " --tlogconf=./tlog.xml_$world.$zone.$function.$instance"
 
-        conf_arg += " --rundata_timer=./rundata_timer.xml_$world_$zone.$function.$instance"
+        conf_arg += " --rundata_timer=./rundata_timer.xml_$world.$zone.$function.$instance"
     return conf_arg
 
 def buildProcAttr(funcName):
@@ -475,7 +476,7 @@ def buildDeployConfig():
                     checkDeployGroup(k, "zone")
                     deployResult.addZoneDeploy(build_group_deploy(worldID, zoneID, k, v))
         #tlogd for this world
-        buildTLogdDeploy(worldID, worldDeployConfig)
+        deployResult.addIDCDeploy(worldID, buildTLogdDeploy(worldID, worldDeployConfig))
         
     print "[End] construct deploy config"
     return deployResult

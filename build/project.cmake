@@ -105,6 +105,7 @@ function (post_project)
 				readline
 				tdr
 				ncurses
+                anl
 			)
 		target_link_libraries (${TARGET_NAME}
 			dl
