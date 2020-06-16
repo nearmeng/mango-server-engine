@@ -2,6 +2,7 @@ cluster:
     attrs:
         base_key: 7001
         business_id: 0
+        tlog_write_interval: 0
         tlog_home: ../log/%F
         aps_server:
           - addr: tcp://10.123.5.49:9050

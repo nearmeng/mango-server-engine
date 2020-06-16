@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="GBK" standalone="yes" ?>
     <TLOGConf version="2">
     <Magic>1548 </Magic>
-    <PriorityHigh>NULL </PriorityHigh> <PriorityLow> $server_log_priority$ </PriorityLow>
+    <PriorityHigh>NULL </PriorityHigh> 
+    <PriorityLow> $server_log_priority$ </PriorityLow>
     <DelayInit>0 </DelayInit>
     <SuppressError>0</SuppressError> 
     <CategoryList type="TLOGCategory">
@@ -17,7 +18,7 @@
             <Type>VEC</Type>
             <Device>
                 <Vec> 
-                    <Count>1</Count>
+                    <Count>2</Count>
                         <Elements>
                             <ID>0</ID>
                             <Ctrl>0</Ctrl>
@@ -29,9 +30,25 @@
                                    <SizeLimit>10240000</SizeLimit>
                                    <Precision>1</Precision>
                                    <MaxRotate>0</MaxRotate>
-                                   <SyncTime>1</SyncTime>
+                                   <SyncTime>$tlog_write_interval$</SyncTime>
                                    <NoFindlatest>0</NoFindlatest>
                                </File>
+                            </Device>
+                        </Elements> 
+                        <Elements>
+                            <ID>0</ID>
+                            <Ctrl>0</Ctrl>
+                            <Type>NET</Type>
+                            <Device>
+                                <Net> 
+                                    <Url>$server_text_tlogd_addr$</Url>
+                                    <Sendbuff>1024000</Sendbuff>
+                                    <RecvBuff>1024000</RecvBuff>
+                                    <AutoReconnect>10</AutoReconnect>
+                                    <MaxRetry>20</MaxRetry>
+                                    <ConnTimeout>1000</ConnTimeout>
+                                    <SendTimeout>1000</SendTimeout>
+                                </Net>
                             </Device>
                         </Elements> 
                 </Vec>
@@ -63,7 +80,7 @@
                                    <SizeLimit>10240000</SizeLimit>
                                    <Precision>1</Precision>
                                    <MaxRotate>0</MaxRotate>
-                                   <SyncTime>1</SyncTime>
+                                   <SyncTime>$tlog_write_interval$</SyncTime>
                                    <NoFindlatest>0</NoFindlatest>
                                </File>
                             </Device>
@@ -97,7 +114,7 @@
                                    <SizeLimit>10240000</SizeLimit>
                                    <Precision>1</Precision>
                                    <MaxRotate>0</MaxRotate>
-                                   <SyncTime>1</SyncTime>
+                                   <SyncTime>$tlog_write_interval$</SyncTime>
                                    <NoFindlatest>0</NoFindlatest>
                                </File>
                             </Device>

@@ -163,7 +163,7 @@ def generate_tlog_file_by_config(filename, proc_name, tlog_config):
     file_header = '''<?xml version="1.0" encoding="GBK" standalone="yes" ?>
     <TLOGConf version="2">
     <Magic>1548 </Magic>
-    <PriorityHigh>NULL </PriorityHigh> ''' + '<PriorityLow> $%s_log_priority$ </PriorityLow>' % proc_name;
+    <PriorityHigh>NULL </PriorityHigh> ''' + '\n    <PriorityLow> $%s_log_priority$ </PriorityLow>' % proc_name;
 
     file_header += '''
     <DelayInit>0 </DelayInit>
@@ -219,7 +219,7 @@ def generate_tlog_file_by_config(filename, proc_name, tlog_config):
                                    <SizeLimit>10240000</SizeLimit>
                                    <Precision>1</Precision>
                                    <MaxRotate>0</MaxRotate>
-                                   <SyncTime>1</SyncTime>
+                                   <SyncTime>$tlog_write_interval$</SyncTime>
                                    <NoFindlatest>0</NoFindlatest>
                                </File>
                             </Device>
@@ -243,7 +243,7 @@ def generate_tlog_file_by_config(filename, proc_name, tlog_config):
                              </Device>
                          </Elements> ''';
             else:
-                print "element is not support"
+                print "proc %s tlog config element '%s' is not support" % (proc_name, element)
                 sys.exit(-1)
             file_category_element_all += file_category_element
             
@@ -609,11 +609,15 @@ def start_expanding():
             attrs.add("func", proc_funcid(proc_name))
             attrs.add("inst", proc_inst + 1)
             attrs.add("%s_tbus" % proc_name, proc_str);
-            attrs.add("%s_log_priority" % proc_name, proc_config['log_priority'])
+            attrs.add("%s_log_priority" % proc_name, deploy_config['log_priority'])
 
             if procs_config['proc_list'][proc_name].has_key('attrs'):
                 for k,v in procs_config['proc_list'][proc_name]['attrs'].items():
                     attrs.add(k, v)
+            
+            if procs_config['proc_list'][proc_name].has_key('tlog_config'):
+                for category,category_config in procs_config['proc_list'][proc_name]['tlog_config'].items():
+                    attrs.add("%s_%s_tlogd_addr" % (proc_name, category), "udp://127.0.0.1:6666")
             
             expand_proc(proc_name.lower(), attrs, proc_str)
         

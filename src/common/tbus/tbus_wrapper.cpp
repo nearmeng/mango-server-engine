@@ -169,7 +169,7 @@ BOOL tbus_recv_data(void)
 	int32_t nRetCode = 0;
 	int32_t nLeftRecvCount = MAX_TBUS_RECV_PER_LOOP;
 	
-	while (nLeftRecvCount--)
+	while (nLeftRecvCount > 0)
 	{
 		int32_t nTbusSrc = TBUS_ADDR_ALL;
 		int32_t nTbusDst = 0;
@@ -179,6 +179,7 @@ BOOL tbus_recv_data(void)
 		if (nRetCode >= 0)
 		{
 			g_pTbusMsgHandler(g_szTbusMsgBuff, nDataSize, nTbusSrc);
+            nLeftRecvCount--;
 		}
 		else
 			break;
