@@ -24,7 +24,7 @@ extern "C"
 
 	#if _INTEGRAL_MAX_BITS >= 64
 
-		#if _MSVCVER >= 1300
+		#if _MSC_VER >= 1300
 		#define strtoll(nptr, endptr, base)		_strtoi64(nptr, endptr, base)
 		#define strtoull(nptr, endptr, base)	_strtoui64(nptr, endptr, base)
 		#else

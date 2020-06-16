@@ -30,6 +30,15 @@ extern "C" {
      *  @{
      */
 
+    /**
+     *获取元数据库中元数据类型的个数
+     *@param[in] a_pstLib 元数据库指针
+     *
+     *@return meta个数
+     *
+     * @pre \e a_pstLib 不能为 NULL
+     */
+    TDR_API int tdr_get_meta_num(IN LPTDRMETALIB a_pstLib);
 
     /** 根据元数据名在元数据库中查找此元数据
      *@param[in] a_pstLib 元数据库指针
@@ -92,8 +101,24 @@ extern "C" {
      * @pre \e a_pstMeta 不能为 NULL
      */
     TDR_API const char *tdr_get_meta_name(IN LPTDRMETA a_pstMeta);
+    
+    /**获取元数据的customattr
+     *@param[in] a_pstMeta 元数据描述的指针
+     *
+     *@return 元数据对应的customattr, 无customattr元素情况下则返回""
+     *
+     * @pre \e a_pstMeta 不能为 NULL
+     */
+    TDR_API const char *tdr_get_meta_customattr(IN LPTDRMETA a_pstMeta);
 
-
+    /**获取元数据的customattr2
+     *@param[in] a_pstMeta 元数据描述的指针
+     *
+     *@return 元数据对应的customattr2, 无customattr元素情况下则返回""
+     *
+     * @pre \e a_pstMeta 不能为 NULL
+     */
+    TDR_API const char *tdr_get_meta_customattr2(IN LPTDRMETA a_pstMeta);
 
     /**
      *获取复合元数据类型(meta)的存储空间
@@ -147,6 +172,21 @@ extern "C" {
      */
     TDR_API int tdr_get_meta_primarykey(IN const LPTDRMETA a_pstMeta,
                                         INOUT char* a_pszBuf, IN size_t a_iBufSize);
+
+    /* 获取meta中splittablekey对应的字符串值
+    *@param[in]      a_pstMeta  元数据描述的指针,不能为null
+    *@param[in, out] a_pszBuf   保存splittablekey信息的字符缓冲区
+    *@param[in]      a_iBufSize 保存splittablekey信息的字符缓冲区大小
+    *@param[in]      err_str    错误返回的error描述,如果不需要，请填NULL，
+                     用法: 定义字符指针char * err_str; 然后传入地址 &err_str, 然后就可以printf("%s", err_str)了
+    *@return success : 0
+    *        failed :  !0
+
+    *@note 如果splittablekey是复合的，之间以逗号分隔
+    */
+    TDR_API int tdr_get_meta_splittablekey(IN const LPTDRMETA a_pstMeta, 
+                                           INOUT char* a_pszBuf, IN size_t a_iBufSize, IN char** err_str);
+
 
     /**
      *获取复合元数据类型成员元素的个数
@@ -440,6 +480,19 @@ extern "C" {
      */
     TDR_API const char *tdr_get_entry_customattr(IN LPTDRMETALIB a_pstLib,
                                                  IN LPTDRMETAENTRY a_pstEntry);
+    
+    /**获取成员的自定义属性值
+     *@param[in] a_pstEntry 成员的元数据描述句柄
+     *@param[in] a_pstLib	元数据描述库的指针
+     *
+     *@return 如果此成员定义了customattr2属性,则返回此属性的首地址;否则返回""
+     *
+     *@pre \e a_pstEntry 不能为NULL
+     *@pre \e a_pstLib 不能为NULL
+     */
+    TDR_API const char *tdr_get_entry_customattr2(IN LPTDRMETALIB a_pstLib,
+                                                  IN LPTDRMETAENTRY a_pstEntry);
+
 
     /**获取entry在所属结构中的偏移量
      *@param[in] a_pstEntry entry元素描述结构的指针
@@ -551,6 +604,24 @@ extern "C" {
      *@pre \e a_pstIndex 不能为 NULL
      */
     TDR_API const char *tdr_get_index_name(IN LPTDRMETAINDEX a_pstIndex);
+    #if 0
+    /**获取 index 的customattr
+     *@param[in] a_pstIndex index 结构的指针
+     *
+     *@return index 的customattr
+     *
+     *@pre \e a_pstIndex 不能为 NULL
+     */
+    TDR_API const char *tdr_get_index_customattr(IN LPTDRMETAINDEX a_pstIndex);
+    /**获取 index 的customattr2
+     *@param[in] a_pstIndex index 结构的指针
+     *
+     *@return index 的customattr2
+     *
+     *@pre \e a_pstIndex 不能为 NULL
+     */
+    TDR_API const char *tdr_get_index_customattr2(IN LPTDRMETAINDEX a_pstIndex);
+    #endif
 
     /** @}*/ /* TDR_INDEX_MANAGE TDR_INDEX(index)管理*/
 

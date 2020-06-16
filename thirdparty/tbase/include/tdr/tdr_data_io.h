@@ -634,7 +634,7 @@ extern "C" {
     * 由于rapidjson库的自身的原因，本接口不支持windows VC6版本
 	* @param[in]	   a_pstMeta 元数据描述的指针, 只能为<struct>的描述
 	* @param[in,out]   a_pstHost 内存数据缓冲区,传入的a_pstHost->iBuff建议等于传入字符串实际占用的字节数，或者字符串长度(strlen结果)加1(字符串结束标志)
-	* @param[in]	   a_pstJson 输入缓冲区, 指向JSON数据
+	* @param[in]	   a_pstJson 输入缓冲区, 指向JSON数据. 先用a_pstJson.pszBuff(需以'\0'结尾)去解析;如果失败，再以a_pstJson.iBuff(包括'\0'后的长度)截断后的pszBuff去解析
 	* @param[in]	   a_iCutOffVersion 数据成员剪裁版本
 	*
 	* @pre a_pstMeta 不能为NULL
@@ -651,7 +651,6 @@ extern "C" {
 	* @note 对于输入的JSON格式数据，本接口有如下要求：
 	* - 所有key使用""引用, 不允许出现未经""引用的key
 	* - 不允许出现空数组[]
-	* - 不允许出现 null  值
 	* - 不允许出现 true  值
 	* - 不允许出现 false 值
 	*

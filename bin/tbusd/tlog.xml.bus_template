@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+
+<TLOGConf version="2">
+	<Magic>1548 </Magic>
+	<PriorityHigh>NULL </PriorityHigh>
+	<PriorityLow>$tbusd_log_priority$ </PriorityLow>
+	<DelayInit>0 </DelayInit>
+	<SuppressError>1 </SuppressError>
+	<Count>100</Count>
+	<CategoryList type="TLOGCategory">
+		<Name>text</Name>
+		<PriorityHigh>NULL </PriorityHigh>
+		<PriorityLow>TRACE </PriorityLow>
+		<Filter type="TLOGFilterVec">
+			<Count>0 </Count>
+		</Filter>
+		<LevelDispatch>0 </LevelDispatch>
+		<MustSucc>0 </MustSucc>
+		<MaxMsgSize>0 </MaxMsgSize>
+		<Format></Format>
+		<ForwardCat>texttrace</ForwardCat>
+		<Device type="TLOGDevAny">
+			<Type>NO </Type>
+		</Device>
+	</CategoryList>
+	<CategoryList type="TLOGCategory">
+		<Name>texttrace</Name>
+		<PriorityHigh>NULL </PriorityHigh>
+		<PriorityLow>INFO </PriorityLow>
+		<Filter type="TLOGFilterVec">
+			<Count>0 </Count>
+		</Filter>
+		<LevelDispatch>0 </LevelDispatch>
+		<MustSucc>0 </MustSucc>
+		<MaxMsgSize>0 </MaxMsgSize>
+		<Format>[%d.%u][%h][(%f:%l) (%F)][%M][%p] %m%n</Format>
+		<ForwardCat>texterr</ForwardCat>
+		
+		<Device type="TLOGDevAny">
+			<Type>FILE </Type>
+			<Device type="TLOGDevSelector">
+				<File type="TLOGDevFile">
+					<Pattern>$tlog_home$/tbusd.log</Pattern>
+					<BuffSize>0 </BuffSize>
+					<SizeLimit>524288000 </SizeLimit>
+					<Precision>1 </Precision>
+					<MaxRotate>2 </MaxRotate>
+					<SyncTime>1 </SyncTime>
+					<NoFindLatest>0 </NoFindLatest>
+					<RotateStick>0 </RotateStick>
+					<DropBinaryHead>0 </DropBinaryHead>
+				</File>
+			</Device>
+		</Device>
+		
+	</CategoryList>
+
+</TLOGConf>

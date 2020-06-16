@@ -133,6 +133,9 @@ extern "C"
         /*Called when the thread finis*/
         int (*pfnFini)(IN TAPPTHREADCTX *pstThreadCtx, IN void* pvArg);
 
+        /*if Idle is NULL, thread usleep(1000 * pstInnerCtx->pstAppCtx->iIdleSleep), else call user's pfnIdle()*/
+        int(*pfnIdle)(IN TAPPTHREADCTX *pstThreadCtx, IN void* pvArg);
+
         /*The metaname for run data qumu.*/
         char szRunDataCumuMeta[512];
 

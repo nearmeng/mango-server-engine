@@ -66,6 +66,7 @@ typedef enum tagCompatibleBoolean
 
 #define TDR_NAME_LEN		128		/**< 元数据名字串最大字节数*/
 #define TDR_DESC_LEN		1024		/**< 元数据描述串最大字节数*/
+#define TDR_CUSTOMATTR_LEN  2048    /**< 元数据自定义串最大字节数*/
 #define TDR_MACRO_LEN	128		/**< 元数据宏定义名字串最大字节数*/
 #define TDR_CHNAME_LEN	512		/**< 元数据中文名串最大字节数*/
 #define TDR_DEFAULT_VALUE_LEN	1024	/**< 元数据缺省值最大字节数*/
@@ -116,7 +117,7 @@ typedef enum tagCompatibleBoolean
 
 #define TDR_MAX_CUSTOM_NAME_PREFIX_LEN	9		/**<用户自定义名字前缀的最大长度*/
 
-#define TDR_MAX_CUMTOMATTR_VALUE_LEN	2048	/**<数据成员用户自定义属性值最大长度*/
+#define TDR_MAX_CUMTOMATTR_VALUE_LEN	TDR_CUSTOMATTR_LEN	/**<数据成员用户自定义属性值最大长度*/
 
 /**@name IO属性值
 *@ {*/

@@ -5,7 +5,7 @@
 // @Author:   $Author: ryanczhang $
 // @Date:     $Date:: 2013-04-09 16:00:13 +0800 #$
 // @Revision: $Revision: 46990 $
-// @HeadURL:  $HeadURL:: http://tc-svn.tencent.com/ied/ied_tsf4g_rep/tsf4g_p#$
+// @HeadURL:  $HeadURL:: https://tc-svn.tencent.com/ied/ied_tsf4g_rep/tsf4g_#$
 //----------------------------------------------------------------------------
 
 /*!

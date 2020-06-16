@@ -127,9 +127,9 @@
 *@note 除union结构外，同一父元素下的所有子元素的name属性的值不可重复。
 */
 #define TDR_TAG_NAME               "name"
-#define TDR_TAG_CNNAME             "cname"            /**< 元素的中文标识 */
-#define TDR_TAG_DESCIPTION               "desc"              /**< 元素描述串*/
-#define TDR_TAG_DOT                '.'                  /**< 元素path属性分隔符*/
+#define TDR_TAG_CNNAME             "cname"             /**< 元素的中文标识 */
+#define TDR_TAG_DESCIPTION         "desc"              /**< 元素描述串*/
+#define TDR_TAG_DOT                '.'                 /**< 元素path属性分隔符*/
 /** @} */ // 元数据元数通用属性
 
 
@@ -217,6 +217,7 @@
 #define TDR_TAG_BIND_MACROSGROUP	"bindmacrosgroup"	/**< 绑定的宏定义组*/
 #define TDR_TAG_AUTOINCREMENT		"autoincrement"		/**< auto increment属性*/
 #define TDR_TAG_CUSTOMATTR			"customattr"		/**< 自定义属性*/
+#define TDR_TAG_CUSTOMATTR2			"customattr2"		/**< 自定义属性*/
 #define TDR_TAG_USESUBTABLE     	"usesubtable"       /**< entry建表时，建立子表*/
 /** @}*/  //entry元素的特殊属性
 
@@ -265,6 +266,9 @@
 #define TDR_TAG_SIZE                "size"              /**< 指定entry单元的大小*/
 #define TDR_TAG_ALIGN               "align"             /**<字节对齐方式，对应于编译器的\#pragma pack指令*/
 #define TDR_TAG_VERSIONINDICATOR    "versionindicator"  /**<versionindicator属性指明哪个元数据成员会成为本元数据结构的版本指示器*/
+#define TDR_TAG_REFLECTION    "reflection"  /**<reflection属性指明此结构生成的打解包函数是否用csharp reflection的方式实现*/
+#define TDR_TAG_NEEDPACK    "needpack"  /**<needpack属性指明此结构是否生成 csharp 的 pack 函数*/
+#define TDR_TAG_NEEDUNPACK    "needunpack"  /**<needunpack属性指明此结构是否生成 csharp 的 unpack 函数*/
 
 
 #define TDR_TAG_PRIMARY_KEY			"primarykey"		/**<指明结构体对应数据库表的主键信息*/

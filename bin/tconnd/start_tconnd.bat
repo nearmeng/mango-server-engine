@@ -1,1 +1,0 @@
-start tconnd.exe --use-bus --id=10.0.1.1 --bus-key=669001 --conf-file=tconnd.xml --tlogconf=tconnd_log.xml

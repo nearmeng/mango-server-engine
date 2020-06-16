@@ -168,7 +168,7 @@ BOOL CRouterClient::sendv_by_addr(int32_t nDstServerAddr, const struct iovec* pV
 	msg.nMsgSrcAddr = m_nTbusID;
 	msg.nDstServerAddr = nDstServerAddr;
 
-	nRetCode = _send_to_router(&msg, sizeof(msg), pVec, nVecCount);
+	nRetCode = _sendv_to_router(&msg, sizeof(msg), pVec, nVecCount);
 	LOG_PROCESS_ERROR(nRetCode);
 
 	return TRUE;
@@ -202,7 +202,7 @@ BOOL CRouterClient::sendv_by_service_type(int32_t nServiceType, const struct iov
 	msg.nMsgSrcAddr = m_nTbusID;
 	msg.nServiceType = nServiceType;
 
-	nRetCode = _send_to_router(&msg, sizeof(msg), pVec, nVecCount);
+	nRetCode = _sendv_to_router(&msg, sizeof(msg), pVec, nVecCount);
 	LOG_PROCESS_ERROR(nRetCode);
 
 	return TRUE;
@@ -238,7 +238,7 @@ BOOL CRouterClient::sendv_by_service_inst(int32_t nServiceType, int32_t nInstID,
 	msg.nServiceType = nServiceType;
 	msg.nServiceInst = nInstID;
 
-	nRetCode = _send_to_router(&msg, sizeof(msg), pVec, nVecCount);
+	nRetCode = _sendv_to_router(&msg, sizeof(msg), pVec, nVecCount);
 	LOG_PROCESS_ERROR(nRetCode);
 
 	return TRUE;
@@ -313,7 +313,7 @@ BOOL CRouterClient::sendv_by_objid(uint64_t qwObjID, const struct iovec* pVec, i
 	msg.nMsgSrcAddr = m_nTbusID;
 	msg.qwObjID = qwObjID;
 
-	nRetCode = _send_to_router(&msg, sizeof(msg), pVec, nVecCount);
+	nRetCode = _sendv_to_router(&msg, sizeof(msg), pVec, nVecCount);
 	LOG_PROCESS_ERROR(nRetCode);
 
 	return TRUE;
@@ -347,7 +347,7 @@ BOOL CRouterClient::sendv_by_load(int32_t nServiceType, const struct iovec* pVec
 	msg.nMsgSrcAddr = m_nTbusID;
 	msg.nServiceType = nServiceType;
 
-	nRetCode = _send_to_router(&msg, sizeof(msg), pVec, nVecCount);
+	nRetCode = _sendv_to_router(&msg, sizeof(msg), pVec, nVecCount);
 	LOG_PROCESS_ERROR(nRetCode);
 
 	return TRUE;
@@ -379,7 +379,7 @@ BOOL CRouterClient::sendv_to_mgr(const struct iovec* pVec, int32_t nVecCount)
 	msg.wMsg = router_send_to_mgr;
 	msg.nMsgSrcAddr = m_nTbusID;
 
-	nRetCode = _send_to_router(&msg, sizeof(msg), pVec, nVecCount);
+	nRetCode = _sendv_to_router(&msg, sizeof(msg), pVec, nVecCount);
 	LOG_PROCESS_ERROR(nRetCode);
 
 	return TRUE;

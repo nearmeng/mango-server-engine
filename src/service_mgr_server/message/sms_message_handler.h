@@ -93,7 +93,7 @@ private:
 
 private:
 	int32_t _judge_server_node_status(SERVER_INFO* pCurrInfo, BOOL bAlive);
-	BOOL _process_control_cmd(const char* pcszCommand, int32_t nLen, int32_t nSrcAddr);
+	BOOL _process_control_cmd(const char* pcszCommandType, const char* pcszCommand, int32_t nSrcAddr);
 	BOOL _process_control_cmd_expand(int32_t nServiceType, int32_t nAfterExpandServerCount, std::string& sErrStr);
 	BOOL _process_control_cmd_reduce(int32_t nServiceType, int32_t nAfterReduceServerCount, std::string& sErrStr);
 

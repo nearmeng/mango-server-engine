@@ -1,4 +1,4 @@
-﻿#ifndef _TBUS_INTENAL_H_
+#ifndef _TBUS_INTENAL_H_
 #define _TBUS_INTENAL_H_
 
 #include "tbus/tbus.h"

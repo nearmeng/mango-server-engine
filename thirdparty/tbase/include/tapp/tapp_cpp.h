@@ -359,6 +359,11 @@ class IAppThreadable {
         ///
         /// @param[in]  thread_ctx  工作线程ctx
         virtual int OnThreadTick(LPTAPPTHREADCTX thread_ctx, void* arg);
+        
+        /// @brief worker线程Idle事件回调
+        ///
+        /// @param[in]  thread_ctx  工作线程ctx
+        virtual int OnThreadIdle(LPTAPPTHREADCTX thread_ctx, void* arg);
 
         /// @brief  为每个worker线程创建用户自定义参数对象
         ///

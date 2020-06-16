@@ -55,6 +55,7 @@ extern "C"
 #define TLOG_DEF_CATEGORY_TEXTERR       "texterr"
 #define TLOG_DEF_CATEGORY_BUS           "texttrace.bus"
 #define TLOG_DEF_CATEGORY_BILL          "bill"
+#define TLOG_DEF_CATEGORY_GDATA         "gdata"
 
 /**从配置文件初始化日志句柄
  *
@@ -64,6 +65,15 @@ extern "C"
  */
 LPTLOGCTX tlog_init_from_file(const char *a_pstzPath);
 
+/**
+ * 指定配置文件重载句柄
+ * @note 文件中的category不能增减, 不能调换位置,当前主要提供改变ip/域名
+ * @param[in] a_pstzPath 日志配置文件路径(原文件)
+ * @param[in] 旧文件句柄
+ * @return 0 成功
+ *         非0 失败, 失败后原先的句柄a_pstCtx可能处于不可用状态, 需要关闭(tlog_fini_ctx)后重置
+ */
+int tlog_reload_from_file(const char *a_pstzPath, LPTLOGCTX a_pstCtx);
 /*
  * 初始化默认只有一个文件category的日志结构
  * @param[in] a_pszCatName 日志空间名

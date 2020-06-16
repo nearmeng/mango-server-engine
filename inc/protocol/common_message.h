@@ -2,8 +2,7 @@
 #define _COMMON_MESSAGE_H_
 
 #include "internal_message_header.h"
-
-#define MAX_GM_COMMAND_LEN			(1024)
+#include "define/str_def.h"
 
 #pragma pack(push, 1)
 //tolua_begin
@@ -46,27 +45,18 @@ struct A2A_TIME_SYNC : INTERNAL_MESSAGE_HEADER
 	int64_t   llTimeDiff;
 };
 
-struct A2A_CONTROL_REQ : INTERNAL_MESSAGE_HEADER
+struct A2A_CONTROL_REQ 
 {
-    int32_t nSrcAddr;
-    int32_t nDstType;
-    int32_t nDstAddr;
-	uint64_t qwRoleID;
-    int32_t nCmdLen;
-    char szCommand[MAX_GM_COMMAND_LEN];
+	char szCommandType[MAX_CMD_TYPE_LEN];
+    char szCommandContent[MAX_GM_COMMAND_LEN];
+	uint64_t qwParam;
 };
 
-struct A2A_CONTROL_ACK : INTERNAL_MESSAGE_HEADER
+struct A2A_CONTROL_ACK 
 {
-    int32_t nDstAddr;
     int32_t nResult;
     int32_t nDescLen;
     char szDesc[MAX_GM_COMMAND_LEN];
-};
-
-struct TEST_SEND_DATA
-{
-	int32_t nData;
 };
 
 // tolua_end

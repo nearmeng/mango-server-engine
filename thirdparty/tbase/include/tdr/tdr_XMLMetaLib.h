@@ -246,6 +246,24 @@ TDR_API int tdr_save_xml_fp(IN LPTDRMETALIB a_pstLib, OUT FILE* a_fp);
 TDR_API int tdr_save_xml_file(IN LPTDRMETALIB a_pstLib, IN const char* a_pszXmlFile);
 
 
+/**
+ *将元数据转换成XML描述信息，并保存到文件中。
+ *@param[in] a_pstLib 根据XML信息生成的元数据库
+ *@param[in] a_pstMeta 根据XML信息生成的元数据
+ *@param[in]	a_pszXmlFile 保存XML信息的文件的文件名; 
+ *
+ *@retval <0  处理失败，返回表示出错信息的错误代码
+ *@retval 0   处理成功
+ *@retval >0  处理成功，但发生某些特殊情况
+ *
+ * @pre \e a_pstLib 不能为 NULL
+ * @pre \e a_pstMeta 不能为 NULL
+ * @pre \e a_pszXmlFile 不能为 NULL
+ *	
+ */
+TDR_API int tdr_meta_save_xml_file(IN LPTDRMETALIB a_pstLib, IN LPTDRMETA a_pstMeta, IN const char* a_pszXmlFile);
+
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

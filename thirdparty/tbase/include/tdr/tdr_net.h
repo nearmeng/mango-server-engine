@@ -22,21 +22,201 @@
 #include "tdr/tdr_types.h"
 #include "tdr/tdr_external.h"
 
-
 #ifdef TDR_OS_LITTLEENDIAN
-#define tdr_ntoh64(x)                    TDR_OS_SWAP64(x)
-#define tdr_hton64(x)                    TDR_OS_SWAP64(x)
-#define tdr_ntoh32(x)                    TDR_OS_SWAP32(x)
-#define tdr_hton32(x)                    TDR_OS_SWAP32(x)
-#define tdr_ntoh16(x)                    TDR_OS_SWAP16(x)
-#define tdr_hton16(x)                    TDR_OS_SWAP16(x)
+    #define tdr_ntoh64(x)                    TDR_OS_SWAP64(x)
+    #define tdr_hton64(x)                    TDR_OS_SWAP64(x)
+    #define tdr_ntoh32(x)                    TDR_OS_SWAP32(x)
+    #define tdr_hton32(x)                    TDR_OS_SWAP32(x)
+    #define tdr_ntoh16(x)                    TDR_OS_SWAP16(x)
+    #define tdr_hton16(x)                    TDR_OS_SWAP16(x)
 #else
-#define tdr_ntoh64(x)                    (x)
-#define tdr_hton64(x)                    (x)
-#define tdr_ntoh32(x)                   (x)
-#define tdr_hton32(x)                   (x)
-#define tdr_ntoh16(x)                   (x)
-#define tdr_hton16(x)                   (x)
+    #define tdr_ntoh64(x)                    (x)
+    #define tdr_hton64(x)                    (x)
+    #define tdr_ntoh32(x)                   (x)
+    #define tdr_hton32(x)                   (x)
+    #define tdr_ntoh16(x)                   (x)
+    #define tdr_hton16(x)                   (x)
+#endif
+/* above code should be Reserved because some function still use them. */
+
+#define TDR_CAST_SWAP64(dst, src) \
+    do { \
+        ((char *)dst)[0] = ((const char *)src)[7]; \
+        ((char *)dst)[1] = ((const char *)src)[6]; \
+        ((char *)dst)[2] = ((const char *)src)[5]; \
+        ((char *)dst)[3] = ((const char *)src)[4]; \
+        ((char *)dst)[4] = ((const char *)src)[3]; \
+        ((char *)dst)[5] = ((const char *)src)[2]; \
+        ((char *)dst)[6] = ((const char *)src)[1]; \
+        ((char *)dst)[7] = ((const char *)src)[0]; \
+    } while (0)
+		
+
+#define TDR_SET_SWAP64(dst, val) \
+    do { \
+        ((char *)dst)[0] = (((val) & (uint64_t)0xff00000000000000LL) >> 56); \
+        ((char *)dst)[1] = (((val) & (uint64_t)0x00ff000000000000LL) >> 48); \
+        ((char *)dst)[2] = (((val) & (uint64_t)0x0000ff0000000000LL) >> 40); \
+        ((char *)dst)[3] = (((val) & (uint64_t)0x000000ff00000000LL) >> 32); \
+        ((char *)dst)[4] = (((val) & (uint64_t)0x00000000ff000000) >> 24); \
+        ((char *)dst)[5] = (((val) & (uint64_t)0x0000000000ff0000) >> 16); \
+        ((char *)dst)[6] = (((val) & (uint64_t)0x000000000000ff00) >> 8); \
+        ((char *)dst)[7] = (((val) & (uint64_t)0x00000000000000ff)); \
+    } while (0)
+
+
+#define TDR_GET_SWAP64(dst) \
+	((((unsigned char *)dst)[7])\
+	 |((uint64_t)(((unsigned char *)dst)[6]) << 8)\
+	 |((uint64_t)(((unsigned char *)dst)[5]) << 16)\
+	 |((uint64_t)(((unsigned char *)dst)[4]) << 24)\
+	 |((uint64_t)(((unsigned char *)dst)[3]) << 32)\
+	 |((uint64_t)(((unsigned char *)dst)[2]) << 40)\
+	 |((uint64_t)(((unsigned char *)dst)[1]) << 48)\
+	 |((uint64_t)(((unsigned char *)dst)[0]) << 56));
+		
+#define TDR_CAST_SWAP32(dst, src) \
+    do { \
+        ((char *)dst)[0] = ((const char *)src)[3]; \
+        ((char *)dst)[1] = ((const char *)src)[2]; \
+        ((char *)dst)[2] = ((const char *)src)[1]; \
+        ((char *)dst)[3] = ((const char *)src)[0]; \
+    } while (0)
+
+#define TDR_SET_SWAP32(dst, val) \
+    do { \
+        ((char *)dst)[0] = (((val) & (uint64_t)0x00000000ff000000) >> 24); \
+        ((char *)dst)[1] = (((val) & (uint64_t)0x0000000000ff0000) >> 16); \
+        ((char *)dst)[2] = (((val) & (uint64_t)0x000000000000ff00) >> 8); \
+        ((char *)dst)[3] = (((val) & (uint64_t)0x00000000000000ff)); \
+    } while (0)
+		
+		
+#define TDR_GET_SWAP32(dst) \
+	((((unsigned char *)dst)[3])\
+	 |((uint32_t)(((unsigned char *)dst)[2]) << 8)\
+	 |((uint32_t)(((unsigned char *)dst)[1]) << 16)\
+	 |((uint32_t)(((unsigned char *)dst)[0]) << 24));
+
+#define TDR_CAST_SWAP16(dst, src) \
+    do { \
+        ((char *)dst)[0] = ((const char *)src)[1]; \
+        ((char *)dst)[1] = ((const char *)src)[0]; \
+    } while (0)
+		
+#define TDR_SET_SWAP16(dst, val) \
+    do { \
+        ((char *)dst)[0] = (((val) & (uint64_t)0x000000000000ff00) >> 8); \
+        ((char *)dst)[1] = (((val) & (uint64_t)0x00000000000000ff)); \
+    } while (0)
+		
+#define TDR_GET_SWAP16(dst) \
+	((((unsigned char *)dst)[1])\
+	 |((uint16_t)(((unsigned char *)dst)[0]) << 8));
+
+#define TDR_CAST64(dst, src) \
+    do { \
+        ((char *)dst)[0] = ((const char *)src)[0]; \
+        ((char *)dst)[1] = ((const char *)src)[1]; \
+        ((char *)dst)[2] = ((const char *)src)[2]; \
+        ((char *)dst)[3] = ((const char *)src)[3]; \
+        ((char *)dst)[4] = ((const char *)src)[4]; \
+        ((char *)dst)[5] = ((const char *)src)[5]; \
+        ((char *)dst)[6] = ((const char *)src)[6]; \
+        ((char *)dst)[7] = ((const char *)src)[7]; \
+    } while (0)
+
+#define TDR_SET64(dst, val) \
+    do { \
+        ((char *)dst)[0] = (((val) & (uint64_t)0x00000000000000ff))); \
+        ((char *)dst)[1] = (((val) & (uint64_t)0x000000000000ff00) >> 8); \
+        ((char *)dst)[2] = (((val) & (uint64_t)0x0000000000ff0000) >> 16); \
+        ((char *)dst)[3] = (((val) & (uint64_t)0x00000000ff000000) >> 24); \
+        ((char *)dst)[4] = (((val) & (uint64_t)0x000000ff00000000LL) >> 32); \
+        ((char *)dst)[5] = (((val) & (uint64_t)0x0000ff0000000000LL) >> 40); \
+        ((char *)dst)[6] = (((val) & (uint64_t)0x00ff000000000000LL) >> 48); \
+        ((char *)dst)[7] = (((val) & (uint64_t)0xff00000000000000LL) >> 56); \
+    } while (0)
+
+#define TDR_GET64(dst) \
+	((((unsigned char *)dst)[0])\
+	 |((uint64_t)(((unsigned char *)dst)[1]) << 8)\
+	 |((uint64_t)(((unsigned char *)dst)[2]) << 16)\
+	 |((uint64_t)(((unsigned char *)dst)[3]) << 24)\
+	 |((uint64_t)(((unsigned char *)dst)[4]) << 32)\
+	 |((uint64_t)(((unsigned char *)dst)[5]) << 40)\
+	 |((uint64_t)(((unsigned char *)dst)[6]) << 48)\
+	 |((uint64_t)(((unsigned char *)dst)[7]) << 56));
+		
+#define TDR_CAST32(dst, src) \
+    do { \
+        ((char *)dst)[0] = ((const char *)src)[0]; \
+        ((char *)dst)[1] = ((const char *)src)[1]; \
+        ((char *)dst)[2] = ((const char *)src)[2]; \
+        ((char *)dst)[3] = ((const char *)src)[3]; \
+    } while (0)
+
+#define TDR_SET32(dst, val) \
+    do { \
+        ((char *)dst)[0] = (((val) & 0x000000ff))); \
+        ((char *)dst)[1] = (((val) & 0x0000ff00) >> 8); \
+        ((char *)dst)[2] = (((val) & 0x00ff0000) >> 16); \
+        ((char *)dst)[3] = (((val) & 0xff000000) >> 24); \
+    } while (0)
+		
+#define TDR_GET32(dst) \
+	((((unsigned char *)dst)[0])\
+	 |((uint32_t)(((unsigned char *)dst)[1]) << 8)\
+	 |((uint32_t)(((unsigned char *)dst)[2]) << 16)\
+	 |((uint32_t)(((unsigned char *)dst)[3]) << 24));
+
+#define TDR_CAST16(dst, src) \
+    do { \
+        ((char *)dst)[0] = ((const char *)src)[0]; \
+        ((char *)dst)[1] = ((const char *)src)[1]; \
+    } while (0)
+
+#define TDR_SET16(dst, val) \
+    do { \
+        ((char *)dst)[0] = (((val) & 0x00ff))); \
+        ((char *)dst)[1] = (((val) & 0xff00) >> 8); \
+    } while (0)
+
+#define TDR_GET16(dst) \
+	((((unsigned char *)dst)[0])\
+	 |((uint16_t)(((unsigned char *)dst)[1]) << 8));
+		
+#ifdef TDR_OS_LITTLEENDIAN
+    
+    #define tdr_cast_ntoh64(dst, src)  TDR_CAST_SWAP64(dst, src)
+    #define tdr_cast_hton64(dst, src)  TDR_CAST_SWAP64(dst, src)
+    #define tdr_cast_ntoh32(dst, src)  TDR_CAST_SWAP32(dst, src)
+    #define tdr_cast_hton32(dst, src)  TDR_CAST_SWAP32(dst, src)
+    #define tdr_cast_ntoh16(dst, src)  TDR_CAST_SWAP16(dst, src)
+    #define tdr_cast_hton16(dst, src)  TDR_CAST_SWAP16(dst, src)
+
+	#define tdr_get_ntoh64(dst)  TDR_GET_SWAP64(dst)
+    #define tdr_set_hton64(dst, src)  TDR_SET_SWAP64(dst, src)
+    #define tdr_get_ntoh32(dst)  TDR_GET_SWAP32(dst)
+    #define tdr_set_hton32(dst, src)  TDR_SET_SWAP32(dst, src)
+    #define tdr_get_ntoh16(dst)  TDR_GET_SWAP16(dst)
+    #define tdr_set_hton16(dst, src)  TDR_SET_SWAP16(dst, src)
+#else
+    
+    #define tdr_cast_ntoh64(dst, src)  TDR_CAST64(dst, src)
+    #define tdr_cast_hton64(dst, src)  TDR_CAST64(dst, src)
+    #define tdr_cast_ntoh32(dst, src)  TDR_CAST32(dst, src)
+    #define tdr_cast_hton32(dst, src)  TDR_CAST32(dst, src)
+    #define tdr_cast_ntoh16(dst, src)  TDR_CAST16(dst, src)
+    #define tdr_cast_hton16(dst, src)  TDR_CAST16(dst, src)
+
+    #define tdr_get_ntoh64(dst)  TDR_GET64(dst)
+    #define tdr_set_hton64(dst, src)  TDR_SET64(dst, src)
+    #define tdr_get_ntoh32(ds)  TDR_GET32(ds)
+    #define tdr_set_hton32(dst, src)  TDR_SET32(dst, src)
+    #define tdr_get_ntoh16(dst)  TDR_GET16(dst)
+    #define tdr_set_hton16(dst, src)  TDR_SET16(dst, src)
+
 #endif
 
 
@@ -44,13 +224,13 @@
 #define TDR_SET_INT_NET(p, iSize, i)		switch(iSize)		      \
 {									      \
     case 2:								      \
-    *(unsigned short*)(p)	=	tdr_hton16((unsigned short)(i));   \
+    tdr_set_hton16(p, (unsigned short)(i));   \
     break;							      \
     case 4:								      \
-    *(uint32_t*)(p)	=	tdr_hton32((uint32_t)(i));    \
+    tdr_set_hton32(p, (uint32_t)(i));    \
     break;							      \
     case 8:									\
-    *(uint64_t*)(p)	=	tdr_ntoh64((uint64_t)(i));    \
+    tdr_set_hton64(p, (uint64_t)(i));    \
     break;								\
     default:							      \
     *(unsigned char*)(p)	=	(unsigned char)(i);	      \
@@ -60,13 +240,13 @@
 #define TDR_GET_INT_NET(i, iSize, p)		switch(iSize)		      \
 {									      \
     case 2:								      \
-    i = (int)tdr_ntoh16(*(unsigned short*)(p));			      \
+    i = (int)tdr_get_ntoh16(p);			      \
     break;							      \
     case 4:								      \
-    i = (int)tdr_ntoh32(*(uint32_t*)(p));			      \
+    i = (int)tdr_get_ntoh32(p);			      \
     break;							      \
     case 8:									\
-    i = tdr_ntoh64(*(uint64_t*)p);	\
+    i = tdr_get_ntoh64(p);	\
     break;												\
     default:							      \
     i = (int)*(unsigned char*)(p);				      \
@@ -77,13 +257,13 @@
 #define TDR_GET_UINT_NET(i, iSize, p)		switch(iSize)		      \
 {									      \
     case 2:								      \
-    i = (uint32_t)tdr_ntoh16(*(unsigned short*)(p));			      \
+    i = (uint32_t)tdr_get_ntoh16(p);			      \
     break;							      \
     case 4:								      \
-    i = (uint32_t)tdr_ntoh32(*(uint32_t*)(p));			      \
+    i = (uint32_t)tdr_get_ntoh64(p);			      \
     break;							      \
     case 8:									\
-    i = tdr_ntoh64(*(uint64_t*)p);	\
+    i = tdr_get_ntoh64(p);	\
     break;												\
     default:							      \
     i = (uint32_t)*(unsigned char*)(p);				      \
@@ -167,8 +347,8 @@ TDR_API int tdr_hton(IN LPTDRMETA a_pstMeta, INOUT LPTDRDATA a_pstNet, INOUT LPT
 *	- 输出  a_pstNet.iBuff  实际解码网络信息的总长度
 *@param[in] a_iVersion	指定编码在网络信息块中结构体的版本号，
 *
-*@note a_iVersion必须不小于本地结构体描述的基础版本(tdr_get_meta_based_version)，且不高于本地结构体描述的最高版本(tdr_get_meta_current_version)。
-*	如果a_iVersion为0 ，则按照结构体当前最高版本处理
+*@note a_iVersion必须不小于本地结构体描述的基础版本(tdr_get_meta_based_version)。
+*	如果a_iVersion为0 或者 高于本地结构体描述的最高版本(tdr_get_meta_current_version)，则强制按照结构体当前最高版本处理
 *@note 如果处理失败，获取错误信息的方法:
 	*	- 根据返回值，调用tdr_error_string()可以获取出错信息
 	*	- 由于a_pstHost.iBuff得到了实际解码的信息的总长度，以这个长度为偏移值，调用tdr_entry_off_to_path可以获取

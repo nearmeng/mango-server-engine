@@ -100,5 +100,5 @@ Exit0:
 int main(int argc, char* argv[])
 {
 	mg_set_user_msg_handler(svrTotal, CRSMessageHandler::msg_handler);
-	mg_app_main(argc, argv, server_init, server_fini, server_frame, server_reload, server_stop, NULL, FALSE, TRUE);
+	mg_app_main(argc, argv, server_init, server_fini, server_frame, server_reload, server_stop, NULL, NULL, FALSE, TRUE);
 }

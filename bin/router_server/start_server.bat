@@ -1,1 +1,0 @@
-start router_server_d.exe --noloadconf --tlogconf tlog.xml --use-bus --id 10.0.3.1 --bus-key 669001 --business-id 0

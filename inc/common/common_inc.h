@@ -1,6 +1,16 @@
 #ifndef  _COMMON_INC_H_
 #define  _COMMON_INC_H_
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <algorithm>
+#include <vector>
+#include <string>
+#include <map>
+#include <list>
+#include <set>
+
 //tbase
 #include "pal/ttypes.h"
 #include "tapp/tapp.h"
@@ -36,11 +46,6 @@
 #include "string/string_ex.h"
 
 #include "shm/shm_pool.h"
-
-#include <algorithm>
-#include <vector>
-#include <string>
-#include <map>
 
 #endif   /* ----- #ifndef _COMMON_INC_H_  ----- */
 

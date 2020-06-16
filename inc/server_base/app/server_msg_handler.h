@@ -23,6 +23,7 @@ BOOL send_server_msg_by_service_inst(int32_t nServiceType, int32_t nInstID, int3
 BOOL send_server_msg_by_addr(int32_t nDstServerAddr, int32_t nMsgID,const void* pBuffer, size_t dwSize);
 BOOL send_server_msg_by_objid(uint64_t qwObjID, int32_t nMsgID, const void* pBuffer, size_t dwSize);
 BOOL send_server_msg_by_load(int32_t nServiceType, int32_t nMsgID, const void* pBuffer, size_t dwSize);
+BOOL send_server_msg_to_mgr(int32_t nMsgID, const void* pBuffer, size_t dwSize);
 
 typedef void(*CONN_MSG_HANDLER)(int32_t nSrcAddr, TFRAMEHEAD* pFrameHead, const char* pBuff, int32_t nSize);
 BOOL register_conn_msg_handler(int32_t nEventType, CONN_MSG_HANDLER pMsgHandler);

@@ -108,6 +108,8 @@ enum tagTbusOptionName
     TBUS_OPT_NAME_TBUSD_TIMEOUT     = 1,
     /* 动态模式下，通道不存在不自动创建 */
     TBUS_OPT_NAME_NONAUTO_CREATED   = 2,
+    /* 和zk间会话的超时时间  */
+    TBUS_OPT_ZK_SESSION_TIMEOUT     = 3,
 };
 typedef enum tagTbusOptionName TBUSOPTIONNAME;
 typedef enum tagTbusOptionName *LPTBUSOPTIONNAME;
@@ -150,6 +152,8 @@ enum tagTbusPeerStateType
 #define TBUS_DEFAULT_TBUSD_URL "udp://127.0.0.1:1599"
 
 #define TBUS_DEFAULT_TBUSD_TIMEOUT (800)   /*default timeout for the oper with tbusd*/
+
+#define TBUS_ZK_SESSION_TIMEOUT (30000)    /* TBUS API 和zk间的session默认超时时间 */
 
 #define TBUS_MAX_ADDR_LEN 64
 
@@ -790,7 +794,10 @@ extern "C" {
      * @param[in] a_pstChannel 通道句柄
      * @param[in] a_pvData 保存数据的缓冲区首地址
      * @param[in] a_iDataLen 数据长度
-     * @param[in] a_iFlag 控制字段
+     * @param[in] a_iFlag 控制字段，各控制标志支持'与(|)'方式结合使用，目前已定义的标志位有：
+     * - TBUS_FLAG_START_DYE_MSG    对发送消息进行染色跟踪
+     * - TBUS_FLAG_WITH_TIMESTAMP 发送消息时携带时间戳信息
+     * - TBUS_FLAG_USE_GETTIMEOFDAY 仅仅在指定了TBUS_FLAG_WITH_TIMESTAMP时有意义，指示使用gettimeofday取得当前最新系统时间
      *
      * @retval 0 -- successful,
      * @retval !0 -- failed, 请调用tbus_error_string接口取得错误原因
@@ -810,7 +817,10 @@ extern "C" {
      * @param[in] a_pstChannel 通道句柄
      * @param[in] a_ptVector data vector buffers
      * @param[in] a_iVecCnt data vector count
-     * @param[in] a_iFlag 控制字段，各控制标志支持'与(|)'方式结合使用，目前本接口支持的标志位有：
+     * @param[in] a_iFlag 控制字段，各控制标志支持'与(|)'方式结合使用，目前已定义的标志位有：
+     * - TBUS_FLAG_START_DYE_MSG    对发送消息进行染色跟踪
+     * - TBUS_FLAG_WITH_TIMESTAMP 发送消息时携带时间戳信息
+     * - TBUS_FLAG_USE_GETTIMEOFDAY 仅仅在指定了TBUS_FLAG_WITH_TIMESTAMP时有意义，指示使用gettimeofday取得当前最新系统时间
      * - TBUS_FLAG_START_DYE_MSG    对发送消息进行染色跟踪
      *
      * @retval 0 -- successful, sent ok
@@ -956,6 +966,8 @@ extern "C" {
      * @param[in] a_iFlag 控制字段，各控制标志支持'与(|)'方式结合使用，目前已定义的标志位有：
      * - TBUS_FLAG_START_DYE_MSG    对发送消息进行染色跟踪
      * - TBUS_FLAG_KEEP_DYE_MSG    继承上一个消息的染色跟踪的功能，即如果上一个接收的消息是染色的，则此发送消息也进行染色
+     * - TBUS_FLAG_WITH_TIMESTAMP 发送消息时携带时间戳信息
+     * - TBUS_FLAG_USE_GETTIMEOFDAY 仅仅在指定了TBUS_FLAG_WITH_TIMESTAMP时有意义，指示使用gettimeofday取得当前最新系统时间
      *
      * @retval 0 -- successful, sent ok
      * @retval !0 -- failed, 请调用tbus_error_string接口取得错误原因
@@ -978,6 +990,8 @@ extern "C" {
      * @param[in] a_iFlag 控制字段，各控制标志支持'与(|)'方式结合使用，目前已定义的标志位有：
      * - TBUS_FLAG_START_DYE_MSG    对发送消息进行染色跟踪
      * - TBUS_FLAG_KEEP_DYE_MSG    继承上一个消息的染色跟踪的功能，即如果上一个接收的消息是染色的，则此发送消息也进行染色
+     * - TBUS_FLAG_WITH_TIMESTAMP 发送消息时携带时间戳信息
+     * - TBUS_FLAG_USE_GETTIMEOFDAY 仅仅在指定了TBUS_FLAG_WITH_TIMESTAMP时有意义，指示使用gettimeofday取得当前最新系统时间
      *
      * @retval 0 -- successful, sent ok
      * @retval !0 -- failed, 请调用tbus_error_string接口取得错误原因
@@ -1004,6 +1018,8 @@ extern "C" {
      * @param[in] a_iFlag 控制字段，各控制标志支持'与(|)'方式结合使用，目前已定义的标志位有：
      * - TBUS_FLAG_START_DYE_MSG    对发送消息进行染色跟踪
      * - TBUS_FLAG_KEEP_DYE_MSG    继承上一个消息的染色跟踪的功能，即如果上一个接收的消息是染色的，则此发送消息也进行染色
+     * - TBUS_FLAG_WITH_TIMESTAMP 发送消息时携带时间戳信息
+     * - TBUS_FLAG_USE_GETTIMEOFDAY 仅仅在指定了TBUS_FLAG_WITH_TIMESTAMP时有意义，指示使用gettimeofday取得当前最新系统时间
      *
      * @retval 0 -- successful, sent ok
      * @retval !0 -- failed, 请调用tbus_error_string接口取得错误原因
@@ -1026,6 +1042,8 @@ extern "C" {
      * @param[in] a_iFlag 控制字段，各控制标志支持'与(|)'方式结合使用，目前已定义的标志位有：
      * - TBUS_FLAG_START_DYE_MSG    对发送消息进行染色跟踪
      * - TBUS_FLAG_KEEP_DYE_MSG    继承上一个消息的染色跟踪的功能，即如果上一个接收的消息是染色的，则此发送消息也进行染色
+     * - TBUS_FLAG_WITH_TIMESTAMP 发送消息时携带时间戳信息
+     * - TBUS_FLAG_USE_GETTIMEOFDAY 仅仅在指定了TBUS_FLAG_WITH_TIMESTAMP时有意义，指示使用gettimeofday取得当前最新系统时间
      *
      * @retval 0 -- successful, sent ok
      * @retval !0 -- failed, 请调用tbus_error_string接口取得错误原因
@@ -1675,6 +1693,20 @@ extern "C" {
     TSF4G_API int tbus_get_msg_timestamp(IN int a_iHandle, OUT LPTBUSTIMESTAMP a_pstTimeStamp);
 
     /**
+     * @brief 从指定通道获取前一个收取的消息的时间戳信息
+     *
+     * @param[in] a_pstChannel        通道句柄
+     * @param[out] a_pstTimeStamp 接收返回的时间戳信息
+     * @retval 0 -- successful
+     * @retval !0 -- failed, 请调用tbus_error_string接口取得错误原因
+     *
+     * @pre a_iHandle必须是一个有效的句柄
+     * @pre a_pstTimeStamp不能为NULL
+     */
+    TSF4G_API int tbus_get_msg_timestamp_from_channel(IN LPTBUSCHANNEL a_pstChannel, OUT LPTBUSTIMESTAMP a_pstTimeStamp);
+	
+
+    /**
      * @brief 打开一个通道发送消息时记录时间戳的功能
      *
      * @param[in] a_iHandle       指定tbus句柄，句柄可由tbus_new获取
@@ -2036,6 +2068,14 @@ extern "C" {
      *         !0 FAILED
      */
     TSF4G_API int tbus_automatic_set_zookeeper_log_file(IN const char* a_pszLogFile);
+
+    /**
+     * @brief 设置使用自动化-集群模式时，zookeeper api的日志级别
+     * @param[in] a_iPriority 日志级别
+     * @retval 0  SUCCESS
+     *         !0 FAILED
+     */
+    TSF4G_API int tbus_automatic_set_zookeeper_log_priority( IN int a_iPriority);
 
     /** @} */
 

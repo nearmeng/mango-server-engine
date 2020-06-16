@@ -360,24 +360,27 @@ Exit0:
 BOOL CSMSMessageHandler::do_control_ack(int32_t nResult, const char * pDesc, int32_t nDstAddr)
 {
 	int32_t nRetCode = 0;
+	INTERNAL_MESSAGE_HEADER header;
     A2A_CONTROL_ACK msg;
 	uint32_t dwSize = 0;
 	ROUTER_SEND_BY_ADDR* pRouterMsg = NULL;
 	SMS_ROUTER_INFO* pRouterInfo;
 	
-    msg.wMsg = a2a_control_ack;
-    msg.nResult = 0;
-    msg.nDstAddr = nDstAddr;
+    header.wMsg = a2a_control_ack;
+	header.nMsgSrcAddr = mg_get_tbus_addr();
+
+    msg.nResult = nResult;
 	strxcpy(msg.szDesc, pDesc, sizeof(msg.szDesc));
     msg.nDescLen = strxlen(msg.szDesc, sizeof(msg.szDesc));
 
-	dwSize = sizeof(msg) + sizeof(ROUTER_SEND_BY_ADDR);
+	dwSize = sizeof(ROUTER_SEND_BY_ADDR) + sizeof(header) + sizeof(msg);
 	pRouterMsg = (ROUTER_SEND_BY_ADDR*)alloca(dwSize);
 	LOG_PROCESS_ERROR(pRouterMsg);
 
 	pRouterMsg->wMsg = router_send_by_addr;
 	pRouterMsg->nDstServerAddr = nDstAddr;
-	memcpy(pRouterMsg->szData, &msg, sizeof(msg));
+	memcpy(pRouterMsg->szData, &header, sizeof(header));
+	memcpy(pRouterMsg->szData + sizeof(header), &msg, sizeof(msg));
 
 	pRouterInfo = CServiceMgr::get_instance().get_rand_router();
 	LOG_PROCESS_ERROR(pRouterInfo);
@@ -703,7 +706,7 @@ void CSMSMessageHandler::on_control(const char * pBuffer, size_t dwSize, int32_t
 	int32_t nRetCode = 0;
 	A2A_CONTROL_REQ* msg = (A2A_CONTROL_REQ*)pBuffer;
 
-	nRetCode = _process_control_cmd(msg->szCommand, msg->nCmdLen, msg->nMsgSrcAddr);
+	nRetCode = _process_control_cmd(msg->szCommandType, msg->szCommandContent, nSrcAddr);
 	LOG_PROCESS_ERROR(nRetCode);
 
 Exit0:
@@ -1108,31 +1111,35 @@ Exit0:
 	return nState;
 }
 
-BOOL CSMSMessageHandler::_process_control_cmd(const char* pcszCommand, int32_t nLen, int32_t nSrcAddr)
+BOOL CSMSMessageHandler::_process_control_cmd(const char* pcszCommandType, const char* pcszCommand, int32_t nSrcAddr)
 {
 	int32_t nRetCode = 0;
 	std::string sResult = "unkown error";
-	std::vector<std::string> vControlCmd;
+	std::vector<std::string> vCmd;
+	std::string sCommandType = pcszCommandType;
 
-	vControlCmd = strsep(pcszCommand, " ");
-	LOG_PROCESS_ERROR(vControlCmd.size() >= 4);
-	LOG_PROCESS_ERROR(vControlCmd[0].compare("mgr") == 0);
+	vCmd = strsep(pcszCommand, " ");
+	LOG_PROCESS_ERROR(vCmd.size() == 2);
 
-	if (vControlCmd[1].compare("expand") == 0)
+	if (sCommandType.compare("expand") == 0)
 	{
-		int32_t nServiceType = atoi(vControlCmd[2].c_str());
-		int32_t nAfterExpandServerCount = atoi(vControlCmd[3].c_str());
+		int32_t nServiceType = atoi(vCmd[0].c_str());
+		int32_t nAfterExpandServerCount = atoi(vCmd[1].c_str());
 
 		nRetCode = _process_control_cmd_expand(nServiceType, nAfterExpandServerCount, sResult);
 		LOG_PROCESS_ERROR(nRetCode);
+
+		sResult = "server expand success";
 	}
-	else if (vControlCmd[1].compare("reduce") == 0)
+	else if (sCommandType.compare("reduce") == 0)
 	{
-		int32_t nServiceType = atoi(vControlCmd[2].c_str());
-		int32_t nAfterReduceServerCount = atoi(vControlCmd[3].c_str());
+		int32_t nServiceType = atoi(vCmd[0].c_str());
+		int32_t nAfterReduceServerCount = atoi(vCmd[1].c_str());
 
 		nRetCode = _process_control_cmd_reduce(nServiceType, nAfterReduceServerCount, sResult);
 		LOG_PROCESS_ERROR(nRetCode);
+
+		sResult = "server reduce success";
 	}
 	else
 	{
@@ -1140,13 +1147,13 @@ BOOL CSMSMessageHandler::_process_control_cmd(const char* pcszCommand, int32_t n
 		LOG_PROCESS_ERROR(FALSE);
 	}
 
-	nRetCode = do_control_ack(0, "expand sucess", nSrcAddr);
+	nRetCode = do_control_ack(nRetCode, sResult.c_str(), nSrcAddr);
 	LOG_PROCESS_ERROR(nRetCode);
 
 	return TRUE;
 
 Exit0:
-	nRetCode = do_control_ack(0, sResult.c_str(), nSrcAddr);
+	nRetCode = do_control_ack(nRetCode, sResult.c_str(), nSrcAddr);
 	LOG_CHECK_ERROR(nRetCode);
 
 	return FALSE;

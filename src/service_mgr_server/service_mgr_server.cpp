@@ -101,5 +101,5 @@ BOOL server_frame(TAPPCTX* pCtx, BOOL bResume)
 int main(int argc, char* argv[])
 {
 	mg_set_user_msg_handler(svrTotal, CSMSMessageHandler::msg_handler);
-	mg_app_main(argc, argv, server_init, server_fini, server_frame, server_reload, server_stop, server_proc, FALSE, TRUE);
+	mg_app_main(argc, argv, server_init, server_fini, server_frame, server_reload, server_stop, server_proc, NULL, FALSE, TRUE);
 }

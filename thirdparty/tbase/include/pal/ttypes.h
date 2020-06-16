@@ -16,13 +16,14 @@
 #include <time.h>
 #include <sys/types.h>
 
-typedef int BOOL;
+ typedef int BOOL;
 #ifndef TRUE
 	#define TRUE (1)
 #endif // TRUE
 #ifndef FALSE
 	#define FALSE (0)
 #endif	// FALSE
+
 
 #if !defined(_WIN32) && !defined(_WIN64)
     #include <stdint.h>

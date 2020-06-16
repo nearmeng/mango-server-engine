@@ -62,6 +62,7 @@ extern "C" {
 
 
 #define TDR_ERR_IS_ERROR(error)            ( (error) & 0x80000000 )
+#define TDR_IS_ERROR(error)            TDR_ERR_IS_ERROR(error)
 
 
 #define TDR_SUCCEESS_WARNING(warningno)         ((TMODID_DR<<16) | (warningno))
@@ -215,6 +216,9 @@ typedef enum
     TDR_ERROR_INVALID_ENCODE_TAG,       /**<TLV编解码方式下，tag值不正确*/
     TDR_ERROR_INVALID_REQUIREDNUM,  /**<TLV编解码方式下， 解出的required成员数目不正确*/
     TDR_ERROR_INVALID_ARRAY_NUM,    /**<invalid array number*/
+    TDR_ERROR_FILE_NOT_EXIST,   /* *<操作的文件不存在 */
+    TDR_ERROR_CUSTOMATTR_INVALID_LEN, /* *<customattr长度超限*/
+    TDR_ERROR_SPLITTABLEKEY_ERROR, /* splittablekey 获取失败 */
     TDR_ERROR_COUNT,                     /**<错误代码结束标志*/
 } TDRERROR;
 
@@ -231,6 +235,7 @@ typedef enum
     TDR_SUCWARN_NO_NAME,                    /**<元素没有指定name属性*/
     TDR_SUCWARN_NO_VERSION,                 /**<元素没有指定version属性*/
     TDR_SUCWARN_TRUNCATE_DATE,                /**<保存数据时进行了数据截断*/
+    TDR_SUCWARN_CUSTOMATTR_VALUE_BE_TRANCATED,    /**<customattr属性值超过预定最大长度，被截断*/
 }TDRSUCWARNINGNO;
 
 
@@ -295,7 +300,7 @@ typedef enum
 #define TDR_ERRIMPLE_INVALID_PARAM        TDR_ERRIMPLE_MAKE_ERROR(TDR_ERROR_INVALID_PARAM)
 #define TDR_ERRIMPLE_UNSOLVED_INCLUDE    TDR_ERRIMPLE_MAKE_ERROR(TDR_ERROR_UNSOLVED_INCLUDE)
 #define TDR_ERRIMPLE_INVALID_ARRAY_NUM    TDR_ERRIMPLE_MAKE_ERROR(TDR_ERROR_INVALID_ARRAY_NUM)
-
+#define TDR_ERRIMPLE_SPLITTABLEKEY_ERROR TDR_ERRIMPLE_MAKE_ERROR(TDR_ERROR_SPLITTABLEKEY_ERROR)
 
 /**
  * 根据错误代码获取错误信息

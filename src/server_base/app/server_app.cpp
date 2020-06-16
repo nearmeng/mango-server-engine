@@ -28,6 +28,10 @@ static SERVER_APP_FUNC pUserProc;
 static SERVER_APP_FUNC pUserReload;
 static SERVER_APP_FUNC pUserFrame;
 static SERVER_APP_FUNC pUserStop;
+static SERVER_APP_FUNC pControlInit;
+static SERVER_APP_FUNC pControlFini;
+static SERVER_CONTROL_FUNC pControlPreProcCmdLine;
+static SERVER_CONTROL_FUNC pControlProcCmdLine;
 
 static uint32_t g_dwLastReloadTime;
 extern LUA_FUNC g_ServerBasePackageList[];
@@ -118,6 +122,19 @@ static int32_t server_app_init(TAPPCTX* pCtx, void* pArg)
 	//log
 	nRetCode = server_app_init_tlog();
 	LOG_PROCESS_ERROR(nRetCode);
+	
+	//script
+	nRetCode = CScriptMgr::instance().init(pCtx->pszId);
+	LOG_PROCESS_ERROR(nRetCode);
+
+	CScriptMgr::instance().add_include_path("../script");
+	CScriptMgr::instance().add_include_path("../server_config");
+	
+	for(int32_t i = 0; g_ServerBasePackageList[i].pFunc; i++)
+	{
+		nRetCode = CScriptMgr::instance().register_package(g_ServerBasePackageList[i].pcszFuncName, g_ServerBasePackageList[i].pFunc);
+		LOG_PROCESS_ERROR(nRetCode);
+	}
 
 	//server config
 	nRetCode = load_global_server_config();
@@ -160,19 +177,6 @@ static int32_t server_app_init(TAPPCTX* pCtx, void* pArg)
 	else
 	{
 		nRetCode = CRouterClient::instance().init(pCtx->iBus, pCtx->iId, server_app_msg_recv_proc, bResume);
-		LOG_PROCESS_ERROR(nRetCode);
-	}
-	
-	//script
-	nRetCode = CScriptMgr::instance().init(pCtx->pszId);
-	LOG_PROCESS_ERROR(nRetCode);
-
-	CScriptMgr::instance().add_include_path("../script");
-	CScriptMgr::instance().add_include_path("../server_config");
-	
-	for(int32_t i = 0; g_ServerBasePackageList[i].pFunc; i++)
-	{
-		nRetCode = CScriptMgr::instance().register_package(g_ServerBasePackageList[i].pcszFuncName, g_ServerBasePackageList[i].pFunc);
 		LOG_PROCESS_ERROR(nRetCode);
 	}
 	
@@ -338,6 +342,60 @@ static int32_t server_app_quit(TAPPCTX* pCtx, void* pArg)
 	return -1;
 }
 
+static int32_t control_app_init(TAPPCTX* pCtx, void* pArg)
+{
+	int32_t nRetCode = 0;
+	LOG_PROCESS_ERROR(pControlInit);
+
+	nRetCode = pControlInit(pCtx, is_app_resume(pCtx));
+	LOG_PROCESS_ERROR(nRetCode);
+
+	return 0;
+Exit0:
+	return -1;
+}
+
+static int32_t control_app_fini(TAPPCTX* pCtx, void* pArg)
+{
+	int32_t nRetCode = 0;
+	LOG_PROCESS_ERROR(pControlFini);
+
+	nRetCode = pControlFini(pCtx, is_app_resume(pCtx));
+	LOG_PROCESS_ERROR(nRetCode);
+
+	return 0;
+Exit0:
+	return -1;
+}
+
+static int32_t control_app_pre_proc_cmdline(unsigned short argc, const char** argv)
+{
+	int32_t nRetCode = 0;
+	LOG_PROCESS_ERROR(pControlPreProcCmdLine);
+
+	nRetCode = pControlPreProcCmdLine(argc, argv);
+	LOG_PROCESS_ERROR(nRetCode);
+
+	return 0;
+Exit0:
+	return -1;
+}
+
+static int32_t control_app_proc_cmdline(TAPPCTX *pstAppCtx, void *pvArg, unsigned short argc, const char** argv)
+{
+	int32_t nRetCode = 0;
+	LOG_PROCESS_ERROR(pControlProcCmdLine);
+
+	nRetCode = pControlProcCmdLine(argc, argv);
+	LOG_PROCESS_ERROR(nRetCode);
+
+	return 0;
+Exit0:
+	return -1;
+}
+
+
+
 int32_t mg_app_main(int32_t argc, char* argv[],
 	SERVER_APP_FUNC pInit,
 	SERVER_APP_FUNC pFini,
@@ -345,6 +403,7 @@ int32_t mg_app_main(int32_t argc, char* argv[],
 	SERVER_APP_FUNC pReload,
 	SERVER_APP_FUNC pStop,
 	SERVER_APP_FUNC pProc,
+	CONTROL_FUNCS*  pControl,
 	BOOL bUseTconnd,
 	BOOL bBasicMode)
 {
@@ -352,6 +411,12 @@ int32_t mg_app_main(int32_t argc, char* argv[],
 	void* arg = malloc(1);
 	gs_bUseTconnd = bUseTconnd;
 	gs_bBasicMode = bBasicMode;
+
+#if defined(WIN32)
+	WSADATA wsaData;
+	nRetCode = WSAStartup(0x202, &wsaData);
+	LOG_PROCESS_ERROR(nRetCode == 0);
+#endif	// WIN32
 
 	stAppCtx.argc = argc;
 	stAppCtx.argv = argv;
@@ -362,12 +427,29 @@ int32_t mg_app_main(int32_t argc, char* argv[],
 	stAppCtx.pfnStop = server_app_stop;
 	stAppCtx.pfnQuit = server_app_quit;
 
+	if (pControl)
+	{
+		stAppCtx.pfnControllerInit = control_app_init;
+		stAppCtx.pfnPreprocCmdLine = control_app_pre_proc_cmdline;
+		stAppCtx.pfnControllerFini = control_app_fini;
+		stAppCtx.pfnProcCmdLine = control_app_proc_cmdline;
+		stAppCtx.pfnGetCtrlUsage = pControl->pHelpInfo;
+	}
+
 	pUserInit = pInit;
 	pUserFini = pFini;
 	pUserProc = pProc;
 	pUserReload = pReload;
 	pUserStop = pStop;
 	pUserFrame = pFrame;
+
+	if (pControl)
+	{
+		pControlInit = pControl->pInit;
+		pControlFini = pControl->pFini;
+		pControlPreProcCmdLine = pControl->pPreProcCmdLine;
+		pControlProcCmdLine = pControl->pProcCmdLine;
+	}
 
 	nRetCode = tapp_def_init(&stAppCtx, arg);
 	LOG_PROCESS_ERROR_DETAIL(nRetCode == 0, "tapp init failed");
@@ -408,6 +490,18 @@ BOOL mg_set_stop_timer(uint64_t qwServerTick)
 {
 	g_qwStopTimer = qwServerTick;
 	return TRUE;
+}
+
+BOOL mg_reload(void)
+{
+	int32_t nRetCode = 0;
+
+	nRetCode = server_app_reload(&stAppCtx, NULL);
+	LOG_PROCESS_ERROR(nRetCode == 0);
+
+	return TRUE;
+Exit0:
+	return FALSE;
 }
 
 int32_t mg_get_stop_timer(void)

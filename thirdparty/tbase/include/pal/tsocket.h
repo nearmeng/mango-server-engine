@@ -188,6 +188,8 @@ int tsocket_set_nonblock(IN TSOCKET a_iSock, IN int a_iIsNonblock);
 *********************************************************************/
 int tsocket_start_connect(IN TSOCKET a_iSock, IN struct sockaddr* a_pstAddr, IN int a_iLen);
 
+int tsocket_disconnect_udp(IN TSOCKET a_iSock, IN int addr_family);
+
 
 /** *******************************************************************
 *	@brief check whether the earlier connect operation is finished.

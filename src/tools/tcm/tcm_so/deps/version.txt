@@ -1,0 +1,12 @@
+TagName:TSF4G_TCM2.4.2.30420_X86_64_Release
+路径: .
+URL: https://sz-svn4.tencent.com/ied/ied_tsf4g_rep/tcm_proj/trunk/tcm
+版本库根: https://sz-svn4.tencent.com/ied/ied_tsf4g_rep
+版本库 UUID: 9922e51a-cd00-11de-9e8c-d9294e6c7cd9
+版本: 30421
+节点种类: 目录
+调度: 正常
+最后修改的作者: michaeldeng
+最后修改的版本: 30420
+最后修改的时间: 2012-01-09 16:10:45 +0800 (一, 2012-01-09)
+

@@ -38,7 +38,7 @@
 #define TINI_STR_LEN		(int)4096
 
 #define TINI_MAX_ID_LEN  	32
-#define TINI_MAX_SECTION_MEMBER  100
+#define TINI_MAX_SECTION_MEMBER  1000
 
 #ifdef __cplusplus
 extern "C"

@@ -43,7 +43,7 @@
 
 #if !defined(_WIN32) && !defined(_WIN64)
 #ifdef _DEBUG
-	#define dbgprintf(fmt,args...) printf(__FILE__":%d "fmt"\n",__LINE__,##args)
+	#define dbgprintf(fmt,args...) printf(__FILE__":%d " fmt "\n",__LINE__,##args)
 #else
 	#define dbgprintf(fmt,args...)
 #endif

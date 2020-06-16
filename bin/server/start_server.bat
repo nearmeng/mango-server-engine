@@ -1,1 +1,0 @@
-start server_d.exe --noloadconf --tlogconf tlog.xml --use-bus --id 10.0.2.1 --bus-key 669001 --business-id 0

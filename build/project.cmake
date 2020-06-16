@@ -96,6 +96,7 @@ function (post_project)
 			target_link_libraries (${TARGET_NAME}
 				tconnapi
 				common
+				event event_core event_extra
 				rt
 				tsf4g
 				scew
@@ -114,6 +115,7 @@ function (post_project)
 		endif ()
 	elseif (MSVC)
 		target_link_libraries (${TARGET_NAME}
+		    libevent.lib libevent_core.lib libevent_extras.lib
 			debug lua.lib
 			optimized lua.lib
 			debug toluappd.lib
@@ -126,10 +128,10 @@ function (post_project)
 			target_link_libraries (${TARGET_NAME} 
 				debug common_d.lib
 				optimized common.lib
-				debug libcomm_d.lib	
-				optimized libcomm.lib
 				debug libtconnapi_d.lib
 				optimized libtconnapi.lib
+				debug libpal_d.lib
+				optimized libpal.lib
 			)
 		endif ()
 		

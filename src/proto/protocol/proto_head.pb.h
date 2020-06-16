@@ -32,7 +32,7 @@ void protobuf_AssignDesc_proto_5fhead_2eproto();
 void protobuf_ShutdownFile_proto_5fhead_2eproto();
 
 class CS_HEAD;
-class SS_HEAD;
+class SC_HEAD;
 
 // ===================================================================
 
@@ -125,14 +125,14 @@ class CS_HEAD : public ::google::protobuf::Message {
 };
 // -------------------------------------------------------------------
 
-class SS_HEAD : public ::google::protobuf::Message {
+class SC_HEAD : public ::google::protobuf::Message {
  public:
-  SS_HEAD();
-  virtual ~SS_HEAD();
+  SC_HEAD();
+  virtual ~SC_HEAD();
 
-  SS_HEAD(const SS_HEAD& from);
+  SC_HEAD(const SC_HEAD& from);
 
-  inline SS_HEAD& operator=(const SS_HEAD& from) {
+  inline SC_HEAD& operator=(const SC_HEAD& from) {
     CopyFrom(from);
     return *this;
   }
@@ -146,17 +146,17 @@ class SS_HEAD : public ::google::protobuf::Message {
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
-  static const SS_HEAD& default_instance();
+  static const SC_HEAD& default_instance();
 
-  void Swap(SS_HEAD* other);
+  void Swap(SC_HEAD* other);
 
   // implements Message ----------------------------------------------
 
-  SS_HEAD* New() const;
+  SC_HEAD* New() const;
   void CopyFrom(const ::google::protobuf::Message& from);
   void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const SS_HEAD& from);
-  void MergeFrom(const SS_HEAD& from);
+  void CopyFrom(const SC_HEAD& from);
+  void MergeFrom(const SC_HEAD& from);
   void Clear();
   bool IsInitialized() const;
 
@@ -185,42 +185,32 @@ class SS_HEAD : public ::google::protobuf::Message {
   inline ::google::protobuf::int32 msgid() const;
   inline void set_msgid(::google::protobuf::int32 value);
 
-  // required int32 src_addr = 2;
-  inline bool has_src_addr() const;
-  inline void clear_src_addr();
-  static const int kSrcAddrFieldNumber = 2;
-  inline ::google::protobuf::int32 src_addr() const;
-  inline void set_src_addr(::google::protobuf::int32 value);
+  // optional int32 seqid = 2;
+  inline bool has_seqid() const;
+  inline void clear_seqid();
+  static const int kSeqidFieldNumber = 2;
+  inline ::google::protobuf::int32 seqid() const;
+  inline void set_seqid(::google::protobuf::int32 value);
 
-  // optional fixed64 router_id = 3;
-  inline bool has_router_id() const;
-  inline void clear_router_id();
-  static const int kRouterIdFieldNumber = 3;
-  inline ::google::protobuf::uint64 router_id() const;
-  inline void set_router_id(::google::protobuf::uint64 value);
-
-  // @@protoc_insertion_point(class_scope:SS_HEAD)
+  // @@protoc_insertion_point(class_scope:SC_HEAD)
  private:
   inline void set_has_msgid();
   inline void clear_has_msgid();
-  inline void set_has_src_addr();
-  inline void clear_has_src_addr();
-  inline void set_has_router_id();
-  inline void clear_has_router_id();
+  inline void set_has_seqid();
+  inline void clear_has_seqid();
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
   ::google::protobuf::uint32 _has_bits_[1];
   mutable int _cached_size_;
   ::google::protobuf::int32 msgid_;
-  ::google::protobuf::int32 src_addr_;
-  ::google::protobuf::uint64 router_id_;
+  ::google::protobuf::int32 seqid_;
   friend void  protobuf_AddDesc_proto_5fhead_2eproto();
   friend void protobuf_AssignDesc_proto_5fhead_2eproto();
   friend void protobuf_ShutdownFile_proto_5fhead_2eproto();
 
   void InitAsDefaultInstance();
-  static SS_HEAD* default_instance_;
+  static SC_HEAD* default_instance_;
 };
 // ===================================================================
 
@@ -279,78 +269,54 @@ inline void CS_HEAD::set_seqid(::google::protobuf::int32 value) {
 
 // -------------------------------------------------------------------
 
-// SS_HEAD
+// SC_HEAD
 
 // required int32 msgid = 1;
-inline bool SS_HEAD::has_msgid() const {
+inline bool SC_HEAD::has_msgid() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void SS_HEAD::set_has_msgid() {
+inline void SC_HEAD::set_has_msgid() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void SS_HEAD::clear_has_msgid() {
+inline void SC_HEAD::clear_has_msgid() {
   _has_bits_[0] &= ~0x00000001u;
 }
-inline void SS_HEAD::clear_msgid() {
+inline void SC_HEAD::clear_msgid() {
   msgid_ = 0;
   clear_has_msgid();
 }
-inline ::google::protobuf::int32 SS_HEAD::msgid() const {
-  // @@protoc_insertion_point(field_get:SS_HEAD.msgid)
+inline ::google::protobuf::int32 SC_HEAD::msgid() const {
+  // @@protoc_insertion_point(field_get:SC_HEAD.msgid)
   return msgid_;
 }
-inline void SS_HEAD::set_msgid(::google::protobuf::int32 value) {
+inline void SC_HEAD::set_msgid(::google::protobuf::int32 value) {
   set_has_msgid();
   msgid_ = value;
-  // @@protoc_insertion_point(field_set:SS_HEAD.msgid)
+  // @@protoc_insertion_point(field_set:SC_HEAD.msgid)
 }
 
-// required int32 src_addr = 2;
-inline bool SS_HEAD::has_src_addr() const {
+// optional int32 seqid = 2;
+inline bool SC_HEAD::has_seqid() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
-inline void SS_HEAD::set_has_src_addr() {
+inline void SC_HEAD::set_has_seqid() {
   _has_bits_[0] |= 0x00000002u;
 }
-inline void SS_HEAD::clear_has_src_addr() {
+inline void SC_HEAD::clear_has_seqid() {
   _has_bits_[0] &= ~0x00000002u;
 }
-inline void SS_HEAD::clear_src_addr() {
-  src_addr_ = 0;
-  clear_has_src_addr();
+inline void SC_HEAD::clear_seqid() {
+  seqid_ = 0;
+  clear_has_seqid();
 }
-inline ::google::protobuf::int32 SS_HEAD::src_addr() const {
-  // @@protoc_insertion_point(field_get:SS_HEAD.src_addr)
-  return src_addr_;
+inline ::google::protobuf::int32 SC_HEAD::seqid() const {
+  // @@protoc_insertion_point(field_get:SC_HEAD.seqid)
+  return seqid_;
 }
-inline void SS_HEAD::set_src_addr(::google::protobuf::int32 value) {
-  set_has_src_addr();
-  src_addr_ = value;
-  // @@protoc_insertion_point(field_set:SS_HEAD.src_addr)
-}
-
-// optional fixed64 router_id = 3;
-inline bool SS_HEAD::has_router_id() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
-}
-inline void SS_HEAD::set_has_router_id() {
-  _has_bits_[0] |= 0x00000004u;
-}
-inline void SS_HEAD::clear_has_router_id() {
-  _has_bits_[0] &= ~0x00000004u;
-}
-inline void SS_HEAD::clear_router_id() {
-  router_id_ = GOOGLE_ULONGLONG(0);
-  clear_has_router_id();
-}
-inline ::google::protobuf::uint64 SS_HEAD::router_id() const {
-  // @@protoc_insertion_point(field_get:SS_HEAD.router_id)
-  return router_id_;
-}
-inline void SS_HEAD::set_router_id(::google::protobuf::uint64 value) {
-  set_has_router_id();
-  router_id_ = value;
-  // @@protoc_insertion_point(field_set:SS_HEAD.router_id)
+inline void SC_HEAD::set_seqid(::google::protobuf::int32 value) {
+  set_has_seqid();
+  seqid_ = value;
+  // @@protoc_insertion_point(field_set:SC_HEAD.seqid)
 }
 
 

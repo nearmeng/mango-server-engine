@@ -28,7 +28,7 @@ BOOL load_global_server_config(void)
 		tolua_global_config_open(g_ConfigScript.get_lua_state());
 
 		snprintf(szFileName, 256, "../server_config/server_config.lua");
-		nRetCode = g_ConfigScript.load_from_file(szFileName, FALSE);
+		nRetCode = g_ConfigScript.load_from_file(szFileName, TRUE);
 		LOG_PROCESS_ERROR(nRetCode);
 
 		nRetCode = g_ConfigScript.call_function("load_file", "os", &g_ServerConfig, "SERVER_CONFIG", "ServerConfig");

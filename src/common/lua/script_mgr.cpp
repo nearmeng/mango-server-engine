@@ -293,6 +293,8 @@ void CScriptMgr::add_include_path(const char* pcszRootPath)
 {
 	LOG_PROCESS_ERROR(m_nIncludePathCount < MAX_INCLUDE_PATH);
 	strxcpy(m_szIncludePathList[m_nIncludePathCount++], pcszRootPath, SCRIPT_NAME_LEN);
+
+	INF("add include path %s", pcszRootPath);
 Exit0:
 	return;
 }

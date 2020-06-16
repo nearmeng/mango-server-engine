@@ -33,6 +33,7 @@ void protobuf_ShutdownFile_proto_5fmsgid_2eproto();
 
 enum CS_MESSAGE_ID {
   cs_message_begin = 0,
+  cs_message_login = 1,
   cs_message_end = 65535
 };
 bool CS_MESSAGE_ID_IsValid(int value);
@@ -52,6 +53,7 @@ inline bool CS_MESSAGE_ID_Parse(
 }
 enum SC_MESSAGE_ID {
   sc_message_begin = 0,
+  sc_message_login = 1,
   sc_message_end = 65535
 };
 bool SC_MESSAGE_ID_IsValid(int value);

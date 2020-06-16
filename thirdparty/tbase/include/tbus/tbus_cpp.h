@@ -77,6 +77,17 @@ static
 int SetOptAutomaticTbusdTimeout(int timeout);
 
 /**
+ * @brief 设置自动化模式下和zk间的会话超时时间
+ * @see tbus_set_opt
+ * @param[in] timeout 超时时间，单位毫秒
+ * @retval 0  成功
+ * @retval <0 失败
+ */
+static
+int SetOptZkSessionTimeout(int timeout);
+
+
+/**
  * @brief 设置日志句柄
  * @see tbus_set_logcat
  * @param[in] logcat tlog的句柄实例

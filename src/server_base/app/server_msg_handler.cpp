@@ -179,7 +179,7 @@ BOOL recv_server_msg_proc(int32_t nSrcAddr, const char* pBuff, int32_t nSize)
 	LOG_PROCESS_ERROR(pBuff);
 	LOG_PROCESS_ERROR(nSize > 0);
 	LOG_PROCESS_ERROR(pHeader->wMsg >= internal_message_begin && pHeader->wMsg <= internal_message_end);
-	LOG_PROCESS_ERROR(g_ServerMsgHandler[pHeader->wMsg]);
+	LOG_PROCESS_ERROR_DETAIL(g_ServerMsgHandler[pHeader->wMsg], "msgid is %d", pHeader->wMsg);
 
 	g_ServerMsgHandler[pHeader->wMsg](pHeader->nMsgSrcAddr, pBuff + sizeof(INTERNAL_MESSAGE_HEADER), nSize - sizeof(INTERNAL_MESSAGE_HEADER));
 
@@ -279,7 +279,7 @@ BOOL send_server_msg_by_service_type(int32_t nServiceType, int32_t nMsgID, const
 
 	INIT_INTERNAL_MSG_VEC();
 
-	nRetCode = CRouterClient::instance().send_by_service_type(nServiceType, vecs, 2);
+	nRetCode = CRouterClient::instance().sendv_by_service_type(nServiceType, vecs, 2);
 	LOG_PROCESS_ERROR(nRetCode);
 
 	return TRUE;
@@ -293,7 +293,7 @@ BOOL send_server_msg_by_service_inst(int32_t nServiceType, int32_t nInstID, int3
 
 	INIT_INTERNAL_MSG_VEC();
 
-	nRetCode = CRouterClient::instance().send_by_service_inst(nServiceType, nInstID, vecs, 2);
+	nRetCode = CRouterClient::instance().sendv_by_service_inst(nServiceType, nInstID, vecs, 2);
 	LOG_PROCESS_ERROR(nRetCode);
 
 	return TRUE;
@@ -307,7 +307,7 @@ BOOL send_server_msg_by_addr(int32_t nDstServerAddr, int32_t nMsgID, const void*
 
 	INIT_INTERNAL_MSG_VEC();
 
-	nRetCode = CRouterClient::instance().send_by_addr(nDstServerAddr, vecs, 2);
+	nRetCode = CRouterClient::instance().sendv_by_addr(nDstServerAddr, vecs, 2);
 	LOG_PROCESS_ERROR(nRetCode);
 
 	return TRUE;
@@ -321,7 +321,7 @@ BOOL send_server_msg_by_objid(uint64_t qwObjID, int32_t nMsgID, const void* pBuf
 
 	INIT_INTERNAL_MSG_VEC();
 
-	nRetCode = CRouterClient::instance().send_by_objid(qwObjID, vecs, 2);
+	nRetCode = CRouterClient::instance().sendv_by_objid(qwObjID, vecs, 2);
 	LOG_PROCESS_ERROR(nRetCode);
 
 	return TRUE;
@@ -335,7 +335,21 @@ BOOL send_server_msg_by_load(int32_t nServiceType, int32_t nMsgID, const void* p
 
 	INIT_INTERNAL_MSG_VEC();
 
-	nRetCode = CRouterClient::instance().send_by_load(nServiceType, vecs, 2);
+	nRetCode = CRouterClient::instance().sendv_by_load(nServiceType, vecs, 2);
+	LOG_PROCESS_ERROR(nRetCode);
+
+	return TRUE;
+Exit0:
+	return FALSE;
+}
+
+BOOL send_server_msg_to_mgr(int32_t nMsgID, const void* pBuffer, size_t dwSize)
+{
+	int32_t nRetCode = 0;
+
+	INIT_INTERNAL_MSG_VEC();
+
+	nRetCode = CRouterClient::instance().sendv_to_mgr(vecs, 2);
 	LOG_PROCESS_ERROR(nRetCode);
 
 	return TRUE;
