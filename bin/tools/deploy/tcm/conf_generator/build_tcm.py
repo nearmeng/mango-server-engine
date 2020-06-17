@@ -180,6 +180,8 @@ def getProcArgs(funcName):
 
 def buildProcAttr(funcName):
     #attrs = ["FuncName", "ProcName", "Seq", "FuncID", "Flag", "WorkPath", "Args", "AutoScript"]
+    
+    clusterBaseConfig = deployConfig.getClusterBaseConfig()
 
     attrDict = dict()
     attrDict['FuncName'] = funcName
@@ -188,7 +190,7 @@ def buildProcAttr(funcName):
     attrDict['FuncID'] = procConfig['proc_list'][funcName]['func_id']
     attrDict['WorkPath'] = funcName
     attrDict['ConfigPath'] = '.'
-    attrDict['AutoScript'] = deployConfig['tcm_auto_script']
+    attrDict['AutoScript'] = clusterBaseConfig['tcm_auto_script']
     attrDict['StartCheckEndTime'] = 6
     attrDict['Flag'] = "start|check|stop|auto|resume|restart|reload|signal"
     attrDict['PidFile'] = '/tmp/%s_$world.$zone.$function.$instance.pid' % (funcName)
@@ -213,9 +215,12 @@ def buildProcAttr(funcName):
 
 def buildProcConfig():
     print "[Begin] construct tcm proc config"
+    
     procInfo = ProcInfo()
-    procInfo.ClusterAttrs['WorkPath'] = deployConfig['tcm_work_path']
-    procInfo.ClusterAttrs['AutoTimeGap'] = deployConfig['tcm_auto_time_gap']
+    clusterBaseConfig = deployConfig.getClusterBaseConfig()
+
+    procInfo.ClusterAttrs['WorkPath'] = clusterBaseConfig['tcm_work_path']
+    procInfo.ClusterAttrs['AutoTimeGap'] = clusterBaseConfig['tcm_auto_time_gap']
     procInfo.ClusterAttrs['OpTimeout'] = "1800"
     procInfo.ClusterAttrs['MsgRoundTime'] = "1800"
 
@@ -497,6 +502,7 @@ def buildHostConfig():
 
 def buildProcConnConfig():
     procConnResult = dict()
+    clusterBaseConfig = deployConfig.getClusterBaseConfig()
     
     print "[Begin] construct Proc Conn config"
 
@@ -506,7 +512,7 @@ def buildProcConnConfig():
     procConnAttr['GCIMShmKey'] = gcim_key
     procConnAttr['GRMShmKey'] = grm_key
     procConnAttr['TbusdServicePort'] = tbusd_port
-    procConnAttr['TbusdConfPath'] = "%s/tbusd" % procConfig['tcm_work_path']
+    procConnAttr['TbusdConfPath'] = "%s/tbusd" % clusterBaseConfig['tcm_work_path']
     procConnAttr['ChannelSize'] = 10240000
     procConnAttr['SendBuff'] = 10240000
     procConnAttr['RecvBuff'] = 10240000

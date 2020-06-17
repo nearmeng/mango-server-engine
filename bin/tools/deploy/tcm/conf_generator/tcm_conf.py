@@ -68,7 +68,11 @@ class IDCDeployConfig:
 class DeployConfig:
     def __init__(self):
         self.ClusterDeployConfig = dict()
+        self.ClusterBaseConfig = dict()
         self.IDC = dict()  # key is idcID
+
+    def setClusterBaseConfig(self, Dict):
+        self.ClusterBaseConfig = Dict
 
     def addClusterDeployConfig(self, key, dict):
         self.ClusterDeployConfig[key] = dict 
@@ -82,6 +86,9 @@ class DeployConfig:
         if idcID not in self.IDC:
             self.IDC[idcID] = IDCDeployConfig()
         self.IDC[idcID].ZoneDeployConfig[zoneID] = keyValueDict
+    
+    def getClusterBaseConfig(self):
+        return self.ClusterBaseConfig
 
     def getClusterDeployConfig(self):
         return self.ClusterDeployConfig
@@ -155,6 +162,9 @@ def loadDeployConfig(filename):
         sys.exit(-1)
 
     print loadConfig
+    
+    if loadConfig['cluster'].has_key('config'):
+        deploy.setClusterBaseConfig(loadConfig['cluster']['config'])
 
     if loadConfig['cluster'].has_key('attrs'):
         deploy.addClusterDeployConfig('attrs', loadConfig['cluster']['attrs'])

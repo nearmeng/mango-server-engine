@@ -4,6 +4,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <errno.h>
+#include <assert.h>
 #include <fstream>
 #include <iostream>
 #include "tcm_config_plunin.h"
@@ -29,16 +30,12 @@ static string get_path(string tcm_template_path, string work_path, string proc_n
     else
     {
         assert(work_path.rfind("/") != std::string::npos);
-        string sub_str = work_path.substr(work_path.rfind("/"), work_path.length());
-        if (sub_str == "/")
-        {
-            work_path = work_path.substr(0, work_path.length() - 1);
-            sub_str = work_path.substr(work_path.rfind("/") + 1, work_path.length());
-        }
-        else
-            sub_str = sub_str.substr(1, sub_str.length());
+        string find_str = "/" + proc_name;
+        string proc_str = work_path.substr(work_path.rfind(find_str), work_path.length());
+        string left_str = work_path.substr(0, work_path.rfind(find_str));
+        string module_str = left_str.substr(left_str.rfind("/") + 1, left_str.length());
 
-        work_path = sub_str;
+        work_path = module_str + proc_str;
     }
 
 	string proc_work_path  = tcm_template_path + "/" + work_path;
