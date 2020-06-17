@@ -1,7 +1,4 @@
 procs:
- tcm_work_path: /data/home/stevhuang/mango
- tcm_auto_time_gap: 10
- tcm_auto_script: ./tools/tcm/auto_start_alarm.sh
  proc_list:
   server_config:
       layer: world

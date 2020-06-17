@@ -24,7 +24,22 @@ static SoEnv mydata;
 
 static string get_path(string tcm_template_path, string work_path, string proc_name)
 {
-	work_path = work_path.substr(work_path.rfind("mango"), work_path.length());
+    if(work_path.rfind("//") != std::string::npos)
+	    work_path = work_path.substr(work_path.rfind("//") + 2, work_path.length());
+    else
+    {
+        assert(work_path.rfind("/") != std::string::npos);
+        string sub_str = work_path.substr(work_path.rfind("/"), work_path.length());
+        if (sub_str == "/")
+        {
+            work_path = work_path.substr(0, work_path.length() - 1);
+            sub_str = work_path.substr(work_path.rfind("/") + 1, work_path.length());
+        }
+        else
+            sub_str = sub_str.substr(1, sub_str.length());
+
+        work_path = sub_str;
+    }
 
 	string proc_work_path  = tcm_template_path + "/" + work_path;
     string proc_config_path = proc_work_path;

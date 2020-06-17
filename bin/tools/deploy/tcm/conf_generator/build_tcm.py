@@ -188,7 +188,7 @@ def buildProcAttr(funcName):
     attrDict['FuncID'] = procConfig['proc_list'][funcName]['func_id']
     attrDict['WorkPath'] = funcName
     attrDict['ConfigPath'] = '.'
-    attrDict['AutoScript'] = procConfig['tcm_auto_script']
+    attrDict['AutoScript'] = deployConfig['tcm_auto_script']
     attrDict['StartCheckEndTime'] = 6
     attrDict['Flag'] = "start|check|stop|auto|resume|restart|reload|signal"
     attrDict['PidFile'] = '/tmp/%s_$world.$zone.$function.$instance.pid' % (funcName)
@@ -214,8 +214,8 @@ def buildProcAttr(funcName):
 def buildProcConfig():
     print "[Begin] construct tcm proc config"
     procInfo = ProcInfo()
-    procInfo.ClusterAttrs['WorkPath'] = procConfig['tcm_work_path']
-    procInfo.ClusterAttrs['AutoTimeGap'] = procConfig['tcm_auto_time_gap']
+    procInfo.ClusterAttrs['WorkPath'] = deployConfig['tcm_work_path']
+    procInfo.ClusterAttrs['AutoTimeGap'] = deployConfig['tcm_auto_time_gap']
     procInfo.ClusterAttrs['OpTimeout'] = "1800"
     procInfo.ClusterAttrs['MsgRoundTime'] = "1800"
 
