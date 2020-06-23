@@ -26,7 +26,7 @@ static Message* g_CacheMsgInst[MAX_MESSAGE_ID];
 
 #define INIT_INTERNAL_MSG_VEC()					\
 	INTERNAL_MESSAGE_HEADER stHeader; struct iovec vecs[2];				\
-	stHeader.wMsg = nMsgID;	 stHeader.nMsgSrcAddr = mg_get_tbus_addr();	\
+	stHeader.wMsg = nMsgID;	 stHeader.nMsgSrcAddr = CMGApp::instance().get_tbus_addr();	\
 	vecs[0].iov_base = (void*)(&stHeader);	vecs[0].iov_len = sizeof(stHeader);	\
 	vecs[1].iov_base = (void*)pBuffer;		vecs[1].iov_len = dwSize;
 	
@@ -92,23 +92,39 @@ Exit0:
 	return FALSE;
 }
 
+BOOL unpack_client_msg_head(const char* pBuff, int32_t nSize, char* pbyHeadLen, Message* pHead)
+{
+    int32_t nRetCode = 0;
 
-static BOOL unpack_msg(const char* pBuff, int32_t nSize, Message* pHead, Message** pMsg)
+    LOG_PROCESS_ERROR(pBuff);
+    LOG_PROCESS_ERROR(nSize > 0);
+    LOG_PROCESS_ERROR(pbyHeadLen);
+    LOG_PROCESS_ERROR(pHead);
+
+    *pbyHeadLen = *(char*)pBuff;
+
+	nRetCode = pHead->ParseFromArray(pBuff + 1, *pbyHeadLen);
+	LOG_PROCESS_ERROR(nRetCode);
+
+    return TRUE;
+Exit0:
+    return FALSE;
+}
+
+static BOOL unpack_client_msg(const char* pBuff, int32_t nSize, CS_HEAD* pCSHead, Message** pMsg)
 {
 	int32_t nRetCode = 0;
 	char byHeadlen = 0;
 	int32_t nBodyLen = 0;
 	int32_t nMsgID = 0;
 	Message* pMsgInst = NULL;
-	CS_HEAD* pCSHead = (CS_HEAD*)pHead;
 
-	LOG_PROCESS_ERROR(pHead);
+    LOG_PROCESS_ERROR(pBuff);
+	LOG_PROCESS_ERROR(pCSHead);
 	LOG_PROCESS_ERROR(nSize > 0);
 
-	byHeadlen = *(char*)pBuff;
-
-	nRetCode = pHead->ParseFromArray(pBuff + 1, byHeadlen);
-	LOG_PROCESS_ERROR(nRetCode);
+    nRetCode = unpack_client_msg_head(pBuff, nSize, &byHeadlen, pCSHead);
+    LOG_PROCESS_ERROR(nRetCode);
 	
 	nMsgID = pCSHead->msgid();
 	pMsgInst = get_msg_inst(nMsgID);
@@ -125,7 +141,7 @@ Exit0:
 	return FALSE;
 }
 
-static void recv_client_msg_proc(int32_t nSrcAddr, TFRAMEHEAD* rFramHead, const char* pBuff, int32_t nSize)
+BOOL recv_client_msg_proc(uint64_t qwConnID, const char* pBuff, int32_t nSize)
 {
 	int32_t nRetCode = 0;
 	CS_HEAD CsHead;
@@ -134,14 +150,16 @@ static void recv_client_msg_proc(int32_t nSrcAddr, TFRAMEHEAD* rFramHead, const 
 	LOG_PROCESS_ERROR(pBuff);
 	LOG_PROCESS_ERROR(nSize > 0);
 
-	nRetCode = unpack_msg(pBuff, nSize, &CsHead, &pMsg);
+	nRetCode = unpack_client_msg(pBuff, nSize, &CsHead, &pMsg);
 	LOG_PROCESS_ERROR(nRetCode);
 	LOG_PROCESS_ERROR_DETAIL(g_ClientMsgHandler[CsHead.msgid()], "client msg is not registerd, msgid: %d", CsHead.msgid());
 
-	g_ClientMsgHandler[CsHead.msgid()](nSrcAddr, &CsHead, pMsg);
+	g_ClientMsgHandler[CsHead.msgid()](qwConnID, &CsHead, pMsg);
+
+    return TRUE;
 
 Exit0:
-	return;
+	return FALSE;
 }
 
 BOOL recv_conn_msg_proc(int32_t nSrcAddr, const char* pBuff, int32_t nSize)
@@ -158,13 +176,15 @@ BOOL recv_conn_msg_proc(int32_t nSrcAddr, const char* pBuff, int32_t nSize)
 	{
 		if (g_ConnMsgHandler[FrameHead.chCmd] == NULL)
 		{
-			recv_client_msg_proc(nSrcAddr, &FrameHead, pBuff + nHeadLen, nSize - nHeadLen);
+			nRetCode = recv_client_msg_proc(MAKE_SESSION_ID(nSrcAddr, FrameHead.iConnIdx), pBuff + nHeadLen, nSize - nHeadLen);
+            LOG_CHECK_ERROR(nRetCode);
+
 			return TRUE;
 		}
 	}
 
 	LOG_PROCESS_ERROR(g_ConnMsgHandler[FrameHead.chCmd]);
-	g_ConnMsgHandler[FrameHead.chCmd](nSrcAddr, &FrameHead, pBuff + nHeadLen, nSize - nHeadLen);
+	g_ConnMsgHandler[FrameHead.chCmd](MAKE_SESSION_ID(nSrcAddr, FrameHead.iConnIdx), &FrameHead, pBuff + nHeadLen, nSize - nHeadLen);
 
 	return TRUE;
 Exit0:

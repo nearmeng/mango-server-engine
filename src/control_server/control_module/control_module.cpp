@@ -1,7 +1,6 @@
 #include "stdafx.h"
-#include "control_handler.h"
-
-#include "message/co_message_handler.h"
+#include "control_module.h"
+#include "control_message_handler.h"
 
 #define SEPERATOR       " \t\r\n"
 #define JOIN_SEP " "
@@ -16,9 +15,7 @@ enum CONTROL_TARGET_TYPE
 	cttTotal
 };
 
-CControlHandler CControlHandler::ms_Instance;
-
-BOOL CControlHandler::_parse_command(std::string& sCmdType, int32_t& nTargetType, uint64_t& qwTarget, std::string& sCmdStr)
+BOOL CControlModule::_parse_command(std::string& sCmdType, int32_t& nTargetType, uint64_t& qwTarget, std::string& sCmdStr)
 {
 	int32_t nRetCode = 0;
 	std::vector<std::string> vSepResult;
@@ -71,7 +68,7 @@ Exit0:
 	return FALSE;
 }
 
-BOOL CControlHandler::_proc_command(std::string& sCmdType, int32_t nTargetType, uint64_t qwTarget, std::string& sCmdStr)
+BOOL CControlModule::_proc_command(std::string& sCmdType, int32_t nTargetType, uint64_t qwTarget, std::string& sCmdStr)
 {
     int32_t nRetCode = 0;
     std::string strCmd;
@@ -99,17 +96,31 @@ Exit0:
 	return FALSE;
 }
 
-BOOL CControlHandler::init(void)
+BOOL CControlModule::init(BOOL bResume)
 {
+    int32_t nRetCode = 0;
+
+    nRetCode = _msg_handler_init();
+    LOG_PROCESS_ERROR(nRetCode);
+
 	return TRUE;
+Exit0:
+    return FALSE;
 }
 
-BOOL CControlHandler::uninit(void)
+BOOL CControlModule::uninit(void)
 {
+    int32_t nRetCode = 0;
+
+    nRetCode = _msg_handler_uninit();
+    LOG_CHECK_ERROR(nRetCode);
+
 	return TRUE;
+Exit0:
+    return FALSE;
 }
 
-const char* CControlHandler::help_info(void)
+const char* CControlModule::help_info(void)
 {
     static const char* pszHelp;
 
@@ -162,7 +173,7 @@ Exit0:
 	return FALSE;
 }
 
-BOOL CControlHandler::proc_cmdline(unsigned short argc, const char** argv)
+BOOL CControlModule::proc_cmdline(unsigned short argc, const char** argv)
 {
 	int32_t nRetCode = 0;
 	
@@ -179,7 +190,7 @@ Exit0:
 	return FALSE;
 }
 
-BOOL CControlHandler::_do_process()
+BOOL CControlModule::_do_process()
 {
 	int32_t nRetCode = 0;
     std::string sCmdType;

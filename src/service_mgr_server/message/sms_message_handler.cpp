@@ -123,7 +123,7 @@ BOOL raft_apply_entry(RAFT_MGR* pRaftMgr, RAFT_ENTRY* pEntry, int32_t nIndex)
 	{
 	case radtInitServiceInfo:
 	{
-		mg_set_state(svstInService);
+        CMGApp::instance().set_state(svstInService);
 
 		//set data
 		nRetCode = CServiceMgr::get_instance().set_service_data((const char*)pEntry->stData.pBuff, pEntry->stData.dwSize);
@@ -367,7 +367,7 @@ BOOL CSMSMessageHandler::do_control_ack(int32_t nResult, const char * pDesc, int
 	SMS_ROUTER_INFO* pRouterInfo;
 	
     header.wMsg = a2a_control_ack;
-	header.nMsgSrcAddr = mg_get_tbus_addr();
+    header.nMsgSrcAddr = CMGApp::instance().get_tbus_addr();
 
     msg.nResult = nResult;
 	strxcpy(msg.szDesc, pDesc, sizeof(msg.szDesc));
@@ -753,8 +753,8 @@ void CSMSMessageHandler::on_router_unregister_report(const char* pBuffer, size_t
 				LOG_CHECK_ERROR(nRetCode);
 			}
 
-			mg_set_state(svstEndService);
-			INF("set game state, state %d", mg_get_state());
+			CMGApp::instance().set_state(svstEndService);
+			INF("set game state, state %d", CMGApp::instance().get_state());
 		}
 	}
 
@@ -1007,7 +1007,7 @@ void CSMSMessageHandler::on_service_mgr_sync_data_end(const char * pBuffer, size
 void CSMSMessageHandler::on_service_mgr_end_service(const char * pBuffer, size_t dwSize, int32_t nSrcAddr)
 {
 	INF("recv end service info");
-	mg_set_state(svstEndService);
+	CMGApp::instance().set_state(svstEndService);
 
 Exit0:
 	return;
@@ -1257,7 +1257,7 @@ void CSMSMessageHandler::on_router_alive_report(const char* pBuffer, size_t dwSi
 	SERVICE_MANAGE_SERVER_INFO_NTF* pRsp = NULL;
 	ROUTER_ALIVE_REPORT* msg = (ROUTER_ALIVE_REPORT*)pBuffer;
 
-	if (mg_get_stop_timer() > 0 || mg_get_state() == svstEndService)
+	if (CMGApp::instance().get_stop_timer() > 0 || CMGApp::instance().get_state() == svstEndService)
 		return;
 
 	pRouterInfo = CServiceMgr::get_instance().get_router(nSrcAddr);

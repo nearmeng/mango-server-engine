@@ -173,7 +173,7 @@ BOOL CRSMessageHandler::mainloop(void)
 	int32_t nCurTime = CTimeMgr::instance().get_time_sec();
 	static char s_szMessageData[MAX_INTERNAL_MESSAGE_SIZE * 5];
 
-	while (mg_get_state() == svstInService && !bInEventProcess && m_ShmMsgQueue.has_msg())
+	while (CMGApp::instance().get_state() == svstInService && !bInEventProcess && m_ShmMsgQueue.has_msg())
 	{
 		int32_t nSrcAddr = 0;
 		size_t dwSize = 0;
@@ -1117,7 +1117,7 @@ void CRSMessageHandler::on_service_mgr_server_info_ntf(const char* pBuffer, size
 			nRetCode = CRouterMgr::get_instance().add_server_info(msg->ServerInfo[i]);
 			LOG_PROCESS_ERROR(nRetCode);
 
-			if (mg_get_state() == svstInService)
+			if (CMGApp::instance().get_state() == svstInService)
 			{
 				nRetCode = do_router_ntf_server_event(setServerInit, msg->ServerInfo[i].nTbusAddr, 0);
 				LOG_CHECK_ERROR(nRetCode);
@@ -1143,7 +1143,7 @@ void CRSMessageHandler::on_service_mgr_in_service(const char * pBuffer, size_t d
 	nRetCode = CRouterMgr::get_instance().set_all_in_service();
 	LOG_PROCESS_ERROR(nRetCode);
 
-	mg_set_state(svstInService);
+	CMGApp::instance().set_state(svstInService);
 
 	nRetCode = do_router_ntf_server_init();
 	LOG_PROCESS_ERROR(nRetCode);
@@ -1157,7 +1157,7 @@ void CRSMessageHandler::on_service_mgr_end_service(const char* pBuffer, size_t d
 {
 	int32_t nRetCode = 0;
 	
-	mg_set_state(svstEndService);
+	CMGApp::instance().set_state(svstEndService);
 	
 	nRetCode = do_router_ntf_end_service();
 	LOG_PROCESS_ERROR(nRetCode);

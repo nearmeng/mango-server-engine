@@ -72,7 +72,7 @@ Exit0:
 	return FALSE;
 }
 
-BOOL server_frame(TAPPCTX* pCtx, BOOL bResume)
+BOOL server_frame(void)
 {
 	return TRUE;
 }
@@ -84,7 +84,18 @@ BOOL server_reload(TAPPCTX* pCtx, BOOL bResume)
 
 int main(int argc, char* argv[])
 { 
-	mg_app_main(argc, argv, server_init, server_fini, server_frame, server_reload);
+    int32_t nRetCode = 0;
+    CMGApp* pServer = &CMGApp::instance();
+
+    pServer->set_use_router(TRUE);
+    pServer->set_app_func(server_init, server_fini, server_frame, server_reload, NULL);
+
+    nRetCode = pServer->init("func_server", argc, argv);
+    LOG_PROCESS_ERROR(nRetCode);
+
+    pServer->run_mainloop();
+
+    pServer->fini();
 
 Exit0:
 	return 0;

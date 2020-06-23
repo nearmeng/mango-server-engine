@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "co_message_handler.h"
+#include "control_message_handler.h"
 
 #include "define/server_def.h"
 
@@ -21,12 +21,12 @@ Exit0:
 	return;
 }
 
-BOOL co_msg_init()
+BOOL CControlModule::_msg_handler_init()
 {
 	register_server_msg_handler(a2a_control_ack, on_a2a_control_ack);
 	return TRUE;
 }
-BOOL co_msg_uninit()
+BOOL CControlModule::_msg_handler_uninit()
 {
 	return TRUE;
 }

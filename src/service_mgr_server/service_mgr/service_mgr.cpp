@@ -165,7 +165,7 @@ void CServiceMgr::mainloop(void)
 		if (nCurrTime > rRouterInfo.dwLastPingTime + g_ServerConfig.SC.nHeartBeatTimeOut / 1000 && 
 			rRouterInfo.nState != svstDown)
 		{
-			rRouterInfo.dwCheckDownFlag |= (1 << tbus_get_inst(mg_get_tbus_addr()));
+			rRouterInfo.dwCheckDownFlag |= (1 << tbus_get_inst(CMGApp::instance().get_tbus_addr()));
 
 			if (nCurrTime > rRouterInfo.dwLastDownReportTime + g_ServerConfig.SC.nRouterDownReportTimeInterval / 1000)
 			{

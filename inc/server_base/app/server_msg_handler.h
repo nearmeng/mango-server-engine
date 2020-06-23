@@ -12,8 +12,11 @@ class SC_HEAD;
 class SS_HEAD;
 typedef struct tagTFrameHead TFRAMEHEAD;
 
+BOOL unpack_client_msg_head(const char* pBuff, int32_t nSize, char* pbyHeadLen, Message* pHead);
+
 BOOL recv_conn_msg_proc(int32_t nSrcAddr, const char* pBuff, int32_t nSize);
 BOOL recv_server_msg_proc(int32_t nSrcAddr, const char* pBuff, int32_t nSize);
+BOOL recv_client_msg_proc(uint64_t qwConnID, const char* pBuff, int32_t nSize);
 
 BOOL send_conn_msg(int32_t nDstAddr, TFRAMEHEAD* pFrameHead, const SC_HEAD* pHead, const Message* pMsg);
 
@@ -25,7 +28,7 @@ BOOL send_server_msg_by_objid(uint64_t qwObjID, int32_t nMsgID, const void* pBuf
 BOOL send_server_msg_by_load(int32_t nServiceType, int32_t nMsgID, const void* pBuffer, size_t dwSize);
 BOOL send_server_msg_to_mgr(int32_t nMsgID, const void* pBuffer, size_t dwSize);
 
-typedef void(*CONN_MSG_HANDLER)(int32_t nSrcAddr, TFRAMEHEAD* pFrameHead, const char* pBuff, int32_t nSize);
+typedef void(*CONN_MSG_HANDLER)(uint64_t qwConnID, TFRAMEHEAD* pFrameHead, const char* pBuff, int32_t nSize);
 BOOL register_conn_msg_handler(int32_t nEventType, CONN_MSG_HANDLER pMsgHandler);
 
 typedef void(*CLIENT_MSG_HANDLER)(int32_t nSrcAddr, const CS_HEAD* pHead, const Message* pMsg);

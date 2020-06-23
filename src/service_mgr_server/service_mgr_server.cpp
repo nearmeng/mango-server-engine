@@ -28,9 +28,9 @@ BOOL server_init(TAPPCTX* pCtx, BOOL bResume)
 	LOG_PROCESS_ERROR(nRetCode);
 
 	if (!bResume)
-		mg_set_state(svstInit);
+		CMGApp::instance().set_state(svstInit);
 	else
-		mg_set_state(svstInService);
+		CMGApp::instance().set_state(svstInService);
 
 	return TRUE;
 Exit0:
@@ -58,12 +58,6 @@ Exit0:
 	return FALSE;
 }
 
-
-BOOL server_proc(TAPPCTX* pCtx, BOOL bResume)
-{
-	return TRUE;
-}
-
 BOOL server_reload(TAPPCTX* pCtx, BOOL bResume)
 {
 	return TRUE;
@@ -73,13 +67,14 @@ BOOL server_stop(TAPPCTX* pCtx, BOOL bResume)
 {
 	int32_t nRetCode = 0;
 	uint64_t qwCurrTick = CTimeMgr::instance().get_server_tick();
+    int32_t nStopTimer = CMGApp::instance().get_stop_timer();
         
-	if (mg_get_stop_timer() == 0)
+	if (nStopTimer == 0)
     {
 		// delay for server unregister
-		mg_set_stop_timer(qwCurrTick + g_ServerConfig.Common.nServerEndWaitTimeout);
+		CMGApp::instance().set_stop_timer(qwCurrTick + g_ServerConfig.Common.nServerEndWaitTimeout);
 	}
-	else if (qwCurrTick > mg_get_stop_timer())
+	else if (qwCurrTick > nStopTimer)
 	{
 		INF("begin to finish stop");
 		return TRUE;
@@ -89,7 +84,7 @@ Exit0:
 	return TRUE;
 }
 
-BOOL server_frame(TAPPCTX* pCtx, BOOL bResume)
+BOOL server_frame(void)
 {
 	CSMSMessageHandler::instance().frame();
 	CSmsTransMgr::get_instance().mainloop();
@@ -100,6 +95,19 @@ BOOL server_frame(TAPPCTX* pCtx, BOOL bResume)
 
 int main(int argc, char* argv[])
 {
-	mg_set_user_msg_handler(svrTotal, CSMSMessageHandler::msg_handler);
-	mg_app_main(argc, argv, server_init, server_fini, server_frame, server_reload, server_stop, server_proc, NULL, FALSE, TRUE);
+    int32_t nRetCode = 0;
+    CMGApp* pServer = &CMGApp::instance();
+
+    pServer->set_user_msg_handler(svrTotal, CSMSMessageHandler::msg_handler);
+    pServer->set_app_func(server_init, server_fini, server_frame, server_reload, server_stop);
+
+    nRetCode = pServer->init("service_mgr_server", argc, argv);
+    LOG_PROCESS_ERROR(nRetCode);
+
+    pServer->run_mainloop();
+
+    pServer->fini();
+
+Exit0:
+    return 0;
 }
