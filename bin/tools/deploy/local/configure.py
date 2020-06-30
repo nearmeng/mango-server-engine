@@ -621,16 +621,18 @@ def start_expanding():
             
             expand_proc(proc_name.lower(), attrs, proc_str)
         
-def clear_cfg_file(suffix):
+def clear_cfg_file(file_path, suffix):
     length = len(suffix)
-    for root, dirs, files in os.walk("./"):
+    for root, dirs, files in os.walk(file_path):
         for filepath in files:
             if filepath[-length:] == suffix:
                 os.chmod(os.path.join(root, filepath), 0o777)
                 os.remove(os.path.join(root, filepath))
 
 def clear():
-	clear_cfg_file("xml")
+    proc_list = get_proc_list()
+    for proc_name in proc_list:
+        clear_cfg_file("./%s" % proc_name, "xml")
 
 def refresh_tbus_info():
     print "Begin to refresh tbus"
