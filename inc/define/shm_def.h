@@ -27,6 +27,8 @@ enum SHM_TYPE_DEF
 	stdSMSRouterMgr,
 	stdSMSTrans,
 
+    stdSession,
+
 	stdTotal = MAX_SHM_TYPE_COUNT,
 };
 

@@ -15,6 +15,8 @@
 #include "define/time_def.h"
 #include "tconnd/inc/tconnapi/tconnapi.h"
 
+#include "protocol/conn_message.h"
+
 #include "router_client/router_client_api.h"
 
 extern LUA_FUNC g_ServerBasePackageList[];
@@ -91,9 +93,9 @@ void CMGApp::_frame_timeout(uint64_t qwTimerID, void* pCbData, int32_t nCbDataLe
     }
 
     //user callback
-    if (ms_Instance.pUserFrame)
+    if (ms_Instance.m_pUserFrame)
     {
-        ms_Instance.pUserFrame();
+        ms_Instance.m_pUserFrame();
     }
 
     ms_Instance.m_nServerFrame++;
@@ -189,14 +191,20 @@ int32_t CMGApp::_app_init(TAPPCTX* pCtx, void* pArg)
         LOG_PROCESS_ERROR(nRetCode);
     }
 
-    //user callback
-    if (ms_Instance.pUserInit)
+    if (ms_Instance.m_bUseConn)
     {
-        nRetCode = ms_Instance.pUserInit(pCtx, ms_Instance.is_resume());
+        register_server_msg_handler(conn_ntf_event, recv_conn_ntf_event);
+        register_server_msg_handler(conn_transfer_msg, recv_conn_transfer_msg);
+    }
+
+    //user callback
+    if (ms_Instance.m_pUserInit)
+    {
+        nRetCode = ms_Instance.m_pUserInit(pCtx, ms_Instance.is_resume());
         LOG_PROCESS_ERROR(nRetCode);
     }
 
-	INF("server inited success");
+	INF("%s inited success", ms_Instance.m_szServerName);
 
 	return 0;
 Exit0:
@@ -209,9 +217,9 @@ int32_t CMGApp::_app_fini(TAPPCTX* pCtx, void* pArg)
     BOOL bResume = ms_Instance.is_resume();
 
     //user callback
-    if (ms_Instance.pUserFini)
+    if (ms_Instance.m_pUserFini)
     {
-        nRetCode = ms_Instance.pUserFini(pCtx, ms_Instance.is_resume());
+        nRetCode = ms_Instance.m_pUserFini(pCtx, ms_Instance.is_resume());
         LOG_CHECK_ERROR(nRetCode);
     }
 
@@ -316,9 +324,9 @@ int32_t CMGApp::_app_reload(TAPPCTX* pCtx, void* pArg)
     }
 
     //user callback
-    if (ms_Instance.pUserReload)
+    if (ms_Instance.m_pUserReload)
     {
-        ms_Instance.pUserReload(pCtx, ms_Instance.is_resume());
+        ms_Instance.m_pUserReload(pCtx, ms_Instance.is_resume());
     }
 
 	ms_Instance.m_dwLastReloadTime = nCurrTime;
@@ -372,9 +380,9 @@ int32_t CMGApp::_app_stop(TAPPCTX* pCtx, void* pArg)
             }
         }
 
-        if (ms_Instance.pUserStop)
+        if (ms_Instance.m_pUserStop)
         {
-            nRetCode = ms_Instance.pUserStop(pCtx, ms_Instance.is_resume());
+            nRetCode = ms_Instance.m_pUserStop(pCtx, ms_Instance.is_resume());
             if (nRetCode == FALSE)
                 bAllStop = FALSE;
         }
@@ -402,7 +410,30 @@ int32_t CMGApp::_app_quit(TAPPCTX* pCtx, void* pArg)
 
 	return -1;
 }
+
+CMGApp::CMGApp(void)
+{
+    m_nState = svstInvalid;
+    m_nStopTimer = 0;
+    m_nServerFrame = 0;
+    memset(&m_stAppCtx, 0, sizeof(m_stAppCtx));
+
+    m_dwLastReloadTime = 0;
+    m_bNeedExitClean = TRUE;
+    m_bUseTconnd = FALSE;
+    m_bUseRouter = FALSE;
+    m_bUseConn = FALSE;
     
+    m_pUserInit = NULL;
+    m_pUserFini = NULL;
+    m_pUserFrame = NULL;
+    m_pUserReload = NULL;
+    m_pUserStop = NULL;
+
+    memset(m_UserMsgHandler, 0, sizeof(m_UserMsgHandler));
+    m_ModuleCont.init();
+}
+
 BOOL CMGApp::init(const char* pcszServerName, int32_t argc, char* argv[])
 {
     int32_t nRetCode = 0;
@@ -414,7 +445,7 @@ BOOL CMGApp::init(const char* pcszServerName, int32_t argc, char* argv[])
 	LOG_PROCESS_ERROR(nRetCode == 0);
 #endif	// WIN32
 
-    strxcpy(ms_Instance.m_szServerName, pcszServerName, sizeof(m_szServerName));
+    strxcpy(m_szServerName, pcszServerName, sizeof(m_szServerName));
 
 	m_stAppCtx.argc = argc;
 	m_stAppCtx.argv = argv;
@@ -456,11 +487,11 @@ BOOL CMGApp::set_app_func(APP_FUNC pInit, APP_FUNC pFini, APP_FRAME_FUNC pFrame,
 {
     int32_t nRetCode = 0;
 
-    pUserInit = pInit;
-    pUserFini = pFini;
-    pUserFrame = pFrame;
-    pUserReload = pReload;
-    pUserStop = pStop;
+    m_pUserInit = pInit;
+    m_pUserFini = pFini;
+    m_pUserFrame = pFrame;
+    m_pUserReload = pReload;
+    m_pUserStop = pStop;
 
     return TRUE;
 Exit0:

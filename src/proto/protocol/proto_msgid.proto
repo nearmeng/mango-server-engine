@@ -13,7 +13,9 @@ enum SC_MESSAGE_ID
 {
 	sc_message_begin	=	0;
 
-	sc_message_login	=	1;
+	sc_message_login	    =	1;
+    sc_message_error_code   =   2;
+    sc_message_allow_login  =   3;
 
 	sc_message_end		=	0xFFFF;
 }

@@ -293,7 +293,7 @@ template<class T>
 BOOL CShmObject<T>::init(int32_t shm_type, BOOL is_resume)
 {
 	SHM_POOL* pool = NULL;
-	uint64_t pool_size = sizeof(SHM_POOL) + sizeof(SHM_UNIT_DATA<T>);
+	int32_t pool_size = sizeof(SHM_POOL) + sizeof(SHM_UNIT_DATA<T>);
 
 	LOG_PROCESS_ERROR_DETAIL(shm_type > stdInvalid, "shm_type is %d", shm_type);
 	LOG_PROCESS_ERROR_DETAIL(shm_type < stdTotal, "shm type is %d", shm_type);

@@ -5,7 +5,16 @@ message CS_MESSAGE_LOGIN
 	optional	string	password	=	2;
 }
 
+message SC_MESSAGE_ALLOW_LOGIN
+{
+}
+
 message SC_MESSAGE_LOGIN
 {
 	optional string		answer	=		1;
+}
+
+message SC_MESSAGE_ERROR_CODE
+{
+    optional    int32   error_code  =   1;
 }

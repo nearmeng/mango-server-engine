@@ -14,10 +14,19 @@
 <Channels>
     <Priority>8</Priority>
     <Address>1.0.1.1</Address>
-    <Address>1.0.2.1</Address>
+    <Address>1.0.7.1</Address>
     <SendSize>4096000</SendSize>
     <RecvSize>4096000</RecvSize>
-    <Desc>tconnd1_to_server1</Desc>
+    <Desc>tconnd1_to_conn_server1</Desc>
+</Channels>
+
+<Channels>
+    <Priority>8</Priority>
+    <Address>1.0.3.1</Address>
+    <Address>1.0.7.1</Address>
+    <SendSize>4096000</SendSize>
+    <RecvSize>4096000</RecvSize>
+    <Desc>router_server1_to_conn_server1</Desc>
 </Channels>
 
 <Channels>

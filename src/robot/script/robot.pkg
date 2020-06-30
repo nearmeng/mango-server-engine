@@ -14,6 +14,7 @@ public:
 	BOOL set_lua_wait_msgid(int32_t nMsgId1, int32_t nMsgId2);
 	
     inline int32_t get_user_id(void);
+    inline int32_t get_connid(void);
 };
 
 class CRobotUserMgr

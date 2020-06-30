@@ -22,6 +22,8 @@ list (APPEND SRC_FILES
 	"${BASE_DIR}/build/toluapp.cmake"
 )
 
+process_proto("src/proto")
+
 add_project ()
 
 post_project ()

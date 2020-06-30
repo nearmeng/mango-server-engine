@@ -20,6 +20,9 @@ enum INTERNAL_MESSAGE_ID
 	service_manage_message_begin = router_message_end,
 	service_manage_message_end = 0x250,
 
+    conn_message_begin = service_manage_message_end,
+    conn_message_end = 0x300,
+
 	internal_message_end
 };
 

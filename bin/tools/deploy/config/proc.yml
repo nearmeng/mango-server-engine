@@ -23,11 +23,19 @@ procs:
       layer: world
       func_id: 1
       conf_file_prefix: tconnd.xml
-      deploy_unit: group_gs
+      deploy_unit: group_conn
       attrs: 
-          backend_server_func_id: 2
+          backend_server_func_id: 7
       inst_attrs:
           tconnd_port: inst+7200
+  conn_server:
+      layer: world
+      func_id: 7
+      deploy_unit: group_conn
+      tlog_config:
+           text:
+             - local
+             - tlogd
   server:
       layer: world
       func_id: 2
@@ -92,7 +100,10 @@ proc_connect:
       Mask: 63.0.0.0
       MaskCtrl: local
     - peer1: tconnd
-      peer2: server
+      peer2: conn_server
+      Mask: 63.0.0.1024
+    - peer1: router_server
+      peer2: conn_server
       Mask: 63.0.0.0
     - peer1: router_server
       peer2: service_mgr_server

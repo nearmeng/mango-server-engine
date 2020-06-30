@@ -14,6 +14,7 @@ enum SERVER_TYPE
 	svrServiceMgr	=	4,
 	svrControl		=	5,
 	svrTest			=	6,
+    svrConn         =   7,
 
 	svrTotal
 };

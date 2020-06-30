@@ -95,7 +95,10 @@ BOOL CRouterClient::init(int32_t nTbusHandle, int32_t nTbusID, MESSAGE_FUNC pMsg
 		}
 	}
 
+	LOG_PROCESS_ERROR(m_nRouterTbusID > 0);
 	LOG_PROCESS_ERROR(nCheckRounterCount == 1);
+
+    DBG("send register to router %s", tbus_get_str(m_nRouterTbusID));
 
 	nRetCode = _send_register(bResume);
 	LOG_PROCESS_ERROR(nRetCode);

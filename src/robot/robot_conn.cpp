@@ -466,6 +466,9 @@ BOOL CRobotConnMgr::send(ROBOT_CONNECTION* pConn, int32_t nMsgID, lua_State* L)
 
 	LOG_PROCESS_ERROR(pConn);
 	
+    Head.set_msgid(nMsgID);
+	Head.set_seqid(0);
+	
 	nRetCode = Head.SerializeToArray(sSendBuff + 1, sizeof(sSendBuff) - 1);
 	LOG_PROCESS_ERROR(nRetCode);
 	nHeadlen = Head.GetCachedSize();
@@ -489,9 +492,6 @@ BOOL CRobotConnMgr::send(ROBOT_CONNECTION* pConn, int32_t nMsgID, lua_State* L)
 
 	nRetCode = lua_popmessage(L, pMessage);
 	LOG_PROCESS_ERROR(nRetCode);
-
-	Head.set_msgid(nMsgID);
-	Head.set_seqid(0);
 
 	nRetCode = pMessage->SerializeToArray(sSendBuff + 1 + nHeadlen, sizeof(sSendBuff) - 1 - nHeadlen);
 	LOG_PROCESS_ERROR(nRetCode);

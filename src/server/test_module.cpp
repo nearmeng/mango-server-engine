@@ -8,50 +8,52 @@
 #include "protocol/proto_msgid.pb.h"
 #include "protocol/external_message.pb.h"
 #include "protocol/proto_head.pb.h"
+#include "protocol/conn_message.h"
 
 #include "app/server_app.h"
 #include "app/server_msg_handler.h"
 #include "string/string_ex.h"
 #include "define/server_def.h"
+#include "define/conn_def.h"
 
-static int conn = 0;
+std::map<uint64_t, int32_t> ms_AddrMap;
 
-void on_conn_start(uint64_t qwConnID, TFRAMEHEAD* pFrameHead, const char* pBuff, int32_t nSize)
+void on_conn_start_event(uint64_t qwConnID, int32_t nConnServerAddr)
 {
-	INF("recv start conn");
+    int32_t nRetCode = 0;
+    SC_MESSAGE_ALLOW_LOGIN msg;
 
-	pFrameHead->iID = pFrameHead->iConnIdx;
-	conn = pFrameHead->iID;
-	send_conn_msg(GET_TCONND_ADDR(qwConnID), pFrameHead, NULL, NULL);
+    ms_AddrMap[qwConnID] = nConnServerAddr;
+
+    nRetCode = send_to_client(nConnServerAddr, qwConnID, sc_message_allow_login, &msg);
+    LOG_PROCESS_ERROR(nRetCode);
+
+    INF("recv conn %lld ntf start event", qwConnID);
+
+Exit0:
+    return;
 }
 
-void on_login(int32_t nSrcAddr, const CS_HEAD* pHead, const Message* pMsg)
+void on_conn_stop_event(uint64_t qwConnID, int32_t nConnServerAddr)
+{
+    INF("recv conn %lld ntf stop event", qwConnID);
+}
+
+void on_login(uint64_t qwConnID, const CS_HEAD* pHead, const Message* pMsg)
 {
 	int32_t nRetCode = 0;
 	CS_MESSAGE_LOGIN* msg = (CS_MESSAGE_LOGIN*)pMsg;
 
 	INF("login msg, id %d password %s", msg->userid(), msg->password().c_str());
 
-	SC_HEAD Head;
-	TFRAMEHEAD FrameHead;
-
-	FrameHead.chCmd = TFRAMEHEAD_CMD_INPROC;
-	FrameHead.stCmdData.stInProc.chValid = 0;
-	FrameHead.iConnIdx = conn;
-	FrameHead.iID = conn;
-
-	Head.set_msgid(sc_message_login);
-	Head.set_seqid(0);
-
 	SC_MESSAGE_LOGIN rsp;
 	rsp.set_answer("this is rsp");
 
-	nRetCode = send_conn_msg(nSrcAddr, &FrameHead, &Head, &rsp);
-	LOG_PROCESS_ERROR(nRetCode);
+    nRetCode = send_to_client(ms_AddrMap[qwConnID], qwConnID, sc_message_login, &rsp);
+    LOG_PROCESS_ERROR(nRetCode);
 
 Exit0:
 	return;
-
 }
 
 BOOL do_send_control_ack(int32_t nResult, const char* pDesc, int32_t nDstAddr)
@@ -96,9 +98,11 @@ BOOL CTestModule::init(BOOL bResume)
 
 	INF("test module is init");
 
-	register_conn_msg_handler(TFRAMEHEAD_CMD_START, on_conn_start);
 	register_client_msg_handler(cs_message_login, on_login);
+
 	register_server_msg_handler(a2a_control_req, on_control);
+    register_conn_event_handler(cetStart, on_conn_start_event);
+    register_conn_event_handler(cetStop, on_conn_stop_event);
 
     return TRUE;
 Exit0:

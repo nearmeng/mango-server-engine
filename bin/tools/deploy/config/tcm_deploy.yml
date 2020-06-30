@@ -25,6 +25,12 @@ cluster:
             group_host:
                 - id: 1
                   host: test_host1
+            group_conn:
+                - id_begin : 1
+                  id_end : 2
+                  host_group : group1
+                  log : test_host1
+                  count_per_host: 2
             group_gs:
                 - id_begin : 1
                   id_end : 2

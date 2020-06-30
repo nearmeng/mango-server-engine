@@ -27,6 +27,7 @@ CClientMessageHandler::~CClientMessageHandler()
 
 BOOL CClientMessageHandler::init(void)
 {
+	s_MessageFuncList[sc_message_allow_login] = &CClientMessageHandler::on_allow_login;
 	s_MessageFuncList[sc_message_login] = &CClientMessageHandler::on_login;
 
 	return TRUE;
@@ -45,6 +46,7 @@ void CClientMessageHandler::recv(SC_HEAD* pSCHead, google::protobuf::Message* pM
 
 	LOG_PROCESS_ERROR(pSCHead);
 	LOG_PROCESS_ERROR(pMsg);
+    LOG_PROCESS_ERROR(s_MessageFuncList[pSCHead->msgid()]);
 
 	(this->*s_MessageFuncList[pSCHead->msgid()])(pSCHead, pMsg, pUser);
 
@@ -77,18 +79,6 @@ Exit0:
 	
 void CClientMessageHandler::on_conn_start(ROBOT_CONNECTION* pConn)
 {
-	int32_t nRetCode = 0;
-	CRobotUser* pUser = NULL;
-	CS_MESSAGE_LOGIN msg;
-
-	pUser = CRobotUserMgr::instance().find_user(pConn->nUserID);
-	LOG_PROCESS_ERROR(pUser);
-
-	msg.set_userid(11111);
-	msg.set_password("this is password");
-
-	nRetCode = send(pUser, cs_message_login, msg);
-	LOG_PROCESS_ERROR(nRetCode);
 Exit0:
 	return;
 }
@@ -96,6 +86,21 @@ Exit0:
 void CClientMessageHandler::on_conn_stop(ROBOT_CONNECTION* pConn)
 {
 
+}
+	
+void CClientMessageHandler::on_allow_login(SC_HEAD* pSCHead, google::protobuf::Message* pMsg, CRobotUser* pUser)
+{
+	int32_t nRetCode = 0;
+	CS_MESSAGE_LOGIN msg;
+
+	msg.set_userid(11111);
+	msg.set_password("this is password");
+
+	nRetCode = send(pUser, cs_message_login, msg);
+	LOG_PROCESS_ERROR(nRetCode);
+
+Exit0:
+    return;
 }
 	
 void CClientMessageHandler::on_login(SC_HEAD* pSCHead, google::protobuf::Message* pMsg, CRobotUser* pUser)

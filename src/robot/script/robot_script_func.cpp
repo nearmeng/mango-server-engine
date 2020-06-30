@@ -4,6 +4,8 @@
 #include "robot_user.h"
 #include "robot_interact.h"
 
+#include "protocol/proto_msgid.pb.h"
+
 extern int tolua_robot_open(lua_State* tolua_S);
 
 int32_t lua_create_user(lua_State* L)
@@ -141,6 +143,50 @@ Exit0:
 	return 0;
 }
 
+int32_t lua_register_msgid(lua_State* L)
+{
+    int32_t nTable = 0;
+    const google::protobuf::EnumDescriptor* pC2gEnumDesc = NULL;
+    const google::protobuf::EnumDescriptor* pG2cEnumDesc = NULL;
+
+    pC2gEnumDesc = CS_MESSAGE_ID_descriptor();
+    LOG_PROCESS_ERROR(pC2gEnumDesc);
+
+    pG2cEnumDesc = SC_MESSAGE_ID_descriptor();
+    LOG_PROCESS_ERROR(pG2cEnumDesc);
+
+    lua_newtable(L);
+    nTable = lua_gettop(L);
+
+    for (int32_t i = 0; i < pC2gEnumDesc->value_count(); i++)
+    {
+        const google::protobuf::EnumValueDescriptor* pValueDesc = pC2gEnumDesc->value(i);
+        LOG_PROCESS_ERROR(pValueDesc);
+
+        lua_pushstring(L, pValueDesc->name().c_str());
+        lua_pushinteger(L, pValueDesc->number());
+        lua_settable(L, nTable);
+    }
+
+    for (int32_t i = 0; i < pG2cEnumDesc->value_count(); i++)
+    {
+        const google::protobuf::EnumValueDescriptor* pValueDesc = pG2cEnumDesc->value(i);
+        LOG_PROCESS_ERROR(pValueDesc);
+
+        lua_pushstring(L, pValueDesc->name().c_str());
+        lua_pushinteger(L, pValueDesc->number());
+        lua_settable(L, nTable);
+    }
+
+    lua_setglobal(L, "msgid");
+
+    DBG("lua_register_msgid success, cs count[%d] sc count[%d]", pC2gEnumDesc->value_count(), pG2cEnumDesc->value_count());
+
+Exit0:
+
+    return 0;
+}
+
 LUA_FUNC g_LuaFunc[] =
 {
 	{ "do_create_user",     lua_create_user },
@@ -149,6 +195,7 @@ LUA_FUNC g_LuaFunc[] =
 	{ "user_send",			lua_send },  
 	{ "user_recv",			lua_recv },
 	{ "check_print",        lua_check_print },
+    { "register_msgid",     lua_register_msgid },
 
 	{ NULL, NULL }
 };

@@ -26,15 +26,15 @@ function destroy_user(user)
     return do_destroy_user(user)
 end
 
-SERVER_URL="tcp://127.0.0.1:8888"
+function send(user, msg_id, ...)
+    return user_send(user:get_connid(), msg_id, ...)
+end
 
-function startup(user_name, server_url, class, body)
+function startup(user_name, server_url)
 	local ret, msg
-	if not class then class = clsClass1 end
-	if not body then body = 1 end
 
 	local user = create_user(user_name)
-    server_url = server_url or SERVER_URL
+    server_url = server_url or GLOBAL_CONFIG['server_url']
 	print("startup.create_user," .. server_url .. "," .. user_name)
 	
 
@@ -48,6 +48,7 @@ function startup(user_name, server_url, class, body)
 end
 
 function endup(user)
+    return destroy_user(user)
 end
 
 

@@ -1,6 +1,4 @@
-﻿SERVER_URL = ""
-		                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
-function get_table_size(tb)
+﻿function get_table_size(tb)
 	local count = 0;
 	for k,v in pairs(tb) do
 		count = count + 1;
@@ -36,3 +34,15 @@ function check(condition, error_msg)
         end
     end
 end
+
+function config(config_name, config_value)
+    GLOBAL_CONFIG[config_name] = config_value
+    print(config_name .. " is set to " .. config_value)
+end
+
+function print_config(config_name)
+    print(config_name .. " value is " .. GLOBAL_CONFIG[config_name])
+end
+
+GLOBAL_CONFIG = {}
+register_msgid()

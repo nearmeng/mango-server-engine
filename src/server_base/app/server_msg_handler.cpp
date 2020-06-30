@@ -8,9 +8,15 @@
 #include "protocol/proto_msgid.pb.h"
 #include "protocol/external_message.pb.h"
 #include "protocol/internal_message_header.h"
+#include "protocol/conn_message.h"
+
+#include "google/protobuf/message.h"
+#include "google/protobuf/text_format.h"
 
 #include "tbus/tbus_wrapper.h"
 #include "app/server_app.h"
+
+#include "define/conn_def.h"
 
 #include "router_client/router_client_api.h"
 
@@ -19,6 +25,7 @@
 #define MAX_SS_MSG_LEN			(256 * 1024)
 #define MAX_SEND_DATA_BUFF_LEN	(512 * 1024)
 
+static CONN_EVENT_HANDLER g_ConnEventHandler[cetTotal];
 static CONN_MSG_HANDLER g_ConnMsgHandler[MAX_CONN_EVENT_COUNT];
 static CLIENT_MSG_HANDLER g_ClientMsgHandler[MAX_MESSAGE_ID];
 static SERVER_MSG_HANDLER g_ServerMsgHandler[MAX_MESSAGE_ID];
@@ -141,6 +148,43 @@ Exit0:
 	return FALSE;
 }
 
+void recv_conn_transfer_msg(int32_t nSrcAddr, const char* pBuff, size_t dwSize)
+{
+    int32_t nRetCode = 0;
+    CONN_TRANSFER_MSG* msg = (CONN_TRANSFER_MSG*)pBuff;
+
+    nRetCode = recv_client_msg_proc(msg->qwConnID, msg->szMsg, msg->nMsgSize);
+    LOG_PROCESS_ERROR(nRetCode);
+
+Exit0:
+    return;
+}
+
+void recv_conn_ntf_event(int32_t nSrcAddr, const char* pBuff, size_t dwSize)
+{
+    int32_t nRetCode = 0;
+    CONN_NTF_EVENT* msg = (CONN_NTF_EVENT*)pBuff;
+    CONN_NTF_EVENT_ACK ack;
+
+    if (msg->nEventType == cetStart)
+    {
+        //send ack back
+        ack.qwConnID = msg->qwConnID;
+        ack.nEventType = msg->nEventType;
+        nRetCode = send_server_msg_by_addr(nSrcAddr, conn_ntf_event_ack, &ack, sizeof(ack));
+        LOG_CHECK_ERROR(nRetCode);
+    }
+
+    //call user func
+    if (g_ConnEventHandler[msg->nEventType])
+    {
+        g_ConnEventHandler[msg->nEventType](msg->qwConnID, nSrcAddr);
+    }
+
+Exit0:
+    return;
+}
+
 BOOL recv_client_msg_proc(uint64_t qwConnID, const char* pBuff, int32_t nSize)
 {
 	int32_t nRetCode = 0;
@@ -153,6 +197,16 @@ BOOL recv_client_msg_proc(uint64_t qwConnID, const char* pBuff, int32_t nSize)
 	nRetCode = unpack_client_msg(pBuff, nSize, &CsHead, &pMsg);
 	LOG_PROCESS_ERROR(nRetCode);
 	LOG_PROCESS_ERROR_DETAIL(g_ClientMsgHandler[CsHead.msgid()], "client msg is not registerd, msgid: %d", CsHead.msgid());
+		
+    {
+        std::string sMsgStr;
+        std::string sMsgName = CS_MESSAGE_ID_Name((CS_MESSAGE_ID)CsHead.msgid());
+
+        nRetCode = google::protobuf::TextFormat::PrintToString(*pMsg, &sMsgStr);
+        LOG_CHECK_ERROR(nRetCode);
+
+        INF("recv msg %s from conn <%llX>: \n%s", sMsgName.c_str(), qwConnID, sMsgStr.c_str());
+    }
 
 	g_ClientMsgHandler[CsHead.msgid()](qwConnID, &CsHead, pMsg);
 
@@ -165,7 +219,7 @@ Exit0:
 BOOL recv_conn_msg_proc(int32_t nSrcAddr, const char* pBuff, int32_t nSize)
 {
 	int32_t nRetCode = 0;
-	TFRAMEHEAD FrameHead;
+	static TFRAMEHEAD FrameHead;
 	int32_t nHeadLen = sizeof(FrameHead);
 
 	nRetCode = tconnapi_decode(pBuff, nSize, &FrameHead, &nHeadLen);
@@ -208,6 +262,73 @@ Exit0:
 	return FALSE;
 }
 
+BOOL send_to_client(int32_t nConnServerAddr, uint64_t qwConnID, int32_t nMsgID, const Message* pMsg)
+{
+    int32_t nRetCode = 0;
+    SC_HEAD head;
+	char szDataBuff[MAX_SEND_DATA_BUFF_LEN];
+	int32_t nDataLen = sizeof(szDataBuff);
+    int32_t nAllDataSize = 0;
+    CONN_TRANSFER_MSG* msg = NULL;
+
+    head.set_msgid(nMsgID);
+    head.set_seqid(0);
+    
+	if (pMsg)
+	{
+		nRetCode = pack_msg(szDataBuff, &nDataLen, &head, pMsg);
+		LOG_PROCESS_ERROR(nRetCode);
+	}
+	else
+		nDataLen = 0;
+
+    nAllDataSize = sizeof(CONN_TRANSFER_MSG) + nDataLen;
+    msg = (CONN_TRANSFER_MSG*)alloca(nAllDataSize);
+
+    msg->qwConnID = qwConnID;
+    msg->nMsgSize = nDataLen;
+    memcpy(msg->szMsg, szDataBuff, nDataLen);
+    
+    {
+        std::string sMsgStr;
+        std::string sMsgName = SC_MESSAGE_ID_Name((SC_MESSAGE_ID)nMsgID);
+
+        nRetCode = google::protobuf::TextFormat::PrintToString(*pMsg, &sMsgStr);
+        LOG_CHECK_ERROR(nRetCode);
+
+        INF("send msg %s to conn <%llX>: \n%s", sMsgName.c_str(), qwConnID, sMsgStr.c_str());
+    }
+
+    nRetCode = send_server_msg_by_addr(nConnServerAddr, conn_transfer_msg, msg, nAllDataSize);
+    LOG_PROCESS_ERROR(nRetCode);
+
+    return TRUE;
+Exit0:
+    return FALSE;
+}
+
+BOOL send_conn_msg(int32_t nDstAddr, TFRAMEHEAD* pFrameHead, const char* pBuff, int32_t nSize)
+{
+    int32_t nRetCode = 0;
+	static char szHeadBuff[sizeof(TFRAMEHEAD) * 2];
+	int32_t nHeadLen = sizeof(szHeadBuff);
+	struct iovec vecs[2];
+
+    LOG_PROCESS_ERROR(pFrameHead);
+
+	nRetCode = tconnapi_encode(szHeadBuff, &nHeadLen, pFrameHead);
+	LOG_PROCESS_ERROR(nRetCode == 0);
+	
+    vecs[0].iov_len = nHeadLen;
+	vecs[0].iov_base = szHeadBuff;
+	vecs[1].iov_len = nSize;
+	vecs[1].iov_base = (char*)pBuff;
+
+	return tbus_sendv_data(nDstAddr, vecs, 2);
+Exit0:
+    return FALSE;
+}
+
 BOOL send_conn_msg(int32_t nDstAddr, TFRAMEHEAD * pFrameHead, const SC_HEAD* pHead, const Message* pMsg)
 {
 	int32_t nRetCode = 0;
@@ -237,17 +358,30 @@ BOOL send_conn_msg(int32_t nDstAddr, TFRAMEHEAD * pFrameHead, const SC_HEAD* pHe
 
 	return tbus_sendv_data(nDstAddr, vecs, 2);
 
-	return TRUE;
 Exit0:
 	return FALSE;
 }
 
-BOOL register_conn_msg_handler(int32_t nEventType, CONN_MSG_HANDLER pMsgHandler)
+BOOL register_conn_event_handler(int32_t nEventType, CONN_EVENT_HANDLER pEventHandler)
 {
-	LOG_PROCESS_ERROR(nEventType >= 0 && nEventType < MAX_CONN_EVENT_COUNT);
-	LOG_PROCESS_ERROR(g_ConnMsgHandler[nEventType] == NULL);
+    LOG_PROCESS_ERROR(nEventType > cetInvalid && nEventType < cetTotal);
+    LOG_PROCESS_ERROR(pEventHandler);
+    LOG_PROCESS_ERROR(g_ConnEventHandler[nEventType] == NULL);
 
-	g_ConnMsgHandler[nEventType] = pMsgHandler;
+    g_ConnEventHandler[nEventType] = pEventHandler;
+
+    return TRUE;
+Exit0:
+    return FALSE;
+}
+
+BOOL register_conn_msg_handler(int32_t nMsgType, CONN_MSG_HANDLER pMsgHandler)
+{
+    LOG_PROCESS_ERROR(pMsgHandler);
+	LOG_PROCESS_ERROR(nMsgType >= 0 && nMsgType < MAX_CONN_EVENT_COUNT);
+	LOG_PROCESS_ERROR(g_ConnMsgHandler[nMsgType] == NULL);
+
+	g_ConnMsgHandler[nMsgType] = pMsgHandler;
 
 	return TRUE;
 Exit0:
@@ -256,6 +390,7 @@ Exit0:
 
 BOOL register_client_msg_handler(int32_t nCSMsgID, CLIENT_MSG_HANDLER pMsgHandler)
 {
+    LOG_PROCESS_ERROR(pMsgHandler);
 	LOG_PROCESS_ERROR(nCSMsgID > 0 && nCSMsgID < MAX_MESSAGE_ID);
 	LOG_PROCESS_ERROR(g_ClientMsgHandler[nCSMsgID] == NULL);
 

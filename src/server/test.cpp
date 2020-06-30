@@ -353,8 +353,9 @@ Exit1:
     int32_t nRetCode = 0;
     CMGApp* pServer = &CMGApp::instance();
 
-    pServer->set_use_tconnd(TRUE);
     pServer->set_use_router(TRUE);
+    pServer->set_use_conn(TRUE);
+    
     MG_REGISTER_MODULE(pServer, CTestModule);
 
     nRetCode = pServer->init("test_server", argc, argv);

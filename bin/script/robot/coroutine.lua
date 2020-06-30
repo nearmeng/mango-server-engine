@@ -116,10 +116,6 @@ function recv(user, expected_msg1, expected_msg2)
 	return recv_table
 end
 
-function send(user, msg_id, ...)
-    return user_send(user:get_connid(), msg_id, ...)
-end
-
 -- 支持任意用户收取任意msg
 
 function recv_many(...)

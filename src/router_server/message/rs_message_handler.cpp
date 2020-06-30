@@ -567,8 +567,11 @@ BOOL CRSMessageHandler::do_alive_report(void)
 		msg->nReportCount++;
 	}
 
-	nRetCode = send_to_mgr(msg, dwMsgSize);
-	LOG_PROCESS_ERROR(nRetCode);
+    if (m_pShmServiceMgrData->nMgrTbusAddr > 0)
+    {
+        nRetCode = send_to_mgr(msg, dwMsgSize);
+        LOG_PROCESS_ERROR(nRetCode);
+    }
 
 	return TRUE;
 Exit0:
@@ -629,7 +632,6 @@ void CRSMessageHandler::on_heartbeat(const char* pBuffer, size_t dwSize, int32_t
 
 	pAliveInfo->dwLastHeartBeatTime = CTimeMgr::instance().get_time_sec();
 
-	//INF("[router network]: recv heart beat from server %s", get_tbus_str(nSrcAddr));
 	return;
 Exit0:
 	CRI("[route network]: failed to process heartbeat from %s", tbus_get_str(nSrcAddr));

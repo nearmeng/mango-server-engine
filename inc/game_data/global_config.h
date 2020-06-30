@@ -32,6 +32,11 @@ struct SERVER_CONFIG
 
     } Common;
 
+    struct CONN_CONFIG
+    {
+        int32_t nInitSessionMgrCount;
+    }CONN;
+
     struct GS_CONFIG
     {
     	int32_t nTestValue;

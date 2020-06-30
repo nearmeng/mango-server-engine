@@ -7,6 +7,8 @@
 
 #define MG_REGISTER_MODULE(__server__, __module_class__, ...)  \
     __server__->register_module((CServerModule*)__module_class__::instance(#__module_class__, ##__VA_ARGS__)); 
+#define MG_GET_MODULE(__module_class__) \
+    (__module_class__*)CMGApp::instance().get_module(#__module_class__);
 
 typedef BOOL(*APP_FUNC)(TAPPCTX* pCtx, BOOL bResume);
 typedef BOOL(*APP_FRAME_FUNC)();
@@ -22,7 +24,7 @@ typedef BOOL(*USER_MSG_HANDLER)(const char* pBuffer, size_t dwSize, int32_t nSrc
 class CMGApp
 {
 public:
-    CMGApp(void) {};
+    CMGApp(void);
     ~CMGApp(void) {};
 
     BOOL init(const char* pcszServerName, int32_t argc, char* argv[]);
@@ -39,6 +41,9 @@ public:
 
     inline void set_use_router(BOOL bUseRouter);
     inline BOOL get_use_router(void);
+
+    inline void set_use_conn(BOOL bUseConn);
+    inline BOOL get_use_conn(void);
 
     inline void set_state(int32_t nState);
     inline int32_t get_state(void);
@@ -81,12 +86,13 @@ private:
     BOOL m_bNeedExitClean;
     BOOL m_bUseTconnd;
     BOOL m_bUseRouter;
+    BOOL m_bUseConn;
 
-    APP_FUNC pUserInit;
-    APP_FUNC pUserFini;
-    APP_FRAME_FUNC pUserFrame;
-    APP_FUNC pUserReload;
-    APP_FUNC pUserStop;
+    APP_FUNC m_pUserInit;
+    APP_FUNC m_pUserFini;
+    APP_FRAME_FUNC m_pUserFrame;
+    APP_FUNC m_pUserReload;
+    APP_FUNC m_pUserStop;
 
     USER_MSG_HANDLER m_UserMsgHandler[svrTotal + 1];
     CServerModuleContainer m_ModuleCont;
@@ -103,6 +109,7 @@ inline void CMGApp::set_use_tconnd(BOOL bUseTconnd)
 {
     m_bUseTconnd = bUseTconnd;
 }
+
 inline BOOL CMGApp::get_use_tconnd(void)
 {
     return m_bUseTconnd;
@@ -111,6 +118,16 @@ inline BOOL CMGApp::get_use_tconnd(void)
 inline void CMGApp::set_use_router(BOOL bUseRouter)
 {
     m_bUseRouter = bUseRouter;
+}
+
+inline BOOL CMGApp::get_use_conn(void)
+{
+    return m_bUseConn;
+}
+
+inline void CMGApp::set_use_conn(BOOL bUseConn)
+{
+    m_bUseConn = bUseConn;
 }
 
 inline BOOL CMGApp::get_use_router(void)

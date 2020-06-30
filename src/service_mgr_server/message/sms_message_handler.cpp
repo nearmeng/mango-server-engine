@@ -668,6 +668,8 @@ void CSMSMessageHandler::on_register(const char* pBuffer, size_t dwSize, int32_t
 			nRetCode = CServiceMgr::get_instance().add_router(nSrcAddr);
 			LOG_PROCESS_ERROR(nRetCode);
 
+            INF("[service mgr]: recv router %s register", tbus_get_str(nSrcAddr));
+
 			if(raft_service_get_status(m_pRaftMgr) == rsLeader)
 			{
 				nRetCode = do_sync_mgr_data_begin(nSrcAddr);
