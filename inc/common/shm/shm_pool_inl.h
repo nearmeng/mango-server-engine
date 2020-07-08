@@ -24,6 +24,36 @@ int32_t CShmObjectPool<T, N>::_get_hash_index(N id, int32_t hash_map_count)
 	key = key | (key >> 16);
 	return (key & (hash_map_count - 1));
 }
+    
+template<class T, class N>
+inline SHM_UNIT_DATA<T>* CShmObjectPool<T, N>::_get_unit_data(SHM_POOL* pool, SHM_UNIT_INDEX<N>* index)
+{
+    ptrdiff_t diff;
+    SHM_UNIT_INDEX<N>* base_index = NULL;
+
+    LOG_PROCESS_ERROR(pool);
+
+    base_index = (SHM_UNIT_INDEX<N>*)(OFFSET2PTR(pool->index_offset));
+    diff = (ptrdiff_t)(index - base_index);
+	return (SHM_UNIT_DATA<T>*)OFFSET2PTR(pool->data_offset) + diff;
+Exit0:
+    return NULL;
+}
+
+template<class T, class N>
+inline SHM_UNIT_INDEX<N>* CShmObjectPool<T, N>::_get_unit_index(SHM_POOL* pool, SHM_UNIT_DATA<T>* data)
+{
+    ptrdiff_t diff;
+    SHM_UNIT_DATA<T>* base_data = NULL;
+
+    LOG_PROCESS_ERROR(pool);
+
+    base_data = (SHM_UNIT_DATA<T>*)(OFFSET2PTR(pool->data_offset));
+    diff = (ptrdiff_t)(data - base_data);
+	return (SHM_UNIT_INDEX<N>*)OFFSET2PTR(pool->index_offset) + diff;
+Exit0:
+    return NULL;
+}
 
 template<class T, class N>
 BOOL CShmObjectPool<T, N>::init(int32_t shm_type, int32_t unit_count, BOOL is_resume)
@@ -161,7 +191,7 @@ T* CShmObjectPool<T, N>::new_object(N id)
 	*((int64_t*)pool->hash_map_root + hash_map_index) = PTR2OFFSET(unit_index);
 
 	//get data
-	unit_data = (SHM_UNIT_DATA<T>*)OFFSET2PTR(pool->data_offset + PTR2OFFSET(unit_index) - pool->index_offset);
+    unit_data = _get_unit_data(pool, unit_index);
 	LOG_PROCESS_ERROR(unit_data->fence == FENCE_NUM);
 
 	unit_data->unit_serial = (++pool->serial_generator) & UNIT_SERIAL_MASK;
@@ -193,7 +223,7 @@ BOOL CShmObjectPool<T, N>::delete_object(T* object)
 	pool = CShmMgr::get_instance().get_pool(m_shm_type);
 	LOG_PROCESS_ERROR(pool);
 		
-	unit_index = (SHM_UNIT_INDEX<N>*)OFFSET2PTR(pool->index_offset + PTR2OFFSET(unit_data) - pool->data_offset);
+    unit_index = _get_unit_index(pool, unit_data);
 	hash_map_index = _get_hash_index(unit_index->id, pool->hash_map_count);
 
 	//reset data
@@ -245,7 +275,7 @@ T* CShmObjectPool<T, N>::find_object(N id)
 		SHM_UNIT_INDEX<N>* curr_index = (SHM_UNIT_INDEX<N>*)OFFSET2PTR(curr_offset);
 		if(curr_index->id == id)
 		{
-			unit_data = (SHM_UNIT_DATA<T>*)OFFSET2PTR(pool->data_offset + curr_offset - pool->index_offset);
+            unit_data = _get_unit_data(pool, curr_index);
 			return (T*)(unit_data);
 		}
 		curr_offset = curr_index->next_unit_offset;
@@ -253,6 +283,82 @@ T* CShmObjectPool<T, N>::find_object(N id)
 
 Exit0:
 	return NULL;
+}
+
+template <class T, class N>
+inline T* CShmObjectPool<T, N>::get_first_object()
+{
+    int32_t ret_code = 0;
+    SHM_POOL* pool = NULL;
+    
+    m_traverse_map_index = 0;
+    m_traverse_offset = 0;
+
+    pool = CShmMgr::get_instance().get_pool(m_shm_type);
+    LOG_PROCESS_ERROR(pool);
+
+    for (int32_t i = 0; i < pool->hash_map_count; i++)
+    {
+        int64_t curr_offset = *((int64_t*)pool->hash_map_root + i);
+        if (curr_offset == 0)
+            continue;
+
+        m_traverse_map_index = i;
+        m_traverse_offset = curr_offset;
+
+		SHM_UNIT_INDEX<N>* unit_index = (SHM_UNIT_INDEX<N>*)OFFSET2PTR(curr_offset);
+        SHM_UNIT_DATA<T>* unit_data = _get_unit_data(pool, unit_index);
+        return (T*)unit_data;
+    }
+
+Exit0:
+    return NULL;
+}
+
+template <class T, class N>
+inline T* CShmObjectPool<T, N>::get_next_object()
+{
+    int32_t ret_code = 0;
+    SHM_POOL* pool = NULL;
+    int64_t next_offset = 0;
+    SHM_UNIT_INDEX<N>* unit_index = NULL;
+    SHM_UNIT_DATA<T>* unit_data = NULL;
+    
+    PROCESS_ERROR(m_traverse_offset > 0);
+
+    pool = CShmMgr::get_instance().get_pool(m_shm_type);
+    LOG_PROCESS_ERROR(pool);
+    
+    unit_index = (SHM_UNIT_INDEX<N>*)OFFSET2PTR(m_traverse_offset);
+    next_offset = unit_index->next_unit_offset;
+
+    if(next_offset != 0)
+    {
+        m_traverse_offset = next_offset;
+		unit_index = (SHM_UNIT_INDEX<N>*)OFFSET2PTR(next_offset);
+        unit_data = _get_unit_data(pool, unit_index);
+    }
+    else
+    {
+        for (m_traverse_map_index++; m_traverse_map_index < pool->hash_map_count; m_traverse_map_index++)
+        {
+            next_offset = *((int64_t*)pool->hash_map_root + m_traverse_map_index);
+            if (next_offset == 0)
+                continue;
+            else
+                break;
+        }
+        
+        PROCESS_ERROR(next_offset != 0);
+        m_traverse_offset = next_offset;
+
+		unit_index = (SHM_UNIT_INDEX<N>*)OFFSET2PTR(next_offset);
+        unit_data = _get_unit_data(pool, unit_index);
+    }
+
+    return (T*)unit_data;
+Exit0:
+    return NULL;
 }
 
 template<class T, class N>
@@ -267,19 +373,18 @@ inline int32_t CShmObjectPool<T, N>::traverse(Func& rFunc)
 
 	for(int32_t i = 0; i < pool->hash_map_count; i++)
 	{
-		int64_t curr_offset = 0;
+        int64_t curr_offset = *((int64_t*)pool->hash_map_root + i);
 
-		if(*((int64_t*)pool->hash_map_root + i) == 0)
+		if(curr_offset == 0)
 			continue;
 
-		curr_offset = *((int64_t*)pool->hash_map_root + i);
 		while(curr_offset != 0)
 		{
 			SHM_UNIT_INDEX<N>* unit_index = (SHM_UNIT_INDEX<N>*)OFFSET2PTR(curr_offset);
-			SHM_UNIT_DATA<T>* unit_data = (SHM_UNIT_DATA<T>*)OFFSET2PTR(pool->data_offset + curr_offset - pool->index_offset);
+            SHM_UNIT_DATA<T>* unit_data = _get_unit_data(pool, unit_index);
 
 			ret_code = rFunc(unit_index->id, (T*)unit_data);
-			LOG_CHECK_ERROR(ret_code == 0);
+			LOG_CHECK_ERROR(ret_code);
 
 			curr_offset = unit_index->next_unit_offset;
 		}

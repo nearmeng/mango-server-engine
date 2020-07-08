@@ -13,10 +13,10 @@
 typedef BOOL(*APP_FUNC)(TAPPCTX* pCtx, BOOL bResume);
 typedef BOOL(*APP_FRAME_FUNC)();
 
-typedef BOOL(*CONTROL_INIT_FUNC)(TAPPCTX* pCtx, void* pArg);
-typedef BOOL(*CONTROL_FINI_FUNC)(TAPPCTX* pCtx, void* pArg);
-typedef BOOL(*CONTROL_PRE_PROC_FUNC)(unsigned short argc, const char** argv);
-typedef BOOL(*CONTROL_PROC_FUNC)(TAPPCTX *pCtx, void * pArg, unsigned short argc, const char** argv);
+typedef int (*CONTROL_INIT_FUNC)(TAPPCTX* pCtx, void* pArg);
+typedef int (*CONTROL_FINI_FUNC)(TAPPCTX* pCtx, void* pArg);
+typedef int (*CONTROL_PRE_PROC_FUNC)(unsigned short argc, const char** argv);
+typedef int (*CONTROL_PROC_FUNC)(TAPPCTX *pCtx, void * pArg, unsigned short argc, const char** argv);
 typedef const char*(*CONTROL_HELP_FUNC)(void);
 
 typedef BOOL(*USER_MSG_HANDLER)(const char* pBuffer, size_t dwSize, int32_t nSrcAddr);

@@ -59,11 +59,13 @@ void protobuf_AddDesc_proto_5fmsgid_2eproto() {
 
   static const char descriptor[] = {  "\n\021proto_msgid.proto*Q\n\rCS_MESSAGE_ID\022\024\n\020"
       "cs_message_begin\020\000\022\024\n\020cs_message_login\020\001"
-      "\022\024\n\016cs_message_end\020\377\377\003*Q\n\rSC_MESSAGE_ID\022"
-      "\024\n\020sc_message_begin\020\000\022\024\n\020sc_message_logi"
-      "n\020\001\022\024\n\016sc_message_end\020\377\377\003"
+      "\022\024\n\016cs_message_end\020\377\377\003*\210\001\n\rSC_MESSAGE_ID"
+      "\022\024\n\020sc_message_begin\020\000\022\024\n\020sc_message_log"
+      "in\020\001\022\031\n\025sc_message_error_code\020\002\022\032\n\026sc_me"
+      "ssage_allow_login\020\003\022\024\n\016sc_message_end\020\377\377"
+      "\003"
   };
-  ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(    descriptor, 185);
+  ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(    descriptor, 241);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "proto_msgid.proto", &protobuf_RegisterTypes);
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_proto_5fmsgid_2eproto);
@@ -98,6 +100,8 @@ bool SC_MESSAGE_ID_IsValid(int value) {
   switch(value) {
     case 0:
     case 1:
+    case 2:
+    case 3:
     case 65535:
       return true;
     default:

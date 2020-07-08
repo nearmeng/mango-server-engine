@@ -479,3 +479,35 @@ std::vector<std::string> strsep(const std::string &sStr, const std::string &sSep
 
     return vt;
 }
+
+char* left_trim_space(char* s)
+{
+	if (s == NULL || *s== '\0')
+		return s;
+
+	char* p = s;
+	while (*p != '\0' && *p == ' ') { p++; }
+	return p;
+}
+
+char* right_trim_space(char* s)
+{
+	if (s == NULL || *s== '\0')
+		return s;
+
+	size_t len = strlen(s) - 1;
+
+	while (len >= 0 && *(s + len) == ' ') { len--; }
+	s[len + 1] = '\0';
+	return s;
+}
+
+char* trim_space(char* s)
+{
+	char* p = s;
+	
+	p = left_trim_space(p);
+	p = right_trim_space(p);
+
+	return p;
+}

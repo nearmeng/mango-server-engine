@@ -10,31 +10,37 @@
 
 #include "router_client/router_client_api.h"
 
-BOOL control_init(TAPPCTX *pCtx, void* pArg)
+int control_init(TAPPCTX *pCtx, void* pArg)
 {
     INF("center controller init");
 
 	setbuf(stdout, NULL);
 	setvbuf(stdout, 0, _IONBF, 0);
-    return TRUE;
+    return 0;
 }
 
-BOOL control_fini(TAPPCTX *pCtx, void* pArg)
+int control_fini(TAPPCTX *pCtx, void* pArg)
 {
     INF("center controller fini");
-    return TRUE;
+    return 0;
 }
 
-BOOL control_pre_proc_cmdline(unsigned short argc, const char** argv)
+int control_pre_proc_cmdline(unsigned short argc, const char** argv)
 {
-    return TRUE;
+    return 0;
 }
 
-BOOL control_proc_cmdline(TAPPCTX* pCtx, void* pArg, unsigned short argc, const char** argv)
+int control_proc_cmdline(TAPPCTX* pCtx, void* pArg, unsigned short argc, const char** argv)
 {
+    int32_t nRetCode = 0;
     CControlModule* pModule = (CControlModule*)CMGApp::instance().get_module("CControlModule");
 
-    return pModule->proc_cmdline(argc, argv);
+    nRetCode = pModule->proc_cmdline(argc, argv);
+    LOG_PROCESS_ERROR(nRetCode);
+
+    return 0;
+Exit0:
+    return -1;
 }
 
 const char* control_help(void)

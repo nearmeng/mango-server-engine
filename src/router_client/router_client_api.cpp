@@ -77,7 +77,7 @@ BOOL CRouterClient::init(int32_t nTbusHandle, int32_t nTbusID, MESSAGE_FUNC pMsg
 	LOG_PROCESS_ERROR(nRetCode);
 
     nRetCode = tbus_get_peer_count(m_nTbusHandle, m_nTbusID, &nPeerCount);
-    LOG_PROCESS_ERROR(nRetCode == TBUS_SUCCESS);
+    LOG_PROCESS_ERROR_DETAIL(nRetCode == TBUS_SUCCESS, "get_peer_count error for %s", tbus_error_string(nRetCode));
 
     pnAddrList = (int32_t*)alloca(sizeof(int32_t) * nPeerCount);
     LOG_PROCESS_ERROR(pnAddrList);

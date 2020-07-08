@@ -23,10 +23,6 @@ struct SERVER_CONFIG
 		int32_t nServerStopTimeout;
 		int32_t nServerEndWaitTimeout;
 
-        int32_t nResMode;
-        char szScriptPath[64];
-        char szResPath[64];
-
         struct DUMP_CONFIG
         {
             BOOL bIsMiniDump;

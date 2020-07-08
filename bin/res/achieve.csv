@@ -1,0 +1,5 @@
+int32,string,string,string,lua,int32,string,int32,string,int32,int32,int32,lua,lua,lua,lua,lua,lua,lua,int32,int32,lua,string,int32
+both,both,client,client,both,client,client,client,client,client,both,both,client,both,both,both,both,both,both,both,both,client,client,client
+nID,szName,szDesc,szTargetDesc,nAchieveType,nTabType,nTabTypeName,nTabSubType,nTabSubTypeName,nSubTypePriority,nLevelLimit,nDayLimit,nClientCondType,nCondParam[0],nCondParam[1],nCondParam[2],nCondParam[3],nCondParam[4],nCondParam[5],nRewardID,nScore,etUseAction,szNavLocation,triggerReview
+id,成就名称,成就描述,目标描述,成就类型,大类页签类型,大类页签名字,页签子类型,子类名字,同一子类型内排序,等级限制,创角天数限制,客户端完成条件类型,完成条件参数0,完成条件参数1,完成条件参数2,完成条件参数3,完成条件参数4,完成条件参数5,奖励ID,成就分数,打开界面,导航路径,触发好评引导
+1,真才实学，haha,,在藏书阁中累计答对{1}题,achtNormal,1,红仙试炼,101,,1,,,,30,,,,,31001,1,,,,

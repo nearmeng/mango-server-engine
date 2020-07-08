@@ -19,7 +19,9 @@ std::string UriDecode(const std::string & sSrc);
 int base64_encode(const char * sourcedata, size_t srclength,char * base64);
 //int base64_decode(const char *str, size_t length, char* desStr);
 std::vector<std::string> strsep(const std::string &sStr, const std::string &sSep, bool withEmpty = false);
-
+char* left_trim_space(char* s);
+char* right_trim_space(char* s);
+char* trim_space(char* s);
 
 #if defined(WIN32) & !defined(snprintf)
 	#define snprintf _snprintf_s

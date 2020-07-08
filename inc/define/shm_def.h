@@ -26,6 +26,7 @@ enum SHM_TYPE_DEF
 	stdSMSServiceData,
 	stdSMSRouterMgr,
 	stdSMSTrans,
+    stdRes,
 
     stdSession,
 

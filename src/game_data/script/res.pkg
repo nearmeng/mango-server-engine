@@ -1,0 +1,2 @@
+$hfile "../../../inc/game_data/res_mgr/res_mgr.h"
+$hfile "../../../inc/game_data/res_def/achieve_res.h"

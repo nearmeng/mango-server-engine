@@ -10,6 +10,7 @@ SERVER_CONFIG g_ServerConfig;
 
 static CLuaScript g_ConfigScript;
 extern int tolua_global_config_open(lua_State* tolua_S);
+extern int tolua_enum_open(lua_State* tolua_S);
 
 BOOL load_global_server_config(void)
 {
@@ -26,6 +27,7 @@ BOOL load_global_server_config(void)
 		LOG_PROCESS_ERROR(nRetCode);
 
 		tolua_global_config_open(g_ConfigScript.get_lua_state());
+        tolua_enum_open(g_ConfigScript.get_lua_state());
 
 		snprintf(szFileName, 256, "../server_config/server_config.lua");
 		nRetCode = g_ConfigScript.load_from_file(szFileName, TRUE);

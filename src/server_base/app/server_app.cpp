@@ -2,6 +2,7 @@
 #include "app/server_app.h"
 
 #include "game_data/global_config.h"
+#include "game_data/res_mgr/global_res_mgr.h"
 
 #include "bt/bt_mgr.h"
 #include "bt/bt_event.h"
@@ -113,7 +114,6 @@ int32_t CMGApp::_app_init(TAPPCTX* pCtx, void* pArg)
 	nRetCode = ms_Instance._init_tlog();
 	LOG_PROCESS_ERROR(nRetCode);
 
-	
 	//script
 	nRetCode = CScriptMgr::instance().init(pCtx->pszId);
 	LOG_PROCESS_ERROR(nRetCode);
@@ -181,6 +181,13 @@ int32_t CMGApp::_app_init(TAPPCTX* pCtx, void* pArg)
 		LOG_PROCESS_ERROR(nRetCode == 0);
 	}
 
+    //res
+    if (ms_Instance.m_bUseRouter)
+    {
+        nRetCode = CGlobalResMgr::instance().init(g_ServerConfig.Common.nResMode, bResume);
+        LOG_PROCESS_ERROR(nRetCode);
+    }
+
     //module cont
     for (int32_t nIndex = 0; nIndex < ms_Instance.m_ModuleCont.get_module_count(); nIndex++)
     {
@@ -241,6 +248,12 @@ int32_t CMGApp::_app_fini(TAPPCTX* pCtx, void* pArg)
 
 	nRetCode = guid_uninit();
 	LOG_CHECK_ERROR(nRetCode);
+    
+    if (ms_Instance.m_bUseRouter)
+    {
+        nRetCode = CGlobalResMgr::instance().uninit();
+        LOG_CHECK_ERROR(nRetCode);
+    }
 
 	nRetCode = CGlobalEventListMgr::instance().uninit();
 	LOG_CHECK_ERROR(nRetCode);
@@ -309,6 +322,10 @@ int32_t CMGApp::_app_reload(TAPPCTX* pCtx, void* pArg)
     //global config
 	nRetCode = load_global_server_config();
 	LOG_PROCESS_ERROR(nRetCode);
+
+    //res
+    nRetCode = CGlobalResMgr::instance().reload(FALSE);
+    LOG_PROCESS_ERROR(nRetCode);
 
     //module cont
     for (int32_t nIndex = 0; nIndex < ms_Instance.m_ModuleCont.get_module_count(); nIndex++)

@@ -16,6 +16,8 @@
 #include "define/server_def.h"
 #include "define/conn_def.h"
 
+#include "game_data/res_def/achieve_res.h"
+
 std::map<uint64_t, int32_t> ms_AddrMap;
 
 void on_conn_start_event(uint64_t qwConnID, int32_t nConnServerAddr)
@@ -77,6 +79,8 @@ void on_control(int32_t nSrcAddr, const char* pBuffer, size_t dwSize)
 {
 	int32_t nRetCode = 0;
 	A2A_CONTROL_REQ* msg = (A2A_CONTROL_REQ*)pBuffer;
+    int32_t nCount = 0;
+    const ACHIEVE_RES* pRes = CResMgr<ACHIEVE_RES>::instance().get_first_res();
 
 	INF("test on control command type %s command content %s param %lld", msg->szCommandType, msg->szCommandContent, msg->qwParam);
 
@@ -84,6 +88,14 @@ void on_control(int32_t nSrcAddr, const char* pBuffer, size_t dwSize)
 	{
         CMGApp::instance().reload();
 	}
+    
+    while (pRes)
+    {
+        nCount++;
+        INF("all read count %d", nCount);
+        INF("res_data: id %d name %s cond_type %d achieve_type %d cond_param %d reward_id %d score %d", pRes->nID, pRes->szName, pRes->nCondType, pRes->nAchieveType, pRes->nCondParam[0], pRes->nRewardID, pRes->nScore);
+        pRes = CResMgr<ACHIEVE_RES>::instance().get_next_res();
+    }
 
 	nRetCode = do_send_control_ack(0, "success", nSrcAddr);
 	LOG_PROCESS_ERROR(nRetCode);
@@ -103,6 +115,16 @@ BOOL CTestModule::init(BOOL bResume)
 	register_server_msg_handler(a2a_control_req, on_control);
     register_conn_event_handler(cetStart, on_conn_start_event);
     register_conn_event_handler(cetStop, on_conn_stop_event);
+
+    int32_t nCount = 0;
+    const ACHIEVE_RES* pRes = CResMgr<ACHIEVE_RES>::instance().get_first_res();
+    while (pRes)
+    {
+        nCount++;
+        INF("all read count %d", nCount);
+        INF("res_data: id %d name %s cond_type %d achieve_type %d cond_param %d reward_id %d score %d", pRes->nID, pRes->szName, pRes->nCondType, pRes->nAchieveType, pRes->nCondParam[0], pRes->nRewardID, pRes->nScore);
+        pRes = CResMgr<ACHIEVE_RES>::instance().get_next_res();
+    }
 
     return TRUE;
 Exit0:
