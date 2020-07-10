@@ -1,0 +1,2 @@
+#new @Tue Feb 19 12:01:14 CST 2019
+gcc sacheck_mon.c -o nmon -D JFS  -Wall -D LARGEMEM -static  -lcurses -lm  -ltinfo  
