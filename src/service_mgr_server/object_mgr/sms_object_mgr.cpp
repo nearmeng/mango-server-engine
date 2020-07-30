@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "sms_object_mgr.h"
 
-#include "game_data/global_config.h"
+#include "config/global_config.h"
 
 CSMSObjMgr CSMSObjMgr::ms_Instance;
 	

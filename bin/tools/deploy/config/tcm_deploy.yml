@@ -49,3 +49,6 @@ cluster:
             group_control:
                 - id: 1
                   host: test_host1
+            group_db:
+                - id: 1
+                  host: test_host1

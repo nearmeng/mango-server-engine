@@ -9,7 +9,7 @@
 
 #include "define/server_def.h"
 #include "define/version.h"
-#include "game_data/global_config.h"
+#include "config/global_config.h"
 
 #ifdef __linux__
 #include "core/minidump.h"

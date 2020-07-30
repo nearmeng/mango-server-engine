@@ -284,8 +284,8 @@ BOOL CResMgr<T>::_read_line(CResFile& oResFile, int32_t nRowIndex, T* data)
             while (*pcszArrayIndex != '[' && pcszArrayIndex > pcszColName)
                 pcszArrayIndex--;
 
-            strxcpy(szArrayIndex, pcszArrayIndex + 1, pcszColName + nColNameLen - pcszArrayIndex - 1);
-            strxcpy(szArrayName, pcszColName, pcszArrayIndex - pcszColName + 1);
+            strxcpy(szArrayIndex, pcszArrayIndex + 1, pcszColName + nColNameLen - pcszArrayIndex - 2);
+            strxcpy(szArrayName, pcszColName, pcszArrayIndex - pcszColName);
             pcszColName = szArrayName;
         }
 

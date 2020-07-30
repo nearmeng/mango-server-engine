@@ -8,7 +8,7 @@
 #include "service_mgr/service_mgr.h"
 #include "trans/sms_trans.h"
 
-#include "game_data/global_config.h"
+#include "config/global_config.h"
 #include "time/time_mgr.h"
 
 BOOL server_init(TAPPCTX* pCtx, BOOL bResume)

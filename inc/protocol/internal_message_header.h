@@ -23,6 +23,9 @@ enum INTERNAL_MESSAGE_ID
     conn_message_begin = service_manage_message_end,
     conn_message_end = 0x300,
 
+    db_proxy_message_begin = conn_message_end,
+    db_proxy_message_end = 0x400,
+
 	internal_message_end
 };
 

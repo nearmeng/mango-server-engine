@@ -6,7 +6,7 @@
 
 #include "define/router_def.h"
 #include "define/server_def.h"
-#include "game_data/global_config.h"
+#include "config/global_config.h"
 #include "tbus/tbus_wrapper.h"
 
 #include "protocol/common_message.h"

@@ -1,6 +1,8 @@
 #ifndef _GLOBAL_CONFIG_H_
 #define _GLOBAL_CONFIG_H_
 
+#include "define/redis_def.h"
+
 // tolua_begin
 
 struct SHARED_CONFIG
@@ -22,6 +24,10 @@ struct SERVER_CONFIG
 
 		int32_t nServerStopTimeout;
 		int32_t nServerEndWaitTimeout;
+
+        int32_t nResMode;
+        char    szScriptPath[64];
+        char    szResPath[64];
 
         struct DUMP_CONFIG
         {
@@ -51,10 +57,31 @@ struct SERVER_CONFIG
 		int32_t nRouterDownReportTimeInterval;
 		BOOL	bRouterLogEnable;
 	} SC;
+
+    struct DB_PROXY_CONFIG
+    {
+        int32_t nSyncConnectTimeout;
+        int32_t nSyncDisConnectTimeout;
+        int32_t nDBReqExpireTime;
+        int32_t nDBPingInterval;
+        int32_t nDBPingTimeout;
+        int32_t nDBReConnectInterval;
+    }DP;
+};
+
+struct REDIS_SCRIPT
+{
+    char szScript[MAX_REDIS_SCIRPT_LEN];
+};
+
+struct REDIS_SCRIPT_CONFIG
+{
+     REDIS_SCRIPT  scripts[MAX_CMD_HANDLER_COUNT];
 };
 
 extern SERVER_CONFIG g_ServerConfig;
 extern SHARED_CONFIG g_SharedConfig;
+extern REDIS_SCRIPT_CONFIG g_RedisScriptConfig;
 
 // tolua_end
 

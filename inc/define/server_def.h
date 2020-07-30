@@ -15,6 +15,7 @@ enum SERVER_TYPE
 	svrControl		=	5,
 	svrTest			=	6,
     svrConn         =   7,
+    svrDBProxy      =   8,
 
 	svrTotal
 };

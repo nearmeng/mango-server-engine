@@ -32,6 +32,15 @@
 <Channels>
     <Priority>8</Priority>
     <Address>1.0.3.1</Address>
+    <Address>1.0.8.1</Address>
+    <SendSize>4096000</SendSize>
+    <RecvSize>4096000</RecvSize>
+    <Desc>router_server1_to_db_proxy1</Desc>
+</Channels>
+
+<Channels>
+    <Priority>8</Priority>
+    <Address>1.0.3.1</Address>
     <Address>1.0.4.1</Address>
     <SendSize>4096000</SendSize>
     <RecvSize>4096000</RecvSize>

@@ -22,7 +22,7 @@ function (preprocess_proto file_path)
 		message ("removed file ${FILE_PATH}/${FILE_NAME}.h")
 
 		execute_process (
-			COMMAND "${BASE_DIR}/tools/protoc/${PROTOC_EXE}" ${FILE_NAME}.proto --error_format=${ERROR_FORMAT} --cpp_out=.
+			COMMAND "${BASE_DIR}/tools/protoc/${PROTOC_EXE}" ${FILE_NAME}.proto --proto_path=${BASE_DIR}/thirdparty/protobuf/include/ --proto_path=./ --error_format=${ERROR_FORMAT} --cpp_out=.
 			WORKING_DIRECTORY ${FILE_PATH}
 			RESULT_VARIABLE PROTO_RES)
 		if (EXISTS ${FILE_PATH}/${FILE_NAME}.pb.cc)
@@ -49,7 +49,7 @@ function (process_proto file_path)
 			OUTPUT ${FILE_PATH}/${FILE_NAME}.pb.cc 
 			OUTPUT ${FILE_PATH}/${FILE_NAME}.pb.h
 			MAIN_DEPENDENCY ${PROTO_FILE}
-			COMMAND "${BASE_DIR}/tools/protoc/${PROTOC_EXE}" ${FILE_NAME}.proto --error_format=${ERROR_FORMAT} --cpp_out=.
+			COMMAND "${BASE_DIR}/tools/protoc/${PROTOC_EXE}" ${FILE_NAME}.proto --proto_path=${BASE_DIR}/thirdparty/protobuf/include/ --proto_path=./ --error_format=${ERROR_FORMAT} --cpp_out=.
 			WORKING_DIRECTORY ${FILE_PATH}
 		)
 		if (UNIX)

@@ -16,7 +16,10 @@
 #include "define/server_def.h"
 #include "define/conn_def.h"
 
-#include "game_data/res_def/achieve_res.h"
+#include "res_def/achieve_res.h"
+
+#include "db_proxy_client/db_proxy_client.h"
+#include "config/global_config.h"
 
 std::map<uint64_t, int32_t> ms_AddrMap;
 
@@ -75,6 +78,17 @@ Exit0:
 	return FALSE;
 }
 
+struct TEST_USER_DATA
+{
+    int32_t nTestValue;
+    char    szString[20];
+};
+
+void _test_redis_callback(redisReply* pReply, const char* pUserData, size_t dwDataSize)
+{
+    INF("got reply");
+}
+
 void on_control(int32_t nSrcAddr, const char* pBuffer, size_t dwSize)
 {
 	int32_t nRetCode = 0;
@@ -87,6 +101,17 @@ void on_control(int32_t nSrcAddr, const char* pBuffer, size_t dwSize)
 	if (strcmp(msg->szCommandType, "reload") == 0)
 	{
         CMGApp::instance().reload();
+
+        TEST_USER_DATA stTestData;
+        stTestData.nTestValue = 12345;
+        strxcpy(stTestData.szString, "hello world", sizeof(stTestData.szString));
+
+        CDBProxyClient::instance().reg_redis_callback(recTest, _test_redis_callback);
+
+        //nRetCode = CDBProxyClient::instance().redis_command(1, (const char*)&stTestData, sizeof(stTestData), msg->szCommandContent);
+        //LOG_PROCESS_ERROR(nRetCode);
+        nRetCode = CDBProxyClient::instance().redis_eval(recTest, (const char*)&stTestData, sizeof(stTestData), g_RedisScriptConfig.scripts[recTest].szScript, "1 %s %d", "hello", 20);
+        LOG_PROCESS_ERROR(nRetCode);
 	}
     
     while (pRes)

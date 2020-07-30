@@ -4,7 +4,7 @@
 #include "tloghelp/tlogload.h"
 #include "lua/lua_script.h"
 #include "lua/script_mgr.h"
-#include "game_data/global_config.h"
+#include "config/global_config.h"
 
 #include "bt/bt_mgr.h"
 #include "bt/bt_event.h"
@@ -355,6 +355,7 @@ Exit1:
 
     pServer->set_use_router(TRUE);
     pServer->set_use_conn(TRUE);
+    pServer->set_use_db_proxy(TRUE);
     
     MG_REGISTER_MODULE(pServer, CTestModule);
 

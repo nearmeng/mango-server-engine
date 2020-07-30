@@ -4,7 +4,7 @@
 #include "lua/script_mgr.h"
 #include "math/crc32c_fast.h"
 
-#include "game_data/global_config.h"
+#include "config/global_config.h"
 
 #include "bt/bt_event.h"
 

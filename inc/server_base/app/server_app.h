@@ -45,11 +45,14 @@ public:
     inline void set_use_conn(BOOL bUseConn);
     inline BOOL get_use_conn(void);
 
+    inline void set_use_db_proxy(BOOL bUseDBProxy);
+    inline BOOL get_use_db_proxy(void);
+
     inline void set_state(int32_t nState);
     inline int32_t get_state(void);
 
     inline void set_stop_timer(uint64_t qwServerTick);
-    inline int32_t get_stop_timer(void);
+    inline uint64_t get_stop_timer(void);
     
     inline int32_t get_frame(void);
     inline int32_t get_tbus_addr(void);
@@ -77,7 +80,7 @@ private:
 private:
     char    m_szServerName[MAX_SERVER_NAME_LEN];
     int32_t m_nState;
-    int32_t m_nStopTimer;
+    int64_t m_qwStopTimer;
     int32_t m_nServerFrame;
     TAPPCTX m_stAppCtx;
 
@@ -87,6 +90,7 @@ private:
     BOOL m_bUseTconnd;
     BOOL m_bUseRouter;
     BOOL m_bUseConn;
+    BOOL m_bUseDBProxy;
 
     APP_FUNC m_pUserInit;
     APP_FUNC m_pUserFini;
@@ -134,6 +138,16 @@ inline BOOL CMGApp::get_use_router(void)
 {
     return m_bUseRouter;
 }
+
+inline void CMGApp::set_use_db_proxy(BOOL bUseDBProxy)
+{
+    m_bUseDBProxy = bUseDBProxy;
+}
+
+inline BOOL CMGApp::get_use_db_proxy(void)
+{
+    return m_bUseDBProxy;
+}
     
 inline void CMGApp::set_state(int32_t nState)
 {
@@ -147,12 +161,12 @@ inline int32_t CMGApp::get_state(void)
 
 inline void CMGApp::set_stop_timer(uint64_t qwServerTick)
 {
-    m_nStopTimer = qwServerTick;
+    m_qwStopTimer = qwServerTick;
 }
 
-inline int32_t CMGApp::get_stop_timer(void)
+inline uint64_t CMGApp::get_stop_timer(void)
 {
-    return m_nStopTimer;
+    return m_qwStopTimer;
 }
 
 inline int32_t CMGApp::get_frame(void)

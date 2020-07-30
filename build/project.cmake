@@ -89,6 +89,7 @@ function (post_project)
 				server_base
 				game_data
 				router_client
+                db_proxy_client
 			)
 		endif ()
 		
@@ -144,12 +145,14 @@ function (post_project)
 				optimized router_client.lib
 				debug server_base_d.lib
 				optimized server_base.lib
+				debug db_proxy_client_d.lib
+				optimized db_proxy_client.lib
 			)
 		endif ()
 	endif ()
 		
 	if (APPLICATION_TYPE STREQUAL "SERVER")
-		add_dependencies (${TARGET_NAME} server_base game_data router_client common)
+		add_dependencies (${TARGET_NAME} server_base game_data db_proxy_client router_client common)
 	else()
 		add_dependencies (${TARGET_NAME} common)
 	endif ()

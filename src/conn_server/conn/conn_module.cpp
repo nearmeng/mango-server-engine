@@ -2,7 +2,7 @@
 #include "conn_module.h"
 #include "conn_msg_handler.h"
 
-#include "game_data/global_config.h"
+#include "config/global_config.h"
 
 #include "protocol/external_message.pb.h"
 #include "protocol/proto_msgid.pb.h"

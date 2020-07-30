@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "game_data/global_config.h"
+#include "config/global_config.h"
 
 #include "file/ifile.h"
 #include "lua/lua_script.h"
@@ -7,6 +7,7 @@
 
 SHARED_CONFIG g_SharedConfig;
 SERVER_CONFIG g_ServerConfig;
+REDIS_SCRIPT_CONFIG g_RedisScriptConfig;
 
 static CLuaScript g_ConfigScript;
 extern int tolua_global_config_open(lua_State* tolua_S);
@@ -35,6 +36,13 @@ BOOL load_global_server_config(void)
 
 		nRetCode = g_ConfigScript.call_function("load_file", "os", &g_ServerConfig, "SERVER_CONFIG", "ServerConfig");
 		LOG_PROCESS_ERROR(nRetCode);
+
+        snprintf(szFileName, 256, "../server_config/redis_script_config.lua");
+        nRetCode = g_ConfigScript.load_from_file(szFileName, TRUE);
+        LOG_PROCESS_ERROR(nRetCode);
+
+        nRetCode = g_ConfigScript.call_function("load_file", "os", &g_RedisScriptConfig, "REDIS_SCRIPT_CONFIG", "RedisScriptConfig");
+        LOG_PROCESS_ERROR(nRetCode);
 	}
 
 	g_ConfigScript.uninit();

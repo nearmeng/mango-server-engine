@@ -2,7 +2,7 @@
 #include "define/error_def.h"
 #include "define/server_def.h"
 
-#include "game_data/global_config.h"
+#include "config/global_config.h"
 
 #include "robot_conn.h"
 #include "robot_user.h"

@@ -7,7 +7,7 @@
 #include "define/server_def.h"
 #include "define/error_def.h"
 
-#include "game_data/global_config.h"
+#include "config/global_config.h"
 #include "protocol/common_message.h"
 #include "protocol/router_message.h"
 #include "protocol/service_manage_message.h"

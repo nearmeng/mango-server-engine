@@ -1,0 +1,13 @@
+
+import "table_option.proto";
+
+message db_user_table
+{
+	option(primary_key) = "userid";
+
+	required int32	userid	=	1;
+	required string	name	=	2;
+	required string passwd	=	3;
+	required int32	blob_len =	4;
+	required bytes	bolb	=	5;
+}

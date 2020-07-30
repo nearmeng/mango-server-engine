@@ -1,7 +1,7 @@
 #include "stdafx.h"
-#include "game_data/res_mgr/global_res_mgr.h"
+#include "res_mgr/global_res_mgr.h"
 
-#include "game_data/global_config.h"
+#include "config/global_config.h"
 
 CGlobalResMgr* CGlobalResMgr::ms_Instance = NULL;
 

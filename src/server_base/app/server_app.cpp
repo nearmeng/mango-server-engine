@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "app/server_app.h"
 
-#include "game_data/global_config.h"
-#include "game_data/res_mgr/global_res_mgr.h"
+#include "config/global_config.h"
+#include "res_mgr/global_res_mgr.h"
 
 #include "bt/bt_mgr.h"
 #include "bt/bt_event.h"
@@ -19,6 +19,7 @@
 #include "protocol/conn_message.h"
 
 #include "router_client/router_client_api.h"
+#include "db_proxy_client/db_proxy_client.h"
 
 extern LUA_FUNC g_ServerBasePackageList[];
 extern LUA_FUNC g_ServerBaseLuaFunc[];
@@ -204,6 +205,12 @@ int32_t CMGApp::_app_init(TAPPCTX* pCtx, void* pArg)
         register_server_msg_handler(conn_transfer_msg, recv_conn_transfer_msg);
     }
 
+    if (ms_Instance.m_bUseDBProxy)
+    {
+        nRetCode = CDBProxyClient::instance().init(bResume);
+        LOG_PROCESS_ERROR(nRetCode);
+    }
+
     //user callback
     if (ms_Instance.m_pUserInit)
     {
@@ -248,6 +255,12 @@ int32_t CMGApp::_app_fini(TAPPCTX* pCtx, void* pArg)
 
 	nRetCode = guid_uninit();
 	LOG_CHECK_ERROR(nRetCode);
+
+    if (ms_Instance.m_bUseDBProxy)
+    {
+        nRetCode = CDBProxyClient::instance().uninit();
+        LOG_CHECK_ERROR(nRetCode);
+    }
     
     if (ms_Instance.m_bUseRouter)
     {
@@ -365,11 +378,11 @@ int32_t CMGApp::_app_stop(TAPPCTX* pCtx, void* pArg)
 	case svstInService:
 	{
         //wait for config time
-        if (ms_Instance.m_nStopTimer == 0)
+        if (ms_Instance.m_qwStopTimer == 0)
         {
             ms_Instance.set_stop_timer(qwCurrTick + g_ServerConfig.Common.nServerStopTimeout);
 		}
-		else if (qwCurrTick > ms_Instance.m_nStopTimer)
+		else if (qwCurrTick > ms_Instance.m_qwStopTimer)
         {
             INF("wait for stop msg timeout, begin to server complete");
             ms_Instance.set_stop_timer(0);
@@ -431,7 +444,7 @@ int32_t CMGApp::_app_quit(TAPPCTX* pCtx, void* pArg)
 CMGApp::CMGApp(void)
 {
     m_nState = svstInvalid;
-    m_nStopTimer = 0;
+    m_qwStopTimer = 0;
     m_nServerFrame = 0;
     memset(&m_stAppCtx, 0, sizeof(m_stAppCtx));
 
@@ -440,6 +453,7 @@ CMGApp::CMGApp(void)
     m_bUseTconnd = FALSE;
     m_bUseRouter = FALSE;
     m_bUseConn = FALSE;
+    m_bUseDBProxy = FALSE;
     
     m_pUserInit = NULL;
     m_pUserFini = NULL;

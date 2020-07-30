@@ -9,7 +9,7 @@
 #include "object_mgr/rs_object_mgr.h"
 #include "hash/hash.h"
 
-#include "game_data/global_config.h"
+#include "config/global_config.h"
 #include "time/time_mgr.h"
 
 BOOL server_init(TAPPCTX* pCtx, BOOL bResume)

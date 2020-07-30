@@ -2,7 +2,7 @@
 #include "alive_mgr.h"
 
 #include "tbus/tbus_wrapper.h"
-#include "game_data/global_config.h"
+#include "config/global_config.h"
 #include "message/rs_message_handler.h"
 #include "time/time_mgr.h"
 

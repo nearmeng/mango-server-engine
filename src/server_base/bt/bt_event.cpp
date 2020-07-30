@@ -4,7 +4,7 @@
 
 #include "define/error_def.h"
 
-#include "game_data/global_config.h"
+#include "config/global_config.h"
 
 int32_t CBTEventList::ms_nTriggerLayer;
 int32_t CBTEventList::ms_nTriggerCounter;

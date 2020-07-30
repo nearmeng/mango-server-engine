@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "service_mgr.h"
 
-#include "game_data/global_config.h"
+#include "config/global_config.h"
 #include "message/sms_message_handler.h"
 #include "trans/sms_trans.h"
 

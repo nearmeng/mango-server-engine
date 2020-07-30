@@ -236,3 +236,4 @@ bin/tools/tbus_mgr/tbus_channels_669001.bak
 tlog_*.xml
 tbus.log.*
 rundata_timer.xml
+bin/log/*

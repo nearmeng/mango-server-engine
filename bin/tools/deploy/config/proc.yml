@@ -36,6 +36,13 @@ procs:
            text:
              - local
              - tlogd
+  db_proxy:
+      layer: world
+      func_id: 8
+      deploy_unit: group_db
+      tlog_config:
+           text:
+             - local
   server:
       layer: world
       func_id: 2
@@ -104,6 +111,9 @@ proc_connect:
       Mask: 63.0.0.1024
     - peer1: router_server
       peer2: conn_server
+      Mask: 63.0.0.0
+    - peer1: router_server
+      peer2: db_proxy
       Mask: 63.0.0.0
     - peer1: router_server
       peer2: service_mgr_server

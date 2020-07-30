@@ -4,7 +4,7 @@
 #include "shm/shm_pool.h"
 #include "guid/guid.h"
 
-#include "game_data/global_config.h"
+#include "config/global_config.h"
 
 CTimeMgr CTimeMgr::ms_Instance;
 

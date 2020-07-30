@@ -80,9 +80,7 @@ include_directories (
 	${BASE_DIR}/inc
 	${BASE_DIR}/inc/common
 	${BASE_DIR}/inc/server_base
-	${BASE_DIR}/game_data
-	${BASE_DIR}/game_data/config
-	${BASE_DIR}/game_data/data
+	${BASE_DIR}/inc/game_data
 	${BASE_DIR}/src/proto
 	${BASE_DIR}/thirdparty
 	${BASE_DIR}/thirdparty/lua/inc
@@ -92,8 +90,9 @@ include_directories (
 	${BASE_DIR}/thirdparty/protobuf/include
 	${BASE_DIR}/thirdparty/tconnd/inc
 	${BASE_DIR}/thirdparty/lmdb/include
-	${BASE_DIR}/thirdparty/libevent/include
+	${BASE_DIR}/thirdparty/libevent/inc
 	${BASE_DIR}/thirdparty/tgcpapi/inc
+    ${BASE_DIR}/thirdparty/hiredis/inc
 )
 
 link_directories (
@@ -107,6 +106,7 @@ link_directories (
 	${BASE_DIR}/thirdparty/lmdb/lib
 	${BASE_DIR}/thirdparty/libevent/lib
 	${BASE_DIR}/thirdparty/tgcpapi/lib
+    ${BASE_DIR}/thirdparty/hiredis/lib
 )
 
 pre_toluapp(${BASE_DIR}/src)
@@ -117,10 +117,12 @@ add_subdirectory (common)
 add_subdirectory (game_data)
 add_subdirectory (server_base)
 add_subdirectory (router_client)
+add_subdirectory (db_proxy_client)
 add_subdirectory (server)
 add_subdirectory (func_server)
 add_subdirectory (router_server)
 add_subdirectory (service_mgr_server)
 add_subdirectory (control_server)
 add_subdirectory (conn_server)
+add_subdirectory (db_proxy)
 add_subdirectory (robot)

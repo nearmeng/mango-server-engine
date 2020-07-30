@@ -3,7 +3,7 @@
 
 #include "define/server_def.h"
 
-#include "game_data/global_config.h"
+#include "config/global_config.h"
 #include "protocol/common_message.h"
 #include "app/server_msg_handler.h"
 #include "tbus/tbus_wrapper.h"

@@ -10,7 +10,7 @@ size_t strxcpy(char *dst, const char *src, size_t size)
     if (dst == NULL || src == NULL || size == 0)
         return 0;
 
-    while (--size > 0)
+    while (size-- > 0)
     {
         if ((*dst++ = *src++) == 0)
             break;

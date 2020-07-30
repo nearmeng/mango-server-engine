@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include <time.h>
 
-#include "game_data/global_config.h"
+#include "config/global_config.h"
 #include "app/server_app.h"
 #include "app/server_msg_handler.h"
 
