@@ -3,6 +3,7 @@
 
 #include "redis_mgr.h"
 #include "google/protobuf/message.h"
+#include "google/protobuf/descriptor.pb.h"
 
 template <typename Model>
 class COrmOperator
@@ -28,7 +29,7 @@ BOOL COrmOperator<Model>::_push_arg(const char* pArgv, size_t dwArgvSize, REDIS_
 {
     int32_t nRetCode = 0;
 
-    LOG_PROCESS_ERROR(nArgc < MAX_MODEL_ARG_COUNT);
+    LOG_PROCESS_ERROR(rArgData.nArgc < MAX_MODEL_ARG_COUNT);
 
     rArgData.pArgv[nArgc] = pArgv;
     rArgData.dwArgvSize[nArgc] = dwArgvSize;
@@ -50,23 +51,23 @@ BOOL COrmOperator<Model>::_set_primary_key(const google::protobuf::Reflection* p
     switch (pFieldDesc->cpp_type())
     {
 	    case google::protobuf::FieldDescriptor::CPPTYPE_STRING:
-            snprintf(pszPrimaryKey, MAX_PRIMARY_KEY_LEN, "%s:%s:%s", typeid(Model).name().c_str(), pFieldDesc->name().c_str(), pRef->GetString(rModel, pFieldDesc).c_str());
+            snprintf(pszPrimaryKey, MAX_PRIMARY_KEY_LEN, "%s:%s:%s", typeid(Model).name(), pFieldDesc->name().c_str(), pRef->GetString(rModel, pFieldDesc).c_str());
             break;
 
 	    case google::protobuf::FieldDescriptor::CPPTYPE_INT32:
-            snprintf(pszPrimaryKey, MAX_PRIMARY_KEY_LEN, "%s:%s:%d", typeid(Model).name().c_str(), pFieldDesc->name().c_str(), pRef->GetInt32(rModel, pFieldDesc));
+            snprintf(pszPrimaryKey, MAX_PRIMARY_KEY_LEN, "%s:%s:%d", typeid(Model).name(), pFieldDesc->name().c_str(), pRef->GetInt32(rModel, pFieldDesc));
             break;
 	    
         case google::protobuf::FieldDescriptor::CPPTYPE_UINT32:
-            snprintf(pszPrimaryKey, MAX_PRIMARY_KEY_LEN, "%s:%s:%u", typeid(Model).name().c_str(), pFieldDesc->name().c_str(), pRef->GetUInt32(rModel, pFieldDesc));
+            snprintf(pszPrimaryKey, MAX_PRIMARY_KEY_LEN, "%s:%s:%u", typeid(Model).name(), pFieldDesc->name().c_str(), pRef->GetUInt32(rModel, pFieldDesc));
             break;
         
         case google::protobuf::FieldDescriptor::CPPTYPE_INT64:
-            snprintf(pszPrimaryKey, MAX_PRIMARY_KEY_LEN, "%s:%s:%lld", typeid(Model).name().c_str(), pFieldDesc->name().c_str(), pRef->GetInt64(rModel, pFieldDesc));
+            snprintf(pszPrimaryKey, MAX_PRIMARY_KEY_LEN, "%s:%s:%lld", typeid(Model).name(), pFieldDesc->name().c_str(), pRef->GetInt64(rModel, pFieldDesc));
             break;
 	        	
         case google::protobuf::FieldDescriptor::CPPTYPE_UINT64:
-            snprintf(pszPrimaryKey, MAX_PRIMARY_KEY_LEN, "%s:%s:%llu", typeid(Model).name().c_str(), pFieldDesc->name().c_str(), pRef->GetUInt64(rModel, pFieldDesc));
+            snprintf(pszPrimaryKey, MAX_PRIMARY_KEY_LEN, "%s:%s:%llu", typeid(Model).name(), pFieldDesc->name().c_str(), pRef->GetUInt64(rModel, pFieldDesc));
             break;
 
         default:
@@ -100,14 +101,15 @@ Model COrmOperator<Model>::get(CRedisCli* pRedisCli, const char* pcszKey)
 	pModelMessage = pType->New();
 	LOG_PROCESS_ERROR(pModelMessage);
 
-    return M;
+    return OrmModel;
 }
 
 template<typename Model>
 BOOL COrmOperator<Model>::set(CRedisCli* pRedisCli, Model& rModel, int32_t nCmdID, 
                          const char* pUserData, size_t dwDataLen)
 {
-    ARG_DATA stArgData = { 0 };
+    int32_t nRetCode = 0;
+    REDIS_ARG_DATA stArgData = { 0 };
     char szPriMaryKey[MAX_PRIMARY_KEY_LEN];
 	const google::protobuf::FieldDescriptor* pFieldDes = NULL;
 	const google::protobuf::Descriptor* pDescriptor = rModel.GetDescriptor();
@@ -188,7 +190,7 @@ BOOL COrmOperator<Model>::set(CRedisCli* pRedisCli, Model& rModel, int32_t nCmdI
                     pFieldArg = malloc(sizeof(float));
                     LOG_PROCESS_ERROR(pFieldArg);
 
-                    *(float*)pFieldArg = nValue;
+                    *(float*)pFieldArg = fValue;
                     dwFieldArgLen = sizeof(float);
 	        		break;
 	        	}
@@ -208,7 +210,7 @@ BOOL COrmOperator<Model>::set(CRedisCli* pRedisCli, Model& rModel, int32_t nCmdI
                     pFieldArg = malloc(sizeof(uint64_t));
                     LOG_PROCESS_ERROR(pFieldArg);
 
-                    *(uint64_t*)pFieldArg = dValue;
+                    *(uint64_t*)pFieldArg = qwValue;
                     dwFieldArgLen = sizeof(uint64_t);
 	        		break;
 	        	}
@@ -242,7 +244,7 @@ BOOL COrmOperator<Model>::set(CRedisCli* pRedisCli, Model& rModel, int32_t nCmdI
 		}
 	}
 
-    pRedisCli->command();
+    //pRedisCli->command();
 
     return TRUE;
 Exit0:

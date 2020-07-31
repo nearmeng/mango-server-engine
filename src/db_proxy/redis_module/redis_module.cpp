@@ -12,11 +12,12 @@ struct TEST_USER_DATA
 void test_callback(redisReply* pReply, const char* pUserData, size_t nDataSize)
 {
     int32_t nRetCode = 0;
+    TEST_USER_DATA* pData = NULL;
 
     LOG_PROCESS_ERROR(pReply);
     LOG_PROCESS_ERROR(pUserData);
 
-    TEST_USER_DATA* pData = (TEST_USER_DATA*)pUserData;
+    pData = (TEST_USER_DATA*)pUserData;
 
     INF("user data value %d str %s, reply %d interger %d str %s", pData->nTestValue, pData->szString, pReply->type, pReply->integer, pReply->str);
 
