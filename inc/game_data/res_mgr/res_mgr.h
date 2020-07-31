@@ -350,9 +350,11 @@ template <class T>
 BOOL CResMgr<T>::_set_line_data(CResFile& oResFile, int32_t nRowIndex, T* pSetRes)
 {
     int32_t nRetCode = 0;
+    T* pPoolRes = NULL;
+
     LOG_PROCESS_ERROR(pSetRes->nID > 0);
 
-    T* pPoolRes = m_ResPool.find_object(pSetRes->nID);
+    pPoolRes = m_ResPool.find_object(pSetRes->nID);
 
     if (pPoolRes == NULL)
     {

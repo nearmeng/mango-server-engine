@@ -3,5 +3,5 @@ import "google/protobuf/descriptor.proto";
 extend google.protobuf.MessageOptions
 {
 	optional string primary_key	=	10000;
-	repeated string index		=	10001;
+	repeated string table_index	=	10001;
 }
