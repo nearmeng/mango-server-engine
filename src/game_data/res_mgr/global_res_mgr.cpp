@@ -1,7 +1,9 @@
 #include "stdafx.h"
 #include "res_mgr/global_res_mgr.h"
+#include "res_mgr/res_mgr.h"
 
 #include "config/global_config.h"
+
 
 CGlobalResMgr* CGlobalResMgr::ms_Instance = NULL;
 

@@ -1,7 +1,6 @@
 #ifndef _GLOBAL_RES_MGR_H_
 #define _GLOBAL_RES_MGR_H_
 
-#include "res_mgr.h"
 #include "define/res_def.h"
 
 class CGlobalResMgr

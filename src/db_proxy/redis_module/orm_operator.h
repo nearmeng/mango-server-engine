@@ -31,8 +31,8 @@ BOOL COrmOperator<Model>::_push_arg(const char* pArgv, size_t dwArgvSize, REDIS_
 
     LOG_PROCESS_ERROR(rArgData.nArgc < MAX_MODEL_ARG_COUNT);
 
-    rArgData.pArgv[nArgc] = pArgv;
-    rArgData.dwArgvSize[nArgc] = dwArgvSize;
+    rArgData.pArgv[rArgData.nArgc] = pArgv;
+    rArgData.dwArgvSize[rArgData.nArgc] = dwArgvSize;
     rArgData.nArgc++;
 
     return TRUE;
@@ -114,7 +114,8 @@ BOOL COrmOperator<Model>::set(CRedisCli* pRedisCli, Model& rModel, int32_t nCmdI
 	const google::protobuf::FieldDescriptor* pFieldDes = NULL;
 	const google::protobuf::Descriptor* pDescriptor = rModel.GetDescriptor();
 	const google::protobuf::Reflection* pRef = rModel.GetReflection();
-    std::string sPrimaryKey = pDescriptor->options().GetExtension(primary_key);
+    //std::string sPrimaryKey = pDescriptor->options().GetExtension(primary_key);
+    std::string sPrimaryKey = "test";
 
     //command
     LOG_PROCESS_ERROR(_push_arg("HMSET", 5, stArgData));

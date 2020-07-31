@@ -10,6 +10,6 @@ if (MSVC)
 	)
 else ()
 	target_link_libraries (${TARGET_NAME} 
-		hiredis
+		libhiredis.a
 	)
 endif ()
