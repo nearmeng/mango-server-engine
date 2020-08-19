@@ -13,8 +13,9 @@ enum ROUTER_MESSAGE_ID
     db_proxy_client_redis_rsp,
 };
 
-struct DB_PROXY_CLIENT_REDIS_REQ
+struct DB_PROXY_CLIENT_REDIS_REQ : INTERNAL_MESSAGE_HEADER
 {
+    uint64_t qwCoroID;
     int32_t nCmdID;
     int32_t nUserDataSize;
     char    szUserData[MAX_REDIS_USER_DATA_LEN];
@@ -22,9 +23,10 @@ struct DB_PROXY_CLIENT_REDIS_REQ
     char    szCommandBuffer[0];
 };
 
-struct DB_PROXY_CLIENT_REDIS_RSP
+struct DB_PROXY_CLIENT_REDIS_RSP : INTERNAL_MESSAGE_HEADER
 {
     int32_t nCmdID;
+    uint64_t qwCoroID;
     int32_t nUserDataSize;
     char    szUserData[MAX_REDIS_USER_DATA_LEN];
     int32_t nReplySize;

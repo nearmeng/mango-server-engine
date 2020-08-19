@@ -422,19 +422,19 @@ Exit0:
     return FALSE;
 }
     
-CRedisCli::CALLBACK_DATA* CRedisCli::_prepare_callback_data(int32_t nExecuteAddr, int32_t nCmdID, const char* pUserData, size_t dwDataLen)
+CRedisCli::CALLBACK_DATA* CRedisCli::_prepare_callback_data(int32_t nExecuteAddr, int32_t nCmdID, uint64_t qwCoroID, const char* pUserData, size_t dwDataLen)
 {
     int32_t nRetCode = 0;
     CALLBACK_DATA* pCallBackData = NULL;
 
-    LOG_PROCESS_ERROR(nCmdID > 0 && nCmdID < MAX_CMD_HANDLER_COUNT);
-    LOG_PROCESS_ERROR(m_Handler[nCmdID]);
+    LOG_PROCESS_ERROR(nCmdID >= 0 && nCmdID < MAX_CMD_HANDLER_COUNT);
 
     pCallBackData = (CALLBACK_DATA*)malloc(sizeof(CALLBACK_DATA));
     LOG_PROCESS_ERROR(pCallBackData);
 
     pCallBackData->nFence = FENCE_NUM;
     pCallBackData->nCmdID = nCmdID;
+    pCallBackData->qwCoroID = qwCoroID;
     pCallBackData->nTbusAddr = nExecuteAddr;
     pCallBackData->dwUserDataLen = dwDataLen;
     pCallBackData->dwExpireTime = CTimeMgr::instance().get_time_sec() + g_ServerConfig.DP.nDBReqExpireTime / 1000;
@@ -455,7 +455,7 @@ BOOL CRedisCli::command(int32_t nExecuteAddr, int32_t nCmdID, const char * pUser
     
     LOG_PROCESS_ERROR(m_nState == rcsAuthed);
 
-    pCallBackData = _prepare_callback_data(nExecuteAddr, nCmdID, pUserData, dwDataLen);
+    pCallBackData = _prepare_callback_data(nExecuteAddr, nCmdID, 0, pUserData, dwDataLen);
     LOG_PROCESS_ERROR(pCallBackData);
 
     va_start(args, format);
@@ -477,7 +477,7 @@ BOOL CRedisCli::eval(int32_t nExecuteAddr, int32_t nCmdID, const char * pUserDat
 
     LOG_PROCESS_ERROR(m_nState == rcsAuthed);
 
-    pCallBackData = _prepare_callback_data(nExecuteAddr, nCmdID, pUserData, dwDataLen);
+    pCallBackData = _prepare_callback_data(nExecuteAddr, nCmdID, 0, pUserData, dwDataLen);
     LOG_PROCESS_ERROR(pCallBackData);
 
     va_start(args, format);
@@ -491,14 +491,14 @@ Exit0:
     return FALSE;
 }
 
-BOOL CRedisCli::command_arg(int32_t nExecuteAddr, int32_t nCmdID, const char* pUserData, size_t dwDataLen, int32_t nArgc, const char** pArgv, const size_t * nArgvLen)
+BOOL CRedisCli::command_arg(int32_t nExecuteAddr, int32_t nCmdID, uint64_t qwCoroID, const char* pUserData, size_t dwDataLen, int32_t nArgc, const char** pArgv, const size_t * nArgvLen)
 {
     int32_t nRetCode = 0;
     CALLBACK_DATA* pCallBackData = NULL;
 
     LOG_PROCESS_ERROR(m_nState == rcsAuthed);
 
-    pCallBackData = _prepare_callback_data(nExecuteAddr, nCmdID, pUserData, dwDataLen);
+    pCallBackData = _prepare_callback_data(nExecuteAddr, nCmdID, qwCoroID, pUserData, dwDataLen);
     LOG_PROCESS_ERROR(pCallBackData);
 
     nRetCode = redisAsyncCommandArgv(m_pCtx, _on_command, pCallBackData, nArgc, pArgv, nArgvLen);
@@ -509,14 +509,14 @@ Exit0:
     return FALSE;
 }
 
-BOOL CRedisCli::eval_arg(int32_t nExecuteAddr, int32_t nCmdID, const char* pUserData, size_t dwDataLen, int32_t nArgc, const char** pArgv, const size_t* nArgvLen)
+BOOL CRedisCli::eval_arg(int32_t nExecuteAddr, int32_t nCmdID, uint64_t qwCoroID, const char* pUserData, size_t dwDataLen, int32_t nArgc, const char** pArgv, const size_t* nArgvLen)
 {
     int32_t nRetCode = 0;
     CALLBACK_DATA* pCallBackData = NULL;
 
     LOG_PROCESS_ERROR(m_nState == rcsAuthed);
 
-    pCallBackData = _prepare_callback_data(nExecuteAddr, nCmdID, pUserData, dwDataLen);
+    pCallBackData = _prepare_callback_data(nExecuteAddr, nCmdID, qwCoroID, pUserData, dwDataLen);
     LOG_PROCESS_ERROR(pCallBackData);
 
     nRetCode = redisAsyncCommandArgv(m_pCtx, _on_command, pCallBackData, nArgc, pArgv, nArgvLen);
@@ -640,7 +640,7 @@ BOOL CRedisCli::on_command(redisReply* pReply, void* pCallBackData)
         nRetCode = _pack_redis_reply(pReply, pBuffer, nPackedSize);
         LOG_PROCESS_ERROR(nRetCode);
 
-        nRetCode = send_db_proxy_client_redis_rsp(pCallBack->nTbusAddr, pCallBack->nCmdID, pCallBack->dwUserDataLen, pCallBack->szUserData, szRedisReplyBuffer, nPackedSize);
+        nRetCode = send_db_proxy_client_redis_rsp(pCallBack->nTbusAddr, pCallBack->nCmdID, pCallBack->qwCoroID, pCallBack->dwUserDataLen, pCallBack->szUserData, szRedisReplyBuffer, nPackedSize);
         LOG_PROCESS_ERROR(nRetCode);
     }
 

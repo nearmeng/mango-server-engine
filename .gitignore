@@ -234,6 +234,7 @@ bin/log/*
 tlog_*.xml
 tlog.xml_*
 tconnd.xml_*
+tconnd_*.xml
 
 bin/*server
 bin/robot

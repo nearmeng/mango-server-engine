@@ -20,6 +20,8 @@
 
 #include "router_client/router_client_api.h"
 
+#include "coroutine/coro_stackless.h"
+
 #define MAX_MESSAGE_ID			(65535)
 #define MAX_CONN_EVENT_COUNT	(64)
 #define MAX_SS_MSG_LEN			(256 * 1024)
@@ -31,11 +33,10 @@ static CLIENT_MSG_HANDLER g_ClientMsgHandler[MAX_MESSAGE_ID];
 static SERVER_MSG_HANDLER g_ServerMsgHandler[MAX_MESSAGE_ID];
 static Message* g_CacheMsgInst[MAX_MESSAGE_ID];
 
-#define INIT_INTERNAL_MSG_VEC()					\
-	INTERNAL_MESSAGE_HEADER stHeader; struct iovec vecs[2];				\
-	stHeader.wMsg = nMsgID;	 stHeader.nMsgSrcAddr = CMGApp::instance().get_tbus_addr();	\
-	vecs[0].iov_base = (void*)(&stHeader);	vecs[0].iov_len = sizeof(stHeader);	\
-	vecs[1].iov_base = (void*)pBuffer;		vecs[1].iov_len = dwSize;
+#define INIT_INTERNAL_MSG_VEC()					                                            \
+	INTERNAL_MESSAGE_HEADER* pstHeader = (INTERNAL_MESSAGE_HEADER*)pBuffer;                 \
+	pstHeader->wMsg = nMsgID; pstHeader->nMsgSrcAddr = CMGApp::instance().get_tbus_addr();	\
+    if(qwCoroID > 0) pstHeader->qwCoroID = qwCoroID; else pstHeader->qwCoroID = 0;          \
 	
 
 static Message* get_msg_inst(int32_t nMsgID)
@@ -253,9 +254,23 @@ BOOL recv_server_msg_proc(int32_t nSrcAddr, const char* pBuff, int32_t nSize)
 	LOG_PROCESS_ERROR(pBuff);
 	LOG_PROCESS_ERROR(nSize > 0);
 	LOG_PROCESS_ERROR(pHeader->wMsg >= internal_message_begin && pHeader->wMsg <= internal_message_end);
-	LOG_PROCESS_ERROR_DETAIL(g_ServerMsgHandler[pHeader->wMsg], "msgid is %d", pHeader->wMsg);
 
-	g_ServerMsgHandler[pHeader->wMsg](pHeader->nMsgSrcAddr, pBuff + sizeof(INTERNAL_MESSAGE_HEADER), nSize - sizeof(INTERNAL_MESSAGE_HEADER));
+    if (pHeader->qwCoroID > 0 && GET_CORO_SERVER_ADDR(pHeader->qwCoroID) == CMGApp::instance().get_tbus_addr())
+    {
+        CCoroStackless* pCoro = CGlobalStacklessMgr::instance().get_coro(pHeader->qwCoroID);
+        LOG_PROCESS_ERROR(pCoro);
+
+        pCoro->set_coro_ret_code(crcSuccess);
+        pCoro->set_coro_reply(crtMsg, (void*)pBuff, nSize);
+
+        nRetCode = CGlobalStacklessMgr::instance().resume_coro(pCoro);
+        LOG_PROCESS_ERROR(nRetCode);
+    }
+    else
+    {
+	    LOG_PROCESS_ERROR_DETAIL(g_ServerMsgHandler[pHeader->wMsg], "msgid is %d", pHeader->wMsg);
+        g_ServerMsgHandler[pHeader->wMsg](pHeader->nMsgSrcAddr, pBuff, nSize);
+    }
 
 	return TRUE;
 Exit0:
@@ -414,13 +429,13 @@ Exit0:
 	return FALSE;
 }
 
-BOOL send_server_msg_by_routerid(uint64_t qwRouterID, int32_t nServiceType, int32_t nMsgID, const void* pBuffer, size_t dwSize)
+BOOL send_server_msg_by_routerid(uint64_t qwRouterID, int32_t nServiceType, int32_t nMsgID, const void* pBuffer, size_t dwSize, uint64_t qwCoroID)
 {
 	int32_t nRetCode = 0;
 
 	INIT_INTERNAL_MSG_VEC();
 
-	nRetCode = CRouterClient::instance().sendv_by_routerid(qwRouterID, nServiceType, vecs, 2);
+	nRetCode = CRouterClient::instance().send_by_routerid(qwRouterID, nServiceType, pBuffer, dwSize);
 	LOG_PROCESS_ERROR(nRetCode);
 
 	return TRUE;
@@ -428,13 +443,13 @@ Exit0:
 	return FALSE;
 }
 
-BOOL send_server_msg_by_service_type(int32_t nServiceType, int32_t nMsgID, const void* pBuffer, size_t dwSize)
+BOOL send_server_msg_by_service_type(int32_t nServiceType, int32_t nMsgID, const void* pBuffer, size_t dwSize, uint64_t qwCoroID)
 {
 	int32_t nRetCode = 0;
 
 	INIT_INTERNAL_MSG_VEC();
 
-	nRetCode = CRouterClient::instance().sendv_by_service_type(nServiceType, vecs, 2);
+	nRetCode = CRouterClient::instance().send_by_service_type(nServiceType, pBuffer, dwSize);
 	LOG_PROCESS_ERROR(nRetCode);
 
 	return TRUE;
@@ -442,13 +457,13 @@ Exit0:
 	return FALSE;
 }
 
-BOOL send_server_msg_by_service_inst(int32_t nServiceType, int32_t nInstID, int32_t nMsgID, const void* pBuffer, size_t dwSize)
+BOOL send_server_msg_by_service_inst(int32_t nServiceType, int32_t nInstID, int32_t nMsgID, const void* pBuffer, size_t dwSize, uint64_t qwCoroID)
 {
 	int32_t nRetCode = 0;
 
 	INIT_INTERNAL_MSG_VEC();
 
-	nRetCode = CRouterClient::instance().sendv_by_service_inst(nServiceType, nInstID, vecs, 2);
+	nRetCode = CRouterClient::instance().send_by_service_inst(nServiceType, nInstID, pBuffer, dwSize);
 	LOG_PROCESS_ERROR(nRetCode);
 
 	return TRUE;
@@ -456,13 +471,13 @@ Exit0:
 	return FALSE;
 }
 
-BOOL send_server_msg_by_addr(int32_t nDstServerAddr, int32_t nMsgID, const void* pBuffer, size_t dwSize)
+BOOL send_server_msg_by_addr(int32_t nDstServerAddr, int32_t nMsgID, const void* pBuffer, size_t dwSize, uint64_t qwCoroID)
 {
 	int32_t nRetCode = 0;
 
 	INIT_INTERNAL_MSG_VEC();
 
-	nRetCode = CRouterClient::instance().sendv_by_addr(nDstServerAddr, vecs, 2);
+	nRetCode = CRouterClient::instance().send_by_addr(nDstServerAddr, pBuffer, dwSize);
 	LOG_PROCESS_ERROR(nRetCode);
 
 	return TRUE;
@@ -470,13 +485,13 @@ Exit0:
 	return FALSE;
 }
 
-BOOL send_server_msg_by_objid(uint64_t qwObjID, int32_t nMsgID, const void* pBuffer, size_t dwSize)
+BOOL send_server_msg_by_objid(uint64_t qwObjID, int32_t nMsgID, const void* pBuffer, size_t dwSize, uint64_t qwCoroID)
 {
 	int32_t nRetCode = 0;
 
 	INIT_INTERNAL_MSG_VEC();
 
-	nRetCode = CRouterClient::instance().sendv_by_objid(qwObjID, vecs, 2);
+	nRetCode = CRouterClient::instance().send_by_objid(qwObjID, pBuffer, dwSize);
 	LOG_PROCESS_ERROR(nRetCode);
 
 	return TRUE;
@@ -484,13 +499,13 @@ Exit0:
 	return FALSE;
 }
 
-BOOL send_server_msg_by_load(int32_t nServiceType, int32_t nMsgID, const void* pBuffer, size_t dwSize)
+BOOL send_server_msg_by_load(int32_t nServiceType, int32_t nMsgID, const void* pBuffer, size_t dwSize, uint64_t qwCoroID)
 {
 	int32_t nRetCode = 0;
 
 	INIT_INTERNAL_MSG_VEC();
 
-	nRetCode = CRouterClient::instance().sendv_by_load(nServiceType, vecs, 2);
+	nRetCode = CRouterClient::instance().send_by_load(nServiceType, pBuffer, dwSize);
 	LOG_PROCESS_ERROR(nRetCode);
 
 	return TRUE;
@@ -498,13 +513,13 @@ Exit0:
 	return FALSE;
 }
 
-BOOL send_server_msg_to_mgr(int32_t nMsgID, const void* pBuffer, size_t dwSize)
+BOOL send_server_msg_to_mgr(int32_t nMsgID, const void* pBuffer, size_t dwSize, uint64_t qwCoroID)
 {
 	int32_t nRetCode = 0;
 
 	INIT_INTERNAL_MSG_VEC();
 
-	nRetCode = CRouterClient::instance().sendv_to_mgr(vecs, 2);
+	nRetCode = CRouterClient::instance().send_to_mgr(pBuffer, dwSize);
 	LOG_PROCESS_ERROR(nRetCode);
 
 	return TRUE;

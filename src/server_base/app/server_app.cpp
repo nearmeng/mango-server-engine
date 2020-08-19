@@ -18,6 +18,8 @@
 
 #include "protocol/conn_message.h"
 
+#include "coroutine/coro_stackless.h"
+
 #include "router_client/router_client_api.h"
 #include "db_proxy_client/db_proxy_client.h"
 
@@ -93,6 +95,9 @@ void CMGApp::_frame_timeout(uint64_t qwTimerID, void* pCbData, int32_t nCbDataLe
             pModule->on_frame();
         }
     }
+
+    //coro
+    CGlobalStacklessMgr::instance().mainloop();
 
     //user callback
     if (ms_Instance.m_pUserFrame)
@@ -189,6 +194,10 @@ int32_t CMGApp::_app_init(TAPPCTX* pCtx, void* pArg)
         LOG_PROCESS_ERROR(nRetCode);
     }
 
+    //coro
+    nRetCode = CGlobalStacklessMgr::instance().init(pCtx->iId, bResume);
+    LOG_PROCESS_ERROR(nRetCode);
+
     //module cont
     for (int32_t nIndex = 0; nIndex < ms_Instance.m_ModuleCont.get_module_count(); nIndex++)
     {
@@ -249,6 +258,10 @@ int32_t CMGApp::_app_fini(TAPPCTX* pCtx, void* pArg)
             LOG_PROCESS_ERROR(nRetCode);
         }
     }
+
+    //coro
+    nRetCode = CGlobalStacklessMgr::instance().uninit();
+    LOG_CHECK_ERROR(nRetCode);
 
 	if (ms_Instance.m_bUseTconnd)
 		tconnapi_fini();

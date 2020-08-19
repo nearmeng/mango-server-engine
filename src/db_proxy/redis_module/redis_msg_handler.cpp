@@ -52,7 +52,7 @@ void on_db_proxy_client_redis_req(int32_t nSrcAddr, const char* pBuffer, size_t 
     nRetCode = _unpack_redis_command(msg->szCommandBuffer, msg->nCommandSize, &stArgData);
     LOG_PROCESS_ERROR(nRetCode);
 
-    nRetCode = pRedisClient->command_arg(nSrcAddr, msg->nCmdID, msg->szUserData, msg->nUserDataSize, stArgData.nArgc, (const char**)stArgData.pArgv, stArgData.dwArgvSize);
+    nRetCode = pRedisClient->command_arg(nSrcAddr, msg->nCmdID, msg->qwCoroID, msg->szUserData, msg->nUserDataSize, stArgData.nArgc, (const char**)stArgData.pArgv, stArgData.dwArgvSize);
     LOG_PROCESS_ERROR(nRetCode);
 
 Exit0:
@@ -70,7 +70,7 @@ Exit0:
     return FALSE;
 }
 
-BOOL send_db_proxy_client_redis_rsp(int32_t nTbusAddr, int32_t nCmdID, uint32_t dwUserDataLen, const char* pUserData, 
+BOOL send_db_proxy_client_redis_rsp(int32_t nTbusAddr, int32_t nCmdID, uint64_t qwCoroID, uint32_t dwUserDataLen, const char* pUserData, 
                                                 const char* pPackedBuffer, int32_t nPackedSize)
 {
     int32_t nRetCode = 0;
@@ -85,6 +85,7 @@ BOOL send_db_proxy_client_redis_rsp(int32_t nTbusAddr, int32_t nCmdID, uint32_t 
     LOG_PROCESS_ERROR(msg);
 
     msg->nCmdID = nCmdID;
+    msg->qwCoroID = qwCoroID;
     msg->nUserDataSize = dwUserDataLen;
     memcpy(msg->szUserData, pUserData, dwUserDataLen);
     msg->nReplySize = nPackedSize;

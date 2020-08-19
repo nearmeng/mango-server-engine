@@ -21,4 +21,7 @@ ServerConfig.Common =
         bIsMiniDump = false,
         nDumpInterval = 30 * 60 * 1000,
     },
+        
+    nCommonCoroCount = 100;
+    nCoroWaitTimeInterval = 10 * 1000;
 }

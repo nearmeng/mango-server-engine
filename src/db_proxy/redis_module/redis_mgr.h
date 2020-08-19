@@ -25,8 +25,8 @@ public:
     BOOL command(int32_t nExecuteAddr, int32_t nCmdID, const char* pUserData, size_t dwDataLen, const char* format, ...);
     BOOL eval(int32_t nExecuteAddr, int32_t nCmdID, const char* pUserData, size_t dwDataLen, const char* format, ...);
 
-    BOOL command_arg(int32_t nExecuteAddr, int32_t nCmdID, const char* pUserData, size_t dwDataLen, int32_t nArgc, const char** pArgv, const size_t * nArgvLen);
-    BOOL eval_arg(int32_t nExecuteAddr, int32_t nCmdID, const char* pUserData, size_t dwDataLen, int32_t nArgc, const char** pArgv, const size_t* nArgvLen);
+    BOOL command_arg(int32_t nExecuteAddr, int32_t nCmdID, uint64_t qwCoroID, const char* pUserData, size_t dwDataLen, int32_t nArgc, const char** pArgv, const size_t * nArgvLen);
+    BOOL eval_arg(int32_t nExecuteAddr, int32_t nCmdID, uint64_t qwCoroID, const char* pUserData, size_t dwDataLen, int32_t nArgc, const char** pArgv, const size_t* nArgvLen);
 
     inline std::string get_name(void);
     inline std::string get_host(void);
@@ -52,6 +52,7 @@ private:
     {
         int32_t     nFence;
         int32_t     nCmdID;
+        uint64_t    qwCoroID;
         int32_t     nTbusAddr;
         uint32_t    dwExpireTime;
         uint32_t    dwUserDataLen;
@@ -60,7 +61,7 @@ private:
 
     BOOL _auth(void);
     BOOL _ping(void);
-    CALLBACK_DATA* _prepare_callback_data(int32_t nExecuteAddr, int32_t nCmdID, const char* pUserData, size_t dwDataLen);
+    CALLBACK_DATA* _prepare_callback_data(int32_t nExecuteAddr, int32_t nCmdID, uint64_t qwCoroID, const char* pUserData, size_t dwDataLen);
     BOOL _command_varlist(redisCallbackFn* pCallback, void* pPriData, const char* format, va_list valist);
     BOOL _eval_varlist(redisCallbackFn* pCallback, void* pPriData, const char* format, va_list valist);
 

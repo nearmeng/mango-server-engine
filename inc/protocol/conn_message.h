@@ -12,19 +12,19 @@ enum CONN_MESSAGE_ID
     conn_transfer_msg,
 };
 
-struct CONN_NTF_EVENT
+struct CONN_NTF_EVENT : INTERNAL_MESSAGE_HEADER
 {
     uint64_t    qwConnID;
     int32_t     nEventType;
 };
 
-struct CONN_NTF_EVENT_ACK
+struct CONN_NTF_EVENT_ACK : INTERNAL_MESSAGE_HEADER
 {
     uint64_t    qwConnID;
     int32_t     nEventType;
 };
 
-struct CONN_TRANSFER_MSG
+struct CONN_TRANSFER_MSG : INTERNAL_MESSAGE_HEADER
 {
     uint64_t    qwConnID;
     int32_t     nMsgSize;

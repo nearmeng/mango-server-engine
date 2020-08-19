@@ -45,18 +45,23 @@ struct A2A_TIME_SYNC : INTERNAL_MESSAGE_HEADER
 	int64_t   llTimeDiff;
 };
 
-struct A2A_CONTROL_REQ 
+struct A2A_CONTROL_REQ : INTERNAL_MESSAGE_HEADER 
 {
 	char szCommandType[MAX_CMD_TYPE_LEN];
     char szCommandContent[MAX_GM_COMMAND_LEN];
 	uint64_t qwParam;
 };
 
-struct A2A_CONTROL_ACK 
+struct A2A_CONTROL_ACK : INTERNAL_MESSAGE_HEADER
 {
     int32_t nResult;
     int32_t nDescLen;
     char szDesc[MAX_GM_COMMAND_LEN];
+};
+
+struct TEST_SEND_DATA : INTERNAL_MESSAGE_HEADER
+{
+    int32_t nData;  
 };
 
 // tolua_end

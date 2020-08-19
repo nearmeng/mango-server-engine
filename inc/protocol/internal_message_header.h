@@ -33,6 +33,7 @@ struct INTERNAL_MESSAGE_HEADER
 {
 	uint16_t wMsg;
 	int32_t  nMsgSrcAddr;
+    uint64_t qwCoroID;
 };
 
 // tolua_end

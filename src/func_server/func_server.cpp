@@ -11,9 +11,16 @@
 
 void test_func(int32_t nSrcAddr, const char* pBuffer, size_t dwSize)
 {
-	//TEST_SEND_DATA* msg = (TEST_SEND_DATA*)pBuffer;
+    int32_t nRetCode = 0;
+	TEST_SEND_DATA* msg = (TEST_SEND_DATA*)pBuffer;
 
-	//INF("recv data is %d", msg->nData);
+	INF("recv data is %d", msg->nData);
+
+	nRetCode = send_server_msg_by_addr(nSrcAddr, msg->wMsg, pBuffer, dwSize, msg->qwCoroID);
+	LOG_PROCESS_ERROR(nRetCode);
+
+Exit0:
+    return;
 }
 
 BOOL do_send_control_ack(int32_t nResult, const char* pDesc, int32_t nDstAddr)

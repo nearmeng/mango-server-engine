@@ -36,6 +36,9 @@ struct SERVER_CONFIG
         };
         DUMP_CONFIG DumpConfig;
 
+        int32_t nCommonCoroCount;
+        int32_t nCoroWaitTimeInterval;
+
     } Common;
 
     struct CONN_CONFIG

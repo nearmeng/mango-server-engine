@@ -7,7 +7,7 @@
 
 #include "define/redis_def.h"
 
-#include "hiredis.h"
+#include "coroutine/coro_stackless.h"
 
 CDBProxyClient CDBProxyClient::ms_Instance;
 
@@ -83,20 +83,33 @@ static void on_db_proxy_client_redis_rsp(int32_t nSrcAddr, const char* pBuffer, 
     REDIS_CMD_CALLBACK pCallBack = NULL;
     DB_PROXY_CLIENT_REDIS_RSP* msg = (DB_PROXY_CLIENT_REDIS_RSP*)pBuffer;
     const char* pReplyBuffer = msg->szReplyBuffer;
-    
-    LOG_PROCESS_ERROR(msg->nCmdID > 0 && msg->nCmdID < MAX_CMD_HANDLER_COUNT);
-
-    pCallBack = CDBProxyClient::instance().get_redis_callback(msg->nCmdID);
-    LOG_PROCESS_ERROR(pCallBack);
 
     nRetCode = _unpack_redis_reply(pReplyBuffer, msg->nReplySize, &pReply);
     LOG_PROCESS_ERROR(nRetCode);
+    
+    if (msg->qwCoroID > 0)
+    {
+        CCoroStackless* pCoro = CGlobalStacklessMgr::instance().get_coro(msg->qwCoroID);
+        LOG_PROCESS_ERROR(pCoro);
 
-    pCallBack(pReply, msg->szUserData, msg->nUserDataSize);
+        pCoro->set_coro_ret_code(crcSuccess);
+        pCoro->set_coro_reply(crtDB, pReply, msg->nReplySize);
 
-    _free_redis_reply(pReply);
+        nRetCode = CGlobalStacklessMgr::instance().resume_coro(pCoro);
+        LOG_PROCESS_ERROR(nRetCode);
+    }
+    else
+    {
+        LOG_PROCESS_ERROR(msg->nCmdID > 0 && msg->nCmdID < MAX_CMD_HANDLER_COUNT);
+
+        pCallBack = CDBProxyClient::instance().get_redis_callback(msg->nCmdID);
+        LOG_PROCESS_ERROR(pCallBack);
+
+        pCallBack(pReply, msg->szUserData, msg->nUserDataSize);
+    }
 
 Exit0:
+    _free_redis_reply(pReply);
     return;
 }
 
@@ -127,13 +140,30 @@ Exit0:
     return FALSE;
 }
 
+
+BOOL CDBProxyClient::redis_command_coro(uint64_t qwCoroID, const char* format, ...)
+{
+    int32_t nRetCode = 0;
+    va_list args;
+
+    va_start(args, format);
+    nRetCode = _command(qwCoroID, 0, NULL, 0, NULL, format, args);
+    va_end(args);
+    
+    LOG_PROCESS_ERROR(nRetCode);
+
+    return TRUE;
+Exit0:
+    return FALSE;
+}
+
 BOOL CDBProxyClient::redis_command(int32_t nCmdID, const char * pUserData, size_t dwUserDataLen, const char * format, ...)
 {
     int32_t nRetCode = 0;
     va_list args;
 
     va_start(args, format);
-    nRetCode = _command(nCmdID, pUserData, dwUserDataLen, NULL, format, args);
+    nRetCode = _command(0, nCmdID, pUserData, dwUserDataLen, NULL, format, args);
     va_end(args);
     
     LOG_PROCESS_ERROR(nRetCode);
@@ -143,15 +173,17 @@ Exit0:
     return FALSE;
 }
     
-BOOL CDBProxyClient::_command(int32_t nCmdID, const char* pUserData, size_t dwUserDataLen, const char* pcszScript, const char* format, va_list args) 
+BOOL CDBProxyClient::_command(uint64_t qwCoroID, int32_t nCmdID, const char* pUserData, size_t dwUserDataLen, const char* pcszScript, const char* format, va_list args) 
 {
     int32_t nRetCode = 0;
     DB_PROXY_CLIENT_REDIS_REQ* pMsg = (DB_PROXY_CLIENT_REDIS_REQ*)alloca(sizeof(DB_PROXY_CLIENT_REDIS_REQ) + MAX_REDIS_COMMAND_SIZE);
     char* pCommandBuffer = pMsg->szCommandBuffer;
     int32_t& nCommandSize = pMsg->nCommandSize;
     
+    pMsg->qwCoroID = qwCoroID;
     pMsg->nCmdID = nCmdID;
     pMsg->nCommandSize = 0;
+    pMsg->nUserDataSize = 0;
     if (pUserData &&dwUserDataLen > 0)
     {
         memcpy(pMsg->szUserData, pUserData, dwUserDataLen);
@@ -206,6 +238,25 @@ BOOL CDBProxyClient::_pack_redis_eval_script(char*& pPackedBuffer, int32_t &nPac
 Exit0:
     return FALSE;
 }
+    
+BOOL CDBProxyClient::redis_eval_coro(uint64_t qwCoroID, const char* pcszScript, const char* format, ...)
+{
+    int32_t nRetCode = 0;
+    va_list args;
+    
+    LOG_PROCESS_ERROR(pcszScript);
+    LOG_PROCESS_ERROR(format);
+
+    va_start(args, format);
+    nRetCode = _command(qwCoroID, 0, NULL, 0, pcszScript, format, args);
+    va_end(args);
+
+    LOG_PROCESS_ERROR(nRetCode);
+
+    return TRUE;
+Exit0:
+    return FALSE;
+}
 
 BOOL CDBProxyClient::redis_eval(int32_t nCmdID, const char * pUserData, size_t dwUserDataLen, const char * pcszScript, const char * format, ...)
 {
@@ -217,7 +268,7 @@ BOOL CDBProxyClient::redis_eval(int32_t nCmdID, const char * pUserData, size_t d
     LOG_PROCESS_ERROR(format);
 
     va_start(args, format);
-    nRetCode = _command(nCmdID, pUserData, dwUserDataLen, pcszScript, format, args);
+    nRetCode = _command(0, nCmdID, pUserData, dwUserDataLen, pcszScript, format, args);
     va_end(args);
 
     LOG_PROCESS_ERROR(nRetCode);

@@ -21,6 +21,8 @@
 #include "db_proxy_client/db_proxy_client.h"
 #include "config/global_config.h"
 
+#include "test_coro.h"
+
 std::map<uint64_t, int32_t> ms_AddrMap;
 
 void on_conn_start_event(uint64_t qwConnID, int32_t nConnServerAddr)
@@ -102,6 +104,7 @@ void on_control(int32_t nSrcAddr, const char* pBuffer, size_t dwSize)
 	{
         CMGApp::instance().reload();
 
+        /*
         TEST_USER_DATA stTestData;
         stTestData.nTestValue = 12345;
         strxcpy(stTestData.szString, "hello world", sizeof(stTestData.szString));
@@ -111,6 +114,14 @@ void on_control(int32_t nSrcAddr, const char* pBuffer, size_t dwSize)
         //nRetCode = CDBProxyClient::instance().redis_command(1, (const char*)&stTestData, sizeof(stTestData), msg->szCommandContent);
         //LOG_PROCESS_ERROR(nRetCode);
         nRetCode = CDBProxyClient::instance().redis_eval(recTest, (const char*)&stTestData, sizeof(stTestData), g_RedisScriptConfig.scripts[recTest].szScript, "1 %s %d", "hello", 20);
+        LOG_PROCESS_ERROR(nRetCode);
+        */
+
+        CTestCoro* pCoro = CCoroStacklessMgr<CTestCoro>::instance().new_coro();
+        LOG_PROCESS_ERROR(pCoro);
+
+        pCoro->set_start_arg(123456);
+        nRetCode = CCoroStacklessMgr<CTestCoro>::instance().start_coro(pCoro);
         LOG_PROCESS_ERROR(nRetCode);
 	}
     
