@@ -1,0 +1,34 @@
+20200629 07:25:12|1|1|127.0.0.1|stop|18|*.*.*.*|||||0|
+20200629 07:25:12|1|3|127.0.0.1|stop|18|1.0.63.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/tbusd|/data/home/stevhuang/mango/tbusd/tbusd --id=1.0.63.1 --business-id=0  -D stop|0|
+20200629 07:25:12|1|3|127.0.0.1|stop|18|1.0.61.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/tlogd|/data/home/stevhuang/mango/tlogd/tlogd --id=1.0.61.1 --business-id=0  -D stop|0|
+20200629 07:25:12|1|3|127.0.0.1|stop|18|1.0.6.2|test_host1|10.85.45.212|/data/home/stevhuang/mango/func_server|/data/home/stevhuang/mango/func_server/func_server --id=1.0.6.2 --business-id=0  -D stop|0|
+20200629 07:25:12|1|3|127.0.0.1|stop|18|1.0.6.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/func_server|/data/home/stevhuang/mango/func_server/func_server --id=1.0.6.1 --business-id=0  -D stop|0|
+20200629 07:25:12|1|3|127.0.0.1|stop|18|1.0.5.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/control_server|/data/home/stevhuang/mango/control_server/control_server --id=1.0.5.1 --business-id=0  -D stop|0|
+20200629 07:25:12|1|3|127.0.0.1|stop|18|1.0.4.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/service_mgr_server|/data/home/stevhuang/mango/service_mgr_server/service_mgr_server --id=1.0.4.1 --business-id=0  -D stop|0|
+20200629 07:25:12|1|3|127.0.0.1|stop|18|1.0.3.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/router_server|/data/home/stevhuang/mango/router_server/router_server --id=1.0.3.1 --business-id=0  -D stop|0|
+20200629 07:25:12|1|3|127.0.0.1|stop|18|1.0.2.2|test_host1|10.85.45.212|/data/home/stevhuang/mango/server|/data/home/stevhuang/mango/server/server --id=1.0.2.2 --business-id=0  -D stop|0|
+20200629 07:25:12|1|3|127.0.0.1|stop|18|1.0.2.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/server|/data/home/stevhuang/mango/server/server --id=1.0.2.1 --business-id=0  -D stop|0|
+20200629 07:25:12|1|3|127.0.0.1|stop|18|1.0.1.2|test_host1|10.85.45.212|/data/home/stevhuang/mango/tconnd|/data/home/stevhuang/mango/tconnd/tconnd --id=1.0.1.2 --business-id=0  -D stop|0|
+20200629 07:25:12|1|3|127.0.0.1|stop|18|1.0.1.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/tconnd|/data/home/stevhuang/mango/tconnd/tconnd --id=1.0.1.1 --business-id=0  -D stop|0|
+20200629 07:25:12|1|4|127.0.0.1|stop|18|1.0.4.1|test_host1|10.85.45.212|||0|
+20200629 07:25:12|1|4|127.0.0.1|stop|18|1.0.3.1|test_host1|10.85.45.212|||0|
+20200629 07:25:12|1|4|127.0.0.1|stop|18|1.0.63.1|test_host1|10.85.45.212|||0|
+20200629 07:25:12|1|4|127.0.0.1|stop|18|1.0.2.2|test_host1|10.85.45.212|||0|
+20200629 07:25:12|1|4|127.0.0.1|stop|18|1.0.1.2|test_host1|10.85.45.212|||0|
+20200629 07:25:12|1|4|127.0.0.1|stop|18|1.0.2.1|test_host1|10.85.45.212|||0|
+20200629 07:25:12|1|4|127.0.0.1|stop|18|1.0.1.1|test_host1|10.85.45.212|||0|
+20200629 07:25:12|1|4|127.0.0.1|stop|18|1.0.6.1|test_host1|10.85.45.212|||0|
+20200629 07:25:12|1|4|127.0.0.1|stop|18|1.0.6.2|test_host1|10.85.45.212|||0|
+20200629 07:25:12|1|4|127.0.0.1|stop|18|1.0.5.1|test_host1|10.85.45.212|||0|
+20200629 07:25:12|1|4|127.0.0.1|stop|18|1.0.61.1|test_host1|10.85.45.212|||0|
+20200629 07:25:12|1|2|127.0.0.1|stop|18|1.0.63.1|||||0|
+20200629 07:25:12|1|2|127.0.0.1|stop|18|1.0.61.1|||||0|
+20200629 07:25:12|1|2|127.0.0.1|stop|18|1.0.6.2|||||0|
+20200629 07:25:12|1|2|127.0.0.1|stop|18|1.0.6.1|||||0|
+20200629 07:25:12|1|2|127.0.0.1|stop|18|1.0.5.1|||||0|
+20200629 07:25:12|1|2|127.0.0.1|stop|18|1.0.4.1|||||0|
+20200629 07:25:12|1|2|127.0.0.1|stop|18|1.0.3.1|||||0|
+20200629 07:25:12|1|2|127.0.0.1|stop|18|1.0.2.2|||||0|
+20200629 07:25:12|1|2|127.0.0.1|stop|18|1.0.2.1|||||0|
+20200629 07:25:12|1|2|127.0.0.1|stop|18|1.0.1.2|||||0|
+20200629 07:25:12|1|2|127.0.0.1|stop|18|1.0.1.1|||||0|

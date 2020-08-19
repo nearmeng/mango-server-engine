@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="gb2312"?>
+
+<!--
+该文件为进程集中管理系统配置文件,主要包括以下几部分:
+1) tcmcenter基础配置
+2) 业务系统进程描述:描述整个业务系统各个架构层次的进程信息
+3) 业务系统进程组定义:将2中不同进程组合成不同的功能组
+4) 业务系统主机描述:描述业务系统用到的主机信息
+5) 业务系统进程组部署:将3中定义的进程组部署在4中的主机上
+6) 业务系统进程间bus通信关系:描述各进程之间的通信关系从而生成tbus通信管道信息
+以上2，3，4，5, 6各部分配置可以在本文件中，也可以独立在其他文件中配置，
+如果在其他文件中配置，请在1部分配置中指定具体的文件
+参数详细介绍请参考<<TSF4G_TCM系统运维指导手册.doc>>相关部分的介绍
+-->
+
+<!--
+1)tcmcenter基础配置
+-->
+
+<!--
+BussinessID: 业务编号,如果需要tcm同时管理多个业务,可以使用该配置,否则采用0即可
+AddrTemple: 业务进程地址描述,该配置表示地址前8字节表示world编号，9-16字节表示zone编号,
+业务可以自定义地址层次名称，但最后两段必须为function和instance
+ConfigSoName: 业务用来生成业务进程配置文件的so文件,如果不需要自动生成配置文件的功能，使用系统自带so即可
+ConfigBaseDir: 自动生成的业务进程配置文件存放根目录
+TbusConfOutputDir: 自动生成的tbus相关配置文件存放目录
+CenterdAddr: tcmcenter连接的tcenterd进程地址
+TconndAddr: tcmcenter前端连接的tconnd进程地址
+-->
+
+<tcmcenter  BussinessID="0"
+    AddrTemple="world:8.zone:8.function:8.instance:8"
+    ConfigSoName="../lib/mmogxyz_config.so"
+    ConfigBaseDir="../conf/confcreated"
+    HostConfFile="../cfg/host.xml"
+    ProcConfFile="../cfg/proc.xml"
+    ProcDeployFile="../cfg/proc_deploy.xml"
+    BusRelationFile="../cfg/bus_relation.xml"
+    TbusConfOutputDir="../conf/tbusconf"
+    ExportDeployOutputDir="../conf/deploy"
+    CenterdAddr="0.0.2.1"
+    TconndAddr="0.0.3.1"
+    HostConfDir="../conf/HostConf"
+    AccessWhiteListFile="../cfg/access_whitelist.xml"
+    OpenCreateCfgByScript="0"
+    CreateCfgScriptFile=""
+    TcmDumpDir="../conf/tcmdump"
+    BinBaseDir="../conf/bindir"
+    WaterLogBaseDir="../tcm_water_log"
+    ToolsSrcBaseDir="../conf/tools_dir"
+    ToolsDstBaseDir="../conf/tools_dir"
+    TappPidFileDir=""
+    IsUseDBConfig="0"
+    ProcStatusBaseDir="../conf/proc_status"    
+    TransFileType="FIXED_FILE_BLOCK_TYPE"	
+    FtpSvrIp="10.12.16.17"	
+    FtpSvrPort="21"	
+    FtpUser="apollo"	
+    FtpPasswd="apollo123"	
+    FtpBaseDir="/data/apollo/ftp"	
+    >
+
+</tcmcenter>
+

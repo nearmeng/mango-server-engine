@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="GBK" standalone="yes" ?>
+<tapp_rundata_timer version="1">
+    <basedata_timer type="tapp_basedata_timer">
+        <GlobalTime>300000 </GlobalTime>
+    </basedata_timer>
+    <rundata_status_timer type="tapp_rundata_status_timer">
+        <GlobalTime>300000 </GlobalTime>
+    </rundata_status_timer>
+    <rundata_cumu_timer type="tapp_rundata_cumu_timer">
+        <GlobalTime>300000 </GlobalTime>
+    </rundata_cumu_timer>
+</tapp_rundata_timer>

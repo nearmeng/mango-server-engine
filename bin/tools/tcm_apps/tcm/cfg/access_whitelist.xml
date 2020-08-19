@@ -1,0 +1,6 @@
+<tcmcenter>
+<AccessWhiteList >            
+    <ipList>127.0.0.1 10.129.130.145 10.85.45.212 </ipList>
+</AccessWhiteList>
+
+</tcmcenter>

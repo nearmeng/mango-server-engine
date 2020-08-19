@@ -1,0 +1,51 @@
+<tconnd version="2147483647">
+    <Threading> 0</Threading>
+    <MaxFD> 20   </MaxFD>
+    <EnableViewer>0</EnableViewer>
+    <TDRList type="TDRList">
+        <Count> 1</Count>
+        <TDRs type="TDR">
+            <Name>tcmprotocol</Name>
+            <Path>../cfg/tcm_proto.tdr</Path>
+        </TDRs>
+    </TDRList>
+    <PDUList type="PDUList">
+        <Count> 1</Count>
+        <PDUs type="PDU">
+            <Name>TCMPkg </Name>
+            <UpSize>65536 </UpSize>
+	<DownSize>0</DownSize>
+            <LenParsertype>PDULENPARSERID_BY_TDR </LenParsertype>
+            <LenParser type="PDULenParser">
+                <TDRParser type="PDULenTDRParser">
+            				 <TDR>tcmprotocol</TDR>
+            				<Pkg>TCMPkg</Pkg>
+            				<PkgLen>Head.PkgLen</PkgLen>
+                </TDRParser>
+            </LenParser>
+        </PDUs>
+    </PDUList>
+    <ListenerList type="ListenerList">
+        <Count> 1</Count>
+        <Listeners type="Listener">
+            <Name>default</Name>
+            <Url>tcp://0.0.0.0:9010?reuse=1</Url>
+			<SendBuff> 4096000 </SendBuff>
+			<RecvBuff> 4096000 </RecvBuff>
+	   <MaxIdle>18000</MaxIdle>
+      </Listeners>
+    </ListenerList>
+    <SerializerList type="SerializerList">
+        <Count> 2</Count>
+        <Serializers type="Serializer">
+            <Name>tcmcenter    </Name>
+            <Url>0.0.1.1</Url>
+        </Serializers>
+    </SerializerList>
+        <NetTrans type="NetTrans">
+            <Name>tcmmsg</Name>
+            <PDU>TCMPkg</PDU>
+            <Listener>default</Listener>
+            <Serializer>tcmcenter    </Serializer>
+	</NetTrans>
+</tconnd>

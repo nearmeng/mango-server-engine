@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="GBK" standalone="yes" ?>
+<tagents version="0">
+    <Count>1 </Count>
+    <tagent type="tagent">
+        <tagentipcf type="tagentipcf">
+            <Hostname>TENCENT64.site</Hostname>
+            <EthConn>10.85.45.212</EthConn>
+            <Count>1 </Count>
+            <EthList>0.0.0.0</EthList>
+        </tagentipcf>
+        <Count>3 </Count>
+        <appInfo type="AppInfo">
+            <Appid>2 </Appid>
+            <Busid>0 </Busid>
+        </appInfo>
+        <appInfo type="AppInfo">
+            <Appid>255 </Appid>
+            <Busid>0 </Busid>
+        </appInfo>
+        <appInfo type="AppInfo">
+            <Appid>4 </Appid>
+            <Busid>0 </Busid>
+        </appInfo>
+        <msgVer>0x2 </msgVer>
+    </tagent>
+</tagents>

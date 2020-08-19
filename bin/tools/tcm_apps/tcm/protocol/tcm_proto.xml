@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="gb2312"?>
+
+<metalib tagsetversion="1" name="ConfigMngProto" version="1">
+
+  <macro name="TCM_PROTOCOL_MAGIC" value="0x54434d" />
+
+ <macro name="TCM_MAX_BUFF_LEN" value="512" />
+  <!--本协议定义文件依赖 tcm_proc -->
+
+  <struct name="TCMPkgHead" version="1" desc="消息头部数据结构">
+    <entry name="Magic" type="int" defaultvalue="TCM_PROTOCOL_MAGIC"
+           desc="Magic number of protocol, we can use magic to diff this protocol from other protocols" />
+    <entry name="Version" type="smalluint" desc="version of protocol" />
+    <entry name="PkgLen"      type="int"         desc="total len of pkg"/>
+    <entry name="CmdID"       type="int"         desc="命令字"/>
+    <entry name="BusID"       type="int"         desc="业务ID"/>
+    <entry name="ObjID" type="int" 
+           desc="支持异步处理机制的字段，在请求消息中赋值，响应消息将请求中的相应值不变返回，如果不需要异步处理功能
+           请赋值为负数" />
+    <entry name="Seq" type="uint"  
+           desc="支持异步处理机制的字段，在请求消息中赋值，响应消息将请求中的相应值不变返回"/>
+    <entry name="Buf"       type="int"         version="4" defaultvalue="0" desc="支持异步处理机制的字段，附加信息的长度"/>
+    <entry name="Buff"  type="char" count="TCM_MAX_BUFF_LEN" desc="支持异步处理机制的字段，存放附加信息的buff，响应消息将请求中的相应值不变的返回" version="4" refer="Buf"/>
+  </struct>
+
+  
+  <union name="TCMPkgBody" version="1" desc="消息体定义">
+    <entry name="Data"    type="char" count="TCM_PKG_MAX_BODY_LEN"     desc=""/>
+    <entry name="ProcMngPkg"    type="ProcMngPkg"    minid="1"   maxid="1000"       desc="pkg of process manage"/>    
+  </union>
+
+  <struct name="TCMPkg" version="1" sizeinfo="Head.PkgLen" versionindicator="Head.Version" >
+    <entry name="Head" type="TCMPkgHead"  />
+    <entry name="Body" type="TCMPkgBody" select="Head.CmdID"  />
+  </struct>
+  
+</metalib>

@@ -1,0 +1,86 @@
+<tcmcenter>
+    <!--
+    2)业务系统进程描述:请在以下部分描述业务系统进程
+    -->
+ <cluster WorkPath="/data/home/user00/apps/tcm/example/tsdm" AutoTimeGap="10" OpTimeout="10" MsgRoundTime="10">
+    <Proc FuncName="vImonster1" FuncID="101" Flag="Notapp" IsCommon="1"/>
+	<Proc FuncName="vImonster2" FuncID="102" Flag="Notapp" IsCommon="1"/>
+	<Proc FuncName="vImonster3" FuncID="103" Flag="Notapp" IsCommon="1"/>
+        <world Isolated="1" OpTimeout="30" MsgRoundTime="20">
+            <Proc FuncName="tbusd" FuncID="100" Seq="1" WorkPath="tbusd/bin" Agrs="--conf-file ../cfg/tbusd.xml"/>
+
+            <!--公共接入进程,多zone共用-->
+            <Proc FuncName="tconnd_common" ProcName="tconnd" FuncID="11" Seq="1" WorkPath="tconnd_common/bin" Agrs="--conf-file=../cfg/tconnd_$world.$zone.$function.$instance.xml --tlogconf=../cfg/tconnd_$world.$zone.$function.$instance_log.xml"/>
+            <Proc FuncName="operd_common" ProcName="operd" FuncID="12" Seq="1" WorkPath="operd_common/bin" Agrs="--conf-file=../cfg/operd_$world.$zone.$function.$instance.xml --tlogconf=../cfg/operd_$world.$zone.$function.$instance_log.xml"/>
+            <zone Isolated="1" OpTimeout="10">
+
+                <Proc FuncName="tconnd" FuncID="1" Seq="1" WorkPath="tconnd/bin" Agrs="--conf-file=../cfg/tconnd_$world.$zone.$function.$instance.xml --tlogconf=../cfg/tconnd_$world.$zone.$function.$instance_log.xml"/>
+                <Proc FuncName="tconnd_imonster" ProcName="tconnd" FuncID="2" Seq="1" WorkPath="tconnd/bin" Agrs="--conf-file=../cfg/tconnd_$world.$zone.$function.$instance.xml --tlogconf=../cfg/tconnd_$world.$zone.$function.$instance_log.xml"/>
+
+                <Proc FuncName="operd" FuncID="200" Seq="1" WorkPath="operd/bin" Agrs="--conf-file=../cfg/operd_$world.$zone.$function.$instance.xml --tlogconf=../cfg/operd_$world.$zone.$function.$instance_log.xml"/>
+
+                <Proc FuncName="operd_imonster" ProcName="operd" FuncID="201" Seq="1" WorkPath="operd/bin" Agrs="--conf-file=../cfg/operd_$world.$zone.$function.$instance.xml --tlogconf=../cfg/operd_$world.$zone.$function.$instance_log.xml"/>
+
+
+                <Proc FuncName="transd" FuncID="210" Seq="1" WorkPath="transd/bin" Agrs="--conf-file=../cfg/transd_$world.$zone.$function.$instance.xml --tlogconf=../cfg/transd_$world.$zone.$function.$instance_log.xml"/>
+                <Proc FuncName="dmsd" FuncID="220" Seq="1" WorkPath="dmsd/bin" Agrs="--nthread=8 --conf-file=../cfg/dmsd_$world.$zone.$function.$instance.xml --tlogconf=../cfg/dmsd_$world.$zone.$function.$instance_log.xml"/>
+            </zone>
+        </world>
+</cluster>
+
+    <!--
+    3)业务系统进程组定义:请在以下部分将业务系统进程根据功能定义成不同的进程组
+    请确保进程组中的进程在<业务系统进程描述>部分中定义
+    -->
+
+    <!--公用接入组-->
+    <ProcGroup Name="connect_common" Layer="world">
+        <Proc FuncName="operd_common" />
+        <Proc FuncName="tconnd_common" />
+    </ProcGroup>
+
+    <!--专属接入组-->
+    <ProcGroup Name="connect" Layer="zone">
+        <Proc FuncName="operd" />
+        <Proc FuncName="tconnd" />
+    </ProcGroup>
+
+    <!--事务组-->
+    <ProcGroup Name="trans" Layer="zone">
+        <Proc FuncName="transd" />
+    </ProcGroup>
+
+
+    <!--数据服务组-->
+    <ProcGroup Name="dms" Layer="zone">
+        <Proc FuncName="dmsd" />
+    </ProcGroup>
+
+    <!--bus中转-->
+    <ProcGroup Name="tbusd" Layer="world">
+        <Proc FuncName="tbusd" />
+    </ProcGroup>
+
+    <!--imonster专属接入组-->
+    <ProcGroup Name="operd_imonster" Layer="zone">
+        <Proc FuncName="operd_imonster" />
+    </ProcGroup>
+
+    <!--imonster专属接入组-->
+    <ProcGroup Name="tconnd_imonster" Layer="zone">
+        <Proc FuncName="tconnd_imonster" />
+    </ProcGroup>
+
+    <!--imonster业务接入进程-->
+    <ProcGroup Name="vImonster1" Layer="cluster">
+	<Proc FuncName="vImonster1" />
+   </ProcGroup>
+    <ProcGroup Name="vImonster2" Layer="cluster">
+	<Proc FuncName="vImonster2" />
+   </ProcGroup>
+    <ProcGroup Name="vImonster3" Layer="cluster">
+	<Proc FuncName="vImonster3" />
+   </ProcGroup>
+
+</tcmcenter>
+

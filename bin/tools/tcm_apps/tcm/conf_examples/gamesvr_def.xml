@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="gb2312" standalone="yes" ?>
+<!-- This file is for tbus relay manager tool application-->
+
+<metalib tagsetversion="1" name="xyz_gamesvr" version="1">
+  <macro name="XYZ_TBUS_ADDR_LEN" value="256" />
+  <macro name="XYZ_PATH_MAX_LEN" value="256" />
+  <macro name="XYZ_DB_METALIB_MAX_NUM" value="8" />
+
+  <macro name="XYZ_GAMESVR_LOG_CATOGERY_NAME_LEN" value="128" />
+  <macro name="XYZ_MAX_SAVED_ROLE_NUM_PERSCAN" value="50" />
+  
+  <struct name="xyz_gamesvr" version="1">
+    <entry name="ConnectorAddr" type="string" size="XYZ_TBUS_ADDR_LEN" 
+           desc="gamesvr连接接入服务器的bus地址"/>
+    <entry name="TormsvrAddr" type="string" size="XYZ_TBUS_ADDR_LEN"
+           desc="gamesvr后台数据库存储服务器的bus地址"/>
+    <entry name="TdirsvrAddr" type="string" size="XYZ_TBUS_ADDR_LEN"
+           desc="gamesvr上报目录服务器的bus地址"/>
+    <entry name="TAccessAddr" type="string" size="XYZ_TBUS_ADDR_LEN"
+           desc="接入服务器地址"/>
+    <entry name="mailsvrAddr" type="string" size="XYZ_TBUS_ADDR_LEN"
+           desc="邮件服务器地址"/>
+    <entry name="martsvrAddr" type="string" size="XYZ_TBUS_ADDR_LEN"
+           desc="商城服务器地址"/>
+     <entry name="namesvrAddr" type="string" size="XYZ_TBUS_ADDR_LEN"
+           desc="名字服务器地址"/>
+           
+    <entry name="MetaLibNum" type="int" defaultvalue="1" />
+    <entry name="MetaLibName" type="string" size="XYZ_PATH_MAX_LEN" count="XYZ_DB_METALIB_MAX_NUM" 
+           refer="MetaLibNum" desc="定义存储数据的元数据描述库名" />
+           
+    <entry name="SaveRoleGap" type="int" defaultvalue="60" 
+           desc="time gap to save role info to db, gap is calc by seconds"/>
+    <entry name="MaxSavedRolePerScan" type="int" defaultvalue="XYZ_MAX_SAVED_ROLE_NUM_PERSCAN" 
+           desc="max number saving role info per scan"/>
+           
+    <entry name="MaxOnlineRole" type="int" defaultvalue="2500" desc="max online role"/>
+    <entry name="Dirtyword" type="string" size="XYZ_PATH_MAX_LEN" desc=""/>
+
+    <entry name="MartSSTdr" type="string" size="XYZ_PATH_MAX_LEN" desc=""/>
+    <entry name="MartCSTdr" type="string" size="XYZ_PATH_MAX_LEN" desc=""/>
+    <entry name="MailSSTdr" type="string" size="XYZ_PATH_MAX_LEN" desc=""/>
+    <entry name="MailCSTdr" type="string" size="XYZ_PATH_MAX_LEN" desc=""/>
+	<entry name="NameApiTdr" type="string" size="XYZ_PATH_MAX_LEN" desc=""/>
+	
+  </struct>
+  
+</metalib>
+

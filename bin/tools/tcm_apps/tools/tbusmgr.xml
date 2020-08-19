@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="gbk" standalone="yes" ?>
+<!-- This file is for tbus routes tool application-->
+
+<TbusGCIM>
+
+  <!-- tagent系统分配的业务ID，不使用tagent系统配置缺省值0  -->
+  <BussinessID>0</BussinessID>
+
+  <!-- 十进制点分表示法表示的通信地址模版  -->
+  <AddrTemplet>8.8.8.8</AddrTemplet>
+
+   <!-- GCIM共享内存key -->
+  <GCIMShmKey>1000</GCIMShmKey>
+
+  <Channels>
+    <Priority>8</Priority>
+    <!-- 通道两端进程的通信地址，使用点分法表示 -->
+
+    <Address>0.0.3.1</Address>
+    <Address>0.0.1.1</Address>
+
+     <!-- 对于出现在配置中的第一个进程而言，SendSize，RecvSize分别表示此进程相关发送，接受 数据队列的大小。
+     由于两个进程是对等的，因此第一个进程的发送队列大小(SendSize)就是第二个进程的接受队列大小(RecvSize) -->
+    <SendSize>20480000</SendSize>
+    <RecvSize>20480000</RecvSize>
+    <Desc>tcmcenter and its tconnd</Desc>
+  </Channels>
+
+  <Channels>
+    <Priority>8</Priority>
+    <Address>0.0.2.1</Address>
+    <Address>0.0.1.1</Address>
+    <SendSize>20480000</SendSize>
+    <RecvSize>20480000</RecvSize>
+    <Desc>tcmcenter and its centerd</Desc>
+  </Channels>
+
+</TbusGCIM>
+

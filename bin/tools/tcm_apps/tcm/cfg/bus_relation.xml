@@ -1,0 +1,9 @@
+<tcmcenter>
+    <TbusConf SendBuff="10240000" ChannelSize="10240000" TbusdServicePort="7301" TbusdConfPath="/data/home/stevhuang/mango/tbusd" BussinessID="0" GRMShmKey="697001" RecvBuff="10240000" GCIMShmKey="667001"  >
+        <Channel ProcSet1="router_server" ProcSet2="server" SendQueSize="10240000" Mask="63.0.0.0" MaskCtrl="local" RecvQueSize="10240000"  />
+        <Channel ProcSet1="tconnd" ProcSet2="server" Mask="63.0.0.0" SendQueSize="10240000" RecvQueSize="10240000"  />
+        <Channel ProcSet1="router_server" ProcSet2="service_mgr_server" Mask="63.0.0.0" SendQueSize="10240000" RecvQueSize="10240000"  />
+        <Channel ProcSet1="router_server" ProcSet2="control_server" SendQueSize="10240000" Mask="63.0.0.0" MaskCtrl="local" RecvQueSize="10240000"  />
+        <Channel ProcSet1="router_server" ProcSet2="func_server" SendQueSize="10240000" Mask="63.0.0.0" MaskCtrl="local" RecvQueSize="10240000"  />
+    </TbusConf>
+</tcmcenter>

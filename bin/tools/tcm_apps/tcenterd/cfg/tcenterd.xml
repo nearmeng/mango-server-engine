@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="GBK" standalone="yes" ?>
+
+<tcenterdconf __version="1">
+
+    <ListenAddr>
+		<!--配置为实际主机的内网ip-->
+        <ip>10.85.45.212</ip>
+
+        <port>8899</port>
+
+    </ListenAddr>
+
+    <MaxFdNum>10000 </MaxFdNum>
+
+    <ReadIdle>30 </ReadIdle>
+
+    <NetMsgSizeLimit>65535 </NetMsgSizeLimit>
+	<!--tcenterd父节点的ip地址，一般使用在tdirty业务上,若使用了tdirty，必须把IsMaster配置为0-->
+    <ParentAddr>
+        <ip>172.25.75.15</ip>
+        <port>8899</port>
+    </ParentAddr>
+
+    <Location></Location>
+	<!--若tcenterd存在父节点，若使用了tdirty脏词功能,IsMaster必须配置为0,否则IsMaster配置为1-->
+    <IsMaster>1</IsMaster>
+
+    <BufBlockSize>10 </BufBlockSize>
+
+    <MaxBoclNum>1000 </MaxBoclNum>
+
+
+</tcenterdconf>

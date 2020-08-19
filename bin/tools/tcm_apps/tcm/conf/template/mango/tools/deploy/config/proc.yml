@@ -1,0 +1,107 @@
+procs:
+ proc_list:
+  server_config:
+      layer: world
+      func_id: 62
+      flag: notapp
+      local_start: false
+      deploy_unit: group_host
+  tbusd:
+      layer: world
+      func_id: 63
+      conf_file_prefix: tbusd.xml
+      deploy_unit: group_host
+      local_start: false
+      start_seq: 0
+  tlogd:
+      layer: world 
+      func_id: 61
+      conf_file_prefix: tlogd.xml
+      deploy_unit: group_tlogd
+      local_start: false
+  tconnd:
+      layer: world
+      func_id: 1
+      conf_file_prefix: tconnd.xml
+      deploy_unit: group_gs
+      attrs: 
+          backend_server_func_id: 2
+      inst_attrs:
+          tconnd_port: inst+7200
+  server:
+      layer: world
+      func_id: 2
+      deploy_unit: group_gs
+      tlog_config:
+          text: 
+            - local
+            - tlogd
+          oss: 
+            - local
+          monlog: 
+            - local
+  router_server:
+      layer: world
+      func_id: 3
+      deploy_unit: group_host
+      tlog_config:
+          text: 
+            - local
+          oss: 
+            - local
+          monlog: 
+            - local
+  service_mgr_server:
+      layer: world
+      func_id: 4
+      deploy_unit: group_sms
+      tlog_config:
+          text: 
+           - local
+          oss: 
+           - local
+          monlog: 
+           - local
+  control_server:
+      layer: world
+      func_id: 5
+      deploy_unit: group_control
+      tlog_config:
+          text: 
+           - local
+          oss: 
+           - local
+          monlog: 
+           - local
+  func_server:
+      layer: world
+      func_id: 6
+      deploy_unit: group_func
+      tlog_config:
+          text: 
+           - local
+           - tlogd
+          oss: 
+           - local
+          monlog: 
+           - local
+
+proc_connect:
+    - peer1: router_server
+      peer2: server
+      Mask: 63.0.0.0
+      MaskCtrl: local
+    - peer1: tconnd
+      peer2: server
+      Mask: 63.0.0.0
+    - peer1: router_server
+      peer2: service_mgr_server
+      Mask: 63.0.0.0
+    - peer1: router_server
+      peer2: control_server
+      Mask: 63.0.0.0
+      MaskCtrl: local
+    - peer1: router_server
+      peer2: func_server
+      Mask: 63.0.0.0
+      MaskCtrl: local

@@ -1,0 +1,120 @@
+<tcmcenter>
+    <ClusterDeploy  CustomAttr="
+aps_server[0].addr=tcp://10.123.5.49:9050;
+tbus_gcim_key=667001;
+tlog_home=../log/%F;
+business_id=0;
+aps_server[1].addr=tcp://10.123.5.51:9050;
+base_key=7001;
+tbusd_port=7301;
+tlog_write_interval=0;
+tbus_grm_key=697001;">
+        <world ID="1"  CustomAttr="
+aps_server[0].addr=tcp://10.123.5.49:9050;
+tbus_gcim_key=667001;
+tlog_home=../log/%F;
+business_id=0;
+aps_server[1].addr=tcp://10.123.5.51:9050;
+base_key=7001;
+tglog_addr=udp://127.0.0.1:6666;
+tbusd_port=7301;
+tlog_write_interval=0;
+tlogd_home=/data/home/stevhuang/binlog/%F;
+channel=0;
+tbus_grm_key=697001;">
+            <DeloyGroup Group="group_host" Host="test_host1" InstID="1"  CustomAttr="
+server_config_log_priority=INFO;
+server_config_tbus=1.0.62.1;
+zone=0;
+tbusd_log_priority=INFO;
+router_server_log_priority=INFO;
+inst=1;
+router_server_tbus=1.0.3.1;
+world=1;
+tbusd_tbus=1.0.63.1;"/>
+            <DeloyGroup Group="group_gs" Host="test_host1" InstID="1"  CustomAttr="
+tconnd_tbus=1.0.1.1;
+zone=0;
+backend_server_func_id=2;
+tconnd_port=7201;
+tconnd_log_priority=INFO;
+inst=1;
+server_tbus=1.0.2.1;
+world=1;
+server_log_priority=INFO;
+server_text_tlogd_addr=udp://10.85.45.212:2001;"/>
+            <DeloyGroup Group="group_gs" Host="test_host1" InstID="2"  CustomAttr="
+tconnd_tbus=1.0.1.2;
+zone=0;
+backend_server_func_id=2;
+tconnd_port=7202;
+tconnd_log_priority=INFO;
+inst=2;
+server_tbus=1.0.2.2;
+world=1;
+server_log_priority=INFO;
+server_text_tlogd_addr=udp://10.85.45.212:2002;"/>
+            <DeloyGroup Group="group_func" Host="test_host1" InstID="1"  CustomAttr="
+func_server_log_priority=INFO;
+zone=0;
+func_server_text_tlogd_addr=udp://10.85.45.212:6001;
+func_server_tbus=1.0.6.1;
+inst=1;
+world=1;"/>
+            <DeloyGroup Group="group_func" Host="test_host1" InstID="2"  CustomAttr="
+func_server_log_priority=INFO;
+zone=0;
+func_server_text_tlogd_addr=udp://10.85.45.212:6002;
+func_server_tbus=1.0.6.2;
+inst=2;
+world=1;"/>
+            <DeloyGroup Group="group_sms" Host="test_host1" InstID="1"  CustomAttr="
+world=1;
+service_mgr_server_tbus=1.0.4.1;
+inst=1;
+zone=0;
+service_mgr_server_log_priority=INFO;"/>
+            <DeloyGroup Group="group_control" Host="test_host1" InstID="1"  CustomAttr="
+control_server_log_priority=INFO;
+world=1;
+inst=1;
+zone=0;
+control_server_tbus=1.0.5.1;"/>
+            <DeloyGroup Group="group_tlogd" Host="test_host1" InstID="1"  CustomAttr="
+tlogd_listener[0].ip=10.85.45.212;
+tlogd_net_trans[3].listener=func_server_text.1.0.6.2;
+tlogd_serializer[0].log_pattern=server_text.1.0.2.1_%H;
+tlogd_serializer[2].log_pattern=func_server_text.1.0.6.1_%H;
+tlogd_listener[3].port=6002;
+tlogd_serializer[2].name=func_server_text.1.0.6.1;
+tlogd_net_trans[2].name=func_server_text.1.0.6.1;
+tlogd_listener[3].ip=10.85.45.212;
+tlogd_listener[0].port=2001;
+tlogd_listener[1].ip=10.85.45.212;
+tlogd_serializer[3].name=func_server_text.1.0.6.2;
+tlogd_serializer[0].name=server_text.1.0.2.1;
+tlogd_listener[0].name=server_text.1.0.2.1;
+tlogd_net_trans[2].listener=func_server_text.1.0.6.1;
+tlogd_net_trans[2].serializer=func_server_text.1.0.6.1;
+tlogd_net_trans[0].name=server_text.1.0.2.1;
+tlogd_net_trans[0].serializer=server_text.1.0.2.1;
+tlogd_serializer[1].name=server_text.1.0.2.2;
+tlogd_net_trans[1].listener=server_text.1.0.2.2;
+tlogd_net_trans[0].listener=server_text.1.0.2.1;
+tlogd_net_trans[3].serializer=func_server_text.1.0.6.2;
+tlogd_listener[2].ip=10.85.45.212;
+tlogd_listener[1].port=2002;
+tlogd_net_trans[1].name=server_text.1.0.2.2;
+tlogd_net_trans[1].serializer=server_text.1.0.2.2;
+tlogd_net_trans[3].name=func_server_text.1.0.6.2;
+tlogd_listener[3].name=func_server_text.1.0.6.2;
+tlogd_listener[2].name=func_server_text.1.0.6.1;
+tlogd_serializer[1].log_pattern=server_text.1.0.2.2_%H;
+tlogd_serializer[3].log_pattern=func_server_text.1.0.6.2_%H;
+tlogd_listener[1].name=server_text.1.0.2.2;
+tlogd_tbus=1.0.61.1;
+tlogd_home=/data/home/stevhuang/binlog/%F;
+tlogd_listener[2].port=6001;"/>
+        </world>
+    </ClusterDeploy>
+</tcmcenter>

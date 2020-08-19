@@ -1,0 +1,5 @@
+<tcmcenter>
+    <HostTab>
+        <Host InnerIP="10.85.45.212" Name="test_host1" > </Host>
+    </HostTab>
+</tcmcenter>

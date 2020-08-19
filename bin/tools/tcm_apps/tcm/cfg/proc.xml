@@ -1,0 +1,40 @@
+<tcmcenter>
+<cluster WorkPath="/data/home/stevhuang/mango" AutoTimeGap="10" MsgRoundTime="1800" OpTimeout="1800" >
+    <world AutoTimeGap="10" Isolated="0" MsgRoundTime="6" OpTimeout="1800" >
+        <Proc WorkPath="func_server" Seq="1" Agrs=" --noloadconf --use-bus  --tlogconf=./tlog.xml_$world.$zone.$function.$instance --rundata_timer=./rundata_timer.xml_$world.$zone.$function.$instance" AutoScript="./tools/tcm/auto_start_alarm.sh" ConfigPath="." FuncName="func_server" StartCheckEndTime="6" Flag="start|check|stop|auto|resume|restart|reload|signal" PidFile="/tmp/func_server_$world.$zone.$function.$instance.pid" FuncID="6" />
+        <Proc WorkPath="service_mgr_server" Seq="1" Agrs=" --noloadconf --use-bus  --tlogconf=./tlog.xml_$world.$zone.$function.$instance --rundata_timer=./rundata_timer.xml_$world.$zone.$function.$instance" AutoScript="./tools/tcm/auto_start_alarm.sh" ConfigPath="." FuncName="service_mgr_server" StartCheckEndTime="6" Flag="start|check|stop|auto|resume|restart|reload|signal" PidFile="/tmp/service_mgr_server_$world.$zone.$function.$instance.pid" FuncID="4" />
+        <Proc WorkPath="control_server" Seq="1" Agrs=" --noloadconf --use-bus  --tlogconf=./tlog.xml_$world.$zone.$function.$instance --rundata_timer=./rundata_timer.xml_$world.$zone.$function.$instance" AutoScript="./tools/tcm/auto_start_alarm.sh" ConfigPath="." FuncName="control_server" StartCheckEndTime="6" Flag="start|check|stop|auto|resume|restart|reload|signal" PidFile="/tmp/control_server_$world.$zone.$function.$instance.pid" FuncID="5" />
+        <Proc WorkPath="server" Seq="1" Agrs=" --noloadconf --use-bus  --tlogconf=./tlog.xml_$world.$zone.$function.$instance --rundata_timer=./rundata_timer.xml_$world.$zone.$function.$instance" AutoScript="./tools/tcm/auto_start_alarm.sh" ConfigPath="." FuncName="server" StartCheckEndTime="6" Flag="start|check|stop|auto|resume|restart|reload|signal" PidFile="/tmp/server_$world.$zone.$function.$instance.pid" FuncID="2" />
+        <Proc WorkPath="tconnd" Seq="1" Agrs=" --conf-file=./tconnd.xml_$world.$zone.$function.$instance --use-bus  --tlogconf=./tlog.xml_$world.$zone.$function.$instance --rundata_timer=./rundata_timer.xml_$world.$zone.$function.$instance" AutoScript="./tools/tcm/auto_start_alarm.sh" ConfigPath="." FuncName="tconnd" StartCheckEndTime="6" Flag="start|check|stop|auto|resume|restart|reload|signal" PidFile="/tmp/tconnd_$world.$zone.$function.$instance.pid" FuncID="1" />
+        <Proc WorkPath="server_config" Seq="1" AutoScript="./tools/tcm/auto_start_alarm.sh" ConfigPath="." FuncName="server_config" StartCheckEndTime="6" Flag="notapp" FuncID="62" />
+        <Proc WorkPath="router_server" Seq="1" Agrs=" --noloadconf --use-bus  --tlogconf=./tlog.xml_$world.$zone.$function.$instance --rundata_timer=./rundata_timer.xml_$world.$zone.$function.$instance" AutoScript="./tools/tcm/auto_start_alarm.sh" ConfigPath="." FuncName="router_server" StartCheckEndTime="6" Flag="start|check|stop|auto|resume|restart|reload|signal" PidFile="/tmp/router_server_$world.$zone.$function.$instance.pid" FuncID="3" />
+        <Proc WorkPath="tlogd" Seq="1" Agrs=" --conf-file=./tlogd.xml_$world.$zone.$function.$instance" AutoScript="./tools/tcm/auto_start_alarm.sh" ConfigPath="." FuncName="tlogd" StartCheckEndTime="6" Flag="start|check|stop|auto|resume|restart|reload|signal" PidFile="/tmp/tlogd_$world.$zone.$function.$instance.pid" FuncID="61" />
+        <Proc WorkPath="tbusd" Seq="1" Agrs=" --conf-file=./tbusd.xml_$world.$zone.$function.$instance --use-bus  --tlogconf=./tlog.xml_$world.$zone.$function.$instance --rundata_timer=./rundata_timer.xml_$world.$zone.$function.$instance" AutoScript="./tools/tcm/auto_start_alarm.sh" ConfigPath="." FuncName="tbusd" StartCheckEndTime="6" Flag="start|check|stop|auto|resume|restart|reload|signal" PidFile="/tmp/tbusd_$world.$zone.$function.$instance.pid" FuncID="63" />
+        <zone AutoTimeGap="10" Isolated="0" OpTimeout="1800" >
+        </zone>
+    </world>
+</cluster>
+
+<ProcGroup Name="group_host" Layer="world">
+    <Proc FuncName="tbusd"/>
+    <Proc FuncName="server_config"/>
+    <Proc FuncName="router_server"/>
+</ProcGroup>
+<ProcGroup Name="group_tlogd" Layer="world">
+    <Proc FuncName="tlogd"/>
+</ProcGroup>
+<ProcGroup Name="group_sms" Layer="world">
+    <Proc FuncName="service_mgr_server"/>
+</ProcGroup>
+<ProcGroup Name="group_control" Layer="world">
+    <Proc FuncName="control_server"/>
+</ProcGroup>
+<ProcGroup Name="group_gs" Layer="world">
+    <Proc FuncName="server"/>
+    <Proc FuncName="tconnd"/>
+</ProcGroup>
+<ProcGroup Name="group_func" Layer="world">
+    <Proc FuncName="func_server"/>
+</ProcGroup>
+
+</tcmcenter>

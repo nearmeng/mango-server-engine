@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="gb2312"?>
+
+<metalib tagsetversion="1" name="" version="1">
+
+  <!--物理主机表数据结构描述-->
+  <macro name="TCM_HOST_NAME_MAX_LEN" value="64" desc="" />
+  <macro name="TCM_HOST_IP_MAX_LEN"  value="32" />
+  <macro name="TCM_SYSTEM_MAX_HOST_NUM" value="2048" desc="单个业务系统使用的物理机器最大数目"/>
+
+  <macro name="TCM_PKG_MAX_BODY_LEN" value="20400000" />
+  <macro name="TCM_PKG_MAX_PKG_LEN" value="20480000" />
+
+  <macro name="TCM_MAX_PATH_LEN" value="256" />
+
+  <macro name="TCM_SYSTEM_MAX_PROC_NUM" value="1000" />
+
+  <macro name="TCM_MAX_PROTO_PROC_NUM" value="40" />
+  <macro name="TCM_MAX_PROTO_HOST_NUM" value="10" />
+
+  <macro name="TCM_MAX_ACCESS_HOST_NUM" value="10" />
+
+  <macro name="TCM_MAX_HOST_PROC_NUM" value="1024" />
+
+  <macro name="TCM_PROC_STR_MAX_LEN" value="1024" />
+
+  <macro name="TCM_MAX_DOMAIN_LEN" value="256" />
+
+  <macro name="TCM_MAX_FUNC_NAME_LEN"  value="32" />
+  <macro name="TCM_MAX_ARGS_LEN" value="256" />
+  <macro name="TCM_MAX_ARGS_LEN_EX" value="512" />
+  <macro name="TCM_MAX_CMD_LEN" value="512" />
+  <macro name="TCM_MAX_FLAG_LEN" value="128" />
+
+  <macro name="TCM_MAX_CHANNEL_NUM_PREHOST" value="3000" />
+  <macro name="TCM_CONFIG_TYPE_NONE" value="0x100" />
+
+
+  <macro name="TCM_MAX_ADDR_TEMPLET_STRING_LEN" value="256" desc="进程地址模板串最大长度"/>
+  <macro name="TCM_MAX_PROC_NAME_LEN" value="64" />
+
+  <macro name="TCM_BUSSINESS_CUSTOM_DATA_SIZE" value="4096" />
+  <macro name="TCM_BUSSINESS_CUSTOM_DATA_SIZE_EX" value="40960" />
+  <macro name="TCM_MAX_OUTIP_NUM_PERHOST" value="8" desc="每台物理机器的容许配置的最大外网IP数"/>
+  <macro name="TCM_MAX_HOST_NUM" value="30000" desc="单个业务系统使用的物理机器最大数目"/>
+  <macro name="TCM_MAX_USERNAME_LEN" value="32" desc="用户名最大长度"/>
+  
+  <macrosgroup name="TCM_WAN_BU" desc="公司WAN QOS数据分类，部门标识" >
+      <macro name="TCM_WAN_BU_NONE"        desc="用于处理不配置BU属性的情况"    value="0x0100" />
+      <macro name="TCM_WAN_BU_JITONG"      desc="00-001-00 即通"                value=" 4" />
+      <macro name="TCM_WAN_BU_HULIANWANG"  desc="00-010-00 互联网"              value=" 8" />
+      <macro name="TCM_WAN_BU_HUYU"        desc="00-011-00 互娱"                value="12" />
+      <macro name="TCM_WAN_BU_WUXIAN"      desc="00-100-00 无线"                value="16" />
+      <macro name="TCM_WAN_BU_SOUSUO"      desc="00-101-00 搜索"                value="20" />
+      <macro name="TCM_WAN_BU_GUANGYAN"    desc="00-110-00 广研"                value="24" />
+      <macro name="TCM_WAN_BU_GUOJIYEWU"   desc="00-111-00 国际业务"            value="28" />
+      <macro name="TCM_WAN_BU_JIAGOU"      desc="01-001-00 架构平台"            value="36" />
+      <macro name="TCM_WAN_BU_SHUPING"     desc="01-010-00 数据平台"            value="40" />
+      <macro name="TCM_WAN_BU_ZHIFU"       desc="01-011-00 在线支付"            value="44" />
+      <macro name="TCM_WAN_BU_WANGZHAN"    desc="01-100-00 网站部"              value="48" />
+      <macro name="TCM_WAN_BU_GUANGGAO"    desc="01-101-00 广告部"              value="52" />
+      <macro name="TCM_WAN_BU_YANJIUYUAN"  desc="01-110-00 腾讯研究院"          value="56" />
+      <macro name="TCM_WAN_BU_WANGPING"    desc="01-111-00 网络平台部 安全中心" value="60" />
+      <macro name="TCM_WAN_BU_WEIBO"       desc="10-001-00 微博事业部"          value="68" />
+  </macrosgroup>
+  <macrosgroup name="TCM_WAN_TYPE" desc="WAN type">
+      <macro name="TCM_WAN_TYPE_NONE" value="0x0100" desc="TCM自定义类型，用于处理默认值"/>
+      <macro name="TCM_WAN_TYPE_REAL_TIME" value="0x80" desc="TOS:100-000-00 保障带宽与延迟"/>
+      <macro name="TCM_WAN_TYPE_BEST_EFFORT" value="0x0" desc="TOS:000-000-00 保证REALTIME 流量的前提下，尽力服务"/>
+      <macro name="TCM_WAN_TYPE_BACK_UP" value="0x60" desc="TOS:011-000-00 最低服务等级，流量可能走公网"/>
+  </macrosgroup>
+  <struct name="Host" version="1" primarykey="Name" desc="单台主机的配置">
+    <entry name="Name" type="string" size="TCM_HOST_NAME_MAX_LEN"  desc="机器的主机名" />
+    <entry name="InnerIP" type="ip"  desc="主机用于内存管理通信的内网ip地址" />
+    <entry name="OuterIPCount" type="int" defaultvalue="1" desc="外网ip计数器" io="nooutput"/>
+    <entry name="OuterIP" type="ip" count="TCM_MAX_OUTIP_NUM_PERHOST" refer="OuterIPCount"  desc="主机用于内存管理通信的外网ip地址" />
+    <entry name="CustomAttr" type="string"  size="TCM_BUSSINESS_CUSTOM_DATA_SIZE" defaultvalue=""
+          desc="业务自定义属性数据"  />
+    <entry name="IsVirtual" type="int" defaultvalue="0" desc="标识本主机是否虚拟主机，默认值是0"  />
+  </struct>
+
+  <macro name="TCM_LIB_NAME_MAX_LEN" value="64" desc="动态库文件名字长度" />
+</metalib>
+
+

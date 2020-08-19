@@ -1,0 +1,36 @@
+<tcmcenter>
+   <!--
+    5)业务系统进程组部署:请在以下部分描述各进程组在各主机上的部署情况
+    请确保进程组和主机都已经在相应的各部分定义
+    -->
+    <ClusterDeploy>
+        <DeloyGroup Group="vImonster2" Host="vHostImonster2" InstID="1"/>
+        <DeloyGroup Group="vImonster1" Host="vHostImonster1" InstID="1"/>
+    
+        <world ID="1" CustomAttr="test200">
+        
+            <DeloyGroup Group="tbusd" Host="Host1" InstID="1"/>
+   
+            <!--部署公共接入进程组-->
+            
+            <DeloyGroup Group="vImonster2" Host="vHostImonster2" InstID="1"/>
+            
+            <zone ID="1" >
+            
+                <DeloyGroup Group="operd_imonster" Host="Host1" InstID="1"/>
+                
+                <DeloyGroup Group="tconnd_imonster" Host="Host1" InstID="1"/>
+            
+                <DeloyGroup Group="trans" Host="Host1" InstID="1"/>
+                
+                <DeloyGroup Group="dms" Host="Host1" InstID="1"/>
+                
+                <DeloyGroup Group="vImonster3" Host="vHostImonster3" InstID="1"/>
+    
+            </zone>
+            
+        </world>
+
+    </ClusterDeploy>
+
+</tcmcenter>

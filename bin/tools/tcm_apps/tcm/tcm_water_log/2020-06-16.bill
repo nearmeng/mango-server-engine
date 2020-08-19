@@ -1,0 +1,621 @@
+20200616 11:12:02|1|1|127.0.0.1|refreshbuscfg|3|*.*.*.*|||||0|
+20200616 11:12:02|1|3|127.0.0.1|refreshbuscfg|3||test_host1|10.85.45.212|||0|
+20200616 11:12:02|1|4|127.0.0.1|refreshbuscfg|3||test_host1|10.85.45.212|||0|
+20200616 11:12:02|1|2|127.0.0.1|refreshbuscfg|3||test_host1||||0|
+20200616 16:12:45|1|1|127.0.0.1|transcfg|1|*.*.*.*|||||0|
+20200616 16:12:45|1|3|127.0.0.1|transcfg|1|1.0.1.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/tconnd/tconnd|tlog.xml_1.0.1.1|0|
+20200616 16:12:45|1|3|127.0.0.1|transcfg|1|1.0.1.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/tconnd/tconnd|tconnd.xml_1.0.1.1|0|
+20200616 16:12:45|1|3|127.0.0.1|transcfg|1|1.0.1.2|test_host1|10.85.45.212|/data/home/stevhuang/mango/tconnd/tconnd|tlog.xml_1.0.1.2|0|
+20200616 16:12:45|1|3|127.0.0.1|transcfg|1|1.0.1.2|test_host1|10.85.45.212|/data/home/stevhuang/mango/tconnd/tconnd|tconnd.xml_1.0.1.2|0|
+20200616 16:12:45|1|3|127.0.0.1|transcfg|1|1.0.2.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/server/server|tlog.xml_1.0.2.1|0|
+20200616 16:12:45|1|3|127.0.0.1|transcfg|1|1.0.2.2|test_host1|10.85.45.212|/data/home/stevhuang/mango/server/server|tlog.xml_1.0.2.2|0|
+20200616 16:12:45|1|3|127.0.0.1|transcfg|1|1.0.3.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/router_server/router_server|tlog.xml_1.0.3.1|0|
+20200616 16:12:45|1|3|127.0.0.1|transcfg|1|1.0.4.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/service_mgr_server/service_mgr_server|tlog.xml_1.0.4.1|0|
+20200616 16:12:45|1|3|127.0.0.1|transcfg|1|1.0.5.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/control_server/control_server|tlog.xml_1.0.5.1|0|
+20200616 16:12:45|1|3|127.0.0.1|transcfg|1|1.0.6.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/func_server/func_server|tlog.xml_1.0.6.1|0|
+20200616 16:12:45|1|3|127.0.0.1|transcfg|1|1.0.6.2|test_host1|10.85.45.212|/data/home/stevhuang/mango/func_server/func_server|tlog.xml_1.0.6.2|0|
+20200616 16:12:45|1|3|127.0.0.1|transcfg|1|1.0.63.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/tbusd/tbusd|tbusd.xml_1.0.63.1|0|
+20200616 16:12:45|1|3|127.0.0.1|transcfg|1|1.0.63.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/tbusd/tbusd|tlog.xml_1.0.63.1|0|
+20200616 16:12:45|1|4|127.0.0.1|transcfg|1|1.0.1.1|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.1.1/tlog.xml_1.0.1.1||2|fopen /data/home/stevhuang/mango/tconnd/tconnd/tlog.xml_1.0.1.1 fail
+20200616 16:12:45|1|4|127.0.0.1|transcfg|1|1.0.1.1|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.1.1/tconnd.xml_1.0.1.1||2|fopen /data/home/stevhuang/mango/tconnd/tconnd/tconnd.xml_1.0.1.1 fail
+20200616 16:12:45|1|4|127.0.0.1|transcfg|1|1.0.1.2|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.1.2/tlog.xml_1.0.1.2||2|fopen /data/home/stevhuang/mango/tconnd/tconnd/tlog.xml_1.0.1.2 fail
+20200616 16:12:45|1|4|127.0.0.1|transcfg|1|1.0.1.2|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.1.2/tconnd.xml_1.0.1.2||2|fopen /data/home/stevhuang/mango/tconnd/tconnd/tconnd.xml_1.0.1.2 fail
+20200616 16:12:45|1|4|127.0.0.1|transcfg|1|1.0.63.1|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.63.1/tbusd.xml_1.0.63.1|tlog.xml_1.0.6.2|2|fopen /data/home/stevhuang/mango/tbusd/tbusd/tbusd.xml_1.0.63.1 fail
+20200616 16:12:45|1|4|127.0.0.1|transcfg|1|1.0.63.1|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.63.1/tlog.xml_1.0.63.1||2|fopen /data/home/stevhuang/mango/tbusd/tbusd/tlog.xml_1.0.63.1 fail
+20200616 16:12:45|1|4|127.0.0.1|transcfg|1|1.0.2.1|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.2.1/tlog.xml_1.0.2.1|tlog.xml_1.0.6.2|0|
+20200616 16:12:45|1|4|127.0.0.1|transcfg|1|1.0.2.2|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.2.2/tlog.xml_1.0.2.2||0|
+20200616 16:12:45|1|4|127.0.0.1|transcfg|1|1.0.3.1|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.3.1/tlog.xml_1.0.3.1||0|
+20200616 16:12:45|1|4|127.0.0.1|transcfg|1|1.0.4.1|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.4.1/tlog.xml_1.0.4.1||0|
+20200616 16:12:45|1|4|127.0.0.1|transcfg|1|1.0.5.1|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.5.1/tlog.xml_1.0.5.1||0|
+20200616 16:12:45|1|4|127.0.0.1|transcfg|1|1.0.6.1|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.6.1/tlog.xml_1.0.6.1||0|
+20200616 16:12:45|1|4|127.0.0.1|transcfg|1|1.0.6.2|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.6.2/tlog.xml_1.0.6.2||0|
+20200616 16:12:45|1|2|127.0.0.1|transcfg|1|1.0.1.1|||||1|fopen /data/home/stevhuang/mango/tconnd/tconnd/tlog.xml_1.0.1.1 fail
+20200616 16:12:45|1|2|127.0.0.1|transcfg|1|1.0.1.1|||||1|fopen /data/home/stevhuang/mango/tconnd/tconnd/tconnd.xml_1.0.1.1 fail
+20200616 16:12:45|1|2|127.0.0.1|transcfg|1|1.0.1.2|||||1|fopen /data/home/stevhuang/mango/tconnd/tconnd/tlog.xml_1.0.1.2 fail
+20200616 16:12:45|1|2|127.0.0.1|transcfg|1|1.0.1.2|||||1|fopen /data/home/stevhuang/mango/tconnd/tconnd/tconnd.xml_1.0.1.2 fail
+20200616 16:12:45|1|2|127.0.0.1|transcfg|1|1.0.2.1|||||0|
+20200616 16:12:45|1|2|127.0.0.1|transcfg|1|1.0.2.2|||||0|
+20200616 16:12:45|1|2|127.0.0.1|transcfg|1|1.0.3.1|||||0|
+20200616 16:12:45|1|2|127.0.0.1|transcfg|1|1.0.4.1|||||0|
+20200616 16:12:45|1|2|127.0.0.1|transcfg|1|1.0.5.1|||||0|
+20200616 16:12:45|1|2|127.0.0.1|transcfg|1|1.0.6.1|||||0|
+20200616 16:12:45|1|2|127.0.0.1|transcfg|1|1.0.6.2|||||0|
+20200616 16:12:45|1|2|127.0.0.1|transcfg|1|1.0.63.1|||||1|fopen /data/home/stevhuang/mango/tbusd/tbusd/tbusd.xml_1.0.63.1 fail
+20200616 16:12:45|1|2|127.0.0.1|transcfg|1|1.0.63.1|||||1|fopen /data/home/stevhuang/mango/tbusd/tbusd/tlog.xml_1.0.63.1 fail
+20200616 16:21:26|1|1|127.0.0.1|transcfg|0|*.*.*.*|||||0|
+20200616 16:21:26|1|3|127.0.0.1|transcfg|0|1.0.1.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/tconnd/.|tlog.xml_1.0.1.1|0|
+20200616 16:21:26|1|3|127.0.0.1|transcfg|0|1.0.1.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/tconnd/.|tconnd.xml_1.0.1.1|0|
+20200616 16:21:26|1|3|127.0.0.1|transcfg|0|1.0.1.2|test_host1|10.85.45.212|/data/home/stevhuang/mango/tconnd/.|tlog.xml_1.0.1.2|0|
+20200616 16:21:26|1|3|127.0.0.1|transcfg|0|1.0.1.2|test_host1|10.85.45.212|/data/home/stevhuang/mango/tconnd/.|tconnd.xml_1.0.1.2|0|
+20200616 16:21:26|1|3|127.0.0.1|transcfg|0|1.0.2.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/server/.|tlog.xml_1.0.2.1|0|
+20200616 16:21:26|1|3|127.0.0.1|transcfg|0|1.0.2.2|test_host1|10.85.45.212|/data/home/stevhuang/mango/server/.|tlog.xml_1.0.2.2|0|
+20200616 16:21:26|1|3|127.0.0.1|transcfg|0|1.0.3.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/router_server/.|tlog.xml_1.0.3.1|0|
+20200616 16:21:26|1|3|127.0.0.1|transcfg|0|1.0.4.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/service_mgr_server/.|tlog.xml_1.0.4.1|0|
+20200616 16:21:26|1|3|127.0.0.1|transcfg|0|1.0.5.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/control_server/.|tlog.xml_1.0.5.1|0|
+20200616 16:21:26|1|3|127.0.0.1|transcfg|0|1.0.6.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/func_server/.|tlog.xml_1.0.6.1|0|
+20200616 16:21:26|1|3|127.0.0.1|transcfg|0|1.0.6.2|test_host1|10.85.45.212|/data/home/stevhuang/mango/func_server/.|tlog.xml_1.0.6.2|0|
+20200616 16:21:26|1|3|127.0.0.1|transcfg|0|1.0.63.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/tbusd/.|tbusd.xml_1.0.63.1|0|
+20200616 16:21:26|1|3|127.0.0.1|transcfg|0|1.0.63.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/tbusd/.|tlog.xml_1.0.63.1|0|
+20200616 16:21:27|1|4|127.0.0.1|transcfg|0|1.0.63.1|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.63.1/tbusd.xml_1.0.63.1|tlog.xml_1.0.6.2|0|
+20200616 16:21:27|1|4|127.0.0.1|transcfg|0|1.0.63.1|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.63.1/tlog.xml_1.0.63.1||0|
+20200616 16:21:27|1|4|127.0.0.1|transcfg|0|1.0.1.1|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.1.1/tlog.xml_1.0.1.1||0|
+20200616 16:21:27|1|4|127.0.0.1|transcfg|0|1.0.1.1|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.1.1/tconnd.xml_1.0.1.1||0|
+20200616 16:21:27|1|4|127.0.0.1|transcfg|0|1.0.1.2|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.1.2/tlog.xml_1.0.1.2||0|
+20200616 16:21:27|1|4|127.0.0.1|transcfg|0|1.0.1.2|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.1.2/tconnd.xml_1.0.1.2||0|
+20200616 16:21:27|1|4|127.0.0.1|transcfg|0|1.0.2.1|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.2.1/tlog.xml_1.0.2.1||0|
+20200616 16:21:27|1|4|127.0.0.1|transcfg|0|1.0.2.2|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.2.2/tlog.xml_1.0.2.2||0|
+20200616 16:21:27|1|4|127.0.0.1|transcfg|0|1.0.3.1|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.3.1/tlog.xml_1.0.3.1||0|
+20200616 16:21:27|1|4|127.0.0.1|transcfg|0|1.0.4.1|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.4.1/tlog.xml_1.0.4.1||0|
+20200616 16:21:27|1|4|127.0.0.1|transcfg|0|1.0.5.1|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.5.1/tlog.xml_1.0.5.1||0|
+20200616 16:21:27|1|4|127.0.0.1|transcfg|0|1.0.6.1|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.6.1/tlog.xml_1.0.6.1||0|
+20200616 16:21:27|1|4|127.0.0.1|transcfg|0|1.0.6.2|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.6.2/tlog.xml_1.0.6.2||0|
+20200616 16:21:27|1|2|127.0.0.1|transcfg|0|1.0.1.1|||||0|
+20200616 16:21:27|1|2|127.0.0.1|transcfg|0|1.0.1.1|||||0|
+20200616 16:21:27|1|2|127.0.0.1|transcfg|0|1.0.1.2|||||0|
+20200616 16:21:27|1|2|127.0.0.1|transcfg|0|1.0.1.2|||||0|
+20200616 16:21:27|1|2|127.0.0.1|transcfg|0|1.0.2.1|||||0|
+20200616 16:21:27|1|2|127.0.0.1|transcfg|0|1.0.2.2|||||0|
+20200616 16:21:27|1|2|127.0.0.1|transcfg|0|1.0.3.1|||||0|
+20200616 16:21:27|1|2|127.0.0.1|transcfg|0|1.0.4.1|||||0|
+20200616 16:21:27|1|2|127.0.0.1|transcfg|0|1.0.5.1|||||0|
+20200616 16:21:27|1|2|127.0.0.1|transcfg|0|1.0.6.1|||||0|
+20200616 16:21:27|1|2|127.0.0.1|transcfg|0|1.0.6.2|||||0|
+20200616 16:21:27|1|2|127.0.0.1|transcfg|0|1.0.63.1|||||0|
+20200616 16:21:27|1|2|127.0.0.1|transcfg|0|1.0.63.1|||||0|
+20200616 16:23:19|1|1|127.0.0.1|transcfg|1|*.*.*.*|||||0|
+20200616 16:23:19|1|3|127.0.0.1|transcfg|1|1.0.1.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/tconnd/.|tlog.xml_1.0.1.1|0|
+20200616 16:23:19|1|3|127.0.0.1|transcfg|1|1.0.1.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/tconnd/.|tconnd.xml_1.0.1.1|0|
+20200616 16:23:19|1|3|127.0.0.1|transcfg|1|1.0.1.2|test_host1|10.85.45.212|/data/home/stevhuang/mango/tconnd/.|tlog.xml_1.0.1.2|0|
+20200616 16:23:19|1|3|127.0.0.1|transcfg|1|1.0.1.2|test_host1|10.85.45.212|/data/home/stevhuang/mango/tconnd/.|tconnd.xml_1.0.1.2|0|
+20200616 16:23:19|1|3|127.0.0.1|transcfg|1|1.0.2.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/server/.|tlog.xml_1.0.2.1|0|
+20200616 16:23:19|1|3|127.0.0.1|transcfg|1|1.0.2.2|test_host1|10.85.45.212|/data/home/stevhuang/mango/server/.|tlog.xml_1.0.2.2|0|
+20200616 16:23:19|1|3|127.0.0.1|transcfg|1|1.0.3.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/router_server/.|tlog.xml_1.0.3.1|0|
+20200616 16:23:19|1|3|127.0.0.1|transcfg|1|1.0.4.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/service_mgr_server/.|tlog.xml_1.0.4.1|0|
+20200616 16:23:19|1|3|127.0.0.1|transcfg|1|1.0.5.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/control_server/.|tlog.xml_1.0.5.1|0|
+20200616 16:23:19|1|3|127.0.0.1|transcfg|1|1.0.6.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/func_server/.|tlog.xml_1.0.6.1|0|
+20200616 16:23:19|1|3|127.0.0.1|transcfg|1|1.0.6.2|test_host1|10.85.45.212|/data/home/stevhuang/mango/func_server/.|tlog.xml_1.0.6.2|0|
+20200616 16:23:19|1|3|127.0.0.1|transcfg|1|1.0.63.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/tbusd/.|tbusd.xml_1.0.63.1|0|
+20200616 16:23:19|1|3|127.0.0.1|transcfg|1|1.0.63.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/tbusd/.|tlog.xml_1.0.63.1|0|
+20200616 16:23:19|1|4|127.0.0.1|transcfg|1|1.0.63.1|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.63.1/tbusd.xml_1.0.63.1|tlog.xml_1.0.6.2|0|
+20200616 16:23:19|1|4|127.0.0.1|transcfg|1|1.0.63.1|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.63.1/tlog.xml_1.0.63.1||0|
+20200616 16:23:19|1|4|127.0.0.1|transcfg|1|1.0.1.1|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.1.1/tlog.xml_1.0.1.1||0|
+20200616 16:23:19|1|4|127.0.0.1|transcfg|1|1.0.1.1|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.1.1/tconnd.xml_1.0.1.1||0|
+20200616 16:23:19|1|4|127.0.0.1|transcfg|1|1.0.1.2|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.1.2/tlog.xml_1.0.1.2||0|
+20200616 16:23:19|1|4|127.0.0.1|transcfg|1|1.0.1.2|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.1.2/tconnd.xml_1.0.1.2||0|
+20200616 16:23:19|1|4|127.0.0.1|transcfg|1|1.0.2.1|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.2.1/tlog.xml_1.0.2.1||0|
+20200616 16:23:19|1|4|127.0.0.1|transcfg|1|1.0.2.2|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.2.2/tlog.xml_1.0.2.2||0|
+20200616 16:23:19|1|4|127.0.0.1|transcfg|1|1.0.3.1|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.3.1/tlog.xml_1.0.3.1||0|
+20200616 16:23:19|1|4|127.0.0.1|transcfg|1|1.0.4.1|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.4.1/tlog.xml_1.0.4.1||0|
+20200616 16:23:19|1|4|127.0.0.1|transcfg|1|1.0.5.1|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.5.1/tlog.xml_1.0.5.1||0|
+20200616 16:23:19|1|4|127.0.0.1|transcfg|1|1.0.6.1|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.6.1/tlog.xml_1.0.6.1||0|
+20200616 16:23:19|1|4|127.0.0.1|transcfg|1|1.0.6.2|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.6.2/tlog.xml_1.0.6.2||0|
+20200616 16:23:19|1|2|127.0.0.1|transcfg|1|1.0.1.1|||||0|
+20200616 16:23:19|1|2|127.0.0.1|transcfg|1|1.0.1.1|||||0|
+20200616 16:23:19|1|2|127.0.0.1|transcfg|1|1.0.1.2|||||0|
+20200616 16:23:19|1|2|127.0.0.1|transcfg|1|1.0.1.2|||||0|
+20200616 16:23:19|1|2|127.0.0.1|transcfg|1|1.0.2.1|||||0|
+20200616 16:23:19|1|2|127.0.0.1|transcfg|1|1.0.2.2|||||0|
+20200616 16:23:19|1|2|127.0.0.1|transcfg|1|1.0.3.1|||||0|
+20200616 16:23:19|1|2|127.0.0.1|transcfg|1|1.0.4.1|||||0|
+20200616 16:23:19|1|2|127.0.0.1|transcfg|1|1.0.5.1|||||0|
+20200616 16:23:19|1|2|127.0.0.1|transcfg|1|1.0.6.1|||||0|
+20200616 16:23:19|1|2|127.0.0.1|transcfg|1|1.0.6.2|||||0|
+20200616 16:23:19|1|2|127.0.0.1|transcfg|1|1.0.63.1|||||0|
+20200616 16:23:19|1|2|127.0.0.1|transcfg|1|1.0.63.1|||||0|
+20200616 16:23:28|1|1|127.0.0.1|start|2|*.*.*.*|||||0|
+20200616 16:23:28|1|3|127.0.0.1|start|2|1.0.1.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/tconnd|/data/home/stevhuang/mango/tconnd/tconnd --use-bus  --conf-file=./tconnd.xml_1.0.1.1 --tlogconf=./tlog.xml_1_0.1.1 --rundata_timer=./rundata_timer.xml_1_0.1.1 --id=1.0.1.1 --bus-key=667001 --business-id=0  -D  start|0|
+20200616 16:23:28|1|3|127.0.0.1|start|2|1.0.1.2|test_host1|10.85.45.212|/data/home/stevhuang/mango/tconnd|/data/home/stevhuang/mango/tconnd/tconnd --use-bus  --conf-file=./tconnd.xml_1.0.1.2 --tlogconf=./tlog.xml_1_0.1.2 --rundata_timer=./rundata_timer.xml_1_0.1.2 --id=1.0.1.2 --bus-key=667001 --business-id=0  -D  start|0|
+20200616 16:23:28|1|3|127.0.0.1|start|2|1.0.2.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/server|/data/home/stevhuang/mango/server/server --use-bus  --noloadconf --tlogconf=./tlog.xml_1_0.2.1 --rundata_timer=./rundata_timer.xml_1_0.2.1 --id=1.0.2.1 --bus-key=667001 --business-id=0  -D  start|0|
+20200616 16:23:28|1|3|127.0.0.1|start|2|1.0.2.2|test_host1|10.85.45.212|/data/home/stevhuang/mango/server|/data/home/stevhuang/mango/server/server --use-bus  --noloadconf --tlogconf=./tlog.xml_1_0.2.2 --rundata_timer=./rundata_timer.xml_1_0.2.2 --id=1.0.2.2 --bus-key=667001 --business-id=0  -D  start|0|
+20200616 16:23:28|1|3|127.0.0.1|start|2|1.0.3.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/router_server|/data/home/stevhuang/mango/router_server/router_server --use-bus  --noloadconf --tlogconf=./tlog.xml_1_0.3.1 --rundata_timer=./rundata_timer.xml_1_0.3.1 --id=1.0.3.1 --bus-key=667001 --business-id=0  -D  start|0|
+20200616 16:23:28|1|3|127.0.0.1|start|2|1.0.4.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/service_mgr_server|/data/home/stevhuang/mango/service_mgr_server/service_mgr_server --use-bus  --noloadconf --tlogconf=./tlog.xml_1_0.4.1 --rundata_timer=./rundata_timer.xml_1_0.4.1 --id=1.0.4.1 --bus-key=667001 --business-id=0  -D  start|0|
+20200616 16:23:28|1|3|127.0.0.1|start|2|1.0.5.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/control_server|/data/home/stevhuang/mango/control_server/control_server --use-bus  --noloadconf --tlogconf=./tlog.xml_1_0.5.1 --rundata_timer=./rundata_timer.xml_1_0.5.1 --id=1.0.5.1 --bus-key=667001 --business-id=0  -D  start|0|
+20200616 16:23:28|1|3|127.0.0.1|start|2|1.0.6.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/func_server|/data/home/stevhuang/mango/func_server/func_server --use-bus  --noloadconf --tlogconf=./tlog.xml_1_0.6.1 --rundata_timer=./rundata_timer.xml_1_0.6.1 --id=1.0.6.1 --bus-key=667001 --business-id=0  -D  start|0|
+20200616 16:23:28|1|3|127.0.0.1|start|2|1.0.6.2|test_host1|10.85.45.212|/data/home/stevhuang/mango/func_server|/data/home/stevhuang/mango/func_server/func_server --use-bus  --noloadconf --tlogconf=./tlog.xml_1_0.6.2 --rundata_timer=./rundata_timer.xml_1_0.6.2 --id=1.0.6.2 --bus-key=667001 --business-id=0  -D  start|0|
+20200616 16:23:28|1|3|127.0.0.1|start|2|1.0.63.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/tbusd|/data/home/stevhuang/mango/tbusd/tbusd --use-bus  --conf-file=./tbusd.xml_1.0.63.1 --tlogconf=./tlog.xml_1_0.63.1 --rundata_timer=./rundata_timer.xml_1_0.63.1 --id=1.0.63.1  --business-id=0  -D  start|0|
+20200616 16:23:35|1|4|127.0.0.1|start|2|1.0.4.1|test_host1|10.85.45.212|||2|read pid by pidfile(/tmp/service_mgr_server_1.0.4.1.pid) fail,for No such file or directory
+20200616 16:23:35|1|4|127.0.0.1|start|2|1.0.3.1|test_host1|10.85.45.212|||2|read pid by pidfile(/tmp/router_server_1.0.3.1.pid) fail,for No such file or directory
+20200616 16:23:35|1|4|127.0.0.1|start|2|1.0.63.1|test_host1|10.85.45.212|||2|read pid by pidfile(/tmp/tbusd_1.0.63.1.pid) fail,for No such file or directory
+20200616 16:23:35|1|4|127.0.0.1|start|2|1.0.2.2|test_host1|10.85.45.212|||2|read pid by pidfile(/tmp/server_1.0.2.2.pid) fail,for No such file or directory
+20200616 16:23:35|1|4|127.0.0.1|start|2|1.0.1.2|test_host1|10.85.45.212|||2|read pid by pidfile(/tmp/tconnd_1.0.1.2.pid) fail,for No such file or directory
+20200616 16:23:35|1|4|127.0.0.1|start|2|1.0.2.1|test_host1|10.85.45.212|||2|read pid by pidfile(/tmp/server_1.0.2.1.pid) fail,for No such file or directory
+20200616 16:23:35|1|4|127.0.0.1|start|2|1.0.1.1|test_host1|10.85.45.212|||2|read pid by pidfile(/tmp/tconnd_1.0.1.1.pid) fail,for No such file or directory
+20200616 16:23:35|1|4|127.0.0.1|start|2|1.0.6.1|test_host1|10.85.45.212|||2|read pid by pidfile(/tmp/func_server_1.0.6.1.pid) fail,for No such file or directory
+20200616 16:23:35|1|4|127.0.0.1|start|2|1.0.6.2|test_host1|10.85.45.212|||2|read pid by pidfile(/tmp/func_server_1.0.6.2.pid) fail,for No such file or directory
+20200616 16:23:35|1|4|127.0.0.1|start|2|1.0.5.1|test_host1|10.85.45.212|||2|read pid by pidfile(/tmp/control_server_1.0.5.1.pid) fail,for No such file or directory
+20200616 16:23:35|1|2|127.0.0.1|start|2|1.0.1.1|||||4|read pid by pidfile(/tmp/tconnd_1.0.1.1.pid) fail,for No such file or directory
+20200616 16:23:35|1|2|127.0.0.1|start|2|1.0.1.2|||||4|read pid by pidfile(/tmp/tconnd_1.0.1.2.pid) fail,for No such file or directory
+20200616 16:23:35|1|2|127.0.0.1|start|2|1.0.2.1|||||4|read pid by pidfile(/tmp/server_1.0.2.1.pid) fail,for No such file or directory
+20200616 16:23:35|1|2|127.0.0.1|start|2|1.0.2.2|||||4|read pid by pidfile(/tmp/server_1.0.2.2.pid) fail,for No such file or directory
+20200616 16:23:35|1|2|127.0.0.1|start|2|1.0.3.1|||||4|read pid by pidfile(/tmp/router_server_1.0.3.1.pid) fail,for No such file or directory
+20200616 16:23:35|1|2|127.0.0.1|start|2|1.0.4.1|||||4|read pid by pidfile(/tmp/service_mgr_server_1.0.4.1.pid) fail,for No such file or directory
+20200616 16:23:35|1|2|127.0.0.1|start|2|1.0.5.1|||||4|read pid by pidfile(/tmp/control_server_1.0.5.1.pid) fail,for No such file or directory
+20200616 16:23:35|1|2|127.0.0.1|start|2|1.0.6.1|||||4|read pid by pidfile(/tmp/func_server_1.0.6.1.pid) fail,for No such file or directory
+20200616 16:23:35|1|2|127.0.0.1|start|2|1.0.6.2|||||4|read pid by pidfile(/tmp/func_server_1.0.6.2.pid) fail,for No such file or directory
+20200616 16:23:35|1|2|127.0.0.1|start|2|1.0.63.1|||||4|read pid by pidfile(/tmp/tbusd_1.0.63.1.pid) fail,for No such file or directory
+20200616 16:58:50|1|1|127.0.0.1|transcfg|3|*.*.*.*|||||0|
+20200616 16:58:50|1|3|127.0.0.1|transcfg|3|1.0.1.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/tconnd/.|tlog.xml_1.0.1.1|0|
+20200616 16:58:50|1|3|127.0.0.1|transcfg|3|1.0.1.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/tconnd/.|tconnd.xml_1.0.1.1|0|
+20200616 16:58:50|1|3|127.0.0.1|transcfg|3|1.0.1.2|test_host1|10.85.45.212|/data/home/stevhuang/mango/tconnd/.|tlog.xml_1.0.1.2|0|
+20200616 16:58:50|1|3|127.0.0.1|transcfg|3|1.0.1.2|test_host1|10.85.45.212|/data/home/stevhuang/mango/tconnd/.|tconnd.xml_1.0.1.2|0|
+20200616 16:58:50|1|3|127.0.0.1|transcfg|3|1.0.2.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/server/.|tlog.xml_1.0.2.1|0|
+20200616 16:58:50|1|3|127.0.0.1|transcfg|3|1.0.2.2|test_host1|10.85.45.212|/data/home/stevhuang/mango/server/.|tlog.xml_1.0.2.2|0|
+20200616 16:58:50|1|3|127.0.0.1|transcfg|3|1.0.3.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/router_server/.|tlog.xml_1.0.3.1|0|
+20200616 16:58:50|1|3|127.0.0.1|transcfg|3|1.0.4.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/service_mgr_server/.|tlog.xml_1.0.4.1|0|
+20200616 16:58:50|1|3|127.0.0.1|transcfg|3|1.0.5.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/control_server/.|tlog.xml_1.0.5.1|0|
+20200616 16:58:50|1|3|127.0.0.1|transcfg|3|1.0.6.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/func_server/.|tlog.xml_1.0.6.1|0|
+20200616 16:58:50|1|3|127.0.0.1|transcfg|3|1.0.6.2|test_host1|10.85.45.212|/data/home/stevhuang/mango/func_server/.|tlog.xml_1.0.6.2|0|
+20200616 16:58:50|1|3|127.0.0.1|transcfg|3|1.0.63.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/tbusd/.|tbusd.xml_1.0.63.1|0|
+20200616 16:58:50|1|3|127.0.0.1|transcfg|3|1.0.63.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/tbusd/.|tlog.xml_1.0.63.1|0|
+20200616 16:58:50|1|4|127.0.0.1|transcfg|3|1.0.63.1|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.63.1/tbusd.xml_1.0.63.1|tlog.xml_1.0.6.2|0|
+20200616 16:58:50|1|4|127.0.0.1|transcfg|3|1.0.63.1|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.63.1/tlog.xml_1.0.63.1||0|
+20200616 16:58:50|1|4|127.0.0.1|transcfg|3|1.0.1.1|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.1.1/tlog.xml_1.0.1.1||0|
+20200616 16:58:50|1|4|127.0.0.1|transcfg|3|1.0.1.1|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.1.1/tconnd.xml_1.0.1.1||0|
+20200616 16:58:50|1|4|127.0.0.1|transcfg|3|1.0.1.2|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.1.2/tlog.xml_1.0.1.2||0|
+20200616 16:58:50|1|4|127.0.0.1|transcfg|3|1.0.1.2|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.1.2/tconnd.xml_1.0.1.2||0|
+20200616 16:58:50|1|4|127.0.0.1|transcfg|3|1.0.2.1|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.2.1/tlog.xml_1.0.2.1||0|
+20200616 16:58:50|1|4|127.0.0.1|transcfg|3|1.0.2.2|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.2.2/tlog.xml_1.0.2.2||0|
+20200616 16:58:50|1|4|127.0.0.1|transcfg|3|1.0.3.1|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.3.1/tlog.xml_1.0.3.1||0|
+20200616 16:58:50|1|4|127.0.0.1|transcfg|3|1.0.4.1|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.4.1/tlog.xml_1.0.4.1||0|
+20200616 16:58:50|1|4|127.0.0.1|transcfg|3|1.0.5.1|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.5.1/tlog.xml_1.0.5.1||0|
+20200616 16:58:50|1|4|127.0.0.1|transcfg|3|1.0.6.1|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.6.1/tlog.xml_1.0.6.1||0|
+20200616 16:58:50|1|4|127.0.0.1|transcfg|3|1.0.6.2|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.6.2/tlog.xml_1.0.6.2||0|
+20200616 16:58:50|1|2|127.0.0.1|transcfg|3|1.0.1.1|||||0|
+20200616 16:58:50|1|2|127.0.0.1|transcfg|3|1.0.1.1|||||0|
+20200616 16:58:50|1|2|127.0.0.1|transcfg|3|1.0.1.2|||||0|
+20200616 16:58:50|1|2|127.0.0.1|transcfg|3|1.0.1.2|||||0|
+20200616 16:58:50|1|2|127.0.0.1|transcfg|3|1.0.2.1|||||0|
+20200616 16:58:50|1|2|127.0.0.1|transcfg|3|1.0.2.2|||||0|
+20200616 16:58:50|1|2|127.0.0.1|transcfg|3|1.0.3.1|||||0|
+20200616 16:58:50|1|2|127.0.0.1|transcfg|3|1.0.4.1|||||0|
+20200616 16:58:50|1|2|127.0.0.1|transcfg|3|1.0.5.1|||||0|
+20200616 16:58:50|1|2|127.0.0.1|transcfg|3|1.0.6.1|||||0|
+20200616 16:58:50|1|2|127.0.0.1|transcfg|3|1.0.6.2|||||0|
+20200616 16:58:50|1|2|127.0.0.1|transcfg|3|1.0.63.1|||||0|
+20200616 16:58:50|1|2|127.0.0.1|transcfg|3|1.0.63.1|||||0|
+20200616 17:08:57|1|1|127.0.0.1|transcfg|1|*.*.*.*|||||0|
+20200616 17:08:57|1|3|127.0.0.1|transcfg|1|1.0.1.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/tconnd/.|tlog.xml_1.0.1.1|0|
+20200616 17:08:57|1|3|127.0.0.1|transcfg|1|1.0.1.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/tconnd/.|tconnd.xml_1.0.1.1|0|
+20200616 17:08:57|1|3|127.0.0.1|transcfg|1|1.0.1.2|test_host1|10.85.45.212|/data/home/stevhuang/mango/tconnd/.|tlog.xml_1.0.1.2|0|
+20200616 17:08:57|1|3|127.0.0.1|transcfg|1|1.0.1.2|test_host1|10.85.45.212|/data/home/stevhuang/mango/tconnd/.|tconnd.xml_1.0.1.2|0|
+20200616 17:08:57|1|3|127.0.0.1|transcfg|1|1.0.2.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/server/.|tlog.xml_1.0.2.1|0|
+20200616 17:08:57|1|3|127.0.0.1|transcfg|1|1.0.2.2|test_host1|10.85.45.212|/data/home/stevhuang/mango/server/.|tlog.xml_1.0.2.2|0|
+20200616 17:08:57|1|3|127.0.0.1|transcfg|1|1.0.3.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/router_server/.|tlog.xml_1.0.3.1|0|
+20200616 17:08:57|1|3|127.0.0.1|transcfg|1|1.0.4.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/service_mgr_server/.|tlog.xml_1.0.4.1|0|
+20200616 17:08:57|1|3|127.0.0.1|transcfg|1|1.0.5.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/control_server/.|tlog.xml_1.0.5.1|0|
+20200616 17:08:57|1|3|127.0.0.1|transcfg|1|1.0.6.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/func_server/.|tlog.xml_1.0.6.1|0|
+20200616 17:08:57|1|3|127.0.0.1|transcfg|1|1.0.6.2|test_host1|10.85.45.212|/data/home/stevhuang/mango/func_server/.|tlog.xml_1.0.6.2|0|
+20200616 17:08:57|1|3|127.0.0.1|transcfg|1|1.0.61.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/tlogd/.|tlogd.xml_1.0.61.1|0|
+20200616 17:08:57|1|3|127.0.0.1|transcfg|1|1.0.63.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/tbusd/.|tbusd.xml_1.0.63.1|0|
+20200616 17:08:57|1|3|127.0.0.1|transcfg|1|1.0.63.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/tbusd/.|tlog.xml_1.0.63.1|0|
+20200616 17:08:57|1|4|127.0.0.1|transcfg|1|1.0.1.1|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.1.1/tlog.xml_1.0.1.1||0|
+20200616 17:08:57|1|4|127.0.0.1|transcfg|1|1.0.1.1|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.1.1/tconnd.xml_1.0.1.1||0|
+20200616 17:08:57|1|4|127.0.0.1|transcfg|1|1.0.1.2|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.1.2/tlog.xml_1.0.1.2||0|
+20200616 17:08:57|1|4|127.0.0.1|transcfg|1|1.0.1.2|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.1.2/tconnd.xml_1.0.1.2||0|
+20200616 17:08:57|1|4|127.0.0.1|transcfg|1|1.0.2.1|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.2.1/tlog.xml_1.0.2.1||0|
+20200616 17:08:57|1|4|127.0.0.1|transcfg|1|1.0.2.2|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.2.2/tlog.xml_1.0.2.2||0|
+20200616 17:08:57|1|4|127.0.0.1|transcfg|1|1.0.3.1|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.3.1/tlog.xml_1.0.3.1||0|
+20200616 17:08:57|1|4|127.0.0.1|transcfg|1|1.0.4.1|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.4.1/tlog.xml_1.0.4.1||0|
+20200616 17:08:57|1|4|127.0.0.1|transcfg|1|1.0.5.1|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.5.1/tlog.xml_1.0.5.1||0|
+20200616 17:08:57|1|4|127.0.0.1|transcfg|1|1.0.6.1|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.6.1/tlog.xml_1.0.6.1||0|
+20200616 17:08:57|1|4|127.0.0.1|transcfg|1|1.0.6.2|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.6.2/tlog.xml_1.0.6.2||0|
+20200616 17:08:57|1|4|127.0.0.1|transcfg|1|1.0.63.1|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.63.1/tbusd.xml_1.0.63.1|tlogd.xml_1.0.61.1|0|
+20200616 17:08:57|1|4|127.0.0.1|transcfg|1|1.0.63.1|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.63.1/tlog.xml_1.0.63.1||0|
+20200616 17:08:58|1|4|127.0.0.1|transcfg|1|1.0.61.1|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.61.1/tlogd.xml_1.0.61.1|tlogd.xml_1.0.61.1|0|
+20200616 17:08:58|1|2|127.0.0.1|transcfg|1|1.0.1.1|||||0|
+20200616 17:08:58|1|2|127.0.0.1|transcfg|1|1.0.1.1|||||0|
+20200616 17:08:58|1|2|127.0.0.1|transcfg|1|1.0.1.2|||||0|
+20200616 17:08:58|1|2|127.0.0.1|transcfg|1|1.0.1.2|||||0|
+20200616 17:08:58|1|2|127.0.0.1|transcfg|1|1.0.2.1|||||0|
+20200616 17:08:58|1|2|127.0.0.1|transcfg|1|1.0.2.2|||||0|
+20200616 17:08:58|1|2|127.0.0.1|transcfg|1|1.0.3.1|||||0|
+20200616 17:08:58|1|2|127.0.0.1|transcfg|1|1.0.4.1|||||0|
+20200616 17:08:58|1|2|127.0.0.1|transcfg|1|1.0.5.1|||||0|
+20200616 17:08:58|1|2|127.0.0.1|transcfg|1|1.0.6.1|||||0|
+20200616 17:08:58|1|2|127.0.0.1|transcfg|1|1.0.6.2|||||0|
+20200616 17:08:58|1|2|127.0.0.1|transcfg|1|1.0.61.1|||||0|
+20200616 17:08:58|1|2|127.0.0.1|transcfg|1|1.0.63.1|||||0|
+20200616 17:08:58|1|2|127.0.0.1|transcfg|1|1.0.63.1|||||0|
+20200616 17:09:55|1|1|127.0.0.1|start|3|*.*.*.*|||||0|
+20200616 17:09:55|1|3|127.0.0.1|start|3|1.0.1.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/tconnd|/data/home/stevhuang/mango/tconnd/tconnd --use-bus  --conf-file=./tconnd.xml_1.0.1.1 --tlogconf=./tlog.xml_1_0.1.1 --rundata_timer=./rundata_timer.xml_1_0.1.1 --id=1.0.1.1 --bus-key=667001 --business-id=0  -D  start|0|
+20200616 17:09:55|1|3|127.0.0.1|start|3|1.0.1.2|test_host1|10.85.45.212|/data/home/stevhuang/mango/tconnd|/data/home/stevhuang/mango/tconnd/tconnd --use-bus  --conf-file=./tconnd.xml_1.0.1.2 --tlogconf=./tlog.xml_1_0.1.2 --rundata_timer=./rundata_timer.xml_1_0.1.2 --id=1.0.1.2 --bus-key=667001 --business-id=0  -D  start|0|
+20200616 17:09:55|1|3|127.0.0.1|start|3|1.0.2.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/server|/data/home/stevhuang/mango/server/server --use-bus  --noloadconf --tlogconf=./tlog.xml_1_0.2.1 --rundata_timer=./rundata_timer.xml_1_0.2.1 --id=1.0.2.1 --bus-key=667001 --business-id=0  -D  start|0|
+20200616 17:09:55|1|3|127.0.0.1|start|3|1.0.2.2|test_host1|10.85.45.212|/data/home/stevhuang/mango/server|/data/home/stevhuang/mango/server/server --use-bus  --noloadconf --tlogconf=./tlog.xml_1_0.2.2 --rundata_timer=./rundata_timer.xml_1_0.2.2 --id=1.0.2.2 --bus-key=667001 --business-id=0  -D  start|0|
+20200616 17:09:55|1|3|127.0.0.1|start|3|1.0.3.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/router_server|/data/home/stevhuang/mango/router_server/router_server --use-bus  --noloadconf --tlogconf=./tlog.xml_1_0.3.1 --rundata_timer=./rundata_timer.xml_1_0.3.1 --id=1.0.3.1 --bus-key=667001 --business-id=0  -D  start|0|
+20200616 17:09:55|1|3|127.0.0.1|start|3|1.0.4.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/service_mgr_server|/data/home/stevhuang/mango/service_mgr_server/service_mgr_server --use-bus  --noloadconf --tlogconf=./tlog.xml_1_0.4.1 --rundata_timer=./rundata_timer.xml_1_0.4.1 --id=1.0.4.1 --bus-key=667001 --business-id=0  -D  start|0|
+20200616 17:09:55|1|3|127.0.0.1|start|3|1.0.5.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/control_server|/data/home/stevhuang/mango/control_server/control_server --use-bus  --noloadconf --tlogconf=./tlog.xml_1_0.5.1 --rundata_timer=./rundata_timer.xml_1_0.5.1 --id=1.0.5.1 --bus-key=667001 --business-id=0  -D  start|0|
+20200616 17:09:55|1|3|127.0.0.1|start|3|1.0.6.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/func_server|/data/home/stevhuang/mango/func_server/func_server --use-bus  --noloadconf --tlogconf=./tlog.xml_1_0.6.1 --rundata_timer=./rundata_timer.xml_1_0.6.1 --id=1.0.6.1 --bus-key=667001 --business-id=0  -D  start|0|
+20200616 17:09:55|1|3|127.0.0.1|start|3|1.0.6.2|test_host1|10.85.45.212|/data/home/stevhuang/mango/func_server|/data/home/stevhuang/mango/func_server/func_server --use-bus  --noloadconf --tlogconf=./tlog.xml_1_0.6.2 --rundata_timer=./rundata_timer.xml_1_0.6.2 --id=1.0.6.2 --bus-key=667001 --business-id=0  -D  start|0|
+20200616 17:09:55|1|3|127.0.0.1|start|3|1.0.61.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/tlogd|/data/home/stevhuang/mango/tlogd/tlogd --use-bus  --conf-file=./tlogd.xml_1.0.61.1 --id=1.0.61.1  --business-id=0  -D  start|0|
+20200616 17:09:55|1|3|127.0.0.1|start|3|1.0.63.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/tbusd|/data/home/stevhuang/mango/tbusd/tbusd --use-bus  --conf-file=./tbusd.xml_1.0.63.1 --tlogconf=./tlog.xml_1_0.63.1 --rundata_timer=./rundata_timer.xml_1_0.63.1 --id=1.0.63.1  --business-id=0  -D  start|0|
+20200616 17:10:02|1|4|127.0.0.1|start|3|1.0.4.1|test_host1|10.85.45.212|||0|
+20200616 17:10:02|1|4|127.0.0.1|start|3|1.0.3.1|test_host1|10.85.45.212|||0|
+20200616 17:10:02|1|4|127.0.0.1|start|3|1.0.63.1|test_host1|10.85.45.212|||2|read pid by pidfile(/tmp/tbusd_1.0.63.1.pid) fail,for No such file or directory
+20200616 17:10:02|1|4|127.0.0.1|start|3|1.0.2.2|test_host1|10.85.45.212|||0|
+20200616 17:10:02|1|4|127.0.0.1|start|3|1.0.1.2|test_host1|10.85.45.212|||2|read pid by pidfile(/tmp/tconnd_1.0.1.2.pid) fail,for No such file or directory
+20200616 17:10:02|1|4|127.0.0.1|start|3|1.0.2.1|test_host1|10.85.45.212|||0|
+20200616 17:10:02|1|4|127.0.0.1|start|3|1.0.1.1|test_host1|10.85.45.212|||2|read pid by pidfile(/tmp/tconnd_1.0.1.1.pid) fail,for No such file or directory
+20200616 17:10:02|1|4|127.0.0.1|start|3|1.0.6.1|test_host1|10.85.45.212|||0|
+20200616 17:10:02|1|4|127.0.0.1|start|3|1.0.6.2|test_host1|10.85.45.212|||0|
+20200616 17:10:02|1|4|127.0.0.1|start|3|1.0.5.1|test_host1|10.85.45.212|||0|
+20200616 17:10:02|1|4|127.0.0.1|start|3|1.0.61.1|test_host1|10.85.45.212|||2|read pid by pidfile(/tmp/tlogd_1.0.61.1.pid) fail,for No such file or directory
+20200616 17:10:02|1|2|127.0.0.1|start|3|1.0.1.1|||||4|read pid by pidfile(/tmp/tconnd_1.0.1.1.pid) fail,for No such file or directory
+20200616 17:10:02|1|2|127.0.0.1|start|3|1.0.1.2|||||4|read pid by pidfile(/tmp/tconnd_1.0.1.2.pid) fail,for No such file or directory
+20200616 17:10:02|1|2|127.0.0.1|start|3|1.0.2.1|||||0|
+20200616 17:10:02|1|2|127.0.0.1|start|3|1.0.2.2|||||0|
+20200616 17:10:02|1|2|127.0.0.1|start|3|1.0.3.1|||||0|
+20200616 17:10:02|1|2|127.0.0.1|start|3|1.0.4.1|||||0|
+20200616 17:10:02|1|2|127.0.0.1|start|3|1.0.5.1|||||0|
+20200616 17:10:02|1|2|127.0.0.1|start|3|1.0.6.1|||||0|
+20200616 17:10:02|1|2|127.0.0.1|start|3|1.0.6.2|||||0|
+20200616 17:10:02|1|2|127.0.0.1|start|3|1.0.61.1|||||4|read pid by pidfile(/tmp/tlogd_1.0.61.1.pid) fail,for No such file or directory
+20200616 17:10:02|1|2|127.0.0.1|start|3|1.0.63.1|||||4|read pid by pidfile(/tmp/tbusd_1.0.63.1.pid) fail,for No such file or directory
+20200616 17:10:11|1|1|127.0.0.1|stop|4|*.*.*.*|||||0|
+20200616 17:10:11|1|3|127.0.0.1|stop|4|1.0.63.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/tbusd|/data/home/stevhuang/mango/tbusd/tbusd --id=1.0.63.1 --business-id=0  -D stop|0|
+20200616 17:10:11|1|3|127.0.0.1|stop|4|1.0.61.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/tlogd|/data/home/stevhuang/mango/tlogd/tlogd --id=1.0.61.1 --business-id=0  -D stop|0|
+20200616 17:10:11|1|3|127.0.0.1|stop|4|1.0.6.2|test_host1|10.85.45.212|/data/home/stevhuang/mango/func_server|/data/home/stevhuang/mango/func_server/func_server --id=1.0.6.2 --business-id=0  -D stop|0|
+20200616 17:10:11|1|3|127.0.0.1|stop|4|1.0.6.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/func_server|/data/home/stevhuang/mango/func_server/func_server --id=1.0.6.1 --business-id=0  -D stop|0|
+20200616 17:10:11|1|3|127.0.0.1|stop|4|1.0.5.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/control_server|/data/home/stevhuang/mango/control_server/control_server --id=1.0.5.1 --business-id=0  -D stop|0|
+20200616 17:10:11|1|3|127.0.0.1|stop|4|1.0.4.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/service_mgr_server|/data/home/stevhuang/mango/service_mgr_server/service_mgr_server --id=1.0.4.1 --business-id=0  -D stop|0|
+20200616 17:10:11|1|3|127.0.0.1|stop|4|1.0.3.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/router_server|/data/home/stevhuang/mango/router_server/router_server --id=1.0.3.1 --business-id=0  -D stop|0|
+20200616 17:10:11|1|3|127.0.0.1|stop|4|1.0.2.2|test_host1|10.85.45.212|/data/home/stevhuang/mango/server|/data/home/stevhuang/mango/server/server --id=1.0.2.2 --business-id=0  -D stop|0|
+20200616 17:10:11|1|3|127.0.0.1|stop|4|1.0.2.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/server|/data/home/stevhuang/mango/server/server --id=1.0.2.1 --business-id=0  -D stop|0|
+20200616 17:10:11|1|3|127.0.0.1|stop|4|1.0.1.2|test_host1|10.85.45.212|/data/home/stevhuang/mango/tconnd|/data/home/stevhuang/mango/tconnd/tconnd --id=1.0.1.2 --business-id=0  -D stop|0|
+20200616 17:10:11|1|3|127.0.0.1|stop|4|1.0.1.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/tconnd|/data/home/stevhuang/mango/tconnd/tconnd --id=1.0.1.1 --business-id=0  -D stop|0|
+20200616 17:10:11|1|4|127.0.0.1|stop|4|1.0.63.1|test_host1|10.85.45.212|||1|do cmd(/data/home/stevhuang/mango/tbusd/tbusd --id=1.0.63.1 --business-id=0  -D stop) fail: iRet:32256, errno(0)(Success)
+20200616 17:10:11|1|4|127.0.0.1|stop|4|1.0.61.1|test_host1|10.85.45.212|||1|do cmd(/data/home/stevhuang/mango/tlogd/tlogd --id=1.0.61.1 --business-id=0  -D stop) fail: iRet:32256, errno(0)(Success)
+20200616 17:10:11|1|4|127.0.0.1|stop|4|1.0.1.2|test_host1|10.85.45.212|||1|do cmd(/data/home/stevhuang/mango/tconnd/tconnd --id=1.0.1.2 --business-id=0  -D stop) fail: iRet:32256, errno(0)(Success)
+20200616 17:10:11|1|4|127.0.0.1|stop|4|1.0.1.1|test_host1|10.85.45.212|||1|do cmd(/data/home/stevhuang/mango/tconnd/tconnd --id=1.0.1.1 --business-id=0  -D stop) fail: iRet:32256, errno(0)(Success)
+20200616 17:10:11|1|4|127.0.0.1|stop|4|1.0.4.1|test_host1|10.85.45.212|||0|
+20200616 17:10:11|1|4|127.0.0.1|stop|4|1.0.3.1|test_host1|10.85.45.212|||0|
+20200616 17:10:11|1|4|127.0.0.1|stop|4|1.0.2.2|test_host1|10.85.45.212|||0|
+20200616 17:10:11|1|4|127.0.0.1|stop|4|1.0.2.1|test_host1|10.85.45.212|||0|
+20200616 17:10:11|1|4|127.0.0.1|stop|4|1.0.6.1|test_host1|10.85.45.212|||0|
+20200616 17:10:11|1|4|127.0.0.1|stop|4|1.0.6.2|test_host1|10.85.45.212|||0|
+20200616 17:10:11|1|4|127.0.0.1|stop|4|1.0.5.1|test_host1|10.85.45.212|||0|
+20200616 17:10:11|1|2|127.0.0.1|stop|4|1.0.63.1|||||3|do cmd(/data/home/stevhuang/mango/tbusd/tbusd --id=1.0.63.1 --business-id=0  -D stop) fail: iRet:32256, errno(0)(Success)
+20200616 17:10:11|1|2|127.0.0.1|stop|4|1.0.61.1|||||3|do cmd(/data/home/stevhuang/mango/tlogd/tlogd --id=1.0.61.1 --business-id=0  -D stop) fail: iRet:32256, errno(0)(Success)
+20200616 17:10:11|1|2|127.0.0.1|stop|4|1.0.6.2|||||0|
+20200616 17:10:11|1|2|127.0.0.1|stop|4|1.0.6.1|||||0|
+20200616 17:10:11|1|2|127.0.0.1|stop|4|1.0.5.1|||||0|
+20200616 17:10:11|1|2|127.0.0.1|stop|4|1.0.4.1|||||0|
+20200616 17:10:11|1|2|127.0.0.1|stop|4|1.0.3.1|||||0|
+20200616 17:10:11|1|2|127.0.0.1|stop|4|1.0.2.2|||||0|
+20200616 17:10:11|1|2|127.0.0.1|stop|4|1.0.2.1|||||0|
+20200616 17:10:11|1|2|127.0.0.1|stop|4|1.0.1.2|||||3|do cmd(/data/home/stevhuang/mango/tconnd/tconnd --id=1.0.1.2 --business-id=0  -D stop) fail: iRet:32256, errno(0)(Success)
+20200616 17:10:11|1|2|127.0.0.1|stop|4|1.0.1.1|||||3|do cmd(/data/home/stevhuang/mango/tconnd/tconnd --id=1.0.1.1 --business-id=0  -D stop) fail: iRet:32256, errno(0)(Success)
+20200616 17:10:16|1|1|127.0.0.1|stop|5|*.*.*.*|||||0|
+20200616 17:10:16|1|3|127.0.0.1|stop|5|1.0.63.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/tbusd|/data/home/stevhuang/mango/tbusd/tbusd --id=1.0.63.1 --business-id=0  -D stop|0|
+20200616 17:10:16|1|3|127.0.0.1|stop|5|1.0.61.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/tlogd|/data/home/stevhuang/mango/tlogd/tlogd --id=1.0.61.1 --business-id=0  -D stop|0|
+20200616 17:10:16|1|3|127.0.0.1|stop|5|1.0.6.2|test_host1|10.85.45.212|/data/home/stevhuang/mango/func_server|/data/home/stevhuang/mango/func_server/func_server --id=1.0.6.2 --business-id=0  -D stop|0|
+20200616 17:10:16|1|3|127.0.0.1|stop|5|1.0.6.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/func_server|/data/home/stevhuang/mango/func_server/func_server --id=1.0.6.1 --business-id=0  -D stop|0|
+20200616 17:10:16|1|3|127.0.0.1|stop|5|1.0.5.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/control_server|/data/home/stevhuang/mango/control_server/control_server --id=1.0.5.1 --business-id=0  -D stop|0|
+20200616 17:10:16|1|3|127.0.0.1|stop|5|1.0.4.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/service_mgr_server|/data/home/stevhuang/mango/service_mgr_server/service_mgr_server --id=1.0.4.1 --business-id=0  -D stop|0|
+20200616 17:10:16|1|3|127.0.0.1|stop|5|1.0.3.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/router_server|/data/home/stevhuang/mango/router_server/router_server --id=1.0.3.1 --business-id=0  -D stop|0|
+20200616 17:10:16|1|3|127.0.0.1|stop|5|1.0.2.2|test_host1|10.85.45.212|/data/home/stevhuang/mango/server|/data/home/stevhuang/mango/server/server --id=1.0.2.2 --business-id=0  -D stop|0|
+20200616 17:10:16|1|3|127.0.0.1|stop|5|1.0.2.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/server|/data/home/stevhuang/mango/server/server --id=1.0.2.1 --business-id=0  -D stop|0|
+20200616 17:10:16|1|3|127.0.0.1|stop|5|1.0.1.2|test_host1|10.85.45.212|/data/home/stevhuang/mango/tconnd|/data/home/stevhuang/mango/tconnd/tconnd --id=1.0.1.2 --business-id=0  -D stop|0|
+20200616 17:10:16|1|3|127.0.0.1|stop|5|1.0.1.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/tconnd|/data/home/stevhuang/mango/tconnd/tconnd --id=1.0.1.1 --business-id=0  -D stop|0|
+20200616 17:10:16|1|4|127.0.0.1|stop|5|1.0.63.1|test_host1|10.85.45.212|||1|do cmd(/data/home/stevhuang/mango/tbusd/tbusd --id=1.0.63.1 --business-id=0  -D stop) fail: iRet:32256, errno(0)(Success)
+20200616 17:10:16|1|4|127.0.0.1|stop|5|1.0.61.1|test_host1|10.85.45.212|||1|do cmd(/data/home/stevhuang/mango/tlogd/tlogd --id=1.0.61.1 --business-id=0  -D stop) fail: iRet:32256, errno(0)(Success)
+20200616 17:10:16|1|4|127.0.0.1|stop|5|1.0.1.2|test_host1|10.85.45.212|||1|do cmd(/data/home/stevhuang/mango/tconnd/tconnd --id=1.0.1.2 --business-id=0  -D stop) fail: iRet:32256, errno(0)(Success)
+20200616 17:10:16|1|4|127.0.0.1|stop|5|1.0.1.1|test_host1|10.85.45.212|||1|do cmd(/data/home/stevhuang/mango/tconnd/tconnd --id=1.0.1.1 --business-id=0  -D stop) fail: iRet:32256, errno(0)(Success)
+20200616 17:10:17|1|4|127.0.0.1|stop|5|1.0.4.1|test_host1|10.85.45.212|||0|
+20200616 17:10:17|1|4|127.0.0.1|stop|5|1.0.3.1|test_host1|10.85.45.212|||0|
+20200616 17:10:17|1|4|127.0.0.1|stop|5|1.0.2.2|test_host1|10.85.45.212|||0|
+20200616 17:10:17|1|4|127.0.0.1|stop|5|1.0.2.1|test_host1|10.85.45.212|||0|
+20200616 17:10:17|1|4|127.0.0.1|stop|5|1.0.6.1|test_host1|10.85.45.212|||0|
+20200616 17:10:17|1|4|127.0.0.1|stop|5|1.0.6.2|test_host1|10.85.45.212|||0|
+20200616 17:10:17|1|4|127.0.0.1|stop|5|1.0.5.1|test_host1|10.85.45.212|||0|
+20200616 17:10:17|1|2|127.0.0.1|stop|5|1.0.63.1|||||3|do cmd(/data/home/stevhuang/mango/tbusd/tbusd --id=1.0.63.1 --business-id=0  -D stop) fail: iRet:32256, errno(0)(Success)
+20200616 17:10:17|1|2|127.0.0.1|stop|5|1.0.61.1|||||3|do cmd(/data/home/stevhuang/mango/tlogd/tlogd --id=1.0.61.1 --business-id=0  -D stop) fail: iRet:32256, errno(0)(Success)
+20200616 17:10:17|1|2|127.0.0.1|stop|5|1.0.6.2|||||0|
+20200616 17:10:17|1|2|127.0.0.1|stop|5|1.0.6.1|||||0|
+20200616 17:10:17|1|2|127.0.0.1|stop|5|1.0.5.1|||||0|
+20200616 17:10:17|1|2|127.0.0.1|stop|5|1.0.4.1|||||0|
+20200616 17:10:17|1|2|127.0.0.1|stop|5|1.0.3.1|||||0|
+20200616 17:10:17|1|2|127.0.0.1|stop|5|1.0.2.2|||||0|
+20200616 17:10:17|1|2|127.0.0.1|stop|5|1.0.2.1|||||0|
+20200616 17:10:17|1|2|127.0.0.1|stop|5|1.0.1.2|||||3|do cmd(/data/home/stevhuang/mango/tconnd/tconnd --id=1.0.1.2 --business-id=0  -D stop) fail: iRet:32256, errno(0)(Success)
+20200616 17:10:17|1|2|127.0.0.1|stop|5|1.0.1.1|||||3|do cmd(/data/home/stevhuang/mango/tconnd/tconnd --id=1.0.1.1 --business-id=0  -D stop) fail: iRet:32256, errno(0)(Success)
+20200616 17:11:07|1|1|127.0.0.1|start|7|*.*.*.*|||||0|
+20200616 17:11:07|1|3|127.0.0.1|start|7|1.0.1.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/tconnd|/data/home/stevhuang/mango/tconnd/tconnd --use-bus  --conf-file=./tconnd.xml_1.0.1.1 --tlogconf=./tlog.xml_1_0.1.1 --rundata_timer=./rundata_timer.xml_1_0.1.1 --id=1.0.1.1 --bus-key=667001 --business-id=0  -D  start|0|
+20200616 17:11:07|1|3|127.0.0.1|start|7|1.0.1.2|test_host1|10.85.45.212|/data/home/stevhuang/mango/tconnd|/data/home/stevhuang/mango/tconnd/tconnd --use-bus  --conf-file=./tconnd.xml_1.0.1.2 --tlogconf=./tlog.xml_1_0.1.2 --rundata_timer=./rundata_timer.xml_1_0.1.2 --id=1.0.1.2 --bus-key=667001 --business-id=0  -D  start|0|
+20200616 17:11:07|1|3|127.0.0.1|start|7|1.0.2.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/server|/data/home/stevhuang/mango/server/server --use-bus  --noloadconf --tlogconf=./tlog.xml_1_0.2.1 --rundata_timer=./rundata_timer.xml_1_0.2.1 --id=1.0.2.1 --bus-key=667001 --business-id=0  -D  start|0|
+20200616 17:11:07|1|3|127.0.0.1|start|7|1.0.2.2|test_host1|10.85.45.212|/data/home/stevhuang/mango/server|/data/home/stevhuang/mango/server/server --use-bus  --noloadconf --tlogconf=./tlog.xml_1_0.2.2 --rundata_timer=./rundata_timer.xml_1_0.2.2 --id=1.0.2.2 --bus-key=667001 --business-id=0  -D  start|0|
+20200616 17:11:07|1|3|127.0.0.1|start|7|1.0.3.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/router_server|/data/home/stevhuang/mango/router_server/router_server --use-bus  --noloadconf --tlogconf=./tlog.xml_1_0.3.1 --rundata_timer=./rundata_timer.xml_1_0.3.1 --id=1.0.3.1 --bus-key=667001 --business-id=0  -D  start|0|
+20200616 17:11:07|1|3|127.0.0.1|start|7|1.0.4.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/service_mgr_server|/data/home/stevhuang/mango/service_mgr_server/service_mgr_server --use-bus  --noloadconf --tlogconf=./tlog.xml_1_0.4.1 --rundata_timer=./rundata_timer.xml_1_0.4.1 --id=1.0.4.1 --bus-key=667001 --business-id=0  -D  start|0|
+20200616 17:11:07|1|3|127.0.0.1|start|7|1.0.5.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/control_server|/data/home/stevhuang/mango/control_server/control_server --use-bus  --noloadconf --tlogconf=./tlog.xml_1_0.5.1 --rundata_timer=./rundata_timer.xml_1_0.5.1 --id=1.0.5.1 --bus-key=667001 --business-id=0  -D  start|0|
+20200616 17:11:07|1|3|127.0.0.1|start|7|1.0.6.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/func_server|/data/home/stevhuang/mango/func_server/func_server --use-bus  --noloadconf --tlogconf=./tlog.xml_1_0.6.1 --rundata_timer=./rundata_timer.xml_1_0.6.1 --id=1.0.6.1 --bus-key=667001 --business-id=0  -D  start|0|
+20200616 17:11:07|1|3|127.0.0.1|start|7|1.0.6.2|test_host1|10.85.45.212|/data/home/stevhuang/mango/func_server|/data/home/stevhuang/mango/func_server/func_server --use-bus  --noloadconf --tlogconf=./tlog.xml_1_0.6.2 --rundata_timer=./rundata_timer.xml_1_0.6.2 --id=1.0.6.2 --bus-key=667001 --business-id=0  -D  start|0|
+20200616 17:11:07|1|3|127.0.0.1|start|7|1.0.61.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/tlogd|/data/home/stevhuang/mango/tlogd/tlogd --use-bus  --conf-file=./tlogd.xml_1.0.61.1 --id=1.0.61.1  --business-id=0  -D  start|0|
+20200616 17:11:07|1|3|127.0.0.1|start|7|1.0.63.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/tbusd|/data/home/stevhuang/mango/tbusd/tbusd --use-bus  --conf-file=./tbusd.xml_1.0.63.1 --tlogconf=./tlog.xml_1_0.63.1 --rundata_timer=./rundata_timer.xml_1_0.63.1 --id=1.0.63.1  --business-id=0  -D  start|0|
+20200616 17:11:14|1|4|127.0.0.1|start|7|1.0.4.1|test_host1|10.85.45.212|||0|
+20200616 17:11:14|1|4|127.0.0.1|start|7|1.0.3.1|test_host1|10.85.45.212|||0|
+20200616 17:11:14|1|4|127.0.0.1|start|7|1.0.63.1|test_host1|10.85.45.212|||0|
+20200616 17:11:14|1|4|127.0.0.1|start|7|1.0.2.2|test_host1|10.85.45.212|||0|
+20200616 17:11:14|1|4|127.0.0.1|start|7|1.0.1.2|test_host1|10.85.45.212|||0|
+20200616 17:11:14|1|4|127.0.0.1|start|7|1.0.2.1|test_host1|10.85.45.212|||0|
+20200616 17:11:14|1|4|127.0.0.1|start|7|1.0.1.1|test_host1|10.85.45.212|||0|
+20200616 17:11:14|1|4|127.0.0.1|start|7|1.0.6.1|test_host1|10.85.45.212|||0|
+20200616 17:11:14|1|4|127.0.0.1|start|7|1.0.6.2|test_host1|10.85.45.212|||0|
+20200616 17:11:14|1|4|127.0.0.1|start|7|1.0.5.1|test_host1|10.85.45.212|||0|
+20200616 17:11:14|1|4|127.0.0.1|start|7|1.0.61.1|test_host1|10.85.45.212|||2|read pid by pidfile(/tmp/tlogd_1.0.61.1.pid) fail,for Success
+20200616 17:11:14|1|2|127.0.0.1|start|7|1.0.1.1|||||0|
+20200616 17:11:14|1|2|127.0.0.1|start|7|1.0.1.2|||||0|
+20200616 17:11:14|1|2|127.0.0.1|start|7|1.0.2.1|||||0|
+20200616 17:11:14|1|2|127.0.0.1|start|7|1.0.2.2|||||0|
+20200616 17:11:14|1|2|127.0.0.1|start|7|1.0.3.1|||||0|
+20200616 17:11:14|1|2|127.0.0.1|start|7|1.0.4.1|||||0|
+20200616 17:11:14|1|2|127.0.0.1|start|7|1.0.5.1|||||0|
+20200616 17:11:14|1|2|127.0.0.1|start|7|1.0.6.1|||||0|
+20200616 17:11:14|1|2|127.0.0.1|start|7|1.0.6.2|||||0|
+20200616 17:11:14|1|2|127.0.0.1|start|7|1.0.61.1|||||4|read pid by pidfile(/tmp/tlogd_1.0.61.1.pid) fail,for Success
+20200616 17:11:14|1|2|127.0.0.1|start|7|1.0.63.1|||||0|
+20200616 17:16:44|1|1|127.0.0.1|stop|8|*.*.*.*|||||0|
+20200616 17:16:44|1|3|127.0.0.1|stop|8|1.0.63.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/tbusd|/data/home/stevhuang/mango/tbusd/tbusd --id=1.0.63.1 --business-id=0  -D stop|0|
+20200616 17:16:44|1|3|127.0.0.1|stop|8|1.0.61.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/tlogd|/data/home/stevhuang/mango/tlogd/tlogd --id=1.0.61.1 --business-id=0  -D stop|0|
+20200616 17:16:44|1|3|127.0.0.1|stop|8|1.0.6.2|test_host1|10.85.45.212|/data/home/stevhuang/mango/func_server|/data/home/stevhuang/mango/func_server/func_server --id=1.0.6.2 --business-id=0  -D stop|0|
+20200616 17:16:44|1|3|127.0.0.1|stop|8|1.0.6.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/func_server|/data/home/stevhuang/mango/func_server/func_server --id=1.0.6.1 --business-id=0  -D stop|0|
+20200616 17:16:44|1|3|127.0.0.1|stop|8|1.0.5.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/control_server|/data/home/stevhuang/mango/control_server/control_server --id=1.0.5.1 --business-id=0  -D stop|0|
+20200616 17:16:44|1|3|127.0.0.1|stop|8|1.0.4.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/service_mgr_server|/data/home/stevhuang/mango/service_mgr_server/service_mgr_server --id=1.0.4.1 --business-id=0  -D stop|0|
+20200616 17:16:44|1|3|127.0.0.1|stop|8|1.0.3.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/router_server|/data/home/stevhuang/mango/router_server/router_server --id=1.0.3.1 --business-id=0  -D stop|0|
+20200616 17:16:44|1|3|127.0.0.1|stop|8|1.0.2.2|test_host1|10.85.45.212|/data/home/stevhuang/mango/server|/data/home/stevhuang/mango/server/server --id=1.0.2.2 --business-id=0  -D stop|0|
+20200616 17:16:44|1|3|127.0.0.1|stop|8|1.0.2.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/server|/data/home/stevhuang/mango/server/server --id=1.0.2.1 --business-id=0  -D stop|0|
+20200616 17:16:44|1|3|127.0.0.1|stop|8|1.0.1.2|test_host1|10.85.45.212|/data/home/stevhuang/mango/tconnd|/data/home/stevhuang/mango/tconnd/tconnd --id=1.0.1.2 --business-id=0  -D stop|0|
+20200616 17:16:44|1|3|127.0.0.1|stop|8|1.0.1.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/tconnd|/data/home/stevhuang/mango/tconnd/tconnd --id=1.0.1.1 --business-id=0  -D stop|0|
+20200616 17:16:44|1|4|127.0.0.1|stop|8|1.0.4.1|test_host1|10.85.45.212|||0|
+20200616 17:16:44|1|4|127.0.0.1|stop|8|1.0.3.1|test_host1|10.85.45.212|||0|
+20200616 17:16:44|1|4|127.0.0.1|stop|8|1.0.63.1|test_host1|10.85.45.212|||0|
+20200616 17:16:44|1|4|127.0.0.1|stop|8|1.0.2.2|test_host1|10.85.45.212|||0|
+20200616 17:16:44|1|4|127.0.0.1|stop|8|1.0.1.2|test_host1|10.85.45.212|||0|
+20200616 17:16:44|1|4|127.0.0.1|stop|8|1.0.2.1|test_host1|10.85.45.212|||0|
+20200616 17:16:44|1|4|127.0.0.1|stop|8|1.0.1.1|test_host1|10.85.45.212|||0|
+20200616 17:16:44|1|4|127.0.0.1|stop|8|1.0.6.1|test_host1|10.85.45.212|||0|
+20200616 17:16:44|1|4|127.0.0.1|stop|8|1.0.6.2|test_host1|10.85.45.212|||0|
+20200616 17:16:44|1|4|127.0.0.1|stop|8|1.0.5.1|test_host1|10.85.45.212|||0|
+20200616 17:16:44|1|4|127.0.0.1|stop|8|1.0.61.1|test_host1|10.85.45.212|||0|
+20200616 17:16:44|1|2|127.0.0.1|stop|8|1.0.63.1|||||0|
+20200616 17:16:44|1|2|127.0.0.1|stop|8|1.0.61.1|||||0|
+20200616 17:16:44|1|2|127.0.0.1|stop|8|1.0.6.2|||||0|
+20200616 17:16:44|1|2|127.0.0.1|stop|8|1.0.6.1|||||0|
+20200616 17:16:44|1|2|127.0.0.1|stop|8|1.0.5.1|||||0|
+20200616 17:16:44|1|2|127.0.0.1|stop|8|1.0.4.1|||||0|
+20200616 17:16:44|1|2|127.0.0.1|stop|8|1.0.3.1|||||0|
+20200616 17:16:44|1|2|127.0.0.1|stop|8|1.0.2.2|||||0|
+20200616 17:16:44|1|2|127.0.0.1|stop|8|1.0.2.1|||||0|
+20200616 17:16:44|1|2|127.0.0.1|stop|8|1.0.1.2|||||0|
+20200616 17:16:44|1|2|127.0.0.1|stop|8|1.0.1.1|||||0|
+20200616 17:18:55|1|1|127.0.0.1|start|1|*.*.*.*|||||0|
+20200616 17:18:55|1|3|127.0.0.1|start|1|1.0.1.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/tconnd|/data/home/stevhuang/mango/tconnd/tconnd  --conf-file=./tconnd.xml_1.0.1.1 --use-bus  --tlogconf=./tlog.xml_1_0.1.1 --rundata_timer=./rundata_timer.xml_1_0.1.1 --id=1.0.1.1 --bus-key=667001 --business-id=0  -D  start|0|
+20200616 17:18:55|1|3|127.0.0.1|start|1|1.0.1.2|test_host1|10.85.45.212|/data/home/stevhuang/mango/tconnd|/data/home/stevhuang/mango/tconnd/tconnd  --conf-file=./tconnd.xml_1.0.1.2 --use-bus  --tlogconf=./tlog.xml_1_0.1.2 --rundata_timer=./rundata_timer.xml_1_0.1.2 --id=1.0.1.2 --bus-key=667001 --business-id=0  -D  start|0|
+20200616 17:18:55|1|3|127.0.0.1|start|1|1.0.2.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/server|/data/home/stevhuang/mango/server/server  --noloadconf --use-bus  --tlogconf=./tlog.xml_1_0.2.1 --rundata_timer=./rundata_timer.xml_1_0.2.1 --id=1.0.2.1 --bus-key=667001 --business-id=0  -D  start|0|
+20200616 17:18:55|1|3|127.0.0.1|start|1|1.0.2.2|test_host1|10.85.45.212|/data/home/stevhuang/mango/server|/data/home/stevhuang/mango/server/server  --noloadconf --use-bus  --tlogconf=./tlog.xml_1_0.2.2 --rundata_timer=./rundata_timer.xml_1_0.2.2 --id=1.0.2.2 --bus-key=667001 --business-id=0  -D  start|0|
+20200616 17:18:55|1|3|127.0.0.1|start|1|1.0.3.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/router_server|/data/home/stevhuang/mango/router_server/router_server  --noloadconf --use-bus  --tlogconf=./tlog.xml_1_0.3.1 --rundata_timer=./rundata_timer.xml_1_0.3.1 --id=1.0.3.1 --bus-key=667001 --business-id=0  -D  start|0|
+20200616 17:18:55|1|3|127.0.0.1|start|1|1.0.4.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/service_mgr_server|/data/home/stevhuang/mango/service_mgr_server/service_mgr_server  --noloadconf --use-bus  --tlogconf=./tlog.xml_1_0.4.1 --rundata_timer=./rundata_timer.xml_1_0.4.1 --id=1.0.4.1 --bus-key=667001 --business-id=0  -D  start|0|
+20200616 17:18:55|1|3|127.0.0.1|start|1|1.0.5.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/control_server|/data/home/stevhuang/mango/control_server/control_server  --noloadconf --use-bus  --tlogconf=./tlog.xml_1_0.5.1 --rundata_timer=./rundata_timer.xml_1_0.5.1 --id=1.0.5.1 --bus-key=667001 --business-id=0  -D  start|0|
+20200616 17:18:55|1|3|127.0.0.1|start|1|1.0.6.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/func_server|/data/home/stevhuang/mango/func_server/func_server  --noloadconf --use-bus  --tlogconf=./tlog.xml_1_0.6.1 --rundata_timer=./rundata_timer.xml_1_0.6.1 --id=1.0.6.1 --bus-key=667001 --business-id=0  -D  start|0|
+20200616 17:18:55|1|3|127.0.0.1|start|1|1.0.6.2|test_host1|10.85.45.212|/data/home/stevhuang/mango/func_server|/data/home/stevhuang/mango/func_server/func_server  --noloadconf --use-bus  --tlogconf=./tlog.xml_1_0.6.2 --rundata_timer=./rundata_timer.xml_1_0.6.2 --id=1.0.6.2 --bus-key=667001 --business-id=0  -D  start|0|
+20200616 17:18:55|1|3|127.0.0.1|start|1|1.0.61.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/tlogd|/data/home/stevhuang/mango/tlogd/tlogd  --conf-file=./tlogd.xml_1.0.61.1 --id=1.0.61.1  --business-id=0  -D  start|0|
+20200616 17:18:55|1|3|127.0.0.1|start|1|1.0.63.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/tbusd|/data/home/stevhuang/mango/tbusd/tbusd  --conf-file=./tbusd.xml_1.0.63.1 --use-bus  --tlogconf=./tlog.xml_1_0.63.1 --rundata_timer=./rundata_timer.xml_1_0.63.1 --id=1.0.63.1  --business-id=0  -D  start|0|
+20200616 17:19:02|1|4|127.0.0.1|start|1|1.0.4.1|test_host1|10.85.45.212|||0|
+20200616 17:19:02|1|4|127.0.0.1|start|1|1.0.3.1|test_host1|10.85.45.212|||0|
+20200616 17:19:02|1|4|127.0.0.1|start|1|1.0.63.1|test_host1|10.85.45.212|||0|
+20200616 17:19:02|1|4|127.0.0.1|start|1|1.0.2.2|test_host1|10.85.45.212|||0|
+20200616 17:19:02|1|4|127.0.0.1|start|1|1.0.1.2|test_host1|10.85.45.212|||0|
+20200616 17:19:02|1|4|127.0.0.1|start|1|1.0.2.1|test_host1|10.85.45.212|||0|
+20200616 17:19:02|1|4|127.0.0.1|start|1|1.0.1.1|test_host1|10.85.45.212|||0|
+20200616 17:19:02|1|4|127.0.0.1|start|1|1.0.6.1|test_host1|10.85.45.212|||0|
+20200616 17:19:02|1|4|127.0.0.1|start|1|1.0.6.2|test_host1|10.85.45.212|||0|
+20200616 17:19:02|1|4|127.0.0.1|start|1|1.0.5.1|test_host1|10.85.45.212|||0|
+20200616 17:19:02|1|4|127.0.0.1|start|1|1.0.61.1|test_host1|10.85.45.212|||0|
+20200616 17:19:02|1|2|127.0.0.1|start|1|1.0.1.1|||||0|
+20200616 17:19:02|1|2|127.0.0.1|start|1|1.0.1.2|||||0|
+20200616 17:19:02|1|2|127.0.0.1|start|1|1.0.2.1|||||0|
+20200616 17:19:02|1|2|127.0.0.1|start|1|1.0.2.2|||||0|
+20200616 17:19:02|1|2|127.0.0.1|start|1|1.0.3.1|||||0|
+20200616 17:19:02|1|2|127.0.0.1|start|1|1.0.4.1|||||0|
+20200616 17:19:02|1|2|127.0.0.1|start|1|1.0.5.1|||||0|
+20200616 17:19:02|1|2|127.0.0.1|start|1|1.0.6.1|||||0|
+20200616 17:19:02|1|2|127.0.0.1|start|1|1.0.6.2|||||0|
+20200616 17:19:02|1|2|127.0.0.1|start|1|1.0.61.1|||||0|
+20200616 17:19:02|1|2|127.0.0.1|start|1|1.0.63.1|||||0|
+20200616 17:26:22|1|1|127.0.0.1|stop|3|*.*.*.*|||||0|
+20200616 17:26:22|1|3|127.0.0.1|stop|3|1.0.63.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/tbusd|/data/home/stevhuang/mango/tbusd/tbusd --id=1.0.63.1 --business-id=0  -D stop|0|
+20200616 17:26:22|1|3|127.0.0.1|stop|3|1.0.61.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/tlogd|/data/home/stevhuang/mango/tlogd/tlogd --id=1.0.61.1 --business-id=0  -D stop|0|
+20200616 17:26:22|1|3|127.0.0.1|stop|3|1.0.6.2|test_host1|10.85.45.212|/data/home/stevhuang/mango/func_server|/data/home/stevhuang/mango/func_server/func_server --id=1.0.6.2 --business-id=0  -D stop|0|
+20200616 17:26:22|1|3|127.0.0.1|stop|3|1.0.6.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/func_server|/data/home/stevhuang/mango/func_server/func_server --id=1.0.6.1 --business-id=0  -D stop|0|
+20200616 17:26:22|1|3|127.0.0.1|stop|3|1.0.5.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/control_server|/data/home/stevhuang/mango/control_server/control_server --id=1.0.5.1 --business-id=0  -D stop|0|
+20200616 17:26:22|1|3|127.0.0.1|stop|3|1.0.4.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/service_mgr_server|/data/home/stevhuang/mango/service_mgr_server/service_mgr_server --id=1.0.4.1 --business-id=0  -D stop|0|
+20200616 17:26:22|1|3|127.0.0.1|stop|3|1.0.3.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/router_server|/data/home/stevhuang/mango/router_server/router_server --id=1.0.3.1 --business-id=0  -D stop|0|
+20200616 17:26:22|1|3|127.0.0.1|stop|3|1.0.2.2|test_host1|10.85.45.212|/data/home/stevhuang/mango/server|/data/home/stevhuang/mango/server/server --id=1.0.2.2 --business-id=0  -D stop|0|
+20200616 17:26:22|1|3|127.0.0.1|stop|3|1.0.2.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/server|/data/home/stevhuang/mango/server/server --id=1.0.2.1 --business-id=0  -D stop|0|
+20200616 17:26:22|1|3|127.0.0.1|stop|3|1.0.1.2|test_host1|10.85.45.212|/data/home/stevhuang/mango/tconnd|/data/home/stevhuang/mango/tconnd/tconnd --id=1.0.1.2 --business-id=0  -D stop|0|
+20200616 17:26:22|1|3|127.0.0.1|stop|3|1.0.1.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/tconnd|/data/home/stevhuang/mango/tconnd/tconnd --id=1.0.1.1 --business-id=0  -D stop|0|
+20200616 17:26:22|1|4|127.0.0.1|stop|3|1.0.4.1|test_host1|10.85.45.212|||0|
+20200616 17:26:22|1|4|127.0.0.1|stop|3|1.0.3.1|test_host1|10.85.45.212|||0|
+20200616 17:26:22|1|4|127.0.0.1|stop|3|1.0.63.1|test_host1|10.85.45.212|||0|
+20200616 17:26:22|1|4|127.0.0.1|stop|3|1.0.2.2|test_host1|10.85.45.212|||0|
+20200616 17:26:22|1|4|127.0.0.1|stop|3|1.0.1.2|test_host1|10.85.45.212|||0|
+20200616 17:26:22|1|4|127.0.0.1|stop|3|1.0.2.1|test_host1|10.85.45.212|||0|
+20200616 17:26:22|1|4|127.0.0.1|stop|3|1.0.1.1|test_host1|10.85.45.212|||0|
+20200616 17:26:22|1|4|127.0.0.1|stop|3|1.0.6.1|test_host1|10.85.45.212|||0|
+20200616 17:26:22|1|4|127.0.0.1|stop|3|1.0.6.2|test_host1|10.85.45.212|||0|
+20200616 17:26:22|1|4|127.0.0.1|stop|3|1.0.5.1|test_host1|10.85.45.212|||0|
+20200616 17:26:22|1|4|127.0.0.1|stop|3|1.0.61.1|test_host1|10.85.45.212|||0|
+20200616 17:26:22|1|2|127.0.0.1|stop|3|1.0.63.1|||||0|
+20200616 17:26:22|1|2|127.0.0.1|stop|3|1.0.61.1|||||0|
+20200616 17:26:22|1|2|127.0.0.1|stop|3|1.0.6.2|||||0|
+20200616 17:26:22|1|2|127.0.0.1|stop|3|1.0.6.1|||||0|
+20200616 17:26:22|1|2|127.0.0.1|stop|3|1.0.5.1|||||0|
+20200616 17:26:22|1|2|127.0.0.1|stop|3|1.0.4.1|||||0|
+20200616 17:26:22|1|2|127.0.0.1|stop|3|1.0.3.1|||||0|
+20200616 17:26:22|1|2|127.0.0.1|stop|3|1.0.2.2|||||0|
+20200616 17:26:22|1|2|127.0.0.1|stop|3|1.0.2.1|||||0|
+20200616 17:26:22|1|2|127.0.0.1|stop|3|1.0.1.2|||||0|
+20200616 17:26:22|1|2|127.0.0.1|stop|3|1.0.1.1|||||0|
+20200616 17:30:04|1|1|127.0.0.1|transcfg|4|*.*.*.*|||||0|
+20200616 17:30:04|1|3|127.0.0.1|transcfg|4|1.0.1.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/tconnd/.|tlog.xml_1.0.1.1|0|
+20200616 17:30:04|1|3|127.0.0.1|transcfg|4|1.0.1.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/tconnd/.|tconnd.xml_1.0.1.1|0|
+20200616 17:30:04|1|3|127.0.0.1|transcfg|4|1.0.1.2|test_host1|10.85.45.212|/data/home/stevhuang/mango/tconnd/.|tlog.xml_1.0.1.2|0|
+20200616 17:30:04|1|3|127.0.0.1|transcfg|4|1.0.1.2|test_host1|10.85.45.212|/data/home/stevhuang/mango/tconnd/.|tconnd.xml_1.0.1.2|0|
+20200616 17:30:04|1|3|127.0.0.1|transcfg|4|1.0.2.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/server/.|tlog.xml_1.0.2.1|0|
+20200616 17:30:04|1|3|127.0.0.1|transcfg|4|1.0.2.2|test_host1|10.85.45.212|/data/home/stevhuang/mango/server/.|tlog.xml_1.0.2.2|0|
+20200616 17:30:04|1|3|127.0.0.1|transcfg|4|1.0.3.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/router_server/.|tlog.xml_1.0.3.1|0|
+20200616 17:30:04|1|3|127.0.0.1|transcfg|4|1.0.4.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/service_mgr_server/.|tlog.xml_1.0.4.1|0|
+20200616 17:30:04|1|3|127.0.0.1|transcfg|4|1.0.5.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/control_server/.|tlog.xml_1.0.5.1|0|
+20200616 17:30:04|1|3|127.0.0.1|transcfg|4|1.0.6.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/func_server/.|tlog.xml_1.0.6.1|0|
+20200616 17:30:04|1|3|127.0.0.1|transcfg|4|1.0.6.2|test_host1|10.85.45.212|/data/home/stevhuang/mango/func_server/.|tlog.xml_1.0.6.2|0|
+20200616 17:30:04|1|3|127.0.0.1|transcfg|4|1.0.61.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/tlogd/.|tlogd.xml_1.0.61.1|0|
+20200616 17:30:04|1|3|127.0.0.1|transcfg|4|1.0.63.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/tbusd/.|tbusd.xml_1.0.63.1|0|
+20200616 17:30:04|1|3|127.0.0.1|transcfg|4|1.0.63.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/tbusd/.|tlog.xml_1.0.63.1|0|
+20200616 17:30:04|1|4|127.0.0.1|transcfg|4|1.0.1.1|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.1.1/tlog.xml_1.0.1.1||0|
+20200616 17:30:04|1|4|127.0.0.1|transcfg|4|1.0.1.1|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.1.1/tconnd.xml_1.0.1.1||0|
+20200616 17:30:04|1|4|127.0.0.1|transcfg|4|1.0.1.2|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.1.2/tlog.xml_1.0.1.2||0|
+20200616 17:30:04|1|4|127.0.0.1|transcfg|4|1.0.1.2|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.1.2/tconnd.xml_1.0.1.2||0|
+20200616 17:30:04|1|4|127.0.0.1|transcfg|4|1.0.2.1|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.2.1/tlog.xml_1.0.2.1||0|
+20200616 17:30:04|1|4|127.0.0.1|transcfg|4|1.0.2.2|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.2.2/tlog.xml_1.0.2.2||0|
+20200616 17:30:04|1|4|127.0.0.1|transcfg|4|1.0.4.1|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.4.1/tlog.xml_1.0.4.1|tlog.xml_1.0.3.1|0|
+20200616 17:30:04|1|4|127.0.0.1|transcfg|4|1.0.5.1|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.5.1/tlog.xml_1.0.5.1||0|
+20200616 17:30:04|1|4|127.0.0.1|transcfg|4|1.0.6.1|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.6.1/tlog.xml_1.0.6.1||0|
+20200616 17:30:04|1|4|127.0.0.1|transcfg|4|1.0.6.2|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.6.2/tlog.xml_1.0.6.2||0|
+20200616 17:30:04|1|4|127.0.0.1|transcfg|4|1.0.61.1|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.61.1/tlogd.xml_1.0.61.1||0|
+20200616 17:30:04|1|4|127.0.0.1|transcfg|4|1.0.63.1|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.63.1/tbusd.xml_1.0.63.1||0|
+20200616 17:30:04|1|4|127.0.0.1|transcfg|4|1.0.63.1|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.63.1/tlog.xml_1.0.63.1||0|
+20200616 17:30:04|1|4|127.0.0.1|transcfg|4|1.0.3.1|test_host1|10.85.45.212|../conf/confcreated/ClusterDeploy/world1/1.0.3.1/tlog.xml_1.0.3.1|tlog.xml_1.0.3.1|0|
+20200616 17:30:04|1|2|127.0.0.1|transcfg|4|1.0.1.1|||||0|
+20200616 17:30:04|1|2|127.0.0.1|transcfg|4|1.0.1.1|||||0|
+20200616 17:30:04|1|2|127.0.0.1|transcfg|4|1.0.1.2|||||0|
+20200616 17:30:04|1|2|127.0.0.1|transcfg|4|1.0.1.2|||||0|
+20200616 17:30:04|1|2|127.0.0.1|transcfg|4|1.0.2.1|||||0|
+20200616 17:30:04|1|2|127.0.0.1|transcfg|4|1.0.2.2|||||0|
+20200616 17:30:04|1|2|127.0.0.1|transcfg|4|1.0.3.1|||||0|
+20200616 17:30:04|1|2|127.0.0.1|transcfg|4|1.0.4.1|||||0|
+20200616 17:30:04|1|2|127.0.0.1|transcfg|4|1.0.5.1|||||0|
+20200616 17:30:04|1|2|127.0.0.1|transcfg|4|1.0.6.1|||||0|
+20200616 17:30:04|1|2|127.0.0.1|transcfg|4|1.0.6.2|||||0|
+20200616 17:30:04|1|2|127.0.0.1|transcfg|4|1.0.61.1|||||0|
+20200616 17:30:04|1|2|127.0.0.1|transcfg|4|1.0.63.1|||||0|
+20200616 17:30:04|1|2|127.0.0.1|transcfg|4|1.0.63.1|||||0|
+20200616 17:36:57|1|1|127.0.0.1|stop|1|*.*.*.*|||||0|
+20200616 17:36:57|1|3|127.0.0.1|stop|1|1.0.63.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/tbusd|/data/home/stevhuang/mango/tbusd/tbusd --id=1.0.63.1 --business-id=0  -D stop|0|
+20200616 17:36:57|1|3|127.0.0.1|stop|1|1.0.61.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/tlogd|/data/home/stevhuang/mango/tlogd/tlogd --id=1.0.61.1 --business-id=0  -D stop|0|
+20200616 17:36:57|1|3|127.0.0.1|stop|1|1.0.6.2|test_host1|10.85.45.212|/data/home/stevhuang/mango/func_server|/data/home/stevhuang/mango/func_server/func_server --id=1.0.6.2 --business-id=0  -D stop|0|
+20200616 17:36:57|1|3|127.0.0.1|stop|1|1.0.6.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/func_server|/data/home/stevhuang/mango/func_server/func_server --id=1.0.6.1 --business-id=0  -D stop|0|
+20200616 17:36:57|1|3|127.0.0.1|stop|1|1.0.5.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/control_server|/data/home/stevhuang/mango/control_server/control_server --id=1.0.5.1 --business-id=0  -D stop|0|
+20200616 17:36:57|1|3|127.0.0.1|stop|1|1.0.4.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/service_mgr_server|/data/home/stevhuang/mango/service_mgr_server/service_mgr_server --id=1.0.4.1 --business-id=0  -D stop|0|
+20200616 17:36:57|1|3|127.0.0.1|stop|1|1.0.3.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/router_server|/data/home/stevhuang/mango/router_server/router_server --id=1.0.3.1 --business-id=0  -D stop|0|
+20200616 17:36:57|1|3|127.0.0.1|stop|1|1.0.2.2|test_host1|10.85.45.212|/data/home/stevhuang/mango/server|/data/home/stevhuang/mango/server/server --id=1.0.2.2 --business-id=0  -D stop|0|
+20200616 17:36:57|1|3|127.0.0.1|stop|1|1.0.2.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/server|/data/home/stevhuang/mango/server/server --id=1.0.2.1 --business-id=0  -D stop|0|
+20200616 17:36:57|1|3|127.0.0.1|stop|1|1.0.1.2|test_host1|10.85.45.212|/data/home/stevhuang/mango/tconnd|/data/home/stevhuang/mango/tconnd/tconnd --id=1.0.1.2 --business-id=0  -D stop|0|
+20200616 17:36:57|1|3|127.0.0.1|stop|1|1.0.1.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/tconnd|/data/home/stevhuang/mango/tconnd/tconnd --id=1.0.1.1 --business-id=0  -D stop|0|
+20200616 17:36:57|1|4|127.0.0.1|stop|1|1.0.4.1|test_host1|10.85.45.212|||0|
+20200616 17:36:57|1|4|127.0.0.1|stop|1|1.0.3.1|test_host1|10.85.45.212|||0|
+20200616 17:36:57|1|4|127.0.0.1|stop|1|1.0.63.1|test_host1|10.85.45.212|||0|
+20200616 17:36:57|1|4|127.0.0.1|stop|1|1.0.2.2|test_host1|10.85.45.212|||0|
+20200616 17:36:57|1|4|127.0.0.1|stop|1|1.0.1.2|test_host1|10.85.45.212|||0|
+20200616 17:36:57|1|4|127.0.0.1|stop|1|1.0.2.1|test_host1|10.85.45.212|||0|
+20200616 17:36:57|1|4|127.0.0.1|stop|1|1.0.1.1|test_host1|10.85.45.212|||0|
+20200616 17:36:57|1|4|127.0.0.1|stop|1|1.0.6.1|test_host1|10.85.45.212|||0|
+20200616 17:36:57|1|4|127.0.0.1|stop|1|1.0.6.2|test_host1|10.85.45.212|||0|
+20200616 17:36:57|1|4|127.0.0.1|stop|1|1.0.5.1|test_host1|10.85.45.212|||0|
+20200616 17:36:57|1|4|127.0.0.1|stop|1|1.0.61.1|test_host1|10.85.45.212|||0|
+20200616 17:36:57|1|2|127.0.0.1|stop|1|1.0.63.1|||||0|
+20200616 17:36:57|1|2|127.0.0.1|stop|1|1.0.61.1|||||0|
+20200616 17:36:57|1|2|127.0.0.1|stop|1|1.0.6.2|||||0|
+20200616 17:36:57|1|2|127.0.0.1|stop|1|1.0.6.1|||||0|
+20200616 17:36:57|1|2|127.0.0.1|stop|1|1.0.5.1|||||0|
+20200616 17:36:57|1|2|127.0.0.1|stop|1|1.0.4.1|||||0|
+20200616 17:36:57|1|2|127.0.0.1|stop|1|1.0.3.1|||||0|
+20200616 17:36:57|1|2|127.0.0.1|stop|1|1.0.2.2|||||0|
+20200616 17:36:57|1|2|127.0.0.1|stop|1|1.0.2.1|||||0|
+20200616 17:36:57|1|2|127.0.0.1|stop|1|1.0.1.2|||||0|
+20200616 17:36:57|1|2|127.0.0.1|stop|1|1.0.1.1|||||0|
+20200616 17:37:01|1|1|127.0.0.1|start|2|*.*.*.*|||||0|
+20200616 17:37:01|1|3|127.0.0.1|start|2|1.0.1.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/tconnd|/data/home/stevhuang/mango/tconnd/tconnd  --conf-file=./tconnd.xml_1.0.1.1 --use-bus  --tlogconf=./tlog.xml_1.0.1.1 --rundata_timer=./rundata_timer.xml_1.0.1.1 --id=1.0.1.1 --bus-key=667001 --business-id=0  -D  start|0|
+20200616 17:37:01|1|3|127.0.0.1|start|2|1.0.1.2|test_host1|10.85.45.212|/data/home/stevhuang/mango/tconnd|/data/home/stevhuang/mango/tconnd/tconnd  --conf-file=./tconnd.xml_1.0.1.2 --use-bus  --tlogconf=./tlog.xml_1.0.1.2 --rundata_timer=./rundata_timer.xml_1.0.1.2 --id=1.0.1.2 --bus-key=667001 --business-id=0  -D  start|0|
+20200616 17:37:01|1|3|127.0.0.1|start|2|1.0.2.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/server|/data/home/stevhuang/mango/server/server  --noloadconf --use-bus  --tlogconf=./tlog.xml_1.0.2.1 --rundata_timer=./rundata_timer.xml_1.0.2.1 --id=1.0.2.1 --bus-key=667001 --business-id=0  -D  start|0|
+20200616 17:37:01|1|3|127.0.0.1|start|2|1.0.2.2|test_host1|10.85.45.212|/data/home/stevhuang/mango/server|/data/home/stevhuang/mango/server/server  --noloadconf --use-bus  --tlogconf=./tlog.xml_1.0.2.2 --rundata_timer=./rundata_timer.xml_1.0.2.2 --id=1.0.2.2 --bus-key=667001 --business-id=0  -D  start|0|
+20200616 17:37:01|1|3|127.0.0.1|start|2|1.0.3.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/router_server|/data/home/stevhuang/mango/router_server/router_server  --noloadconf --use-bus  --tlogconf=./tlog.xml_1.0.3.1 --rundata_timer=./rundata_timer.xml_1.0.3.1 --id=1.0.3.1 --bus-key=667001 --business-id=0  -D  start|0|
+20200616 17:37:01|1|3|127.0.0.1|start|2|1.0.4.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/service_mgr_server|/data/home/stevhuang/mango/service_mgr_server/service_mgr_server  --noloadconf --use-bus  --tlogconf=./tlog.xml_1.0.4.1 --rundata_timer=./rundata_timer.xml_1.0.4.1 --id=1.0.4.1 --bus-key=667001 --business-id=0  -D  start|0|
+20200616 17:37:01|1|3|127.0.0.1|start|2|1.0.5.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/control_server|/data/home/stevhuang/mango/control_server/control_server  --noloadconf --use-bus  --tlogconf=./tlog.xml_1.0.5.1 --rundata_timer=./rundata_timer.xml_1.0.5.1 --id=1.0.5.1 --bus-key=667001 --business-id=0  -D  start|0|
+20200616 17:37:01|1|3|127.0.0.1|start|2|1.0.6.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/func_server|/data/home/stevhuang/mango/func_server/func_server  --noloadconf --use-bus  --tlogconf=./tlog.xml_1.0.6.1 --rundata_timer=./rundata_timer.xml_1.0.6.1 --id=1.0.6.1 --bus-key=667001 --business-id=0  -D  start|0|
+20200616 17:37:01|1|3|127.0.0.1|start|2|1.0.6.2|test_host1|10.85.45.212|/data/home/stevhuang/mango/func_server|/data/home/stevhuang/mango/func_server/func_server  --noloadconf --use-bus  --tlogconf=./tlog.xml_1.0.6.2 --rundata_timer=./rundata_timer.xml_1.0.6.2 --id=1.0.6.2 --bus-key=667001 --business-id=0  -D  start|0|
+20200616 17:37:01|1|3|127.0.0.1|start|2|1.0.61.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/tlogd|/data/home/stevhuang/mango/tlogd/tlogd  --conf-file=./tlogd.xml_1.0.61.1 --id=1.0.61.1  --business-id=0  -D  start|0|
+20200616 17:37:01|1|3|127.0.0.1|start|2|1.0.63.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/tbusd|/data/home/stevhuang/mango/tbusd/tbusd  --conf-file=./tbusd.xml_1.0.63.1 --use-bus  --tlogconf=./tlog.xml_1.0.63.1 --rundata_timer=./rundata_timer.xml_1.0.63.1 --id=1.0.63.1  --business-id=0  -D  start|0|
+20200616 17:37:08|1|4|127.0.0.1|start|2|1.0.4.1|test_host1|10.85.45.212|||0|
+20200616 17:37:08|1|4|127.0.0.1|start|2|1.0.3.1|test_host1|10.85.45.212|||0|
+20200616 17:37:08|1|4|127.0.0.1|start|2|1.0.63.1|test_host1|10.85.45.212|||0|
+20200616 17:37:08|1|4|127.0.0.1|start|2|1.0.2.2|test_host1|10.85.45.212|||0|
+20200616 17:37:08|1|4|127.0.0.1|start|2|1.0.1.2|test_host1|10.85.45.212|||0|
+20200616 17:37:08|1|4|127.0.0.1|start|2|1.0.2.1|test_host1|10.85.45.212|||0|
+20200616 17:37:08|1|4|127.0.0.1|start|2|1.0.1.1|test_host1|10.85.45.212|||0|
+20200616 17:37:08|1|4|127.0.0.1|start|2|1.0.6.1|test_host1|10.85.45.212|||0|
+20200616 17:37:08|1|4|127.0.0.1|start|2|1.0.6.2|test_host1|10.85.45.212|||0|
+20200616 17:37:08|1|4|127.0.0.1|start|2|1.0.5.1|test_host1|10.85.45.212|||0|
+20200616 17:37:08|1|4|127.0.0.1|start|2|1.0.61.1|test_host1|10.85.45.212|||0|
+20200616 17:37:08|1|2|127.0.0.1|start|2|1.0.1.1|||||0|
+20200616 17:37:08|1|2|127.0.0.1|start|2|1.0.1.2|||||0|
+20200616 17:37:08|1|2|127.0.0.1|start|2|1.0.2.1|||||0|
+20200616 17:37:08|1|2|127.0.0.1|start|2|1.0.2.2|||||0|
+20200616 17:37:08|1|2|127.0.0.1|start|2|1.0.3.1|||||0|
+20200616 17:37:08|1|2|127.0.0.1|start|2|1.0.4.1|||||0|
+20200616 17:37:08|1|2|127.0.0.1|start|2|1.0.5.1|||||0|
+20200616 17:37:08|1|2|127.0.0.1|start|2|1.0.6.1|||||0|
+20200616 17:37:08|1|2|127.0.0.1|start|2|1.0.6.2|||||0|
+20200616 17:37:08|1|2|127.0.0.1|start|2|1.0.61.1|||||0|
+20200616 17:37:08|1|2|127.0.0.1|start|2|1.0.63.1|||||0|
+20200616 17:45:25|1|1|127.0.0.1|stop|3|*.*.*.*|||||0|
+20200616 17:45:25|1|3|127.0.0.1|stop|3|1.0.63.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/tbusd|/data/home/stevhuang/mango/tbusd/tbusd --id=1.0.63.1 --business-id=0  -D stop|0|
+20200616 17:45:25|1|3|127.0.0.1|stop|3|1.0.61.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/tlogd|/data/home/stevhuang/mango/tlogd/tlogd --id=1.0.61.1 --business-id=0  -D stop|0|
+20200616 17:45:25|1|3|127.0.0.1|stop|3|1.0.6.2|test_host1|10.85.45.212|/data/home/stevhuang/mango/func_server|/data/home/stevhuang/mango/func_server/func_server --id=1.0.6.2 --business-id=0  -D stop|0|
+20200616 17:45:25|1|3|127.0.0.1|stop|3|1.0.6.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/func_server|/data/home/stevhuang/mango/func_server/func_server --id=1.0.6.1 --business-id=0  -D stop|0|
+20200616 17:45:25|1|3|127.0.0.1|stop|3|1.0.5.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/control_server|/data/home/stevhuang/mango/control_server/control_server --id=1.0.5.1 --business-id=0  -D stop|0|
+20200616 17:45:25|1|3|127.0.0.1|stop|3|1.0.4.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/service_mgr_server|/data/home/stevhuang/mango/service_mgr_server/service_mgr_server --id=1.0.4.1 --business-id=0  -D stop|0|
+20200616 17:45:25|1|3|127.0.0.1|stop|3|1.0.3.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/router_server|/data/home/stevhuang/mango/router_server/router_server --id=1.0.3.1 --business-id=0  -D stop|0|
+20200616 17:45:25|1|3|127.0.0.1|stop|3|1.0.2.2|test_host1|10.85.45.212|/data/home/stevhuang/mango/server|/data/home/stevhuang/mango/server/server --id=1.0.2.2 --business-id=0  -D stop|0|
+20200616 17:45:25|1|3|127.0.0.1|stop|3|1.0.2.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/server|/data/home/stevhuang/mango/server/server --id=1.0.2.1 --business-id=0  -D stop|0|
+20200616 17:45:25|1|3|127.0.0.1|stop|3|1.0.1.2|test_host1|10.85.45.212|/data/home/stevhuang/mango/tconnd|/data/home/stevhuang/mango/tconnd/tconnd --id=1.0.1.2 --business-id=0  -D stop|0|
+20200616 17:45:25|1|3|127.0.0.1|stop|3|1.0.1.1|test_host1|10.85.45.212|/data/home/stevhuang/mango/tconnd|/data/home/stevhuang/mango/tconnd/tconnd --id=1.0.1.1 --business-id=0  -D stop|0|
+20200616 17:45:25|1|4|127.0.0.1|stop|3|1.0.63.1|test_host1|10.85.45.212|||0|
+20200616 17:45:25|1|4|127.0.0.1|stop|3|1.0.6.1|test_host1|10.85.45.212|||0|
+20200616 17:45:25|1|4|127.0.0.1|stop|3|1.0.6.2|test_host1|10.85.45.212|||0|
+20200616 17:45:25|1|4|127.0.0.1|stop|3|1.0.5.1|test_host1|10.85.45.212|||0|
+20200616 17:45:25|1|4|127.0.0.1|stop|3|1.0.61.1|test_host1|10.85.45.212|||0|
+20200616 17:45:25|1|4|127.0.0.1|stop|3|1.0.4.1|test_host1|10.85.45.212|||0|
+20200616 17:45:25|1|4|127.0.0.1|stop|3|1.0.3.1|test_host1|10.85.45.212|||0|
+20200616 17:45:25|1|4|127.0.0.1|stop|3|1.0.2.2|test_host1|10.85.45.212|||0|
+20200616 17:45:25|1|4|127.0.0.1|stop|3|1.0.1.2|test_host1|10.85.45.212|||0|
+20200616 17:45:25|1|4|127.0.0.1|stop|3|1.0.2.1|test_host1|10.85.45.212|||0|
+20200616 17:45:25|1|4|127.0.0.1|stop|3|1.0.1.1|test_host1|10.85.45.212|||0|
+20200616 17:45:25|1|2|127.0.0.1|stop|3|1.0.63.1|||||0|
+20200616 17:45:25|1|2|127.0.0.1|stop|3|1.0.61.1|||||0|
+20200616 17:45:25|1|2|127.0.0.1|stop|3|1.0.6.2|||||0|
+20200616 17:45:25|1|2|127.0.0.1|stop|3|1.0.6.1|||||0|
+20200616 17:45:25|1|2|127.0.0.1|stop|3|1.0.5.1|||||0|
+20200616 17:45:25|1|2|127.0.0.1|stop|3|1.0.4.1|||||0|
+20200616 17:45:25|1|2|127.0.0.1|stop|3|1.0.3.1|||||0|
+20200616 17:45:25|1|2|127.0.0.1|stop|3|1.0.2.2|||||0|
+20200616 17:45:25|1|2|127.0.0.1|stop|3|1.0.2.1|||||0|
+20200616 17:45:25|1|2|127.0.0.1|stop|3|1.0.1.2|||||0|
+20200616 17:45:25|1|2|127.0.0.1|stop|3|1.0.1.1|||||0|

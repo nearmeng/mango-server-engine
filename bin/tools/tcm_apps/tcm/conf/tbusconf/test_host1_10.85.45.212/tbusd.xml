@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="GBK" standalone="yes" ?>
+<Tbusd version="15">
+    <RelayShmKey>697001</RelayShmKey>
+    <GCIMShmKey>667001</GCIMShmKey>
+    <Listen>tcp://10.85.45.212:7301?reuse=1</Listen>
+    <PkgMaxSize>65536 </PkgMaxSize>
+    <SendBuff>10240000 </SendBuff>
+    <RecvBuff>10240000 </RecvBuff>
+    <StatGap>60 </StatGap>
+    <NeedAckPkg>1 </NeedAckPkg>
+    <RefreshTbusConfGap>10 </RefreshTbusConfGap>
+    <EnableCheckPeerIP>1 </EnableCheckPeerIP>
+    <DisabledChannelTimeGap>604800 </DisabledChannelTimeGap>
+    <IdleTickNumBeforeSleep>2 </IdleTickNumBeforeSleep>
+    <Check4ReadyBeforeSend>1 </Check4ReadyBeforeSend>
+    <MaxSendLoopTimesPerProc>100 </MaxSendLoopTimesPerProc>
+    <DynamicConfFile></DynamicConfFile>
+    <CheckRelayUrl>0x0 </CheckRelayUrl>
+    <AutomaticTbusModeConf type="AutomaticTbusModeConf">
+        <Enable>0 </Enable>
+        <LocalMgrListenUrl>udp://127.0.0.1:1599</LocalMgrListenUrl>
+        <GCIMConf type="GCIMHeadConf">
+            <AddrTemplet>8.8.8.8</AddrTemplet>
+            <ChannelDataAlign>8 </ChannelDataAlign>
+            <CreateChannelDefaultSendQueueSize>2048000 </CreateChannelDefaultSendQueueSize>
+            <CreateChannelDefaultRecvQueueSize>2048000 </CreateChannelDefaultRecvQueueSize>
+            <WanBU>HUYU </WanBU>
+            <WanType>BEST_EFFORT </WanType>
+        </GCIMConf>
+        <RelayConfigMethod>RELAY_CONFIG_BY_HOSTS_FILE </RelayConfigMethod>
+        <HostsFile>./tbusd_hosts.xml</HostsFile>
+        <ZooKeeperConfig type="ZooKeeperConfig">
+            <Url></Url>
+            <ZKApiLogFile>./tbusd_zk.log</ZKApiLogFile>
+            <AutoReloadZKGap>10 </AutoReloadZKGap>
+        </ZooKeeperConfig>
+        <AutoReloadHostsFileGap>30 </AutoReloadHostsFileGap>
+        <IdleChannelRecycleGap>259200 </IdleChannelRecycleGap>
+    </AutomaticTbusModeConf>
+    <Lib>libtbusd_st.so</Lib>
+</Tbusd>

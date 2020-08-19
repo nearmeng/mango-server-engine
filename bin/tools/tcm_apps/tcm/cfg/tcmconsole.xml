@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="GBK" standalone="yes" ?>
+
+<tcmconsole __version="2">
+
+    <!--DEFAULT VALUE: '127.0.0.1:9010'-->
+    <TbusconfigcenterUrl>127.0.0.1:9010</TbusconfigcenterUrl>
+
+    <!--connTimeout: connect tcmcenter timeout,default 10000ms-->
+    <!--DEFAULT VALUE: '10000'-->
+    <connTimeout>10000 </connTimeout>
+
+    <!--SayHellpGap: time gap for say hellp to server -->
+    <!--DEFAULT VALUE: '30'-->
+    <SayHellpGap>30 </SayHellpGap>
+
+    <!--ExecuteTimeout: tcmconsole updating timeout because last cmd res not return,default 60s-->
+    <!--DEFAULT VALUE: '60'-->
+    <ExecuteTimeout>60 </ExecuteTimeout>
+</tcmconsole>

@@ -1,0 +1,19 @@
+<tcmcenter>
+    <!--
+    4)业务系统主机描述:请将业务系统用到的主机在下面进行描述,IsVirtual默认为0，IsVirtual=1表示该主机为虚拟主机
+    -->
+    <HostTab >
+        <Host Name="Host1" InnerIP="127.0.0.1" >
+        </Host>
+
+        <Host Name="vHostImonster1" IsVirtual="1" InnerIP="172.25.40.101" >
+        </Host>
+
+        <Host Name="vHostImonster2" IsVirtual="1" InnerIP="172.25.40.102" >
+        </Host>
+
+        <Host Name="vHostImonster3" IsVirtual="1" InnerIP="172.25.40.103" >
+        </Host>
+
+    </HostTab>
+</tcmcenter>

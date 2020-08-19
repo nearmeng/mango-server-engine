@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="gb2312"?>
+
+<!--
+该文件为进程集中管理系统配置文件,主要包括以下几部分:
+1) tcmcenter基础配置
+2) 业务系统进程描述:描述整个业务系统各个架构层次的进程信息
+3) 业务系统进程组定义:将2中不同进程组合成不同的功能组
+4) 业务系统主机描述:描述业务系统用到的主机信息
+5) 业务系统进程组部署:将3中定义的进程组部署在4中的主机上
+6) 业务系统进程间bus通信关系:描述各进程之间的通信关系从而生成tbus通信管道信息
+以上2，3，4，5, 6各部分配置可以在本文件中，也可以独立在其他文件中配置，
+如果在其他文件中配置，请在1部分配置中指定具体的文件
+参数详细介绍请参考<<进程集中管理系统维护文档.doc>>相关部分的介绍
+-->
+
+<!--
+1)tcmcenter基础配置
+-->
+
+<!--
+BussinessID: 业务编号,如果需要tcm同时管理多个业务,可以使用该配置,否则采用0即可
+AddrTemple: 业务进程地址描述,该配置表示地址前8字节表示world编号，9-16字节表示zone编号,
+业务可以自定义地址层次名称，但最后两段必须为function和instance
+ConfigSoName: 业务用来生成业务进程配置文件的so文件,如果不需要自动生成配置文件的功能，使用系统自带so即可
+ConfigBaseDir: 自动生成的业务进程配置文件存放根目录
+TbusConfOutputDir: 自动生成的tbus相关配置文件存放目录
+CenterdAddr: tcmcenter连接的tcenterd进程地址
+TconndAddr: tcmcenter前端连接的tconnd进程地址
+-->  
+<tcmcenter  
+	BussinessID="0"  
+	AddrTemple="world:8.zone:8.function:8.instance:8"  
+	ConfigSoName="../conf/mmogxyz_config.so"  
+	ConfigBaseDir="../conf/confcreated"  
+	TbusConfOutputDir="../conf/tbusconf"  
+	CenterdAddr="1.1.1"  
+	TconndAddr="1.3.1" 
+	>               
+
+<!--
+2)业务系统进程描述:请在以下部分描述业务系统进程
+-->
+<cluster WorkPath="/data/mmog/" AutoTimeGap="30" OpTimeout="30" MsgRoundTime="6" >
+  <Proc FuncName="system_prepare.sh" WorkPath="./tools" Agrs="prepare.conf" Flag="start|notapp" FuncID="100" Seq="1" IsCommon="1" />
+  <Proc FuncName="tbusd" WorkPath="./tbusd/bin" Agrs="--conf-file=../conf/tbusd.xml" Flag="start|stop|check|auto|reload" FuncID="101" Seq="2" IsCommon="1" />
+  <Proc FuncName="account_tormsvr" ProcName="tormsvr" WorkPath="./account_tormsvr/bin" Agrs="--conf-file=../conf/account_tormsvr.xml --metabase-key=22001" ConfigPath="../conf/" Flag="start|stop|check|auto|reload" FuncID="102"  Seq="3"/>
+  <Proc FuncName="account" WorkPath="./account/bin" ConfigPath="../conf/" Flag="start|stop|check|auto|reload" FuncID="103"   Seq="4"/>
+  
+  <world  Isolated="0" >
+    <Proc FuncName="role_tormsvr" ProcName="tormsvr" WorkPath="./role_tormsvr/bin" Agrs="--conf-file=../conf/role_tormsvr.xml --metabase-key=22001"  ConfigPath="../conf/" Flag="start|stop|check|auto|reload" FuncID="12" Seq="101"/>	
+    <Proc FuncName="role" ProcName="role"  WorkPath="./role/bin" Agrs="--conf-file=../conf/role.xml --metabase-key=22001" ConfigPath="../conf/" Flag="start|stop|check|auto|reload" FuncID="6" Seq="102"/>	
+    
+    <zone  solated="0"  >
+      <Proc FuncName="zone"  WorkPath="./zone/bin"  Agrs="--conf-file=../conf/zone.xml --metabase-key=22001" ConfigPath="../conf/" Flag="start|check|stop|reload" FuncID="4" Seq="50" />
+      <Proc FuncName="zone_connect" ProcName="tconnd" WorkPath="./zone_connect/bin" Agrs="--conf-file=../conf/zone_tconnd.xml --metabase-key=22001" ConfigPath="../conf/" FuncID="5" Seq="60" />
+    </zone>
+  </world>
+</cluster>
+
+
+<!--
+3)业务系统进程组定义:请在以下部分将业务系统进程根据功能定义成不同的进程组
+请确保进程组中的进程在<业务系统进程描述>部分中定义
+-->
+
+<!--tbusd比较特殊-->
+<ProcGroup Name="tbusd" Layer="cluster" >
+     <Proc FuncName="tbusd" />
+</ProcGroup>
+
+<!--帐号服务组,这里采用两个tormsvr服务,如果account和account_tormsvr需要部署在不同机器,需要拆成不同组-->
+<ProcGroup Name="account" Layer="cluster" >
+     <Proc FuncName="account" />
+     <Proc FuncName="account_tormsvr" />
+     <Proc FuncName="account_tormsvr" Agrs="--conf-file=../conf/account_tormsvr_2.xml --metabase-key=22001"/>
+</ProcGroup>
+
+<!--角色服务组,如果role和role_tormsvr需要部署在不同机器,需要拆成不同组-->
+<ProcGroup Name="world" Layer="world" >
+     <Proc FuncName="role" />
+     <Proc FuncName="role_tormsvr" />
+</ProcGroup>
+
+<!--游戏服务器组1,-->
+<ProcGroup Name="zone" Layer="zone" >
+     <Proc FuncName="zone" />
+     <Proc FuncName="zone_connect" />
+</ProcGroup>
+
+<!--
+4)业务系统主机描述:请将业务系统用到的主机在下面进行描述
+-->
+<HostTab >              
+    <Host  Name="Zone1"  InnerIP="10.6.221.106"  OuterIPCount="1"  CustomAttr=""  >
+        <OuterIP>10.6.221.106 </OuterIP>
+    </Host>
+    <Host  Name="Zone2"  InnerIP="10.6.221.107"  OuterIPCount="1"  CustomAttr=""  >
+        <OuterIP>10.6.221.107 </OuterIP>
+    </Host>
+    <Host  Name="World"  InnerIP="10.6.221.108"  OuterIPCount="1"  CustomAttr=""  >
+        <OuterIP>10.6.221.108 </OuterIP>
+    </Host>
+    <Host  Name="Cluster"  InnerIP="10.6.221.109"  OuterIPCount="1"  CustomAttr=""  >
+        <OuterIP>10.6.221.109 </OuterIP>
+    </Host>
+</HostTab>
+
+
+<!--
+5)业务系统进程组部署:请在以下部分描述各进程组在各主机上的部署情况
+请确保进程组和主机都已经在相应的各部分定义
+-->
+<ClusterDeploy >
+    <DeloyGroup  Group="tbusd"  Host="Zone1"  InstID="1" />
+    <DeloyGroup  Group="tbusd"  Host="Zone2"  InstID="2" />
+    <DeloyGroup  Group="tbusd"  Host="World"  InstID="3" />
+    <DeloyGroup  Group="tbusd"  Host="Cluster"  InstID="4" />
+    
+    <DeloyGroup  Group="account"  Host="Cluster"  InstID="1" />
+           
+    <world   ID="1" > 
+        <DeloyGroup  Group="world"  Host="World"  InstID="1" />
+                        
+        <zone   ID="1" >              
+            <DeloyGroup  Group="zone"  Host="Zone1"  InstID="1" />
+        </zone>
+        
+        <zone   ID="2" WorkPath="/data/mmog/extension/">              
+            <DeloyGroup  Group="zone"  Host="Zone1"  InstID="1" />
+        </zone>
+        
+        <zone   ID="3" >              
+            <DeloyGroup  Group="zone"  Host="Zone2"  InstID="1" />
+        </zone>
+    </world>
+</ClusterDeploy>
+
+
+<!--
+6)业务系统进程间bus通信关系:请在以下部分描述各进程tbus通信关系
+请确保进程已经在进程描述部分定义
+-->
+<TbusConf  ChannelDataAlign="8"  GCIMShmKey="1688"  GRMShmKey="2688"  TbusdServicePort="9000"  TbusdConfPath=""  ChannelSize="2048000" >              
+    <Channel  ProcSet1="zone"  ProcSet2="zone_connect"  Mask="255.255.0.0" />
+    <Channel  ProcSet1="zone"  ProcSet2="role"  Mask="255.0.0.0" />
+    <Channel  ProcSet1="zone"  ProcSet2="account"  Mask="0.0.0.0" />
+    <Channel  ProcSet1="role"  ProcSet2="role_tormsvr"  Mask="255.0.0.0" />
+    <Channel  ProcSet1="account"  ProcSet2="account_tormsvr"  Mask="0.0.0.0" />
+</TbusConf>
+
+</tcmcenter>

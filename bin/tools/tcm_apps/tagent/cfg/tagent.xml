@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="GBK" standalone="yes" ?>
+
+<tagentconf __version="1">
+
+    <!--DEFAULT VALUE: '10.85.45.212:8899'-->
+    <master>10.85.45.212:8899</master>
+    <slave>10.85.45.212:8899</slave>
+
+
+    <!--DEFAULT VALUE: 'lib'-->
+    <lib>../lib</lib>
+
+    <!--DEFAULT VALUE: 'cfg'-->
+    <cfg>../cfg</cfg>
+
+    <!--DEFAULT VALUE: '500000.000000'-->
+    <tick>500000.000000 </tick>
+	
+	  <mod_procmng_conf>
+        <!--FtpFileTransTimeout: ftp传文件的事务超时时间，单位秒-->
+        <!--DEFAULT VALUE: '600'-->
+        <FtpFileTransTimeout>600 </FtpFileTransTimeout>
+
+        <!--FtpFileTransCount: ftp传文件的事务个数-->
+        <!--DEFAULT VALUE: '2048'-->
+        <FtpFileTransCount>2048 </FtpFileTransCount>
+    </mod_procmng_conf>
+	
+    <!--DEFAULT VALUE: 'FTP_ACTIVE_MODE'-->
+    <conn_ftp_mode>FTP_ACTIVE_MODE </conn_ftp_mode>
+	
+    <mod_collect_conf>
+
+        <!--GetCollectConfInterval: 主动从tcm拉取collect_job.xml配置文件的时间间隔，单位秒-->
+        <!--DEFAULT VALUE: '300'-->
+        <GetCollectConfInterval>300 </GetCollectConfInterval>
+
+        <!--NoLoadCollectConf: 不加载collect_job.xml配置开关: 0: 加载, 1: 不加载-->
+        <!--DEFAULT VALUE: '0'-->
+        <NoLoadCollectConf>1 </NoLoadCollectConf>
+
+        <!--LoadConfInitTaskInterval: 加载collect_job.xml配置文件(由开关NoLoadCollectConf决定是否加载)、初始化创建收集任务的时间间隔，单位秒.-->
+        <!--DEFAULT VALUE: '180'-->
+        <LoadConfInitTaskInterval>180 </LoadConfInitTaskInterval>
+
+    </mod_collect_conf>
+
+    <!--tmpFileDir: 存放临时文件的目录, 是bin目录下的一个子目录-->
+    <!--DEFAULT VALUE: 'tmp'-->
+    <tmpFileDir>tmp</tmpFileDir>
+    
+    <mod_tbusconfig_conf>
+        <!--DelBakTbusConfInterval: 删除备份TBUS配置文件的时间间隔, 单位:分钟, 默认为15天, 建议备份文件至少保存5天-->
+        <!--DEFAULT VALUE: '21600'-->
+        <DelBakTbusConfInterval>21600 </DelBakTbusConfInterval>
+    </mod_tbusconfig_conf>
+</tagentconf>

@@ -1,0 +1,50 @@
+<TbusGCIM>
+<BusinessID>0</BusinessID>
+<AddrTemplet>6.8.8.10</AddrTemplet>
+<GCIMShmKey>669001</GCIMShmKey>
+<Channels>
+    <Priority>8</Priority>
+    <Address>1.0.3.1</Address>
+    <Address>1.0.2.1</Address>
+    <SendSize>4096000</SendSize>
+    <RecvSize>4096000</RecvSize>
+    <Desc>router_server1_to_server1</Desc>
+</Channels>
+
+<Channels>
+    <Priority>8</Priority>
+    <Address>1.0.1.1</Address>
+    <Address>1.0.2.1</Address>
+    <SendSize>4096000</SendSize>
+    <RecvSize>4096000</RecvSize>
+    <Desc>tconnd1_to_server1</Desc>
+</Channels>
+
+<Channels>
+    <Priority>8</Priority>
+    <Address>1.0.3.1</Address>
+    <Address>1.0.4.1</Address>
+    <SendSize>4096000</SendSize>
+    <RecvSize>4096000</RecvSize>
+    <Desc>router_server1_to_service_mgr_server1</Desc>
+</Channels>
+
+<Channels>
+    <Priority>8</Priority>
+    <Address>1.0.3.1</Address>
+    <Address>1.0.5.1</Address>
+    <SendSize>4096000</SendSize>
+    <RecvSize>4096000</RecvSize>
+    <Desc>router_server1_to_control_server1</Desc>
+</Channels>
+
+<Channels>
+    <Priority>8</Priority>
+    <Address>1.0.3.1</Address>
+    <Address>1.0.6.1</Address>
+    <SendSize>4096000</SendSize>
+    <RecvSize>4096000</RecvSize>
+    <Desc>router_server1_to_func_server1</Desc>
+</Channels>
+
+</TbusGCIM>

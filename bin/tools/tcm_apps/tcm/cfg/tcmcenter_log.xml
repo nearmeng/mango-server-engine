@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="GBK" standalone="yes" ?>
+<TLOGConf version="1">
+    <PriorityHigh>NULL </PriorityHigh>
+    <PriorityLow>INFO</PriorityLow>
+    <DelayInit>0 </DelayInit>
+    <SuppressError>1 </SuppressError>
+    <Count>7</Count>
+    <CategoryList type="TLOGCategory">
+        <Name>text</Name>
+        <PriorityHigh>FATAL </PriorityHigh>
+        <PriorityLow>FATAL </PriorityLow>
+        <LevelDispatch>0 </LevelDispatch>
+        <MustSucc>0 </MustSucc>
+        <MaxMsgSize>104800 </MaxMsgSize>
+        <Format></Format>
+        <ForwardCat>texttrace</ForwardCat>
+        <Device type="TLOGDevAny">
+            <Type>NO </Type>
+        </Device>
+    </CategoryList>
+    <CategoryList type="TLOGCategory">
+        <Name>texttrace</Name>
+        <PriorityHigh>NULL </PriorityHigh>
+        <PriorityLow>TRACE </PriorityLow>
+        <LevelDispatch>0 </LevelDispatch>
+        <MustSucc>0 </MustSucc>
+        <MaxMsgSize>104800 </MaxMsgSize>
+        <Format>[%d.%u][(%f:%l) (%F)] %m%n</Format>
+        <ForwardCat>texterr</ForwardCat>
+        <Device type="TLOGDevAny">
+            <Type>FILE </Type>
+            <Device type="TLOGDevSelector">
+                <File type="TLOGDevFile">
+                    <Pattern>../log/tcmcenter.log</Pattern>
+                    <BuffSize>0 </BuffSize>
+                    <SizeLimit>209715200 </SizeLimit>
+                    <Precision>1 </Precision>
+                    <MaxRotate>3 </MaxRotate>
+                    <SyncTime>0 </SyncTime>
+                    <NoFindLatest>0 </NoFindLatest>
+                    <RotateStick>0 </RotateStick>
+                </File>
+            </Device>
+        </Device>
+    </CategoryList>
+    <CategoryList type="TLOGCategory">
+        <Name>texterr</Name>
+        <PriorityHigh>NULL </PriorityHigh>
+        <PriorityLow>ERROR </PriorityLow>
+        <LevelDispatch>0 </LevelDispatch>
+        <MustSucc>0 </MustSucc>
+        <MaxMsgSize>0 </MaxMsgSize>
+        <Format>[%d.%u][(%f:%l) (%F)] %m%n</Format>
+        <ForwardCat></ForwardCat>
+        <Device type="TLOGDevAny">
+            <Type>FILE </Type>
+            <Device type="TLOGDevSelector">
+                <File type="TLOGDevFile">
+                    <Pattern>../log/tcmcenter.error</Pattern>
+                    <BuffSize>0 </BuffSize>
+                    <SizeLimit>104857600 </SizeLimit>
+                    <Precision>1 </Precision>
+                    <MaxRotate>2 </MaxRotate>
+                    <SyncTime>0 </SyncTime>
+                    <NoFindLatest>0 </NoFindLatest>
+                    <RotateStick>0 </RotateStick>
+                </File>
+            </Device>
+        </Device>
+    </CategoryList>
+    <CategoryList type="TLOGCategory">
+        <Name>texttrace.bus</Name>
+        <PriorityHigh>NULL </PriorityHigh>
+        <PriorityLow>DEBUG </PriorityLow>
+        <LevelDispatch>1 </LevelDispatch>
+        <MustSucc>0 </MustSucc>
+        <MaxMsgSize>0 </MaxMsgSize>
+        <Format>[%d%u]%p %m %F:%l%n</Format>
+        <ForwardCat></ForwardCat>
+        <Device type="TLOGDevAny">
+            <Type>FILE </Type>
+            <Device type="TLOGDevSelector">
+                <File type="TLOGDevFile">
+                    <Pattern>../log/tcmcenter_tbus.log</Pattern>
+                    <BuffSize>0 </BuffSize>
+                    <SizeLimit>52428800 </SizeLimit>
+                    <Precision>1 </Precision>
+                    <MaxRotate>3 </MaxRotate>
+                    <SyncTime>0 </SyncTime>
+                    <NoFindLatest>0 </NoFindLatest>
+                    <RotateStick>0 </RotateStick>
+                </File>
+            </Device>
+        </Device>
+    </CategoryList>
+    <CategoryList type="TLOGCategory">
+        <Name>data</Name>
+        <PriorityHigh>NULL </PriorityHigh>
+        <PriorityLow>TRACE </PriorityLow>
+        <LevelDispatch>0 </LevelDispatch>
+        <MustSucc>0 </MustSucc>
+        <MaxMsgSize>0 </MaxMsgSize>
+        <Format>[%d.%u][(%f:%l) (%F)] %m%n</Format>
+        <ForwardCat></ForwardCat>
+        <Device type="TLOGDevAny">
+            <Type>FILE </Type>
+            <Device type="TLOGDevSelector">
+                <File type="TLOGDevFile">
+                    <Pattern>../log/tcmcenter_rundata.log</Pattern>
+                    <BuffSize>0 </BuffSize>
+                    <SizeLimit>20971520 </SizeLimit>
+                    <Precision>1 </Precision>
+                    <MaxRotate>3 </MaxRotate>
+                    <SyncTime>0 </SyncTime>
+                    <NoFindLatest>0 </NoFindLatest>
+                    <RotateStick>0 </RotateStick>
+                </File>
+            </Device>
+        </Device>
+    </CategoryList>
+
+    <CategoryList type="TLOGCategory">
+        <Name>operate</Name>
+        <PriorityHigh>NULL </PriorityHigh>
+        <PriorityLow>DEBUG </PriorityLow>
+        <LevelDispatch>0 </LevelDispatch>
+        <MustSucc>0 </MustSucc>
+        <MaxMsgSize>0 </MaxMsgSize>
+        <Format>[%d.%u][(%f:%l) (%F)] %m%n</Format>
+        <ForwardCat></ForwardCat>
+        <Device type="TLOGDevAny">
+            <Type>FILE </Type>
+            <Device type="TLOGDevSelector">
+                <File type="TLOGDevFile">
+                    <Pattern>../log/tcmcenter_operate.log</Pattern>
+                    <BuffSize>0 </BuffSize>
+                    <SizeLimit>20971520 </SizeLimit>
+                    <Precision>1 </Precision>
+                    <MaxRotate>10 </MaxRotate>
+                    <SyncTime>0 </SyncTime>
+                    <NoFindLatest>0 </NoFindLatest>
+                    <RotateStick>0 </RotateStick>
+                </File>
+            </Device>
+        </Device>
+    </CategoryList>
+
+	    <CategoryList type="TLOGCategory">
+        <Name>db_operate</Name>
+        <PriorityHigh>NULL </PriorityHigh>
+        <PriorityLow>DEBUG </PriorityLow>
+        <LevelDispatch>0 </LevelDispatch>
+        <MustSucc>0 </MustSucc>
+        <MaxMsgSize>0 </MaxMsgSize>
+        <Format>[%d.%u][(%f:%l) (%F)] %m%n</Format>
+        <ForwardCat></ForwardCat>
+        <Device type="TLOGDevAny">
+            <Type>FILE </Type>
+            <Device type="TLOGDevSelector">
+                <File type="TLOGDevFile">
+                    <Pattern>../log/tcmcenter_db_operate.log</Pattern>
+                    <BuffSize>0 </BuffSize>
+                    <SizeLimit>20971520 </SizeLimit>
+                    <Precision>1 </Precision>
+                    <MaxRotate>10 </MaxRotate>
+                    <SyncTime>0 </SyncTime>
+                    <NoFindLatest>0 </NoFindLatest>
+                    <RotateStick>0 </RotateStick>
+                </File>
+            </Device>
+        </Device>
+    </CategoryList>
+</TLOGConf>

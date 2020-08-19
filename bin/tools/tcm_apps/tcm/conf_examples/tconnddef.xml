@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="GBK" standalone="yes" ?>
+
+<metalib tagsetversion="1" name="tconnd" version="12" >
+
+	<macro name="TCONND_NAME_LEN" value="32" />
+	<macro name="TCONND_SVRSKEY_LEN" value="128" />
+	<macro name="TCONND_URL_LEN" value="128" />
+	<macro name="TCONND_MAX_TDR" value="16" />
+	<macro name="TCONND_MAX_PDU" value="16" />
+	<macro name="TCONND_MAX_NETTRANS" value="16" />
+	<macro name="TCONND_SVRSKEY_MAX_INST" value="16" />
+	
+	<macro name="TCONND_DEF_SENDCHECK_INTERVAL" value="10" />
+	<macro name="TCONND_DEF_RECVCHECK_INTERVAL" value="10" />
+
+	<macro name="TCONND_DEFAULT_UP_PKG_LEN" value="4096" />
+	<macro name="TCONND_DEFAULT_DOWN_PKG_LEN" value="65536" />
+	<macro name="TCONND_MAX_VIPNUM" value="64" />
+	
+	
+
+	
+
+	<macrosgroup name="PDULenParserID" desc="标示PDU长度分析方法的ID">
+		<macro name="PDULENPARSERID_BY_TDR" value="0" desc="使用TDR方法进行分析"/>
+		<macro name="PDULENPARSERID_BY_NULL" value="1" desc="通过数据中出现NULL('\0')字符分析长度"/>
+		<macro name="PDULENPARSERID_BY_QQ" value="2" desc="use qq default method"/>
+		<macro name="PDULENPARSERID_BY_NONE" value="10" desc="Do nothing ,just forward"/>
+	</macrosgroup>
+
+	<struct name="TransLimit" version="10" >
+		<entry name="PkgSpeed" type="int" defaultvalue="0"/>
+		<entry name="ByteSpeed" type="int" defaultvalue="0"/>
+		<entry name="LimitAction" type="int" defaultvalue="0" version="12" desc="是否断开连接"/>
+	</struct>
+
+	<struct name="TransMetric" version="10" >
+		<entry name="SendPkgSucc" type="bigint" />
+		<entry name="SendByteSucc" type="bigint" />
+		<entry name="SendPkgFail" type="bigint" />
+		<entry name="SendByteFail" type="bigint" />
+		<entry name="SendPkgDrop" type="bigint" />
+		<entry name="SendByteDrop" type="bigint" />
+		<entry name="RecvPkgSucc" type="bigint" />
+		<entry name="RecvByteSucc" type="bigint" />
+		<entry name="RecvPkgFail" type="bigint" />
+		<entry name="RecvByteFail" type="bigint" />
+		<entry name="RecvPkgDrop" type="bigint" />
+		<entry name="RecvByteDrop" type="bigint" />
+	</struct>
+
+	<struct name="ConnLimit" version="10" >
+		<entry name="MaxConn" type="int" />
+		<entry name="Permit" type="int" />
+		<entry name="Speed" type="int" />
+	</struct>
+
+	<struct name="ConnStatInfo" version="10" >
+		<entry name="Total" type="int" />
+		<entry name="Idle" type="int" />
+		<entry name="Wait" type="int" />
+		<entry name="Active" type="int" />
+	</struct>
+
+	<struct name="ConnMetric" version="10" >
+		<entry name="Try" type="int" />
+		<entry name="Refuse" type="int" />
+		<entry name="NetLost" type="int" />
+		<entry name="AllocFail" type="int" />
+		<entry name="EpollFail" type="int" />
+		<entry name="AcceptFail" type="int" />
+		<entry name="NetFail" type="int" />
+	</struct>
+
+	<struct name="TDR" version="10" >
+		<entry name="Name" type="string" size="TCONND_NAME_LEN" defaultvalue="default" />
+		<entry name="Path" type="string" size="TCONND_URL_LEN" />
+	</struct>
+
+	<struct name="TDRList" version="10" >
+		<entry name="Count" type="int" defaultvalue="1" />
+		<entry name="TDRs" type="TDR" count="TCONND_MAX_TDR" refer="Count" />
+	</struct>
+
+  <struct name="PDULenTDRParser" version="11" desc="使用TDR方法来分析数据包的长度">
+    <entry name="TDR" type="string" size="TCONND_NAME_LEN" defaultvalue="default" desc="PDU数据结构所在元数据描述库文件"/>
+    <entry name="Pkg" type="string" size="TCONND_NAME_LEN" desc="PDU数据结构元数据描述名" />
+    <entry name="PkgLen" type="string" size="TCONND_NAME_LEN" desc="PDU数据结构中记录数据包总长度信息成员的元数据描述路径名"/>
+    <entry name="HeadLen" type="string" size="TCONND_NAME_LEN" desc="PDU数据结构中记录数据包头部长度信息的成员的元数据描述路径名" />
+    <entry name="BodyLen" type="string" size="TCONND_NAME_LEN" desc="PDU数据结构中记录数据包消息体长度信息的成员的元数据描述路径名"/>
+    <entry name="PkgLenMultiplex" type="int"  defaultvalue="1" />
+    <entry name="HeadLenMultiplex" type="int"  defaultvalue="1" />
+    <entry name="BodyLenMultiplex" type="int"  defaultvalue="1" />
+  </struct>
+
+  <struct name="PDULenQQParser" version="11" desc="使用TDR方法来分析数据包的长度, use default tdr">
+    <entry name="TDR" type="string" size="TCONND_NAME_LEN" desc="PDU数据结构所在元数据描述库文件"/>
+    <entry name="SendPkg" type="string" size="TCONND_NAME_LEN" desc="PDU数据结构上行数据包描述名" />
+    <entry name="RecvPkg" type="string" size="TCONND_NAME_LEN" desc="PDU数据结构下行数据包描述名" />
+    <entry name="SigValidSec" type="int" defaultvalue="7200" />
+    <entry name="CheckCltIP" type="int" defaultvalue="0"/>
+    <entry name="CheckSequence" type="int" defaultvalue="0" version="12"/>
+    <entry name="EncMethod" type="int" bindmacrosgroup="TSEC_ENC" defaultvalue="TSEC_ENC_QQ" />
+    <entry name="AuthType" type="int" bindmacrosgroup="TSEC_AUTH" defaultvalue="TSEC_AUTH_QQUNIFIED"/>
+    <entry name="CheckSig2" type="int" defaultvalue="0"/>
+    <entry name="SvrSKeyLen" type="int" />
+    <entry name="SvrSKey" type="string" size="TCONND_SVRSKEY_LEN" />
+    <entry name="SvrSKey2Len" type="int" />
+    <entry name="SvrSKey2" type="string" size="TCONND_SVRSKEY_LEN" />
+    <entry name="TestNumEnable" type="int" defaultvalue="0"/>
+    <entry name="TestSvrSKeyLen" type="int" />
+    <entry name="TestSvrSKey" type="string" size="TCONND_SVRSKEY_LEN" />
+    <entry name="TestSvrSKey2Len" type="int" />
+    <entry name="TestSvrSKey2" type="string" size="TCONND_SVRSKEY_LEN" />
+    <entry name="TestBeginNum" type="int" defaultvalue="0" />
+    <entry name="TestEndNum" type="int" defaultvalue="0" />
+    <entry name="VIPNum"     type="short" /> 
+    <entry name="VIPUins"    type="int" count="TCONND_MAX_VIPNUM" refer="VIPNum" />
+    <entry name="SvrsKeyAutoUpdate" type="int" defaultvalue="0" />
+    <entry name="UseVas" type="int" defaultvalue="0" />
+    <entry name="VasId" type="int" defaultvalue="0" />
+    <entry name="ThreewayHandshake" type="int" defaultvalue="1" desc="是否需要三次握手" />
+
+  </struct>
+
+
+  <union name="PDULenParser" version="11" desc="分析协议数据单元(PDU)长度信息的数据结构，用于将数据流分解成应用定义的数据通信消息" >
+    <entry name="TDRParser" type="PDULenTDRParser"  id="PDULENPARSERID_BY_TDR" desc="使用TDR方法进行分析"/>
+    <entry name="QQParser" type="PDULenQQParser"  id="PDULENPARSERID_BY_QQ" desc="use default qq parser"/>
+  </union>
+
+  <struct name="PDU" version="10" >
+    <entry name="Name" type="string" size="TCONND_NAME_LEN" defaultvalue="default" />		
+    <entry name="UpSize" type="int" desc="PDU数据单元上行包最大字节数" defaultvalue="0"/>
+    <entry name="DownSize" type="int" desc="PDU数据单元下行包最大字节数" defaultvalue="0"/>
+    <entry name="LenParsertype" type="int" bindmacrosgroup="PDULenParserID" version="11" defaultvalue="PDULENPARSERID_BY_TDR" />
+    <entry name="LenParser" type="PDULenParser" select="LenParsertype" version="11" desc="分析协议数据单元(PDU)长度信息的成员" />
+	</struct>
+
+	<struct name="PDUList" version="10" >
+		<entry name="Count" type="int" defaultvalue="1" />
+		<entry name="PDUs" type="PDU" count="TCONND_MAX_PDU" refer="Count" />
+	</struct>
+
+	<struct name="Listener" version="10" >
+		<entry name="Name" type="string" size="TCONND_NAME_LEN" defaultvalue="default" />
+		<entry name="Url" type="string" size="TCONND_URL_LEN" defaultvalue="tcp://127.0.0.1:6666" />
+		<entry name="SendBuff" type="int" defaultvalue="655360"/>
+		<entry name="RecvBuff" type="int" defaultvalue="655360"/>
+		<entry name="MaxIdle" type="int" defaultvalue="0"/>
+		<entry name="Backlog" type="int" defaultvalue="128"/>
+	</struct>
+
+	<struct name="ListenerList" version="10" >
+		<entry name="Count" type="int" defaultvalue="1" />
+		<entry name="Listeners" type="Listener" count="TCONND_MAX_NETTRANS" refer="Count" />
+	</struct>
+
+	<struct name="ListenerRun" version="10" >
+		<entry name="Name" type="string" size="TCONND_NAME_LEN" defaultvalue="default" />
+		<entry name="TransStat" type="TransMetric" />
+		<entry name="ConnStat" type="ConnMetric" />
+	</struct>
+
+	<struct name="ListenerRunList" version="10" >
+		<entry name="Count" type="int" defaultvalue="1" />
+		<entry name="Listeners" type="ListenerRun" count="TCONND_MAX_NETTRANS" refer="Count" />
+	</struct>
+
+	<struct name="Serializer" version="10" >
+		<entry name="Name" type="string" size="TCONND_NAME_LEN" defaultvalue="default" />
+		<entry name="Url" type="string" size="TCONND_URL_LEN" />
+	</struct>
+
+	<struct name="SerializerList" version="10" >
+		<entry name="Count" type="int" defaultvalue="1" />
+		<entry name="Serializers" type="Serializer" count="TCONND_MAX_NETTRANS" refer="Count" />
+	</struct>
+
+	<struct name="SerializerRun" version="10" >
+		<entry name="Name" type="string" size="TCONND_NAME_LEN" defaultvalue="default" />
+		<entry name="TransStat" type="TransMetric" />
+	</struct>
+
+	<struct name="SerializerRunList" version="10" >
+		<entry name="Count" type="int" defaultvalue="1" />
+		<entry name="Serializers" type="SerializerRun" count="TCONND_MAX_NETTRANS" refer="Count" />
+	</struct>
+
+	<struct name="NetTrans" version="10" >
+		<entry name="Name" type="string" size="TCONND_NAME_LEN" defaultvalue="default" />
+		<entry name="UseTimeStamp" type="int" defaultvalue="0" />
+		<entry name="UseWaitQueue" type="int" defaultvalue="0" />
+		<entry name="QueueNotifyInterval" type="int" defaultvalue="1" />
+		<entry name="PDU" type="string" size="TCONND_NAME_LEN" defaultvalue="default" />
+		<entry name="Listener" type="string" size="TCONND_NAME_LEN" defaultvalue="default" />
+		<entry name="Serializer" type="string" size="TCONND_NAME_LEN" defaultvalue="default" />
+		<entry name="LisViewer" type="string" size="TCONND_NAME_LEN" />
+		<entry name="SerViewer" type="string" size="TCONND_NAME_LEN" />
+		<entry name="ConnLimit" type="ConnLimit" />
+		<entry name="TransLimit" type="TransLimit" />
+	</struct>
+
+	<struct name="NetTransList" version="10" >
+		<entry name="Count" type="int" defaultvalue="1" />
+		<entry name="NetTrans" type="NetTrans" count="TCONND_MAX_NETTRANS" refer="Count" />
+	</struct>
+
+	<struct name="NetTransRun" version="10" >
+		<entry name="Name" type="string" size="TCONND_NAME_LEN" defaultvalue="default" />
+		<entry name="ConnInfo" type="ConnStatInfo" />
+		<entry name="ConnStat" type="ConnMetric" />
+		<entry name="TransStat" type="TransMetric" />
+	</struct>
+
+	<struct name="NetTransRunList" version="10" >
+		<entry name="Count" type="int" defaultvalue="1" />
+		<entry name="NetTrans" type="NetTransRun" count="TCONND_MAX_NETTRANS" refer="Count" />
+	</struct>
+
+	<struct name="tconnd" version="10" >
+		<entry name="Threading" type="int" defaultvalue="0"/>
+		<entry name="EnableViewer" type="int" defaultvalue="0" />
+		<entry name="MaxFD" type="int" defaultvalue="10240" />
+		<entry name="TDRList" type="TDRList" />
+		<entry name="PDUList" type="PDUList" />
+		<entry name="ListenerList" type="ListenerList" />
+		<entry name="SerializerList" type="SerializerList" />
+		<entry name="NetTransList" type="NetTransList" />
+	</struct>
+
+	<struct name="tconndrun_status" version="10" >
+		<entry name="UpTime" type="int" />
+		<entry name="Now" type="int" />
+	</struct>
+	
+	<struct name="tconndrun_cumulate" version="10" >
+		<entry name="ListenerRunList" type="ListenerRunList" />
+		<entry name="SerializerRunList" type="SerializerRunList" />
+		<entry name="NetTransRunList" type="NetTransRunList" />
+	</struct>
+	
+	<!--tconnd key mgr -->
+	<struct name="SvrsKeyHead" version="10">
+		<entry name="Busid" type="int" />
+		<entry name="PDU" type="int" />
+		<entry name="Resv" type="string" size="56" />
+	</struct>
+	
+	<struct name="SvrsKeyData" version="10">
+		<entry name="PDUName" type="string" size="TCONND_NAME_LEN" defaultvalue="default" />
+		<entry name="SvrSKeyLen" type="int" />
+		<entry name="SvrSKey" type="string" size="TCONND_SVRSKEY_LEN" />
+		<entry name="SvrSKey2Len" type="int" />
+		<entry name="SvrSKey2" type="string" size="TCONND_SVRSKEY_LEN" />
+	</struct>
+	
+	<struct name="SvrsKeyList" version="10">
+		<entry name="Count" type="int" defaultvalue="0" />
+		<entry name="SvrsKey" type="SvrsKeyData" count="TCONND_MAX_PDU" refer="Count" />
+	</struct>
+	
+	<struct name="SvrsKeyInst" version="10">
+		<entry name="Head" type="SvrsKeyHead" />
+		<entry name="Body" type="SvrsKeyList" />
+	</struct>
+	
+	<struct name="SvrsKeyInstList" version="10">
+		<entry name="Count" type="int" defaultvalue="0" />
+		<entry name="SvrsKeyInstList" type="SvrsKeyInst" count="TCONND_SVRSKEY_MAX_INST" refer="Count" />
+	</struct>
+	
+	<macrosgroup name="ID_MSG_TCONND">
+		<macro name="ID_MSG_TCONND_REPORT"    value="0x30" desc="" />
+		<macro name="ID_MSG_TCONND_ASKREPORT" value="0x31" desc="" />
+		<macro name="ID_MSG_TCONND_UPDATE"    value="0x32" desc="" />
+	</macrosgroup>
+	
+	<struct name="TconndSvrsKeyVerReport" version="10">
+		<entry name="SvrsKeyList" type="SvrsKeyList" desc="" />
+	</struct>
+	
+	<struct name="TconndSvrsKeyUpdate" version="10">
+		<entry name="SvrsKeyList" type="SvrsKeyList" desc="" />
+	</struct>
+	
+	<struct name="TconndinnerMsgHead"  version="10">
+		<entry name="Version" type="ushort" desc="通信协议版本" />
+		<entry name="PkgLen" type="ushort" desc="消息总体的长度" />
+		<entry name="CmdID" type="ushort" desc="命令号"/>
+		<entry name="Magic" type="ushort" desc="通信协议魔数" />
+	</struct>
+	
+	<union name="TconndinnerMsgBody" version="10">
+		<entry name="TconndSvrsKeyVerReport" type="TconndSvrsKeyVerReport" id="ID_MSG_TCONND_REPORT"    desc=""/>
+		<entry name="TconndSvrsKeyUpdate" type="TconndSvrsKeyUpdate" id="ID_MSG_TCONND_UPDATE"    desc=""/>
+	</union>
+	
+	<struct name="TconndinnerMsg"  version="10" sizeof="Head.PkgLen" versionindicator="Head.Version" desc="">
+		<entry name="Head" type="TconndinnerMsgHead" />
+		<entry name="Body" type="TconndinnerMsgBody" select="Head.CmdID" sizeinfo="Head.PkgLen" />
+	</struct>
+	
+	<struct name="BusidList" version="10" >
+		<entry name="Count" type="int" defaultvalue="0" />
+		<entry name="Busid" type="int" count="256" refer="Count" />
+	</struct>
+	
+	<struct name="tconndkeymgr" version ="10" >
+		<entry name="LogLevel" type="int" defaultvalue="700" desc="日志等级" />
+		<entry name="CenterdAddr" type="ip" defaultvalue="0.0.0.1" desc="centerd地址" />
+		<entry name="TconndMgrAddr" type="ip" defaultvalue="0.0.0.4" desc="tconndkeymgr地址" />
+		<entry name="BindAddr" type="string" size="64" desc="绑定IP地址" />
+		<entry name="BindPort" type="smalluint" desc="绑定端口地址" />
+	</struct>
+	
+</metalib>

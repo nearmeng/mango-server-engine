@@ -1,0 +1,2604 @@
+<?xml version="1.0" encoding="gb2312"?>
+
+
+<metalib tagsetversion="1" name="ConfigMngProto" version="4">
+
+  <include name=""   file="tcm_comm.xml" />
+
+  <macro name="TCM_ERR_DESC_MAX_LEN" value="512" />
+  <macro name="TCM_SHELL_ECHO_MAX_LEN" value="1024" />
+  <macro name="TPM_MAX_FILE_TRANS_LEN" value="4096" />
+  <macro name="TPM_MAX_BIN_TRANS_LEN" value="40000" />
+  <macro name="TPM_MAX_TAPP_CTRL_RES_LEN" value="20480" />
+  <macro name="TCM_MAX_FILE_NAME_LEN" value="128" />
+  <macro name="TCM_MAX_FILE_COUNT" value="4096" />
+  <macro name="TPM_MAX_FILE_COUNT" value="100" />
+  <macro name="TCM_MAX_CFG_TRANS_LEN" value="40960" />
+  <macro name="TCM_MAX_PROC_CFG_FILE_NUM" value="256" />
+  <macro name="TCM_MAX_HOST_TOOLS_FILE_NUM" value="128" />
+  <macro name="TCM_TDR_URI_MAX_META_NAME"  value="63" />
+  <macro name="TPM_MAX_TCMCONF_TRANS_LEN" value="512000" />
+  <macro name="TPM_MAX_COLLECT_TASK_FILE_LEN" value="51200" />
+  <macro name="TCM_OPRATION_RESULT_LEN" value="256" />
+  <macro name="TCM_TDR_URI_MAX_URI_LEN" value="256" />
+  <macro name="TCM_TDR_URI_MAX_DATA_LEN" value="3000" />
+  <macro name="TCM_MAX_RUNDATA_LEN" value="102400" />
+  <macro name="TCM_MAX_BUS_CHANNEL_NUM" value="128" />
+  <macro name="TPM_MAX_DEPOYGROUP_NUM_IN_NODE" value="5000" />
+  <macro name="TPM_MAX_PROGROUP_NAME_LEN" value="64" />
+  <macro name="TPM_MAX_PROTO_HOST_NUM" value="100" />
+  <macro name="TPM_TCM_NODE_NAME_LEN" value="64" />
+  <macro name="TPM_TCM_MAX_KEY_STRING_LEN" value="256" />
+  <macro name="TPM_TCM_MAX_ADDR_TEMPLET_STRING_LEN" value="256" />
+  <macro name="TPM_TCM_MAX_FUNC_NAME_LEN" value="32" />
+  <macro name="TPM_TCM_MAX_PROGROUP_NAME_LEN" value="64" />
+  <macro name="TPM_TCM_MAX_PROCGROUP_OPER_NUM_PROTO" value="40" desc="一次操作进程组中进程的个数" />
+  <macro name="TPM_TCM_MAX_DIR_LEN" value="256" />
+  <macro name="TPM_TCM_MAX_BUS_ADDR_STRING_LEN" value="256" />
+  <macro name="TPM_MAX_TBUS_LOCAL_CONF_NUM" value="128" />
+  <macro name="TPM_MAX_CHANGE_IP_NUM" value="128" />
+  <macro name="TCM_CONFIG_PROCESS_SET_RULE_LEN" value="64" desc="描述进程组关系的字符串最大长度"/>
+  <macro name="TMP_MAX_PROTO_CHANNEL_NUM" value="40" />
+  <macro name="TMP_MAX_PROTO_HOST_NUM" value="128" />
+  <macro name="TMP_MAX_PROTO_TRANSPARENT_LEN" value="30720" />
+  <macro name="TMP_MAX_PROTO_TRANSPARENT_IP_NUM" value="30000" />
+  <macro name="TMP_MAX_PROTO_DISPATCH_IP_NUM" value="1000" />
+  <macro name="TMP_MAX_PROTO_DEPLOYGROUP_NUM" value="100" />
+  <macro name="TMP_MAX_PROTO_DEPLOYNODE_NUM" value="8" />
+  <macro name="TMP_MAX_PROTO_DELETE_DEPLOYGROUP_NUM" value="400" />
+  <macro name="MAX_IP_LEN" value="32" />
+  <macro name="MAX_USER_LEN" value="64" />
+  <macro name="MAX_PASSWD_LEN" value="64" />
+  <macro name="TCM_MAX_FTP_FILE_NUM" value="128" />
+
+  
+  <macrosgroup name="TPM_PROC_PROP_STATUS" desc="进程的属性和状态描述" >
+    <macro name="TPM_PROC_STATUS_UNKOWN" value="0" desc="不确定" />
+    <macro name="TPM_PROC_STATUS_RUNNING" value="101" desc="进程正在运行" />
+    <macro name="TPM_PROC_STATUS_NOT_RUNNING" value="102" desc="进程没有运行" />
+    <macro name="TPM_PROC_OPERATE_BLOCKED" value="103" desc="操作被block" />
+    <macro name="TPM_PROC_OPERATE_TIMEOUT" value="104" desc="操作超时" />
+    <macro name="TPM_PROC_OPERATE_SUCCEED" value="105" desc="操作成功" />
+    <macro name="TPM_PROC_OPERATE_FAILED" value="106" desc="操作失败" />
+    <macro name="TPM_PROC_START_FAILED_IN_RUNNING" value="107" desc="启动时处于运行状态" />
+    <macro name="TPM_PROC_PROP_AUTO" value="201" desc="进程自动拉起" />
+    <macro name="TPM_PROC_PROP_NOAUTO" value="202" desc="进程不自动拉起" />
+    <macro name="TPM_PROC_PROP_ENABLED" value="301" desc="enabled" />
+    <macro name="TPM_PROC_PROP_DISABLED" value="302" desc="disabled" />
+    <macro name="TPM_PROC_STATUS_INSTART" value="108" desc="正在启动" />
+    <macro name="TPM_PROC_STATUS_INSTOP" value="109" desc="正在停止" />
+    <macro name="TCM_ERR_LONGDESC_MAX_LEN" value="20480" />
+  </macrosgroup>
+
+  <macrosgroup name="TPM_ERR" desc="错误描述" >
+    <macro name="TPM_ERR_NO_ERR" value="0"  />
+    <macro name="TPM_ERR_UNKOWN_ERR" value="1"  />
+    <macro name="TPM_ERR_START_INRUNNING" value="2"  />
+    <macro name="TPM_ERR_NOTROOT" value="3" desc="不是ROOT用户" />
+    <macro name="TPM_ERR_USERNOTEXIST" value="4" desc="用户不存在" />
+  </macrosgroup>
+
+  <macrosgroup name="TPM_PROC_PROC_CHECK_TYPE" desc="进程检查确认方式" >
+    <macro name="TPM_PROC_PROC_CHECK_NO" value="0"  desc= "不需要检查确认"/>
+    <macro name="TPM_PROC_PROC_CHECK_PID" value="1"  desc="检查到具体的进程PID"/>
+    <macro name="TPM_PROC_PROC_CHECK_NAME" value="2"  desc="检查到程序名即可"/>
+    <macro name="TPM_PROC_PROC_CHECK_SERVICE" value="3"  desc="根据service名字检查"/>
+  </macrosgroup>
+
+   <macrosgroup name="TPM_TCM_CFG_TYPE" desc="TCM配置文件类型">
+    <macro name="TPM_TCM_BASE_CFG" value="0" desc="tcm基本信息配置文件"/>
+    <macro name="TPM_TCM_PROC_CFG" value="1" desc="tcm进程描述配置文件"/>
+    <macro name="TPM_TCM_PROC_DEPLOY_CFG" value="2" desc="tcm进程部署配置文件"/>
+    <macro name="TPM_TCM_HOST_CFG" value="3" desc="tcm主机配置文件"/>
+    <macro name="TPM_TCM_BUS_RELATION_CFG" value="4" desc="tcm bus规则配置文件" />
+    <macro name="TPM_TCM_ACCESS_WHITELIST_CFG" value="5" desc="tcm白名单配置文件"/>
+  </macrosgroup>
+
+
+  <!--本数据定义文件引用了tcm_comm文件中定义的数据-->
+
+  <struct name="TPMReqHeartbeat"  version="1" desc="ProcMngConsole与ProcMngCenter之间的心跳包"  >
+    <entry name="reserve" type="Byte"    />
+  </struct>
+  <struct name="TPMResHeartbeat"  version="1" desc="ProcMngConsole与ProcMngCenter之间的心跳包" >
+    <entry name="reserve" type="Byte"    />
+  </struct>
+
+
+  <struct name="HostProc" version="1" desc="进程描述">
+     <entry name="IdStr" type="string" size="TCM_PROC_STR_MAX_LEN" desc="进程ID" />
+     <entry name="ProcName" type="string" size="TCM_MAX_PROC_NAME_LEN" />
+  </struct>
+
+  <struct name="TPMOneHost" version="1" >
+    <entry name="Name" type="string" size="TCM_HOST_NAME_MAX_LEN" unique="true" desc="机器的主机名" />
+    <entry name="InnerIP" type="string" size="TCM_HOST_NAME_MAX_LEN" />
+     <entry name="ProcCount" type="int"   />
+     <entry name="Proc" type="HostProc" count="TCM_MAX_HOST_PROC_NUM" refer="ProcCount" />
+  </struct>
+
+  <struct name="TPMReqListHosts" version="1" >
+    <entry name="Reserve" type="int"  />
+    <!--
+    <entry name="Args" type="string" size="TCM_PROC_STR_MAX_LEN" defaultvalue="" version="4"/>
+    -->
+    <!--<entry name="Limit" type="int"  />
+    <entry name="OffSet" type="int" />-->
+  </struct>
+  <struct name="TPMResListHosts" version="1" >
+    <entry name="Total" type="int"   />
+    <entry name="OffSet" type="int"   />
+    <entry name="Count" type="int"   />
+    <entry name="Host" type="TPMOneHost" count="TCM_MAX_PROTO_HOST_NUM" refer="Count" />
+  </struct>
+
+  <struct name="ProcDesc" version="1" desc="进程描述">
+    <entry name="IdStr" type="string" size="TCM_PROC_STR_MAX_LEN" desc="进程ID" />
+    <entry name="ProcName" type="string" size="TCM_MAX_PROC_NAME_LEN" />
+    <entry name="FuncName" type="string" size="TCM_MAX_FUNC_NAME_LEN" />
+    <entry name="Flag" type="string" size="TCM_MAX_FLAG_LEN" />
+    <entry name="Enable" type="int"   />
+    <entry name="Auto" type="int"   />
+    <entry name="HostName" type="string" size="TCM_HOST_NAME_MAX_LEN" unique="true" desc="机器的主机名" />
+    <!--
+    <entry name="InnerIP" type="string" size="TCM_HOST_NAME_MAX_LEN"  version="4"/>
+    -->
+  </struct>
+
+  <struct name="TPMReqListProcs" version="1" >
+    <entry name="ProcStr" type="string" size="TCM_PROC_STR_MAX_LEN" />
+    <entry name="HostName" type="string" size="TCM_HOST_NAME_MAX_LEN" defaultvalue="" version="2"/>
+    <!--<entry name="Limit" type="int"  />
+    <entry name="OffSet" type="int" />-->
+  </struct>
+  <struct name="TPMResListProcs" version="1" >
+    <entry name="Total" type="int"   />
+    <entry name="OffSet" type="int"   />
+    <entry name="Count" type="int"   />
+    <entry name="Proc" type="ProcDesc" count="TCM_MAX_PROTO_PROC_NUM" refer="Count" />
+  </struct>
+
+  <struct name="TPMMessage" version="1" desc="通用消息返回协议" >
+    <entry name="Msg" type="string" size="TCM_ERR_DESC_MAX_LEN" />
+  </struct>
+
+  <struct name="TPMOperateFail" version="1" desc="通用操作失败返回协议" >
+    <entry name="ErrId" type="int" />
+    <entry name="ErrDesc" type="string" size="TCM_ERR_DESC_MAX_LEN" />
+  </struct>
+
+  <struct name="ProcPropStatus" version="1" desc="进程对应状态或属性" >
+    <entry name="ProcID" type="string" size="TCM_PROC_STR_MAX_LEN" desc="进程ID" />
+    <entry name="Value" type="int" desc="进程状态或属性，参考TPM_PROC_PROP_STATUS" />
+    <entry name="Error" type="string" size="TCM_ERR_DESC_MAX_LEN" version="4" />
+  </struct>
+
+  <struct name="TPMReqStartProc" version="1" desc="启动进程请求协议" >
+    <entry name="ProcStr" type="string" size="TCM_PROC_STR_MAX_LEN" />
+    <entry name="Args" type="string" size="TCM_MAX_CMD_LEN" />
+    <entry name="HostName" type="string" size="TCM_HOST_NAME_MAX_LEN" defaultvalue="" version="2"/>
+  </struct>
+
+  <struct name="TPMReqRestartProc" version="1" desc="启动restart请求协议" >
+    <entry name="ProcStr" type="string" size="TCM_PROC_STR_MAX_LEN" />
+    <entry name="HostName" type="string" size="TCM_HOST_NAME_MAX_LEN" defaultvalue="" version="2"/>
+  </struct>
+
+  <struct name="TPMReqAgentStartProc" version="1" desc="Agent启动进程请求协议" >
+    <entry name="ID" type="int" />
+    <entry name="CheckBeginTime" type="int" />
+    <entry name="CheckEndTime" type="int" />
+    <entry name="CheckCmd" type="string" size="TCM_MAX_CMD_LEN" />
+    <entry name="IdStr" type="string" size="TCM_PROC_STR_MAX_LEN" />
+    <entry name="WorkDir" type="string" size="TCM_MAX_PATH_LEN" />
+    <entry name="StartStr" type="string" size="TCM_MAX_CMD_LEN" />
+    <entry name="ResumeStr" type="string" size="TCM_MAX_CMD_LEN"/>
+    <entry name="AutoScript" type="string" size="TCM_MAX_CMD_LEN" />
+    <entry name="ProcName" type="string" size="TCM_MAX_PROC_NAME_LEN" />
+    <entry name="AutoTimeGap" type="int" />
+    <entry name="CheckType" type="int" desc="检查确认方式，参考TPM_PROC_PROC_CHECK_TYPE"/>
+    <entry name="PidFile" type="string" size="TCM_MAX_PATH_LEN" desc="pid文件，绝对路径"/>
+    <entry name="Auto" type="int" desc="是否需要自动拉起" />
+    <entry name="AutoResumeNum" type="int" defaultvalue="-1" desc="自动拉起次数" version="4"/>
+
+    <entry name="User" type="string" size="TCM_MAX_USERNAME_LEN" desc="进程启动用户" version="4" />
+  </struct>
+
+  <struct name="TPMReqAgentRestartProc" version="1" desc="Agent restart进程请求协议" >
+    <entry name="ID" type="int" />
+    <entry name="CheckBeginTime" type="int" />
+    <entry name="CheckEndTime" type="int" />
+    <entry name="CheckCmd" type="string" size="TCM_MAX_CMD_LEN" />
+    <entry name="IdStr" type="string" size="TCM_PROC_STR_MAX_LEN" />
+    <entry name="WorkDir" type="string" size="TCM_MAX_PATH_LEN" />
+    <entry name="RestartStr" type="string" size="TCM_MAX_CMD_LEN" />
+    <entry name="StartStr" type="string" size="TCM_MAX_CMD_LEN" />
+    <entry name="ResumeStr" type="string" size="TCM_MAX_CMD_LEN"/>
+    <entry name="AutoScript" type="string" size="TCM_MAX_CMD_LEN" />
+    <entry name="ProcName" type="string" size="TCM_MAX_PROC_NAME_LEN" />
+    <entry name="AutoTimeGap" type="int" />
+    <entry name="CheckType" type="int" desc="检查确认方式，参考TPM_PROC_PROC_CHECK_TYPE"/>
+    <entry name="PidFile" type="string" size="TCM_MAX_PATH_LEN" desc="pid文件，绝对路径"/>
+    <entry name="Auto" type="int" desc="是否需要自动拉起" />
+    <entry name="AutoResumeNum" type="int" defaultvalue="-1" desc="自动拉起次数" version="4"/>
+
+    <entry name="User" type="string" size="TCM_MAX_USERNAME_LEN" desc="进程启动用户" version="4" />
+  </struct>
+
+  <struct name="TPMResStartProc" version="1" desc="启动进程返回协议" >
+    <entry name="Total" type="int" />
+    <entry name="Offset" type="int" />
+    <entry name="Count" type="int" />
+    <entry name="ProcStatus" type="ProcPropStatus" count="TCM_MAX_PROTO_PROC_NUM" refer="Count" />
+  </struct>
+  <struct name="TPMResRestartProc" version="1" desc="restart进程返回协议" >
+    <entry name="Total" type="int" />
+    <entry name="Offset" type="int" />
+    <entry name="Count" type="int" />
+    <entry name="ProcStatus" type="ProcPropStatus" count="TCM_MAX_PROTO_PROC_NUM" refer="Count" />
+  </struct>
+
+  <struct name="TPMResAgentStartProc" version="1" desc="Agent启动进程返回协议" >
+    <entry name="ID" type="int" />
+    <entry name="Result" type="int" />
+    <entry name="Error" type="string" size="TCM_ERR_DESC_MAX_LEN" version="4" />
+  </struct>
+
+  <struct name="TPMResAgentRestartProc" version="1" desc="Agent restart进程返回协议" >
+    <entry name="ID" type="int" />
+    <entry name="Result" type="int" />
+    <entry name="Error" type="string" size="TCM_ERR_DESC_MAX_LEN" version="4" />
+  </struct>
+
+  <struct name="TPMReqStopProc" version="1" desc="停止进程请求协议" >
+    <entry name="ProcStr" type="string" size="TCM_PROC_STR_MAX_LEN" />
+    <entry name="HostName" type="string" size="TCM_HOST_NAME_MAX_LEN" defaultvalue="" version="2"/>
+  </struct>
+
+  <struct name="TPMReqAgentStopProc" version="1" desc="Agent停止进程请求协议" >
+    <entry name="ID" type="int" />
+    <entry name="IdStr" type="string" size="TCM_PROC_STR_MAX_LEN" />
+    <entry name="WorkDir" type="string" size="TCM_MAX_PATH_LEN" />
+    <entry name="ProcName" type="string" size="TCM_MAX_PROC_NAME_LEN" />
+    <entry name="StopStr" type="string" size="TCM_MAX_CMD_LEN" />
+    <entry name="CheckType" type="int" desc="检查确认方式，参考TPM_PROC_PROC_CHECK_TYPE"/>
+    <entry name="PidFile" type="string" size="TCM_MAX_PATH_LEN" desc="pid文件，绝对路径"/>
+    <entry name="OpeTime" type="int" />
+  </struct>
+
+  <struct name="TPMResStopProc" version="1" desc="停止进程返回协议" >
+    <entry name="Total" type="int" />
+    <entry name="Offset" type="int" />
+    <entry name="Count" type="int" />
+    <entry name="ProcStatus" type="ProcPropStatus" count="TCM_MAX_PROTO_PROC_NUM" refer="Count" />
+  </struct>
+
+  <struct name="TPMResAgentStopProc" version="1" desc="Agent停止进程返回协议" >
+    <entry name="ID" type="int" />
+    <entry name="Result" type="int" />
+    <entry name="Error" type="string" size="TCM_ERR_DESC_MAX_LEN" version="4" />
+  </struct>
+
+
+  <struct name="TPMReqKillProc" version="1" desc="Kill -9 进程请求协议" >
+    <entry name="ProcStr" type="string" size="TCM_PROC_STR_MAX_LEN" />
+    <entry name="HostName" type="string" size="TCM_HOST_NAME_MAX_LEN" defaultvalue="" version="2"/>
+  </struct>
+
+  <struct name="TPMReqKill2Proc" version="1" desc="Kill进程请求协议" >
+    <entry name="ProcStr" type="string" size="TCM_PROC_STR_MAX_LEN" />
+    <entry name="HostName" type="string" size="TCM_HOST_NAME_MAX_LEN" defaultvalue="" version="2"/>
+  </struct>
+
+  <struct name="TPMReqAgentKill2Proc" version="1" desc="Agent kill进程请求协议" >
+    <entry name="ID" type="int" />
+    <entry name="IdStr" type="string" size="TCM_PROC_STR_MAX_LEN" />
+    <entry name="WorkDir" type="string" size="TCM_MAX_PATH_LEN" />
+    <entry name="ProcName" type="string" size="TCM_MAX_PROC_NAME_LEN" />
+    <entry name="KillStr" type="string" size="TCM_MAX_CMD_LEN" />
+    <entry name="CheckType" type="int" desc="检查确认方式，参考TPM_PROC_PROC_CHECK_TYPE"/>
+    <entry name="PidFile" type="string" size="TCM_MAX_PATH_LEN" desc="pid文件，绝对路径"/>
+    <entry name="OpeTime" type="int" />
+  </struct>
+
+  <struct name="TPMReqAgentKillProc" version="1" desc="Agent Kill进程请求协议" >
+    <entry name="ID" type="int" />
+    <entry name="IdStr" type="string" size="TCM_PROC_STR_MAX_LEN" />
+    <entry name="ProcName" type="string" size="TCM_MAX_PROC_NAME_LEN" />
+    <entry name="CheckType" type="int" desc="检查确认方式，参考TPM_PROC_PROC_CHECK_TYPE"/>
+    <entry name="PidFile" type="string" size="TCM_MAX_PATH_LEN" desc="pid文件，绝对路径"/>
+  </struct>
+
+  <struct name="TPMResKillProc" version="1" desc="Kill -9进程返回协议" >
+    <entry name="Total" type="int" />
+    <entry name="Offset" type="int" />
+    <entry name="Count" type="int" />
+    <entry name="ProcStatus" type="ProcPropStatus" count="TCM_MAX_PROTO_PROC_NUM" refer="Count" />
+  </struct>
+
+  <struct name="TPMResKill2Proc" version="1" desc="Kill2进程返回协议" >
+    <entry name="Total" type="int" />
+    <entry name="Offset" type="int" />
+    <entry name="Count" type="int" />
+    <entry name="ProcStatus" type="ProcPropStatus" count="TCM_MAX_PROTO_PROC_NUM" refer="Count" />
+  </struct>
+
+  <struct name="TPMResAgentKillProc" version="1" desc="Agent Kill进程返回协议" >
+    <entry name="ID" type="int" />
+    <entry name="Result" type="int" />
+    <entry name="Error" type="string" size="TCM_ERR_DESC_MAX_LEN" version="4" />
+  </struct>
+
+  <struct name="TPMResAgentKill2Proc" version="1" desc="Agent Kill进程返回协议" >
+    <entry name="ID" type="int" />
+    <entry name="Result" type="int" />
+    <entry name="Error" type="string" size="TCM_ERR_DESC_MAX_LEN" version="4" />
+  </struct>
+
+
+  <struct name="TPMReqCheckAgent" version="1" desc="检查Agent是否连通请求协议" >
+    <entry name="HostName" type="string" size="TCM_HOST_NAME_MAX_LEN" />
+  </struct>
+
+  <struct name="AgentStatus" version="1" desc="进程对应状态或属性" >
+    <entry name="HostName" type="string" size="TCM_HOST_NAME_MAX_LEN" />
+    <entry name="InnerIP" type="string" size="TCM_HOST_NAME_MAX_LEN" />
+    <entry name="Value" type="int" desc="agent状态: 0,操作失败; 1,操作成功; 2,操作超时" />
+  </struct>
+
+  <struct name="TPMResCheckAgent" version="1" desc="检查agent是否连通返回协议" >
+    <entry name="Total" type="int" />
+    <entry name="Offset" type="int" />
+    <entry name="Count" type="int" />
+    <entry name="AgentStatus" type="AgentStatus" count="TCM_MAX_PROTO_HOST_NUM" refer="Count" />
+
+  </struct>
+
+
+  <struct name="TPMReqReloadProc" version="1" desc="reload进程请求协议" >
+    <entry name="ProcStr" type="string" size="TCM_PROC_STR_MAX_LEN" />
+    <entry name="HostName" type="string" size="TCM_HOST_NAME_MAX_LEN" defaultvalue="" version="2"/>
+  </struct>
+
+  <struct name="TPMReqAgentReloadProc" version="1" desc="Agent reload进程请求协议" >
+    <entry name="ID" type="int" />
+    <entry name="WorkDir" type="string" size="TCM_MAX_PATH_LEN" />
+    <entry name="ProcName" type="string" size="TCM_MAX_PROC_NAME_LEN" />
+    <entry name="ReloadStr" type="string" size="TCM_MAX_CMD_LEN" />
+    <entry name="PidFile" type="string" size="TCM_MAX_PATH_LEN" desc="pid文件，绝对路径"/>
+  </struct>
+
+  <struct name="TPMResReloadProc" version="1" desc="reload进程返回协议" >
+    <entry name="Total" type="int" />
+    <entry name="Offset" type="int" />
+    <entry name="Count" type="int" />
+    <entry name="ProcStatus" type="ProcPropStatus" count="TCM_MAX_PROTO_PROC_NUM" refer="Count" />
+  </struct>
+
+  <struct name="TPMResAgentReloadProc" version="1" desc="Agent realod进程返回协议" >
+    <entry name="ID" type="int" />
+    <entry name="Result" type="int" />
+    <entry name="Error" type="string" size="TCM_ERR_DESC_MAX_LEN" version="4" />
+  </struct>
+
+  <struct name="ReloadResult" version="1" desc="重加载tdrconf结果" >
+    <entry name="HostName" type="string" size="TCM_HOST_NAME_MAX_LEN" desc="主机名" />
+    <entry name="Value" type="int" desc="进程状态或属性，参考TPM_PROC_PROP_STATUS" />
+    <entry name="Error" type="string" size="TCM_ERR_DESC_MAX_LEN" version="4" />
+  </struct>
+
+  <struct name="TPMReqReloadCollectConf" version="1" desc="reload TdrCollect cfg请求协议" >
+    <entry name="HostName" type="string" size="TCM_HOST_NAME_MAX_LEN" defaultvalue="" version="2"/>
+  </struct>
+
+
+  <struct name="TPMResReloadCollectConf" version="1" desc="reload TdrCollect cfg 返回协议" >
+    <entry name="Total" type="int" />
+    <entry name="Offset" type="int" />
+    <entry name="Count" type="int" />
+    <entry name="ReloadResult" type="ReloadResult" count="TCM_MAX_PROTO_PROC_NUM" refer="Count" />
+  </struct>
+
+  <struct name="TPMReqAgentReloadCollectConf" version="1" desc="Agent realod tdrconf 返回协议" >
+    <entry name="ID" type="int" />
+  </struct>
+
+  <struct name="TPMResAgentReloadCollectConf" version="1" desc="Agent realod tdrconf 返回协议" >
+    <entry name="ID" type="int" />
+    <entry name="Result" type="int" />
+    <entry name="Error" type="string" size="TCM_ERR_DESC_MAX_LEN" version="4" />
+  </struct>
+
+  <struct name="TPMReqSetProp" version="1" desc="设置进程属性(如自动拉起,是否disabled)请求协议" >
+    <entry name="ProcStr" type="string" size="TCM_PROC_STR_MAX_LEN" />
+    <entry name="Value" type="int" desc="参考TPM_PROC_PROP_STATUS"/>
+    <entry name="HostName" type="string" size="TCM_HOST_NAME_MAX_LEN" defaultvalue="" version="2"/>
+  </struct>
+
+  <struct name="TPMReqAgentSetProp" version="1" desc="Agent设置进程自动拉起请求协议" >
+    <entry name="ID" type="int" />
+    <entry name="Value" type="int" desc="参考TPM_PROC_PROP_STATUS"/>
+    <entry name="IdStr" type="string" size="TCM_PROC_STR_MAX_LEN" />
+  </struct>
+
+  <struct name="TPMReqAgentGetProp" version="1" desc="Agent查询进程自动拉起等属性请求协议" >
+    <entry name="ID" type="int" />
+    <entry name="Value" type="int" desc="参考TPM_PROC_PROP_STATUS"/>
+    <entry name="IdStr" type="string" size="TCM_PROC_STR_MAX_LEN" />
+  </struct>
+
+  <struct name="TPMResAgentGetProp" version="1" desc="Agent查询进程自动拉起等属性返回协议" >
+    <entry name="ID" type="int" />
+    <entry name="Value" type="int" desc="参考TPM_PROC_PROP_STATUS"/>
+  </struct>
+
+  <struct name="TPMResSetProp" version="1" desc="设置进程属性(如自动拉起，是否disabled)返回协议" >
+    <entry name="Value" type="int" desc="请求时设置的值" />
+    <entry name="Count" type="int" />
+    <entry name="Total" type="int" />
+    <entry name="Offset" type="int" />
+    <entry name="ProcProp" type="ProcPropStatus" count="TCM_MAX_PROTO_PROC_NUM" refer="Count" />
+    <entry name="Error" type="string" size="TCM_ERR_DESC_MAX_LEN" version="4" />
+  </struct>
+
+  <struct name="TPMResAgentSetProp" version="1" desc="Agent设置进程自动拉起返回协议" >
+    <entry name="Result" type="int" />
+    <entry name="ID" type="int" />
+    <entry name="Value" type="int" desc="参考TPM_PROC_PROP_STATUS"/>
+  </struct>
+
+  <struct name="TPMReqCheckProc" version="1" desc="检查进程是否存在请求协议" >
+    <entry name="ProcStr" type="string" size="TCM_PROC_STR_MAX_LEN" />
+    <entry name="Value" type="int" desc="TPM_PROC_STATUS_RUNNING, TPM_PROC_STATUS_NOT_RUNNING 或 零" />
+    <entry name="HostName" type="string" size="TCM_HOST_NAME_MAX_LEN" defaultvalue="" version="2"/>
+  </struct>
+
+  <struct name="TPMReqAgentCheck" version="1" desc="Agent检查进程是否存在请求协议" >
+    <entry name="ID" type="int" />
+    <entry name="ProcStr" type="string" size="TCM_PROC_STR_MAX_LEN" />
+    <entry name="ProcName" type="string" size="TCM_MAX_PROC_NAME_LEN" />
+    <entry name="CheckType" type="int" desc="检查确认方式，参考TPM_PROC_PROC_CHECK_TYPE"/>
+    <entry name="PidFile" type="string" size="TCM_MAX_PATH_LEN" desc="pid文件，绝对路径"/>
+  </struct>
+
+  <struct name="ProcCheckResult" version="1" desc="" >
+    <entry name="Proc" type="int" />
+    <entry name="ProcStr" type="string" size="TCM_PROC_STR_MAX_LEN" />
+    <entry name="ProcName" type="string" size="TCM_MAX_PROC_NAME_LEN" />
+    <entry name="CheckType" type="int" desc="检查确认方式，参考TPM_PROC_PROC_CHECK_TYPE"/>
+    <entry name="Value" type="int" desc="进程状态或属性，参考TPM_PROC_PROP_STATUS" />
+    <entry name="Count" type="int" />
+    <entry name="Error" type="string" size="TCM_ERR_DESC_MAX_LEN" version="4" />
+  </struct>
+
+  <struct name="TPMResCheckProc" version="1" desc="检查进程是否存在返回协议" >
+    <entry name="Total" type="int" />
+    <entry name="Offset" type="int" />
+    <entry name="Count" type="int" />
+    <entry name="ProcList" type="ProcCheckResult" count="TCM_MAX_PROTO_PROC_NUM" refer="Count" />
+    <entry name="Value" type="int" desc="请求时设置的值" />
+  </struct>
+
+  <struct name="TPMResAgentCheck" version="1" desc="Agent检查进程是否存在返回协议" >
+    <entry name="Result" type="int" />
+    <entry name="ID" type="int" />
+    <entry name="Value" type="int" desc="参考TPM_PROC_PROP_STATUS"/>
+    <entry name="Count" type="int" />
+    <entry name="Error" type="string" size="TCM_ERR_DESC_MAX_LEN" version="4" />
+  </struct>
+
+
+  <struct name="TPMAgentHeartBeat" version="1" desc="Agent心跳检查">
+    <entry name="Reserve" type="int" />
+  </struct>
+
+
+  <struct name="CreateCfgResult" version="1" >
+    <entry name="ProcID" type="string" size="TCM_PROC_STR_MAX_LEN" desc="进程ID" />
+    <entry name="Result" type="int" desc="参考TPM_ERR" />
+    <entry name="Error" type="string" size="TCM_ERR_DESC_MAX_LEN" version="4" />
+  </struct>
+
+  <struct name="TPMReqCreateCfg" version="1" desc="生成配置文件请求" >
+    <entry name="ProcStr" type="string" size="TCM_PROC_STR_MAX_LEN" desc="进程描述"/>
+    <entry name="BaseDir" type="string" size="TCM_MAX_PATH_LEN" desc="配置文件存放基础目录"/>
+    <entry name="HostName" type="string" size="TCM_HOST_NAME_MAX_LEN" defaultvalue="" version="2"/>
+  </struct>
+
+  <struct name="TPMResCreateCfg" version="1" desc="生成配置返回协议" >
+    <entry name="Total" type="int" />
+    <entry name="Offset" type="int" />
+    <entry name="Count" type="int" />
+    <entry name="ResultList" type="CreateCfgResult" count="TCM_MAX_PROTO_PROC_NUM" refer="Count" />
+  </struct>
+
+
+
+  <struct name="FileDesc" version="1" >
+    <entry name="FileName" type="string" size="TCM_MAX_PATH_LEN" />
+    <entry name="Status" type="int" />
+    <entry name="Error" type="string" size="TCM_ERR_DESC_MAX_LEN" version="4" />
+  </struct>
+
+  <struct name="TransCfgResult" version="1" >
+    <entry name="ProcID" type="string" size="TCM_PROC_STR_MAX_LEN" desc="进程ID" />
+    <entry name="Result" type="int" desc="参考TPM_ERR" />
+    <entry name="FileCount" type="int" desc="配置文件个数" />
+    <entry name="Files" type="FileDesc" count="TCM_MAX_PROC_CFG_FILE_NUM" refer="FileCount" />
+  </struct>
+
+  <struct name="TPMReqTransCfg" version="1" desc="传输配置文件请求" >
+    <entry name="ProcStr" type="string" size="TCM_PROC_STR_MAX_LEN" desc="进程描述"/>
+    <entry name="BaseDir" type="string" size="TCM_MAX_PATH_LEN" desc="配置文件存放基础目录"/>
+    <entry name="HostName" type="string" size="TCM_HOST_NAME_MAX_LEN" defaultvalue="" version="2"/>
+  </struct>
+
+  <struct name="TPMResTransCfg" version="1" desc="传输配置返回协议" >
+    <entry name="Total" type="int" />
+    <entry name="Offset" type="int" />
+    <entry name="Count" type="int" />
+    <entry name="ResultList" type="TransCfgResult" count="TCM_MAX_PROTO_PROC_NUM" refer="Count" />
+  </struct>
+
+  <struct name="TPMReqAgentTransCfg" version="1" desc="传输配置到agent请求" >
+    <entry name="ProcId" type="int" desc="进程ID"/>
+    <entry name="SourceFile" type="string" size="TCM_MAX_PATH_LEN" desc="源文件,绝对路径"/>
+    <entry name="SourceFileHash" type="char" count="16" desc="文件hash值,只有在整个文件传输完成才会用来检验"/>
+    <entry name="TargetPath" type="string" size="TCM_MAX_PATH_LEN" desc="目的文件路径"/>
+    <entry name="TargetFile" type="string" size="TCM_MAX_PATH_LEN" desc="目的文件名"/>
+    <entry name="TotalLen" type="int" desc="文件总长" />
+    <entry name="Offset" type="int" desc="文件偏移"/>
+    <entry name="Len" type="int" desc="传输长度"/>
+    <entry name="Content" type="char" count="TPM_MAX_FILE_TRANS_LEN" refer="Len" desc="目的文件"/>
+  </struct>
+
+  <struct name="TPMResAgentTransCfg" version="1" desc="传输配置到agent返回" >
+    <entry name="ProcId" type="int" desc="进程ID"/>
+    <entry name="Result" type="int" desc="传输长度"/>
+    <entry name="SourceFile" type="string" size="TCM_MAX_PATH_LEN" desc="源文件,绝对路径"/>
+    <entry name="TotalLen" type="int" desc="文件总长" />
+    <entry name="Offset" type="int" desc="文件偏移"/>
+    <entry name="Len" type="int" desc="传输长度"/>
+    <entry name="Error" type="string" size="TCM_ERR_DESC_MAX_LEN" version="4" />
+  </struct>
+
+  <struct name="TPMAgentGetProcReq" version="1" desc="agent请求进程信息列表" >
+    <entry name="BussId" type="int" desc="业务ID"/>
+  </struct>
+
+
+  <struct name="PushCollectCfgResult" version="1" >
+    <entry name="HostName" type="string" size="TCM_HOST_NAME_MAX_LEN" desc="进程ID" />
+    <entry name="Result" type="int" desc="参考TPM_ERR" />
+    <entry name="Error" type="string" size="TCM_ERR_DESC_MAX_LEN" version="4" />
+   <!--
+    <entry name="FileCount" type="int" desc="配置文件个数" />
+    <entry name="Files" type="FileDesc" count="TCM_MAX_PROC_CFG_FILE_NUM" refer="FileCount" />
+    -->
+  </struct>
+
+  <struct name="TPMReqPushCollectCfg" version="1" desc="推送用于数据收集的配置文件请求">
+    <entry name="HostName" type="string" size="TCM_HOST_NAME_MAX_LEN" defaultvalue="" version="2"/>
+  </struct>
+
+  <struct name="TPMResPushCollectCfg" version="1" desc="推送用于数据收集的配置文件返回协议">
+      <entry name="Total" type="int" desc="所涉及的主机数" />
+    <entry name="Offset" type="int" />
+    <entry name="Count" type="int" />
+    <entry name="ResultList" type="PushCollectCfgResult" count="TCM_MAX_PROTO_PROC_NUM" refer="Count" />
+  </struct>
+
+  <struct name="TPMReqAgentPushCollectCfg" version="1" desc="传输配置到agent请求" >
+    <entry name="IdxHost" type="int" desc="目的主机在主机表中的索引值"/>
+    <entry name="SourceFile" type="string" size="TCM_MAX_PATH_LEN" desc="源文件,绝对路径"/>
+    <entry name="SourceFileHash" type="char" count="16" desc="文件hash值,只有在整个文件传输完成才会用来检验"/>
+    <entry name="TargetPath" type="string" size="TCM_MAX_PATH_LEN" desc="目的文件路径"/>
+    <entry name="TargetFile" type="string" size="TCM_MAX_PATH_LEN" desc="目的文件名"/>
+    <entry name="TotalLen" type="int" desc="文件总长" />
+    <entry name="Offset" type="int" desc="文件偏移"/>
+    <entry name="Len" type="int" desc="传输长度"/>
+    <entry name="Content" type="char" count="TPM_MAX_FILE_TRANS_LEN" refer="Len" desc="目的文件"/>
+  </struct>
+
+  <struct name="TPMResAgentPushCollectCfg" version="1" desc="传输配置到agent返回" >
+    <entry name="IdxHost" type="int" desc="目的主机在主机表中的索引值"/>
+    <entry name="Result" type="int" desc="传输长度"/>
+    <entry name="SourceFile" type="string" size="TCM_MAX_PATH_LEN" desc="源文件,绝对路径"/>
+    <entry name="TotalLen" type="int" desc="文件总长" />
+    <entry name="Offset" type="int" desc="文件偏移"/>
+    <entry name="Len" type="int" desc="传输长度"/>
+    <entry name="Error" type="string" size="TCM_ERR_DESC_MAX_LEN" version="4" />
+  </struct>
+
+  <struct name="ProcInfo" version="1" desc="进程信息" >
+    <entry name="ID" type="int" />
+    <entry name="IdStr" type="string" size="TCM_PROC_STR_MAX_LEN" />
+    <entry name="WorkDir" type="string" size="TCM_MAX_PATH_LEN" />
+    <entry name="StartStr" type="string" size="TCM_MAX_CMD_LEN" />
+    <entry name="ResumeStr" type="string" size="TCM_MAX_CMD_LEN" />
+    <entry name="AutoScript" type="string" size="TCM_MAX_CMD_LEN" />
+    <entry name="ProcName" type="string" size="TCM_MAX_PROC_NAME_LEN" />
+    <entry name="AutoTimeGap" type="int" />
+    <entry name="CheckType" type="int" desc="检查确认方式，参考TPM_PROC_PROC_CHECK_TYPE"/>
+    <entry name="PidFile" type="string" size="TCM_MAX_PATH_LEN" desc="pid文件，绝对路径"/>
+    <entry name="Auto" type="int" desc="是否需要自动拉起" />
+    <entry name="AutoResumeNum" type="int" defaultvalue="-1" desc="自动拉起次数" version="4"/>
+    <entry name="Status" type="int" desc="进程的运行状态" version="4"/>
+    <entry name="User" type="string" size="TCM_MAX_USERNAME_LEN" desc="进程启动用户" version="4"/>
+  </struct>
+
+  <struct name="TPMAgentGetProcRes" version="1" desc="agent请求进程信息列表返回,可以多个包" >
+    <entry name="BussId" type="int" desc="业务ID"/>
+    <entry name="Total" type="int" desc="进程总个数"/>
+    <entry name="Count" type="int" desc="进程个数"/>
+    <entry name="ProcList" type="ProcInfo" count="TCM_MAX_PROTO_PROC_NUM" refer="Count" />
+  </struct>
+
+  <struct name="TPMReqCheckConf" version="1" desc="检查Tcmcenter的配置是否正确" >
+    <entry name="Reserve" type="int" />
+  </struct>
+
+
+  <struct name="TPMResCheckConf" version="1" desc="检查Tcmcenter的配置是否正确" >
+    <entry name="Result" type="int" desc="是否成功，成功为0，是否为非零值"/>
+    <entry name="ErrDesc" type="string" size="TCM_ERR_DESC_MAX_LEN"  />
+  </struct>
+
+
+
+  <struct name="TPMReqRefreshTbusConf" version="1" desc="强制刷新进程相关的tbus配置" >
+    <entry name="ProcStr" type="string" size="TCM_PROC_STR_MAX_LEN" />
+    <entry name="HostName" type="string" size="TCM_HOST_NAME_MAX_LEN" defaultvalue="" version="2"/>
+  </struct>
+
+  <struct name="TPMResRefreshTbusConf" version="1" desc="强制刷新进程相关的tbus配置" >
+    <entry name="IsEnd" type="int" desc="是否整个事务处理完毕" />
+    <entry name="Result" type="string" size="TCM_OPRATION_RESULT_LEN" desc="处理结果"/>
+  </struct>
+
+  <struct name="TPMNotifyRefreshTbusConfReport" version="1" desc="强制刷新进程相关的tbus配置报告" >
+    <entry name="Total" type="int" desc="所涉及的主机数" />
+    <entry name="Succ" type="int" desc="成功刷洗配置的主机数" />
+    <entry name="Failed" type="int" desc="刷洗配置失败的主机数" />
+    <entry name="Timeout" type="int" desc="刷洗配置超时的主机数" />
+    <entry name="NotSuccCount" type="int" desc="刷洗配置不成功的主机数"/>
+    <entry name="Name" type="string" size="TCM_HOST_NAME_MAX_LEN" refer="NotSuccCount"
+           count="TCM_MAX_HOST_NUM" desc="机器的主机名" />
+  </struct>
+
+
+  <struct name="TPMReqClearTbusChannel" version="1" desc="强制清除进程所使用的tbus通道所涉及的共享内存" >
+    <entry name="ProcStr" type="string" size="TCM_PROC_STR_MAX_LEN" />
+    <entry name="HostName" type="string" size="TCM_HOST_NAME_MAX_LEN" defaultvalue="" version="2"/>
+  </struct>
+
+
+  <struct name="TPMResClearTbusChannel" version="1" desc="强制清除进程所使用的tbus通道所涉及的共享内存" >
+    <entry name="IsEnd" type="int" desc="是否整个事务处理完毕" />
+    <entry name="Result" type="string" size="TCM_OPRATION_RESULT_LEN" desc="处理结果"/>
+  </struct>
+
+  <struct name="TPMNotifyClearTbusChannelReport" version="1" desc="强制清除进程所使用的tbus通道所涉及的共享内存" >
+    <entry name="Total" type="int" desc="所涉及的主机数" />
+    <entry name="Succ" type="int" desc="成功的主机数" />
+    <entry name="Failed" type="int" desc="失败的主机数" />
+    <entry name="Timeout" type="int" desc="超时的主机数" />
+    <entry name="NotSuccCount" type="int" desc="不成功的主机数"/>
+    <entry name="Name" type="string" size="TCM_HOST_NAME_MAX_LEN" refer="NotSuccCount"
+           count="TCM_MAX_HOST_NUM" desc="机器的主机名" />
+  </struct>
+
+
+  <struct name="TPMReqTCMCfg" version="1" desc="请求获取tcmcenter的配置" >
+    <entry name="FileHash" type="char" count="16" desc="当前文件hash值,tcmcenter如果检查没有变化则不下发文件"/>
+  </struct>
+
+  <struct name="TPMResTCMCfg" version="1" desc="返回tcmcenter的配置" >
+    <entry name="FileHash" type="char" count="16" />
+    <entry name="TotalLen" type="int" desc="文件总长" />
+    <entry name="Offset" type="int" desc="当次下发文件偏移"/>
+    <entry name="Len" type="int" desc="当次下发内容长度"/>
+    <entry name="Content" type="char" count="TPM_MAX_TCMCONF_TRANS_LEN" refer="Len" desc="下发内容"/>
+  </struct>
+
+ <struct name="TPMReqGetProcRundata" version="1" desc="web请求获取进程即时配置或运行信息">
+    <entry name="ProcStr" type="string" size="TCM_PROC_STR_MAX_LEN" />
+    <entry name="FuncName" type="string" size="TCM_PROC_STR_MAX_LEN" />
+ </struct>
+
+ <struct name="TPMResGetProcRundata" version="1" desc="tcmcenter返回进程即时配置或运行信息" >
+    <entry name="ProcStr" type="string" size="TCM_PROC_STR_MAX_LEN" />
+    <entry name="FuncName" type="string" size="TCM_PROC_STR_MAX_LEN" />
+    <entry name="Result" type="int" defaultvalue="-1" desc="查询结果0:成功，-1:查询失败，-2:超时"/>
+    <entry name="Total"   type="int"  defaultvalue="0"/>
+    <entry name="Offset"   type="int"  defaultvalue="0"/>
+    <entry name="Len" type="int" defaultvalue="0"/>
+    <entry name="Buffer" type="char" count="TCM_PKG_MAX_BODY_LEN" refer="Len" />
+ </struct>
+
+  <struct name="TPMAgentGetProcRundataReq" version="1" desc="tcmcenter请求获取进程即时配置或运行信息">
+    <entry name="Uri"    type="string" size="TCM_TDR_URI_MAX_URI_LEN"/>
+ </struct>
+
+ <struct name="TPMAgentGetProcRundataRes" version="1" desc="tagent返回进程即时配置或运行信息">
+     <entry name="Result" type="int" defaultvalue="0" desc="查询结果0:成功，非0:失败"/>
+     <entry name="Total"  type="int" desc="data total len"/>
+     <entry name="Offset" type="int" />
+    <entry name="Len" type="int" />
+    <entry name="Buffer" type="char" count="TCM_MAX_RUNDATA_LEN" refer="Len" />
+    <entry name="Error" type="string" size="TCM_ERR_DESC_MAX_LEN" version="4" />
+ </struct>
+
+<struct name="ExportDeployResult" version="3">
+    <entry name="ProcStr"  type="string" size="TCM_PROC_STR_MAX_LEN" />
+    <entry name="ProcName" type="string" size="TCM_MAX_PROC_NAME_LEN" />
+    <entry name="HostName" type="string" size="TCM_HOST_NAME_MAX_LEN"/>
+    <entry name="InnerIP"  type="string" size="TCM_HOST_IP_MAX_LEN"/>
+</struct>
+
+<struct name="TPMReqExportDeploy" version="3">
+    <entry name="ProcStr" type="string" size="TCM_PROC_STR_MAX_LEN"/>
+    <entry name="HostName" type="string" size="TCM_HOST_NAME_MAX_LEN"/>
+</struct>
+
+
+<struct name="TPMResExportDeploy" version="3">
+    <entry name="Result" type="int" defaultvalue="0" desc="0:succ,1:fail"/>
+    <entry name="ErrStr" type="string" size="256" desc="如果请求出错，则返回错误字符串"/>
+    <entry name="Total"  type="int" desc="总的进程数"/>
+    <entry name="Offset" type="int" desc="当前已经返回的进程数"/>
+    <entry name="Count"    type="int" desc="当前返回的进程数"/>
+    <entry name="DeployList" type="ExportDeployResult" count="TCM_MAX_PROTO_PROC_NUM" refer="Count"/>
+</struct>
+
+<struct name="BusRelation" version="3">
+    <entry name="Addr1" type="string" size="TCM_PROC_STR_MAX_LEN"  desc="bus address for one point of a bus channel"/>
+    <entry name="HostName1" type="string" size="TCM_HOST_NAME_MAX_LEN" desc="host name of bus address for one point of a bus channel"/>
+    <entry name="IP1"   type="string" size="TCM_HOST_IP_MAX_LEN" desc="ip of bus address for one point of a bus channel"/>
+    <entry name="Addr2" type="string" size="TCM_PROC_STR_MAX_LEN"  desc="bus address for another point of a bus channel"/>
+    <entry name="IP2"   type="string" size="TCM_HOST_IP_MAX_LEN" desc="ip of bus address for another point of a bus channel"/>
+    <entry name="HostName2" type="string" size="TCM_HOST_NAME_MAX_LEN" desc="host name of bus address for another point of a bus channel"/>
+</struct>
+
+<struct name="TPMReqBusRelationByHost" version="3">
+    <entry name="HostName" type="string" size="TCM_HOST_NAME_MAX_LEN" desc="host name of bus address for one point of a bus channel"/>
+</struct>
+
+<struct name="TPMResBusRelationByHost" version="3">
+    <entry name="Result" type="int" defaultvalue="0" desc="0:succ, >0 :fail"/>
+    <entry name="ErrStr" type="string" size="256" desc="如果请求出错，则返回错误字符串"/>
+    <entry name="Total"  type="int" desc="total channel count"/>
+    <entry name="Offset" type="int" desc="have returned channel count"/>
+    <entry name="Count"    type="int" desc="current channel count"/>
+    <entry name="ChannelList" type="BusRelation" count="TCM_MAX_BUS_CHANNEL_NUM" refer="Count"/>
+</struct>
+
+<struct name="TPMReqBusRelationByProc" version="3">
+    <entry name="ProcStr" type="string" size="TCM_PROC_STR_MAX_LEN" desc="bus address for one point of a bus channel"/>
+</struct>
+
+<struct name="TPMResBusRelationByProc" version="3">
+    <entry name="Result" type="int" defaultvalue="0" desc="0:succ, >0:fail"/>
+    <entry name="ErrStr" type="string" size="256" desc="如果请求出错，则返回错误字符串"/>
+    <entry name="Total"  type="int" desc="total channel count"/>
+    <entry name="Offset" type="int" desc="have returned channel count"/>
+    <entry name="Count"    type="int" desc="current channel count"/>
+    <entry name="ChannelList" type="BusRelation" count="TCM_MAX_BUS_CHANNEL_NUM" refer="Count"/>
+</struct>
+
+ <struct name="RunShellResult" version="4"  desc="runshell请求协议">
+    <entry name="ProcID" type="string" size="TCM_PROC_STR_MAX_LEN" desc="进程ID" />
+    <entry name="Value" type="int" desc="进程状态或属性，参考TPM_PROC_PROP_STATUS" />
+    <entry name="Error" type="string" size="TCM_ERR_DESC_MAX_LEN"/>
+    <entry name="Echo"   type="string" size="TCM_SHELL_ECHO_MAX_LEN"/>
+ </struct>
+
+<struct name="TPMReqRunShell" version="4">
+    <entry name="ProcStr" type="string" size="TCM_PROC_STR_MAX_LEN" defaultvalue=""/>
+    <entry name="Args" type="string" size="TCM_MAX_ARGS_LEN" />
+
+</struct>
+
+ <struct name="TPMResRunShell" version="4" desc="runshell返回协议" >
+    <entry name="Total" type="int" />
+    <entry name="Offset" type="int" />
+    <entry name="Count" type="int" />
+    <entry name="RunShellResult" type="RunShellResult" count="TCM_MAX_PROTO_PROC_NUM" refer="Count" />
+ </struct>
+
+   <struct name="TPMReqAgentRunShell" version="4" desc="Agent runshell 请求协议" >
+        <entry name="ID" type="int" />
+        <entry name="WorkDir" type="string" size="TCM_MAX_PATH_LEN" />
+        <entry name="ProcName" type="string" size="TCM_MAX_PROC_NAME_LEN" />
+        <entry name="RunShellStr" type="string" size="TCM_MAX_CMD_LEN" />
+  </struct>
+
+  <struct name="TPMResAgentRunShell" version="4" desc="Agent runshell进程请求协议" >
+         <entry name="ID" type="int" />
+        <entry name="Result" type="int" />
+        <entry name="Error" type="string" size="TCM_ERR_DESC_MAX_LEN" />
+        <entry name="Echo"   type="string" size="TCM_SHELL_ECHO_MAX_LEN"/>
+  </struct>
+
+  <!--runshell2 -->
+  <struct name="TPMReqRunShell2" version="4">
+    <entry name="ProcStr" type="string" size="TCM_PROC_STR_MAX_LEN" defaultvalue=""/>
+    <entry name="HostName" type="string" size="TCM_HOST_NAME_MAX_LEN" defaultvalue=""/>
+    <entry name="Args" type="string" size="TCM_MAX_ARGS_LEN" />
+
+  </struct>
+
+  <struct name="TPMResRunShell2" version="4" desc="runshell2返回协议" >
+    <entry name="Total" type="int" />
+    <entry name="Offset" type="int" />
+    <entry name="Count" type="int" />
+    <entry name="RunShellResult" type="RunShellResult" count="TCM_MAX_PROTO_PROC_NUM" refer="Count" />
+  </struct>
+  
+
+   <struct name="TPMReqGetCollectTask" version="4" desc="GetCollectTask 请求协议" >
+        <entry name="FileHash" type="char" count="16" desc="当前文件hash值"/>
+  </struct>
+
+
+
+  <struct name="TPMResGetCollectTask" version="4" desc="GetCollectTask 返回协议" >
+    <entry name="FileHash" type="char" count="16" />
+    <entry name="Total" type="int" desc="文件总长" />
+    <entry name="Offset" type="int" desc="当次下发文件偏移"/>
+    <entry name="Len" type="int" desc="当次下发内容长度"/>
+    <entry name="Content" type="char" count="8192" refer="Len" desc="下发内容"/>
+  </struct>
+
+  <struct name="TPMReqPushCollectTask" version="4" desc="PushCollectTask 请求协议" >
+        <entry name="Len" type="int" />
+        <entry name="Content" type="char" count="TPM_MAX_COLLECT_TASK_FILE_LEN" refer="Len"/>
+        <entry name="HostName" type="string" size="TCM_HOST_NAME_MAX_LEN"/>
+  </struct>
+
+  <struct name="TPMResPushCollectTask" version="4" desc="PushCollectTask 返回协议" >
+        <entry name="Result" type="int" desc="0代表成功,非0代表失败"/>
+        <entry name="Err" type="string" size="TCM_ERR_LONGDESC_MAX_LEN"/>
+        <entry name="Total" type="int" desc="所涉及的主机数" />
+        <entry name="Succ" type="int" desc="成功刷洗配置的主机数" />
+        <entry name="Failed" type="int" desc="刷洗配置失败的主机数" />
+        <entry name="Timeout" type="int" desc="刷洗配置超时的主机数" />
+        <entry name="NotSuccCount" type="int" desc="刷洗配置不成功的主机数"/>
+        <entry name="Name" type="string" size="TCM_HOST_NAME_MAX_LEN" refer="NotSuccCount"
+           count="TCM_MAX_HOST_NUM" desc="机器的主机名" />
+  </struct>
+
+  <struct name="TPMReqSetCollectStatus" version="4" desc="DisableCollect/EnableCollect 请求协议">
+      <entry name="ProcStr" type="string" size="TCM_MAX_PROC_NAME_LEN"/>
+      <entry name="Value" type="int" desc="请求时设置的值" />
+  </struct>
+
+  <struct name="TPMResSetCollectStatus" version="4" desc="DisableCollect/EnableCollect 返回协议">
+        <entry name="Value" type="int" desc="请求时设置的值" />
+      <entry name="Total" type="int" desc="所涉及的主机数" />
+      <entry name="Succ" type="int" desc="成功刷洗配置的主机数" />
+      <entry name="Failed" type="int" desc="刷洗配置失败的主机数" />
+      <entry name="Timeout" type="int" desc="刷洗配置超时的主机数" />
+      <entry name="NotSuccCount" type="int" desc="刷洗配置不成功的主机数"/>
+      <entry name="Name" type="string" size="TCM_HOST_NAME_MAX_LEN" refer="NotSuccCount"
+           count="TCM_MAX_HOST_NUM" desc="机器的主机名" />
+   </struct>
+
+   <struct name="TPMReqAgentSetCollectStatus" version="4" desc="DisableCollect/EnableCollect  请求协议">
+       <entry name="idx" type="int" />
+       <entry name="Value" type="int" desc="请求时设置的值" />
+   </struct>
+
+   <struct name="TPMResAgentSetCollectStatus" version="4" desc="DisableCollect/EnableCollect  返回协议">
+       <entry name="idx" type="int" />
+       <entry name="result" type="int" />
+       <entry name="Value" type="int" desc="请求时设置的值" />
+   </struct>
+
+
+  <struct name="TPMReqReopenTsm" version="4" desc="ReqReopenTsm 请求协议">
+      <entry name="ProcStr" type="string" size="TCM_MAX_PROC_NAME_LEN"/>
+  </struct>
+
+  <struct name="TPMResReopenTsm" version="4" desc="ResReopenTsm 返回协议">
+
+      <entry name="Total" type="int" desc="所涉及的主机数" />
+      <entry name="Succ" type="int" desc="成功刷洗配置的主机数" />
+      <entry name="Failed" type="int" desc="刷洗配置失败的主机数" />
+      <entry name="Timeout" type="int" desc="刷洗配置超时的主机数" />
+      <entry name="NotSuccCount" type="int" desc="刷洗配置不成功的主机数"/>
+      <entry name="Name" type="string" size="TCM_HOST_NAME_MAX_LEN" refer="NotSuccCount"
+           count="TCM_MAX_HOST_NUM" desc="机器的主机名" />
+   </struct>
+
+   <struct name="TPMReqAgentReopenTsm" version="4" desc="ResReopenTsm 请求协议">
+       <entry name="idx" type="int" />
+
+   </struct>
+
+   <struct name="TPMResAgentReopenTsm" version="4" desc="ResReopenTsm 返回协议">
+       <entry name="idx" type="int" />
+       <entry name="result" type="int" />
+       <entry name="Err" type="string" size="TCM_ERR_DESC_MAX_LEN" defaultvalue=""/>
+   </struct>
+
+   <struct name="TPMReqTransTcmCfg" version="4" desc="传输配置到tcmcenter请求" >
+    <entry name="SourceFile" type="string" size="TCM_MAX_PATH_LEN" desc="源文件,绝对路径"/>
+    <entry name="SourceFileHash" type="char" count="16" desc="文件hash值,只有在整个文件传输完成才会用来检验"/>
+    <entry name="Total" type="int" desc="文件总长" />
+    <entry name="Offset" type="int" desc="文件偏移"/>
+    <entry name="Len" type="int" desc="传输长度"/>
+    <entry name="Content" type="char" count="TCM_MAX_CFG_TRANS_LEN" refer="Len" desc="目的文件"/>
+  </struct>
+
+  <struct name="TPMResTransTcmCfg" version="4" desc="传输配置到tcmcenter返回" >
+    <entry name="SourceFile" type="string" size="TCM_MAX_PATH_LEN" desc="源文件,绝对路径"/>
+    <entry name="Result" type="int" />
+    <entry name="Total" type="int" desc="文件总长" />
+    <entry name="Offset" type="int" desc="文件偏移"/>
+    <entry name="Len" type="int" desc="传输长度"/>
+    <entry name="Error" type="string" size="TCM_ERR_DESC_MAX_LEN"/>
+  </struct>
+
+   <struct name="TPMReqTransFile" version="4" desc="传输配置到指定主机请求" >
+    <entry name="HostStr" type="string" size="TCM_HOST_NAME_MAX_LEN"/>
+    <entry name="SourceFile" type="string" size="TCM_MAX_PATH_LEN" desc="源文件,绝对路径"/>
+    <entry name="SourceFileHash" type="char" count="16" desc="文件hash值,只有在整个文件传输完成才会用来检验"/>
+    <entry name="TargetPath" type="string" size="TCM_MAX_PATH_LEN" desc="目的文件路径"/>
+    <entry name="TargetFile" type="string" size="TCM_MAX_PATH_LEN" desc="目的文件名"/>
+    <entry name="Total" type="int" desc="文件总长" />
+    <entry name="Offset" type="int" desc="文件偏移"/>
+    <entry name="Len" type="int" desc="传输长度"/>
+    <entry name="Content" type="char" count="TCM_MAX_CFG_TRANS_LEN" refer="Len" desc="目的文件"/>
+  </struct>
+
+  <struct name="TPMResTransFile" version="4" desc="传输配置到指定主机返回" >
+    <entry name="SourceFile" type="string" size="TCM_MAX_PATH_LEN" desc="源文件,绝对路径"/>
+    <entry name="Result" type="int" />
+    <entry name="Total" type="int" desc="文件总长" />
+    <entry name="Offset" type="int" desc="文件偏移"/>
+    <entry name="Len" type="int" desc="传输长度"/>
+    <entry name="Error" type="string" size="TCM_ERR_DESC_MAX_LEN"/>
+  </struct>
+
+
+   <struct name="TPMReqGetFile" version="4" desc="获取指定主机指定文件请求" >
+    <entry name="HostStr" type="string" size="TCM_HOST_NAME_MAX_LEN"/>
+    <entry name="SourceFile" type="string" size="TCM_MAX_PATH_LEN" desc="源文件,绝对路径"/>
+  </struct>
+
+  <struct name="TPMResGetFile" version="4" desc="获取指定主机指定文件返回" >
+    <entry name="SourceFileHash" type="char" count="16" desc="文件hash值,只有在整个文件传输完成才会用来检验"/>
+    <entry name="Total" type="int" desc="文件总长" />
+    <entry name="Offset" type="int" desc="文件偏移"/>
+    <entry name="Len" type="int" desc="传输长度"/>
+    <entry name="Content" type="char" count="TPM_MAX_FILE_TRANS_LEN" refer="Len" desc="目的文件"/>
+    <entry name="Result" type="int" />
+    <entry name="Error" type="string" size="TCM_ERR_DESC_MAX_LEN"/>
+  </struct>
+
+  <struct name="TPMReqAgentGetFile" version="4" desc="获取指定主机指定文件请求" >
+     <entry name="Reserve" type="int" />
+     <entry name="HostIdx" type="int" />
+     <entry name="SourceFile" type="string" size="TCM_MAX_PATH_LEN" desc="源文件,绝对路径"/>
+  </struct>
+
+  <struct name="TPMResAgentGetFile" version="4" desc="获取指定主机指定文件请求" >
+      <entry name="HostIdx" type="int" />
+      <entry name="SourceFile" type="string" size="TCM_MAX_PATH_LEN" desc="源文件,绝对路径"/>
+    <entry name="SourceFileHash" type="char" count="16" />
+    <entry name="Total" type="int" desc="文件总长" />
+    <entry name="Offset" type="int" desc="当次下发文件偏移"/>
+    <entry name="Len" type="int" desc="当次下发内容长度"/>
+    <entry name="Content" type="char" count="TPM_MAX_FILE_TRANS_LEN" refer="Len"/>
+    <entry name="Result" type="int" />
+    <entry name="Error" type="string" size="TCM_ERR_DESC_MAX_LEN"/>
+  </struct>
+
+  <struct name="FileDescInfo" version="4" >
+    <entry name="Name" type="string" size="TCM_MAX_FILE_NAME_LEN" />
+    <entry name="Type" type="int" />
+    <entry name="Size" type="uint"/>
+  </struct>
+
+   <struct name="TPMReqListDir" version="4" desc="列出指定主机指定目录下的所有文件和目录请求" >
+    <entry name="HostStr" type="string" size="TCM_HOST_NAME_MAX_LEN"/>
+    <entry name="TargetDir" type="string" size="TCM_MAX_PATH_LEN" desc="绝对路径"/>
+  </struct>
+
+  <struct name="TPMResListDir" version="4" desc="列出指定主机指定文件夹返回" >
+    <entry name="Count" type="int" desc="文件个数"/>
+    <entry name="FileDescInfo" type="FileDescInfo"  count="TCM_MAX_FILE_COUNT" refer="Count" desc="目的文件"/>
+    <entry name="Result" type="int"/>
+    <entry name="Error" type="string" size="TCM_ERR_DESC_MAX_LEN"/>
+  </struct>
+
+  <struct name="TPMReqAgentListDir" version="4" desc="列出指定主机指定目录下的所有文件和目录请求" >
+      <entry name="HostIdx" type="int" />
+    <entry name="TargetDir" type="string" size="TCM_MAX_PATH_LEN" desc="绝对路径"/>
+  </struct>
+
+  <struct name="TPMResAgentListDir" version="4" desc="列出指定主机指定文件夹返回" >
+    <entry name="HostIdx" type="int" />
+    <entry name="Total" type="int" />
+    <entry name="Offset" type="int" />
+    <entry name="Count" type="int" desc="文件个数"/>
+    <entry name="FileDescInfo" type="FileDescInfo"  count="TPM_MAX_FILE_COUNT" refer="Count" desc="目的文件"/>
+    <entry name="Result" type="int"/>
+    <entry name="Error" type="string" size="TCM_ERR_DESC_MAX_LEN"/>
+ </struct>
+
+  <struct name="TAppCtrlRes" version="4" >
+    <entry name="Value" type="int"  />
+    <entry name="ProcID" type="string" size="TCM_PROC_STR_MAX_LEN" desc="进程ID" />
+    <entry name="CtrlRes" type="string" size="TPM_MAX_TAPP_CTRL_RES_LEN" />
+    <entry name="Error" type="string" size="TCM_ERR_DESC_MAX_LEN" />
+  </struct>
+
+  <struct name="TPMReqTappCtrlProc" version="4" desc="控制tapp进程请求协议" >
+    <entry name="ProcStr" type="string" size="TCM_PROC_STR_MAX_LEN" />
+    <entry name="HostName" type="string" size="TCM_HOST_NAME_MAX_LEN" defaultvalue=""/>
+    <entry name="CtrlReq" type="string" size="TCM_MAX_CMD_LEN" />
+  </struct>
+
+  <struct name="TPMResTappCtrlProc" version="4" desc="控制tapp进程返回协议" >
+    <entry name="Total" type="int" />
+    <entry name="Offset" type="int" />
+    <entry name="Count" type="int" />
+    <entry name="TAppCtrlRes" type="TAppCtrlRes" count="TCM_MAX_PROTO_PROC_NUM" refer="Count" />
+  </struct>
+
+  <struct name="TPMReqAgentTappCtrlProc" version="4" desc="Agent 控制tapp进程请求协议" >
+    <entry name="ID" type="int" />
+    <entry name="IdStr" type="string" size="TCM_PROC_STR_MAX_LEN" />
+    <entry name="ProcName" type="string" size="TCM_MAX_PROC_NAME_LEN" />
+    <entry name="OpeTime" type="int" />
+    <entry name="CtrlReq" type="string" size="TCM_MAX_CMD_LEN" />
+    <entry name="ProcCtrlTdrFile" type="string" size="TCM_MAX_PATH_LEN" />
+  </struct>
+
+  <struct name="TPMResAgentTappCtrlProc" version="4" desc="Agent 控制tapp进程返回协议" >
+    <entry name="ID" type="int" />
+    <entry name="CtrlRes" type="string" size="TPM_MAX_TAPP_CTRL_RES_LEN" />
+    <entry name="Result" type="int"  />
+    <entry name="Error" type="string" size="TCM_ERR_DESC_MAX_LEN" />
+  </struct>
+
+  <struct name="TPMReqSignalProc" version="4" desc="Signal进程请求协议" >
+    <entry name="ProcStr" type="string" size="TCM_PROC_STR_MAX_LEN" />
+    <entry name="HostName" type="string" size="TCM_HOST_NAME_MAX_LEN" defaultvalue="" />
+    <entry name="Signo"  type="int" desc="signal number" />
+  </struct>
+
+  <struct name="TPMReqAgentSignalProc" version="4" desc="Agent Signal进程请求协议" >
+    <entry name="ID" type="int" />
+    <entry name="ProcName" type="string" size="TCM_MAX_PROC_NAME_LEN" />
+    <entry name="Signo"  type="int" desc="signal number" />
+    <entry name="PidFile" type="string" size="TCM_MAX_PATH_LEN" desc="pid文件，绝对路径"/>
+  </struct>
+
+  <struct name="TPMResSignalProc" version="4" desc="Signal进程返回协议" >
+    <entry name="Total" type="int" />
+    <entry name="Offset" type="int" />
+    <entry name="Count" type="int" />
+    <entry name="ProcStatus" type="ProcPropStatus" count="TCM_MAX_PROTO_PROC_NUM" refer="Count" />
+  </struct>
+
+  <struct name="TPMResAgentSignalProc" version="4" desc="Agent Signal进程返回协议" >
+    <entry name="ID" type="int" />
+    <entry name="Result" type="int" />
+    <entry name="Error" type="string" size="TCM_ERR_DESC_MAX_LEN" />
+  </struct>
+
+  <struct name="TPMAgentGetProcReq2" version="4" desc="agent请求进程信息列表" >
+    <entry name="BussId" type="int" desc="业务ID"/>
+  </struct>
+
+  <struct name="ProcInfo2" version="4" desc="进程信息" >
+    <entry name="ID" type="int" />
+    <entry name="IdStr" type="string" size="TCM_PROC_STR_MAX_LEN" />
+    <entry name="WorkDir" type="string" size="TCM_MAX_PATH_LEN" />
+    <entry name="ProcName" type="string" size="TCM_MAX_PROC_NAME_LEN" />
+    <entry name="CheckType" type="int" desc="检查确认方式，参考TPM_PROC_PROC_CHECK_TYPE"/>
+    <entry name="PidFile" type="string" size="TCM_MAX_PATH_LEN" desc="pid文件，绝对路径"/>
+    <entry name="Flag"    type="int" />
+  </struct>
+
+  <struct name="TPMAgentGetProcRes2" version="4" desc="agent请求进程信息列表返回,可以多个包" >
+     <entry name="BussId" type="int" desc="业务ID"/>
+     <entry name="Total" type="int" desc="进程总个数"/>
+    <entry name="Count" type="int" desc="进程个数"/>
+    <entry name="ProcList" type="ProcInfo2" count="TCM_MAX_PROTO_PROC_NUM" refer="Count" />
+  </struct>
+
+  <struct name="HostName" version="4" desc="主机名">
+    <entry name="Name" type="string" size="TCM_HOST_NAME_MAX_LEN" />
+  </struct>
+
+  <struct name="OneHost" version="4">
+    <entry name="Name" type="string" size="TCM_HOST_NAME_MAX_LEN" unique="true" desc="机器的主机名" />
+    <entry name="InnerIP" type="ip"  desc="主机用于内存管理通信的内网ip地址" />
+    <entry name="OuterIPCount" type="int" defaultvalue="1" desc="外网ip计数器" io="nooutput"/>
+    <entry name="OuterIP" type="ip" count="TCM_MAX_OUTIP_NUM_PERHOST" refer="OuterIPCount"  desc="主机用于内存管理通信的外网ip地址" />
+    <entry name="CustomAttr" type="string"  size="TCM_BUSSINESS_CUSTOM_DATA_SIZE" defaultvalue=""
+          desc="业务自定义属性数据"  />
+    <entry name="IsVirtual" type="int" defaultvalue="0" desc="标识本主机是否虚拟主机，默认值是0"  />
+  </struct>
+
+  <struct name="TPMReqAddHost" version="4" desc="add host 请求协议">
+    <entry name="Count"    type="int" defaultvalue="0" desc="请求添加主机的数量"/>
+    <entry name="Host"     type="OneHost" count="TPM_MAX_PROTO_HOST_NUM" refer="Count"/>
+  </struct>
+
+  <!--AddHost返回码-->
+  <macrosgroup name="TPM_ADDHOST_RETURN_CODE" >
+    <macro name="ADDHOST_RETCODE_SUCC" value="0" desc="成功" />
+    <macro name="ADDHOST_RETCODE_NOT_FIND_HOSTINST" value="-100" desc="not find HostInst in hostTab, and refresh tbuscfg failed" />
+    <macro name="ADDHOST_RETCODE_REFRESH_TBUSCFG_FAILED" value="-101" desc="refresh tbuscfg failed" />
+    <macro name="ADDHOST_RETCODE_REFRESH_TBUSCFG_TIMEOUT" value="-102" desc="refresh tbuscfg timeout" />
+  </macrosgroup>
+  
+  <struct name="TPMResAddHost" version="4" desc="add host 返回协议">
+    <entry name="Count"    type="int" defaultvalue="0" desc="请求添加主机的数量"/>
+    <entry name="HostName" type="HostName" count="TPM_MAX_PROTO_HOST_NUM" refer="Count" desc="返回添加主机的主机名列表"/>
+    <entry name="result"         type="int"    desc="0:succeed,1:failure" />
+    <entry name="Error"          type="string" size="TCM_ERR_DESC_MAX_LEN" />
+    <entry name="HostRes" type="int" count="TPM_MAX_PROTO_HOST_NUM" refer="Count" desc="返回添加主机的结果, 2代表已存在"/>
+  </struct>
+
+  <struct name="TPMReqDelHost" version="4" desc="del host 请求协议">
+    <entry name="Count" type="int" defaultvalue="0" desc="请求删除主机的数量"/>
+    <entry name="Host" type="OneHost" count="TPM_MAX_PROTO_HOST_NUM" refer="Count"/>
+  </struct>
+
+  <struct name="TPMResDelHost" version="4" desc="del host 返回协议">
+    <entry name="Count" type="int" defaultvalue="0" desc="请求删除主机的数量"/>
+    <entry name="HostName" type="HostName" count="TPM_MAX_PROTO_HOST_NUM" refer="Count" desc="请求删除主机的主机名列表"/>
+    <entry name="result" type="int" desc="0:succeed,1:failure"/>
+    <entry name="Error" type="string" size="TCM_ERR_DESC_MAX_LEN"/>
+    <entry name="HostRes" type="int" count="TPM_MAX_PROTO_HOST_NUM" refer="Count" desc="返回删除主机的结果, 2代表主机不存在"/>
+  </struct>
+
+   <struct name="TPMDeployGroup" version="4">
+    <entry name="WorkPath" type="string" size="TCM_MAX_PATH_LEN"   defaultvalue=""
+           desc="部署组的工作相对路径" />
+    <entry name="Group" type="string" size="TPM_MAX_PROGROUP_NAME_LEN"
+           desc="进程组名,此进程组必须在ProcGroup表中有定义" />
+    <entry name="Host" type="string" size="TCM_HOST_NAME_MAX_LEN" desc="此进程组所部署的物理机器" />
+    <entry name="InstID" type="int"  unique="true" defaultvalue="1"
+           desc="如果同一个ProcDeloy下配置了多个GroupName相同的Group，则必须配置指定一个唯一的InstID来区分"  />
+    <entry name="CustomAttr" type="string"  size="TCM_BUSSINESS_CUSTOM_DATA_SIZE" defaultvalue=""
+           desc="业务自定义属性数据"  />
+   </struct>
+
+  <struct name="TPMReqModifyDeployNode" version="4" desc="modify deploy node req">
+    <entry name="IDStr"          type="string"  size="TCM_PROC_STR_MAX_LEN" desc="通过ID字符串标识部署节点,0.0.0.0表示cluster节点。例如1.0.0.0表示world:1; 1.1.0.0表示world:1下面的zone:1"/>
+    <entry name="CustomAttr"     type="string"  size="TCM_BUSSINESS_CUSTOM_DATA_SIZE" desc="custom attr string" />
+    <entry name="WorkPath"       type="string"  size="TCM_MAX_PATH_LEN" desc="work dir" />
+  </struct>
+
+  <struct name="TPMResModifyDeployNode" version="4" desc="modify deploy node res">
+    <entry name="IDStr"          type="string"  size="TCM_PROC_STR_MAX_LEN" desc="通过ID字符串标识部署节点,0.0.0.0表示cluster节点。例如1.0.0.0表示world:1; 1.1.0.0表示world:1下面的zone:1"/>
+    <entry name="result"         type="int"    desc="0:succeed,1:failure" />
+    <entry name="Error"          type="string" size="TCM_ERR_DESC_MAX_LEN" />
+  </struct>
+
+  <struct name="TPMReqDeleteDeployNode" version="4" desc="delete deploy node req">
+        <entry name="IDStr"          type="string"  size="TCM_PROC_STR_MAX_LEN" desc="通过ID字符串标识部署节点,0.0.0.0表示cluster节点。例如1.0.0.0表示world:1; 1.1.0.0表示world:1下面的zone:1"/>
+  </struct>
+
+  <struct name="TPMResDeleteDeployNode" version="4" desc="delete deploy node res">
+    <entry name="IDStr"          type="string"  size="TCM_PROC_STR_MAX_LEN" desc="通过ID字符串标识部署节点,0.0.0.0表示cluster节点。例如1.0.0.0表示world:1; 1.1.0.0表示world:1下面的zone:1"/>
+    <entry name="result"         type="int"    desc="0:succeed,1:failure" />
+    <entry name="Error"          type="string" size="TCM_ERR_DESC_MAX_LEN" />
+  </struct>
+
+   <struct name="TPMDeployNode" version="4" desc="add deploy node req">
+    <entry name="IDStr"          type="string"  size="TCM_PROC_STR_MAX_LEN" desc="通过ID字符串标识部署节点,0.0.0.0表示cluster节点。例如1.0.0.0表示world:1; 1.1.0.0表示world:1下面的zone:1"/>
+    <entry name="CustomAttr"     type="string"  size="TCM_BUSSINESS_CUSTOM_DATA_SIZE" desc="custom attr string" />
+    <entry name="WorkPath"       type="string"  size="TCM_MAX_PATH_LEN" desc="work dir" />
+    <entry name="Count"          type="uint" />
+    <entry name="TPMDeployGroup" type="TPMDeployGroup" count="TMP_MAX_PROTO_DEPLOYGROUP_NUM" refer="Count" />
+   </struct>
+
+   <struct name="TPMReqAddDeployNode" version="4" desc="add deploy node req">
+       <entry name="Total"          type="uint" />
+       <entry name="Offset"         type="uint" />
+    <entry name="Count"          type="uint" />
+    <entry name="TPMDeployNode" type="TPMDeployNode" count="TMP_MAX_PROTO_DEPLOYNODE_NUM" refer="Count" />
+   </struct>
+
+   <struct name="TPMResAddDeployNode" version="4" desc="add deploy node res" >
+     <entry name="Total"          type="uint" />
+        <entry name="Offset"         type="uint" />
+     <entry name="Count"          type="uint" />
+       <entry name="result"           type="int"    desc="0:succeed,1:failure" />
+     <entry name="Error"            type="string" size="TCM_ERR_DESC_MAX_LEN" />
+   </struct>
+
+  <struct name="TPMDeployGroupInfo" version="4" desc="already exist DeployGroup">
+    <entry name="IDStr"               type="string"  size="TCM_PROC_STR_MAX_LEN" desc="通过ID字符串标识部署节点,0.0.0.0表示cluster节点。例如1.0.0.0表示world:1; 1.1.0.0表示world:1下面的zone:1"/>
+    <entry name="Group" type="string" size="TPM_MAX_PROGROUP_NAME_LEN"
+          desc="进程组名,此进程组必须在ProcGroup表中有定义" />
+    <entry name="InstID" type="int"  unique="true" defaultvalue="1"
+          desc="如果同一个ProcDeloy下配置了多个GroupName相同的Group，则必须配置指定一个唯一的InstID来区分"  />
+  </struct>
+
+   <struct name="TPMReqDeleteDeployGroupMulti" version="4" desc="delete deploy group multi">
+    <entry name="Count"             type="uint" />
+    <entry name="TPMDeployGroupInfo" type="TPMDeployGroupInfo" count="TMP_MAX_PROTO_DELETE_DEPLOYGROUP_NUM" refer="Count" />
+   </struct>
+
+   <struct name="TPMResDeleteDeployGroupMulti" version="4" desc="delete deploy group multi">
+      <entry name="Count"          type="uint" />
+      <entry name="result"           type="int"    desc="0:succeed,1:failure" />
+      <entry name="Error"            type="string" size="TCM_ERR_DESC_MAX_LEN" />
+   </struct>
+
+  <struct name="DeployGroupIndex" version="4" desc="deploy group index">
+    <entry name="Group" type="string" size="TPM_MAX_PROGROUP_NAME_LEN"
+           desc="进程组名,此进程组必须在ProcGroup表中有定义" />
+    <entry name="Host" type="string" size="TCM_HOST_NAME_MAX_LEN" unique="true" desc="机器的主机名" />
+    <entry name="InstID" type="int"  unique="true" defaultvalue="1"
+           desc="如果同一个ProcDeloy下配置了多个GroupName相同的Group，则必须配置指定一个唯一的InstID来区分"  />
+  </struct>
+
+  <struct name="TPMReqQueryDeployGroup" version="4" desc="query deploy group req">
+    <entry name="IDStr"          type="string"  size="TCM_PROC_STR_MAX_LEN" desc="通过ID字符串标识部署节点,0.0.0.0表示cluster节点。例如1.0.0.0表示world:1; 1.1.0.0表示world:1下面的zone:1"/>
+    <entry name="Group" type="string" size="TPM_MAX_PROGROUP_NAME_LEN"
+           desc="进程组名,此进程组必须在ProcGroup表中有定义.若不指定进程组名，则返回该部署节点下的所有进程组" />
+  </struct>
+
+  <struct name="TPMResQueryDeployGroup" version="4" desc="query deploy group res">
+      <entry name="result"           type="int"    desc="0:succeed,1:failure" />
+    <entry name="Error"            type="string" size="TCM_ERR_DESC_MAX_LEN" />
+    <entry name="IDStr"    type="string"  size="TCM_PROC_STR_MAX_LEN" desc="通过ID字符串标识部署节点,0.0.0.0表示cluster节点。例如1.0.0.0表示world:1; 1.1.0.0表示world:1下面的zone:1"/>
+    <entry name="Group" type="string" size="TPM_MAX_PROGROUP_NAME_LEN"
+           desc="进程组名,此进程组必须在ProcGroup表中有定义.若不指定进程组名，则返回该部署节点下的所有进程组" />
+    <entry name="Count"    type="int"  defaultvalue="0"   />
+    <entry name="DeployGroupIndex" type="DeployGroupIndex" count="TPM_MAX_DEPOYGROUP_NUM_IN_NODE" refer="Count"/>
+  </struct>
+
+   <struct name="TPMReqAddDeployGroup" version="4" desc="add deploy group req">
+    <entry name="IDStr"          type="string"  size="TCM_PROC_STR_MAX_LEN" desc="通过ID字符串标识部署节点,0.0.0.0表示cluster节点。例如1.0.0.0表示world:1; 1.1.0.0表示world:1下面的zone:1"/>
+    <entry name="DeployGroup"    type="TPMDeployGroup"  />
+  </struct>
+
+  <struct name="TPMResAddDeployGroup" version="4" desc="add deploy group res">
+    <entry name="IDStr"            type="string"  size="TCM_PROC_STR_MAX_LEN" desc="通过ID字符串标识部署节点,0.0.0.0表示cluster节点。例如1.0.0.0表示world:1; 1.1.0.0表示world:1下面的zone:1"/>
+    <entry name="Group" type="string" size="TPM_MAX_PROGROUP_NAME_LEN"
+           desc="进程组名,此进程组必须在ProcGroup表中有定义" />
+    <entry name="Host" type="string" size="TCM_HOST_NAME_MAX_LEN" desc="此进程组所部署的物理机器" />
+    <entry name="InstID" type="int"  unique="true" defaultvalue="1"
+           desc="如果同一个ProcDeloy下配置了多个GroupName相同的Group，则必须配置指定一个唯一的InstID来区分"  />
+    <entry name="result"           type="int"    desc="0:succeed,1:failure" />
+    <entry name="Error"            type="string" size="TCM_ERR_DESC_MAX_LEN" />
+  </struct>
+
+   <struct name="TPMReqModifyDeployGroup" version="4" desc="modify deploy group req">
+    <entry name="IDStr"          type="string"  size="TCM_PROC_STR_MAX_LEN" desc="通过ID字符串标识部署节点,0.0.0.0表示cluster节点。例如1.0.0.0表示world:1; 1.1.0.0表示world:1下面的zone:1"/>
+    <entry name="DeployGroup"    type="TPMDeployGroup"  desc="部署组"/>
+  </struct>
+
+  <struct name="TPMResModifyDeployGroup" version="4" desc="mofify deploy group res">
+    <entry name="IDStr"            type="string"  size="TCM_PROC_STR_MAX_LEN" desc="通过ID字符串标识部署节点,0.0.0.0表示cluster节点。例如1.0.0.0表示world:1; 1.1.0.0表示world:1下面的zone:1"/>
+    <entry name="Group" type="string" size="TPM_MAX_PROGROUP_NAME_LEN"
+           desc="进程组名,此进程组必须在ProcGroup表中有定义" />
+    <entry name="InstID" type="int"  unique="true" defaultvalue="1"
+           desc="如果同一个ProcDeloy下配置了多个GroupName相同的Group，则必须配置指定一个唯一的InstID来区分"  />
+    <entry name="result"           type="int"    desc="0:succeed,1:failure" />
+    <entry name="Error"            type="string" size="TCM_ERR_DESC_MAX_LEN" />
+  </struct>
+
+ <struct name="TPMReqDeleteDeployGroup" version="4" desc="delete deploy group req">
+    <entry name="IDStr"               type="string"  size="TCM_PROC_STR_MAX_LEN" desc="通过ID字符串标识部署节点,0.0.0.0表示cluster节点。例如1.0.0.0表示world:1; 1.1.0.0表示world:1下面的zone:1"/>
+    <entry name="Group" type="string" size="TPM_MAX_PROGROUP_NAME_LEN"
+           desc="进程组名,此进程组必须在ProcGroup表中有定义" />
+    <entry name="InstID" type="int"  unique="true" defaultvalue="1"
+           desc="如果同一个ProcDeloy下配置了多个GroupName相同的Group，则必须配置指定一个唯一的InstID来区分"  />
+  </struct>
+
+  <struct name="TPMResDeleteDeployGroup" version="4" desc="delete deploy group res">
+    <entry name="IDStr"            type="string"  size="TCM_PROC_STR_MAX_LEN" desc="通过ID字符串标识部署节点,0.0.0.0表示cluster节点。例如1.0.0.0表示world:1; 1.1.0.0表示world:1下面的zone:1"/>
+    <entry name="Group" type="string" size="TPM_MAX_PROGROUP_NAME_LEN"
+           desc="进程组名,此进程组必须在ProcGroup表中有定义" />
+    <entry name="InstID" type="int"  unique="true" defaultvalue="1"
+           desc="如果同一个ProcDeloy下配置了多个GroupName相同的Group，则必须配置指定一个唯一的InstID来区分"  />
+    <entry name="result"           type="int"    desc="0:succeed,1:failure" />
+    <entry name="Error"            type="string" size="TCM_ERR_DESC_MAX_LEN" />
+  </struct>
+
+  <struct name="TPMReqTransCfg2" version="4" desc="传输配置或者二进制文件请求" >
+    <entry name="ProcStr" type="string" size="TCM_PROC_STR_MAX_LEN" desc="进程描述"/>
+    <entry name="BaseDir" type="string" size="TCM_MAX_PATH_LEN" desc="配置文件存放基础目录"/>
+    <entry name="HostName" type="string" size="TCM_HOST_NAME_MAX_LEN" defaultvalue="" />
+  </struct>
+
+  <struct name="TPMResTransCfg2" version="4" desc="传输配置或者二进制文件返回协议" >
+    <entry name="Total" type="int" />
+    <entry name="Offset" type="int" />
+    <entry name="Count" type="int" />
+    <entry name="ResultList" type="TransCfgResult" count="TCM_MAX_PROTO_PROC_NUM" refer="Count" />
+  </struct>
+
+  <struct name="TPMReqAgentTransCfg2" version="4" desc="传输配置或者二进制文件到agent请求" >
+    <entry name="ProcId" type="int" desc="进程ID"/>
+    <entry name="SourceFile" type="string" size="TCM_MAX_PATH_LEN" desc="源文件,绝对路径"/>
+    <entry name="SourceFileHash" type="char" count="16" desc="文件hash值,只有在整个文件传输完成才会用来检验"/>
+    <entry name="TargetPath" type="string" size="TCM_MAX_PATH_LEN" desc="目的文件路径"/>
+    <entry name="TargetFile" type="string" size="TCM_MAX_PATH_LEN" desc="目的文件名"/>
+    <entry name="TotalLen" type="int" desc="文件总长" />
+    <entry name="Offset" type="int" desc="文件偏移"/>
+    <entry name="Len" type="int" desc="传输长度"/>
+    <entry name="Content" type="char" count="TPM_MAX_BIN_TRANS_LEN" refer="Len" desc="目的文件"/>
+  </struct>
+
+  <struct name="TPMResAgentTransCfg2" version="4" desc="传输配置或者二进制文件到agent返回" >
+    <entry name="ProcId" type="int" desc="进程ID"/>
+    <entry name="Result" type="int" desc="传输长度"/>
+    <entry name="SourceFile" type="string" size="TCM_MAX_PATH_LEN" desc="源文件,绝对路径"/>
+    <entry name="TotalLen" type="int" desc="文件总长" />
+    <entry name="Offset" type="int" desc="文件偏移"/>
+    <entry name="Len" type="int" desc="传输长度"/>
+    <entry name="Error" type="string" size="TCM_ERR_DESC_MAX_LEN" version="4" />
+  </struct>  
+
+  <struct name="TbusOneRule" version="4" desc="一条tbus规则">
+    <entry name="ProcSet1" type="string" size="TCM_CONFIG_PROCESS_SET_RULE_LEN"
+           desc="第一组进程配置规则" />
+    <entry name="ProcSet2" type="string" size="TCM_CONFIG_PROCESS_SET_RULE_LEN" desc="第二组进程配置规则" />
+    <entry name="Mask" type="string" size="TCM_MAX_ADDR_TEMPLET_STRING_LEN" desc="进程ID掩码匹配模式串，即两类进程间只要掩码值相同就认为两进程间存在一条通道" />
+    <entry name="RecvQueSize" type="int" defaultvalue="0"
+           desc="对于第一组进程来说，读数据通道的大小，通常不用配置取全局配置即可。如果其值为0，则设置全局缺省配置的通道大小值" />
+    <entry name="SendQueSize" type="int" defaultvalue="0"
+           desc="对于第一组进程来说，写数据通道的大小，通常不用配置取全局配置即可，如果其值为0，则设置全局缺省配置的通道大小值" />
+    <entry name="WanType" type="smalluint" defaultvalue="TCM_WAN_TYPE_NONE" bindmacrosgroup="TCM_WAN_TYPE" desc="wan qos type"/>
+    <entry name="CtrlMask" type="string" size="TCM_MAX_ADDR_TEMPLET_STRING_LEN" defaultvalue="" desc="两组进程通信时必须满足的集合" />
+  </struct>
+
+  <struct name="TbusProcSetPair" version="4" desc="tbus rule中一个进程对">
+    <entry name="ProcSet1" type="string" size="TCM_CONFIG_PROCESS_SET_RULE_LEN"
+           desc="第一组进程配置规则" />
+    <entry name="ProcSet2" type="string" size="TCM_CONFIG_PROCESS_SET_RULE_LEN" desc="第二组进程配置规则" />
+  </struct>
+
+  <struct name="TPMReqAddTbusRule" version="4" desc="添加tbus规则请求">
+    <entry name="Count" type="int" defaultvalue="0" desc="请求添加tbus规则的数量"/>
+    <entry name="TbusRule" type="TbusOneRule" count="TCM_MAX_BUS_CHANNEL_NUM" refer="Count"/>
+  </struct>
+
+  <struct name="TPMResAddTbusRule" version="4" desc="添加tbus规则返回">
+    <entry name="Count" type="int" defaultvalue="0" desc="请求添加tbus规则的数量"/>
+    <entry name="TbusRule" type="TbusOneRule" count="TCM_MAX_BUS_CHANNEL_NUM" refer="Count"/>
+    <entry name="Result" type="int" />
+    <entry name="Error" type="string" size="TCM_ERR_DESC_MAX_LEN" />
+  </struct>
+
+  <struct name="TPMReqDelTbusRule" version="4" desc="删除tbus规则请求">
+    <entry name="Count" type="int" defaultvalue="0" desc="请求添加tbus规则的数量"/>
+    <entry name="TbusRule" type="TbusProcSetPair" count="TCM_MAX_BUS_CHANNEL_NUM" refer="Count"/>
+  </struct>
+
+  <struct name="TPMResDelTbusRule" version="4" desc="删除tbus规则返回">
+    <entry name="Count" type="int" defaultvalue="0" desc="请求添加tbus规则的数量"/>
+    <entry name="TbusRule" type="TbusProcSetPair" count="TCM_MAX_BUS_CHANNEL_NUM" refer="Count"/>
+    <entry name="Result" type="int" />
+    <entry name="Error" type="string" size="TCM_ERR_DESC_MAX_LEN" />
+  </struct>
+
+  <struct name="TPMReqModifyTbusRule" version="4" desc="修改tbus 规则请求">
+    <entry name="Count" type="int" defaultvalue="0" desc="请求修改tbus规则的数量"/>
+    <entry name="TbusRule" type="TbusOneRule" count="TCM_MAX_BUS_CHANNEL_NUM" refer="Count"/>
+  </struct>
+
+  <struct name="TPMResModifyTbusRule" version="4" desc="修改tbus 规则返回">
+    <entry name="Count" type="int" defaultvalue="0" desc="请求修改tbus规则的数量"/>
+    <entry name="TbusRule" type="TbusProcSetPair" count="TCM_MAX_BUS_CHANNEL_NUM" refer="Count"/>
+    <entry name="Result" type="int" />
+    <entry name="Error" type="string" size="TCM_ERR_DESC_MAX_LEN" />
+  </struct>
+
+  <struct name="ChannelQos" version="4" desc="从SrcAddr--->DstAddr方向的通道质量">
+     <entry name="Scale" type="float"  desc="拥堵比例即通道存在的数据包除以通道的大小" />
+     <entry name="MsgNum"     type="uint"   desc="通道消息的个数"/>
+  </struct>
+
+  <struct  name="ChannelQosAndStatus" version="4" >
+    <entry name="Status"   type="smalluint"   defaultvalue="0" desc="disable:0x00,enable:0x01" />
+    <entry name="ChannelQos"  type="ChannelQos" count="2"  desc="ChannelQos[0]代表address[0]--->address[1]的质量,ChannelQos[1]代表另外一个方向" />
+    <entry name="CreateTime" type="string" size="128" desc="通道创建时间"/>
+    <entry name="DisableTime" type="string" size="128" desc="通达被disable的时间"/>
+  </struct>
+
+  <union name="TPMChannelStatus" version="4" >
+    <entry name="QosAndStatus" type="ChannelQosAndStatus" id="0" />
+    <entry name="Error" type="string" size="TCM_ERR_DESC_MAX_LEN" id="1"/>
+  </union>
+
+  <struct name="TPMChannelInfo" version="4" desc="一条通道的查询结果">
+       <entry name="Address"  type="string"   count="2" size="TCM_PROC_STR_MAX_LEN" desc="通道地址"/>
+     <entry name="Result" type="int" desc="0:succ,1:fail"/>
+     <entry name="ChannelStatus" type="TPMChannelStatus" select="Result"/>
+  </struct>
+
+  <struct name="TPMReqCheckChannel" version="4" desc="查询通道请求" >
+    <entry name="ProcStr" type="string" size="TCM_PROC_STR_MAX_LEN" desc="进程描述"/>
+    <entry name="HostName" type="string" size="TCM_HOST_NAME_MAX_LEN" defaultvalue="" desc="主机名"/>
+  </struct>
+
+   <struct name="TPMResCheckChannel" version="4" desc="查询通道返回" >
+      <entry name="Total"  type="int" desc="总数"/>
+      <entry name="Offset" type="int" desc="已发送数"/>
+      <entry name="Count"  type="int" desc="当前发送数量"/>
+      <entry name="TPMChannelInfo" type="TPMChannelInfo" count="TMP_MAX_PROTO_CHANNEL_NUM" refer="Count"/>
+  </struct>
+
+  <struct name="TPMReqClearTsmShm" version="4" desc="ReqClearTsmShm 请求协议">
+      <entry name="ProcStr" type="string" size="TCM_MAX_PROC_NAME_LEN"/>
+      <entry name="HostName" type="string" size="TCM_HOST_NAME_MAX_LEN"/>
+  </struct>
+
+  <struct name="TPMResClearTsmShm" version="4" desc="ReqClearTsmShm 返回协议">
+      <entry name="Total" type="int" />
+      <entry name="Offset" type="int" />
+      <entry name="Count" type="int" />
+      <entry name="ProcStatus" type="ProcPropStatus" count="TCM_MAX_PROTO_PROC_NUM" refer="Count" />
+   </struct>
+
+   <struct name="TPMReqAgentClearTsmShm" version="4" desc="ReqAgentClearTsmShm 请求协议">
+       <entry name="idx" type="int" />
+       <entry name="ProcId"   type="string" size="TCM_MAX_PROC_NAME_LEN" />
+       <entry name="ProcName" type="string" size="TCM_MAX_PROC_NAME_LEN" />
+   </struct>
+
+   <struct name="TPMResAgentClearTsmShm" version="4" desc="ResAgentClearTsmShm 返回协议">
+       <entry name="idx" type="int" />
+       <entry name="result" type="int" />
+       <entry name="Error" type="string" size="TCM_ERR_DESC_MAX_LEN" defaultvalue=""/>
+   </struct>
+
+  <struct name="TransparentBuff" version="4" desc="数据透传的缓冲区" >
+       <entry name="Len" type="uint" desc="缓冲区的真实长度" />
+       <entry name="Buff" type="char" count="TMP_MAX_PROTO_TRANSPARENT_LEN" refer="Len" desc="缓冲区" />
+  </struct>
+
+  <struct name="TPMReqTransparent" version="4" desc="client与tcmcenter之间的透传请求协议">
+      <entry name="Appid" type="uint" desc="透传的数据最终交付的目的插件的Appid"/>
+      <entry name="Count" type="uint" desc="目的主机的ip列表ip的个数" />
+      <entry name="IpList" type="ip" count="TMP_MAX_PROTO_TRANSPARENT_IP_NUM" refer="Count" desc="目的主机的ip列表" />
+      <entry name="TransparentBuff" type="TransparentBuff" desc="透传的缓冲区"/>
+  </struct>
+
+  <struct name="TPMResTransparent" version="4" desc="client与tcmcenter之间的透传 返回协议">
+        <entry name="TransparentBuff" type="TransparentBuff" desc="透传的缓冲区"/>
+   </struct>
+
+   <struct name="TPMReqAgentTransparent" version="4" desc="tcmcenter与tagent之间的透传 请求协议">
+           <entry name="SessionId" type="int" desc="client与tcmcenter之间的会话id,这个字段需要so回填给tcmcenter" />
+        <entry name="TransparentBuff" type="TransparentBuff" desc="透传的缓冲区"/>
+   </struct>
+
+   <struct name="TPMResAgentTransparent" version="4" desc="tcmcenter与tagent之间的透传 返回协议">
+           <entry name="SessionId" type="int" desc="client与tcmcenter之间的会话id,回填tcmcenter下行到插件的消息附带的SessionId" />
+        <entry name="TransparentBuff" type="TransparentBuff" desc="透传的缓冲区"/>
+   </struct>
+
+  <struct name="TPMReqUploadFile" version="4" desc="上传文件到tcmcenter请求" >
+    <entry name="SourceFile" type="string" size="TCM_MAX_PATH_LEN" desc="源文件,绝对路径"/>
+    <entry name="SourceFileHash" type="char" count="16" desc="文件hash值,只有在整个文件传输完成才会用来检验"/>
+    <entry name="TargetPath" type="string" size="TCM_MAX_PATH_LEN" desc="目的文件路径"/>
+    <entry name="TargetFile" type="string" size="TCM_MAX_PATH_LEN" desc="目的文件名"/>
+    <entry name="Total" type="int" desc="文件总长" />
+    <entry name="Offset" type="int" desc="文件偏移"/>
+    <entry name="Len" type="int" desc="传输长度"/>
+    <entry name="Content" type="char" count="TCM_MAX_CFG_TRANS_LEN" refer="Len" desc="目的文件"/>
+  </struct>
+
+  <struct name="TPMResUploadFile" version="4" desc="上传文件到tcmcenter返回" >
+    <entry name="SourceFile" type="string" size="TCM_MAX_PATH_LEN" desc="源文件,绝对路径"/>
+    <entry name="Result" type="int" />
+    <entry name="Total" type="int" desc="文件总长" />
+    <entry name="Offset" type="int" desc="文件偏移"/>
+    <entry name="Len" type="int" desc="传输长度"/>
+    <entry name="Error" type="string" size="TCM_ERR_DESC_MAX_LEN"/>
+  </struct>
+
+  <struct name="DisptchFileInfo" version="4" >
+      <entry name="Ip" type="ip" />
+    <entry name="SourceFile" type="string" size="TCM_MAX_PATH_LEN" desc="源文件,绝对路径"/>
+    <entry name="TargetPath" type="string" size="TCM_MAX_PATH_LEN" desc="目的文件路径"/>
+    <entry name="TargetFile" type="string" size="TCM_MAX_PATH_LEN" desc="目的文件名"/>
+  </struct>
+  <struct name="TPMReqDisptchFile" version="4" desc="分发tcmcenter本地指定目录下的文件到指定的主机">
+    <entry name="Count" type="uint" desc="ip数量"/>
+    <entry name="DisptchFileInfo" type="DisptchFileInfo" count="TMP_MAX_PROTO_DISPATCH_IP_NUM" refer="Count"/>
+  </struct>
+
+  <struct name="DispFileResult" version="4" desc="分发文件结果">
+    <entry name="Host" type="ip" desc="主机ip"/>
+    <entry name="SourceFile" type="string" size="TCM_MAX_PATH_LEN" desc="源文件,绝对路径"/>
+    <entry name="Result" type="int" />
+    <entry name="Error" type="string" size="TCM_ERR_DESC_MAX_LEN"/>
+  </struct>
+
+  <struct name="TPMResDisptchFile" version="4" desc="分发tcmcenter本地指定目录下的文件到指定的主机">
+    <entry name="Total" type="int" desc="总数" />
+    <entry name="Offset" type="int" desc="偏移"/>
+    <entry name="Count"  type="int" desc="当前数" />
+    <entry name="ResultList" type="DispFileResult" count="TMP_MAX_PROTO_HOST_NUM" refer="Count"/>
+  </struct>
+
+  <struct name="TPMReqTransTcmSepCfg" version="4" desc="传输配置到tcmcenter请求" >
+    <entry name="type" type="int" desc="标识需要传输那个文件，0:baseCfg,1:proc.xml;2:proc_deploy.xml;3:host.xml;4:bus_relation.xml;5:access_whitelist.xml"
+           bindmacrosgroup="TPM_TCM_CFG_TYPE"/>
+    <entry name="SourceFile" type="string" size="TCM_MAX_PATH_LEN" desc="源文件,绝对路径"/>
+    <entry name="SourceFileHash" type="char" count="16" desc="文件hash值,只有在整个文件传输完成才会用来检验"/>
+    <entry name="Total" type="int" desc="文件总长" />
+    <entry name="Offset" type="int" desc="文件偏移"/>
+    <entry name="Len" type="int" desc="传输长度"/>
+    <entry name="Content" type="char" count="TCM_MAX_CFG_TRANS_LEN" refer="Len" desc="目的文件"/>
+  </struct>
+
+  <!--struct name="TPMResTransTcmSepCfg" version="4" desc="传输配置到tcmcenter返回,采用TPMResTransTcmCfg结构定义" >
+    <entry name="SourceFile" type="string" size="TCM_MAX_PATH_LEN" desc="源文件,绝对路径"/>
+    <entry name="Result" type="int" />
+    <entry name="Total" type="int" desc="文件总长" />
+    <entry name="Offset" type="int" desc="文件偏移"/>
+    <entry name="Len" type="int" desc="传输长度"/>
+    <entry name="Error" type="string" size="TCM_ERR_DESC_MAX_LEN"/>
+  </struct-->
+  <struct name="PushToolsResult" version="1" >
+    <entry name="HostName" type="string" size="TCM_HOST_NAME_MAX_LEN" desc="进程ID" />
+    <entry name="Result" type="int" desc="参考TPM_ERR" />
+    <entry name="FileCount" type="int" desc="配置文件个数" />
+    <entry name="Files" type="FileDesc" count="TCM_MAX_HOST_TOOLS_FILE_NUM" refer="FileCount" />
+  </struct>
+  <struct name="TPMReqPushTools" version="4" desc="传输工具文件请求" >
+    <entry name="ProcStr" type="string" size="TCM_PROC_STR_MAX_LEN" desc="进程描述" />
+    <entry name="HostName" type="string" size="TCM_HOST_NAME_MAX_LEN" defaultvalue="" />
+  </struct>
+  <struct name="TPMResPushTools" version="4" desc="传输工具文件返回" >
+    <entry name="Total" type="int" />
+    <entry name="Offset" type="int" />
+    <entry name="Count" type="int" />
+    <entry name="ResultList" type="PushToolsResult" count="TCM_MAX_PROTO_HOST_NUM" refer="Count" />
+  </struct>
+
+  <struct name="TPMReqModifyProcLayerNode" version="4" desc="修改进程描述树层次节点属性请求">
+    <entry name="NodeName" type="string" size="TPM_TCM_NODE_NAME_LEN" desc="进程层次描述节点的名字"  />
+    <entry name="WorkPath" type="string" size="TCM_MAX_PATH_LEN"   defaultvalue=""
+           desc="此层次下进程的工作目录，此目录必须为绝对路径" />
+    <entry name="AutoTimeGap" type="int" defaultvalue="60" desc="自动拉起时间间隔，时间单位为妙" />
+    <entry name="MsgRoundTime" type="int" defaultvalue="6" desc="一次请求与响应消息延迟最大时间" />
+    <entry name="OpTimeout" type="int" defaultvalue="30" desc="此节点下进程各种操作的超时值" />
+    <entry name="Isolated" type="int" defaultvalue="0"
+           desc="表示同层节点之间是否是独立的，即无依赖可以并行处理，其值为非0值表示无依赖" />
+     <entry name="AutoResumeNum" type="int" defaultvalue="-1" desc="此节点下进程自动拉起的次数,默认是-1,即无限次拉起" />
+  </struct>
+
+  <struct name="TPMResModifyProcLayerNode" version="4" desc="修改进程描述树层次节点属性返回消息" >
+     <entry name="NodeName" type="string" size="TPM_TCM_NODE_NAME_LEN" desc="进程层次描述节点的名字"  />
+     <entry name="result"           type="int"    desc="0:succeed,1:failure" />
+     <entry name="Error"            type="string" size="TCM_ERR_DESC_MAX_LEN" refer="result" />
+  </struct>
+
+  <struct name="TPMReqModifyTbusGlobalConf" version="4" desc="修改tbus全局属性请求" >
+    <entry name="ChannelDataAlign" type="int" desc="指定通道中消息存储时字节对齐方式" />
+    <entry name="GCIMShmKey" type="string" size="TPM_TCM_MAX_KEY_STRING_LEN" defaultvalue="1688" />
+    <entry name="GRMShmKey" type="string" size="TPM_TCM_MAX_KEY_STRING_LEN" defaultvalue="2688" />
+    <entry name="TbusdServicePort" type="smalluint" desc="tbusd 提供跨物理机器数据通信的服务端口"/>
+    <entry name="TbusdConfPath" type="string" size="TCM_MAX_PATH_LEN"   defaultvalue=""
+           desc="tbusd进程配置文件，此目录必须为绝对路径" />
+    <entry name="PkgMaxSize" type="int" defaultvalue="65536"/>
+    <entry name="SendBuff" type="int" defaultvalue="65536"/>
+    <entry name="RecvBuff" type="int" defaultvalue="65536"/>
+    <entry name="NeedAckPkg" type="int" defaultvalue="1"/>
+    <entry name="ChannelSize" type="int" />
+    <entry name="WinTbusdConfPath" type="string" size="TCM_MAX_PATH_LEN"   defaultvalue=""
+           desc="windows tbusd进程配置文件，此目录必须为绝对路径"/>
+    <entry name="DynChannelMask" type="string" size="TPM_TCM_MAX_ADDR_TEMPLET_STRING_LEN" defaultvalue=""
+        desc="动态通道地址掩码,即两类进程地址与动态掩码等于动态掩码,即为动态通道.TCM不为动态通道创建路由信息" />
+    <entry name="DynChnlMask" type="int" defaultvalue="-1" desc="动态通道地址掩码"/>
+    <entry name="DynamicConfFile" type="string" size="TCM_MAX_PATH_LEN" defaultvalue="" />
+    <entry name="WanBU" type="smalluint" defaultvalue="TCM_WAN_BU_NONE" bindmacrosgroup="TCM_WAN_BU" desc="BU id，跨机通信时该BU id影响最终的QoS值" />
+    <entry name="WanType" type="smalluint" defaultvalue="TCM_WAN_TYPE_NONE" bindmacrosgroup="TCM_WAN_TYPE" desc="wan qos type" />
+    <entry name="CheckRelayUrl" type="smalluint" defaultvalue="TCM_CONFIG_TYPE_NONE" desc="非0：强制检查中继对端的目的IP地址是否发生变化,0x100标示没有这项配置" />
+  </struct>
+
+  <struct name="TPMResModifyTbusGlobalConf" version="4" desc="修改tbus全局属性返回" >
+     <entry name="result"           type="int"    desc="0:succeed,1:failure" />
+     <entry name="Error"            type="string" size="TCM_ERR_DESC_MAX_LEN" refer="result" />
+  </struct>
+
+  <struct name="OneProcDesc" version="4" desc="一个进程描述树中的进程">
+     <entry name="FuncName" type="string" size="TPM_TCM_MAX_FUNC_NAME_LEN" unique="true" notnull="true"
+           desc="功能类描述名"  />
+    <entry name="FuncID" type="int" unique="true" notnull="true"  desc="功能类ID"   />
+    <entry name="ProcName" type="string" size="TCM_MAX_PROC_NAME_LEN" defaultvalue=""  unique="true"
+           desc="进程程序名,缺省取功能类描述名作为程序名"  />
+    <entry name="WorkPath" type="string" size="TCM_MAX_PATH_LEN"   defaultvalue=""
+           desc="此层次下进程的工作目录，此目录为相对路径" />
+    <entry name="Flag" type="string" size="TCM_MAX_FLAG_LEN"   defaultvalue="start|stop|check"
+           desc="此类进程操作属性" />
+    <entry name="OpTimeout" type="int" defaultvalue="0" desc="此节点下进程各种操作的超时值" />
+    <entry name="AutoTimeGap" type="int" defaultvalue="0" desc="自动拉起时间间隔，时间单位为妙" />
+    <entry name="Args" type="string" size="TCM_MAX_ARGS_LEN_EX"   defaultvalue=""
+           desc="此进程类缺省启动参数" />
+    <entry name="StartCmd" type="string" size="TCM_MAX_CMD_LEN"   defaultvalue=""
+           desc="进程start命令" />
+    <entry name="ReStartCmd" type="string" size="TCM_MAX_CMD_LEN"   defaultvalue=""
+           desc="进程restart命令" />
+    <entry name="StopCmd" type="string" size="TCM_MAX_CMD_LEN"   defaultvalue=""
+           desc="进程stop命令" />
+    <entry name="KillCmd" type="string" size="TCM_MAX_CMD_LEN"   defaultvalue=""
+           desc="进程kill命令" />
+    <entry name="RunShellCmd" type="string" size="TCM_MAX_CMD_LEN"   defaultvalue=""
+           desc="进程RunShell命令" />
+    <entry name="AutoScript" type="string" size="TCM_MAX_CMD_LEN"   defaultvalue=""
+           desc="自动拉起进程时的脚本" />
+    <entry name="PreAutoScript" type="string" size="TCM_MAX_CMD_LEN"   defaultvalue=""
+           desc="自动拉起进程前的脚本" />
+    <entry name="IsCommon" type="int"  defaultvalue="0"
+           desc="此ProcUnit是否可以出现在下层节点中，其值为非零值表示可以" />
+    <entry name="Seq" type="int"  desc="此程序在系统中的启动顺序" />
+    <entry name="PidFile" type="string" size="TCM_MAX_PATH_LEN"   defaultvalue=""
+          desc="此进程记录进程ID的文件，必须包含绝对路径信息" />
+    <entry name="ConfigPath" type="string" size="TCM_MAX_PATH_LEN"   defaultvalue=""
+          desc="配置文件目录，必须包含绝对路径信息" />
+    <entry name="ReloadCmd" type="string" size="TCM_MAX_CMD_LEN"   defaultvalue=""
+          desc="进程reload命令" />
+    <entry name="StartCheckBeginTime" type="int" defaultvalue="3" desc="start开始检查成功的下限时间" />
+    <entry name="StartCheckEndTime" type="int" defaultvalue="10" desc="start开始检查成功的上限时间" />
+    <entry name="StartCheckCmd" type="string" size="TCM_MAX_CMD_LEN" defaultvalue="" desc="用户自定义的检测进程启动成功的命令，返回0表示成功" />
+    <entry name="TAppCtrlTdrFile" type="string" size="TCM_MAX_PATH_LEN" defaultvalue="" desc="TApp进程控制模式下的通信协议tdr元数据文件"/>
+    <entry name="AutoResumeNum" type="int" defaultvalue="-1" desc="自动拉起的次数,默认是-1,即无限次拉起" />
+  </struct>
+
+  <struct name="TPMReqAddProcDesc" version="4" desc="添加指定节点下1个进程描述">
+    <entry name="NodeName" type="string" size="TPM_TCM_NODE_NAME_LEN" desc="指定节点"/>
+    <entry name="OneProcDesc" type="OneProcDesc" desc="一个进程描述信息"/>
+  </struct>
+
+  <struct name="TPMResAddProcDesc" version="4" desc="添加指定节点下1个进程描述返回">
+     <entry name="NodeName" type="string" size="TPM_TCM_NODE_NAME_LEN" desc="指定节点"/>
+     <entry name="FuncName" type="string" size="TPM_TCM_MAX_FUNC_NAME_LEN" unique="true" notnull="true"
+           desc="功能类描述名"  />
+     <entry name="result"           type="int"    desc="0:succeed,1:failure" />
+     <entry name="Error"            type="string" size="TCM_ERR_DESC_MAX_LEN" refer="result" />
+  </struct>
+
+  <struct name="TPMReqDelProcDesc" version="4" desc="删除指定节点下1个进程描述请求消息">
+     <entry name="FuncName" type="string" size="TPM_TCM_MAX_FUNC_NAME_LEN" unique="true" notnull="true"
+           desc="功能类描述名"  />
+  </struct>
+
+  <struct name="TPMResDelProcDesc" version="4" desc="删除指定节点下1个进程描述返回">
+     <entry name="FuncName" type="string" size="TPM_TCM_MAX_FUNC_NAME_LEN" unique="true" notnull="true"
+           desc="功能类描述名"  />
+     <entry name="result"           type="int"    desc="0:succeed,1:failure" />
+     <entry name="Error"            type="string" size="TCM_ERR_DESC_MAX_LEN" refer="result" />
+  </struct>
+
+  <struct name="TPMReqModifyProcDesc" version="4" desc="修改个进程描述请求">
+     <entry name="OneProcDesc" type="OneProcDesc" desc="一个进程描述信息"/>
+  </struct>
+
+  <struct name="TPMResModifyProcDesc" version="4" desc="修改1个进程描述返回">
+     <entry name="FuncName" type="string" size="TPM_TCM_MAX_FUNC_NAME_LEN" unique="true" notnull="true"
+           desc="功能类描述名"  />
+     <entry name="result"           type="int"    desc="0:succeed,1:failure" />
+     <entry name="Error"            type="string" size="TCM_ERR_DESC_MAX_LEN" refer="result" />
+  </struct>
+
+  <struct name="ProcUnitInGroupProto" version="4"
+          desc="进程组中ProcUnit描述结构，主要用于描述一些不同于ProcUnit中的特殊配置项">
+    <entry name="FuncName" type="string" size="TPM_TCM_MAX_FUNC_NAME_LEN"
+           desc="功能类描述名,此功能名必须在ProcUnit列表中有定义"  />
+    <entry name="InstID" type="int"  />
+    <entry name="WorkPath" type="string" size="TCM_MAX_PATH_LEN"   defaultvalue=""
+           desc="此层次下进程的工作目录，此目录为相对路径" />
+    <entry name="Args" type="string" size="TCM_MAX_ARGS_LEN_EX"   defaultvalue=""
+           desc="此进程类缺省启动参数" />
+    <entry name="StartCmd" type="string" size="TCM_MAX_CMD_LEN"   defaultvalue=""
+           desc="进程start命令" />
+    <entry name="ReStartCmd" type="string" size="TCM_MAX_CMD_LEN"   defaultvalue=""
+           desc="进程restart命令" />
+    <entry name="StopCmd" type="string" size="TCM_MAX_CMD_LEN"   defaultvalue=""
+           desc="stop命令" />
+    <entry name="KillCmd" type="string" size="TCM_MAX_CMD_LEN"   defaultvalue=""
+           desc="kill命令" />
+    <entry name="RunShellCmd" type="string" size="TCM_MAX_CMD_LEN"   defaultvalue=""
+           desc="RunShell命令" />
+    <entry name="PidFile" type="string" size="TCM_MAX_PATH_LEN"   defaultvalue=""
+          desc="此进程记录进程ID的文件，此目录为相对路径" />
+    <entry name="ConfigPath" type="string" size="TCM_MAX_PATH_LEN"   defaultvalue=""
+          desc="配置文件目录，此目录为相对路径" />
+     <entry name="ReloadCmd" type="string" size="TCM_MAX_CMD_LEN"   defaultvalue=""
+          desc="进程reload命令" />
+     <entry name="TAppCtrlTdrFile" type="string" size="TCM_MAX_PATH_LEN" defaultvalue="" desc="TApp进程控制模式下的通信协议tdr元数据文件"/>
+  </struct>
+
+  <struct name="TPMReqAddProcGroup" version="4" desc="添加进程组请求">
+     <entry name="GroupName" type="string" size="TPM_TCM_MAX_PROGROUP_NAME_LEN" />
+     <entry name="LayerName" type="string" size="TPM_TCM_NODE_NAME_LEN" desc="此进程组所在的层次"/>
+     <entry name="Count" type="int" desc="操作一次添加到该进程组的进程个数"/>
+     <entry name="Proc" type="ProcUnitInGroupProto" count="TPM_TCM_MAX_PROCGROUP_OPER_NUM_PROTO" refer="Count" desc="进程组下各进程" />
+  </struct>
+
+  <struct name="TPMResAddProcGroup" version="4" desc="添加进程组返回">
+     <entry name="GroupName" type="string" size="TPM_TCM_MAX_PROGROUP_NAME_LEN" />
+     <entry name="LayerName" type="string" size="TPM_TCM_NODE_NAME_LEN" desc="此进程组所在的层次"/>
+     <entry name="Count" type="int" desc="操作一次添加到该进程组的进程个数"/>
+     <entry name="result" type="int" desc="0:succeed,1:failure" />
+     <entry name="Error"            type="string" size="TCM_ERR_DESC_MAX_LEN" refer="result" />
+  </struct>
+
+  <struct name="TPMReqDelProcInGroup" version="4" desc="删除进程组中的一个进程请求">
+     <entry name="GroupName" type="string" size="TPM_TCM_MAX_PROGROUP_NAME_LEN" />
+     <entry name="FuncName" type="string" size="TPM_TCM_MAX_FUNC_NAME_LEN" desc="进程功能名" />
+     <entry name="InstID" type="int" defaultvalue="1"
+           desc="如果同一个ProcGroup下配置了多个FuncName相同的ProcUnit，系统从1开始逐一分配"  />
+  </struct>
+
+  <struct name="TPMResDelProcInGroup" version="4" desc="删除进程组中的一个进程返回">
+     <entry name="GroupName" type="string" size="TPM_TCM_MAX_PROGROUP_NAME_LEN" />
+     <entry name="FuncName" type="string" size="TPM_TCM_MAX_FUNC_NAME_LEN" desc="进程名" />
+     <entry name="InstID" type="int" defaultvalue="1"
+           desc="如果同一个ProcGroup下配置了多个FuncName相同的ProcUnit，系统从1开始逐一分配"  />
+     <entry name="result" type="int" desc="0:succeed,1:failure" />
+     <entry name="Error"            type="string" size="TCM_ERR_DESC_MAX_LEN" refer="result" />
+  </struct>
+
+  <struct name="TPMReqDelProcGroup" version="4" desc="删除一个进程组" >
+     <entry name="GroupName" type="string" size="TPM_TCM_MAX_PROGROUP_NAME_LEN" />
+  </struct>
+
+  <struct name="TPMResDelProcGroup" version="4" desc="删除一个进程组返回">
+     <entry name="GroupName" type="string" size="TPM_TCM_MAX_PROGROUP_NAME_LEN" />
+     <entry name="result" type="int" desc="0:succeed,1:failure" />
+     <entry name="Error"            type="string" size="TCM_ERR_DESC_MAX_LEN" refer="result" />
+  </struct>
+
+  <struct name="TPMReqModifyProcGroup" version="4" desc="修改进程组请求">
+     <entry name="GroupName" type="string" size="TPM_TCM_MAX_PROGROUP_NAME_LEN" />
+     <entry name="LayerName" type="string" size="TPM_TCM_NODE_NAME_LEN" desc="此进程组所在的层次"/>
+     <entry name="Count" type="int" />
+     <entry name="Proc" type="ProcUnitInGroupProto" count="TPM_TCM_MAX_PROCGROUP_OPER_NUM_PROTO" refer="Count" desc="进程组下各进程" />
+  </struct>
+
+  <struct name="TPMResModifyProcGroup" version="4" desc="修改进程组返回">
+     <entry name="GroupName" type="string" size="TPM_TCM_MAX_PROGROUP_NAME_LEN" />
+     <entry name="LayerName" type="string" size="TPM_TCM_NODE_NAME_LEN" desc="此进程组所在的层次"/>
+     <entry name="result" type="int" desc="0:succeed,1:failure" />
+     <entry name="Error"            type="string" size="TCM_ERR_DESC_MAX_LEN" refer="result" />
+  </struct>
+
+  <struct name="TPMReqModifyTcmBaseCfg" version="4" desc="修改tcmcenter基本配置信息请求">
+     <entry name="BussinessID" type="int" defaultvalue="0" desc="bussiness id for appications using this bus system" />
+    <entry name="ConfigSoName" type="string" size="TPM_TCM_MAX_DIR_LEN" desc="配置生成so文件，包括路径"/>
+    <entry name="ConfigBaseDir" type="string" size="TPM_TCM_MAX_DIR_LEN" desc="配置文件存放根目录"/>
+    <entry name="CollectConfigBaseDir" type="string" size="TPM_TCM_MAX_DIR_LEN" defaultvalue="../conf/collect" desc="数据收集配置文件存放根目录"/>
+    <entry name="HostConfFile" type="string" size="TCM_MAX_PATH_LEN" defaultvalue=""
+           desc="主机配置表文件路径，如果此配置为空串或没有配置，则默认主机配置文件即此结构配置文件相同" />
+    <entry name="ProcConfFile" type="string" size="TCM_MAX_PATH_LEN" defaultvalue=""
+           desc="进程配置文件路径, 如果此配置为空串或没有配置，则默认主机配置文件即此结构配置文件相同" />
+    <entry name="ProcDeployFile" type="string" size="TCM_MAX_PATH_LEN" defaultvalue=""
+           desc="进程部署文件路径，如果此配置为空串或没有配置，则进程配置文件即此结构配置文件相同" />
+    <entry name="BusRelationFile" type="string" size="TCM_MAX_PATH_LEN" defaultvalue=""
+           desc="进程bus通信关系文件路径，如果此配置为空串或没有配置，则默认进程配置文件即此结构配置文件相同" />
+    <entry name="TbusConfOutputDir" type="string" defaultvalue="../conf/tbusconf" size="TCM_MAX_PATH_LEN"
+           desc="the root directory to keep the tbus configure file of all hosts"/>
+    <entry name="ExportDeployOutputDir" type="string" defaultvalue="../conf/deploy"  size="TCM_MAX_PATH_LEN"
+           desc="the root directory to keep the proc deploy relationship file of all hosts"/>
+    <entry name="MaxAgentMsgPerloop" type="int" defaultvalue="0" desc="max handled msg num per loop"/>
+    <entry name="MaxConsoleMsgPerloop" type="int" defaultvalue="0" desc="max handled msg num per loop"/>
+    <entry name="RegisterToCenterdGap" type="int" defaultvalue="0" desc="向centerd定时注册的时间间隔，单位为秒"/>
+    <entry name="HostConfDir" type="string" defaultvalue="../conf/HostConf"  size="TCM_MAX_PATH_LEN"
+           desc="the root directory to keep the  file of all hosts"/>
+    <entry name="TransTimeout" type="int" defaultvalue="0" desc="传输文件到主机的超时时间" />
+    <entry name="AccessWhiteListFile" type="string" size="TCM_MAX_PATH_LEN" desc="允许访问tcmcenter的白名单文件路径" defaultvalue=""/>
+    <entry name="OpenCreateCfgByScript" type="int" defaultvalue="0" desc="控制是否开启使用业务自定义脚本生成业务配置文件的功能" />
+    <entry name="CreateCfgScriptFile" type="string" size="TCM_MAX_PATH_LEN" defaultvalue="" desc="自定义的生成业务配置的脚本文件路径"/>
+    <entry name="TcmDumpDir" type="string" size="TCM_MAX_PATH_LEN" defaultvalue="../conf/tcmdump" desc="tcm导出的进程描述表,进程部署表，主机表，bus关系表存放的根目录"/>
+    <entry name="BinBaseDir" type="string" size="TPM_TCM_MAX_DIR_LEN" desc="可执行文件存放根目录"  defaultvalue="../conf/bindir"/>
+    <entry name="WaterLogBaseDir" type="string" size="TPM_TCM_MAX_DIR_LEN" desc="流水日志存放根目录"  defaultvalue="../tcm_water_log"/>
+    <entry name="ToolsSrcBaseDir" type="string" size="TPM_TCM_MAX_DIR_LEN" desc="脚本等工具存放TCM端根目录" defaultvalue="../conf/tools_dir" />
+    <entry name="ToolsDstBaseDir" type="string" size="TPM_TCM_MAX_DIR_LEN" desc="脚本等工具Push到tagent端根目录" defaultvalue="../conf/tools_dir" />
+    <entry name="CheckTcmConfGap" type="int" defaultvalue="1800" desc="定时检查tcm内存数据与DB数据的时间间隔，单位是秒" />
+    <entry name="TappPidFileDir" type="string"  size="TCM_MAX_PATH_LEN" defaultvalue="" desc="Tapp进程保存pid文件的目标目录 若配置项为空,则默认保存在/tmp目录中"/>
+  </struct>
+
+  <struct name="TPMResModifyTcmBaseCfg" version="4" desc="修改tcmcenter基本配置信息请求">
+     <entry name="result" type="int" desc="0:succeed,1:failure" />
+     <entry name="Error"            type="string" size="TCM_ERR_DESC_MAX_LEN" refer="result" />
+  </struct>
+
+  <struct name="TPMReqModifyHost" version="4" desc="修改主机信息请求">
+     <entry name="Count"    type="int" defaultvalue="0" desc="请求修改主机的数量"/>
+     <entry name="Host"     type="OneHost" count="TPM_MAX_PROTO_HOST_NUM" refer="Count"/>
+  </struct>
+
+  <struct name="TPMResModifyHost" version="4" desc="修改主机信息返回">
+    <entry name="Count"    type="int" defaultvalue="0" desc="请求修改主机的数量"/>
+    <entry name="HostName" type="HostName" count="TPM_MAX_PROTO_HOST_NUM" refer="Count" desc="返回修改主机的主机名列表"/>
+    <entry name="result"         type="int"    desc="0:succeed,1:failure" />
+    <entry name="Error"          type="string" size="TCM_ERR_DESC_MAX_LEN" />
+  </struct>
+
+
+  <struct name="OneTbusLocalConf" version="4" desc="如果某物理机器的tbus配置与全局缺省配置不同，则通过此数据表配置">
+    <entry name="Host" type="string" size="TCM_HOST_NAME_MAX_LEN" desc="主机名" />
+    <entry name="GCIMShmKey" type="string" size="TPM_TCM_MAX_KEY_STRING_LEN"  />
+    <entry name="GRMShmKey" type="string" size="TPM_TCM_MAX_KEY_STRING_LEN"  />
+    <entry name="TbusdServicePort" type="smalluint" defaultvalue="0"
+           desc="tbusd 提供跨物理机器数据通信的服务端口"/>
+    <entry name="TbusdConfPath" type="string" size="TCM_MAX_PATH_LEN"   defaultvalue=""
+           desc="tbusd进程配置文件，此目录必须为绝对路径" />
+   <entry name="PkgMaxSize" type="int" defaultvalue="0"/>
+   <entry name="SendBuff" type="int" defaultvalue="0"/>
+   <entry name="RecvBuff" type="int" defaultvalue="0"/>
+   <entry name="NeedAckPkg" type="int" defaultvalue="-1"/>
+   <entry name="DynamicConfFile" type="string" size="TCM_MAX_PATH_LEN" defaultvalue="" />
+   <entry name="WanBU" type="smalluint" defaultvalue="TCM_WAN_BU_NONE" bindmacrosgroup="TCM_WAN_BU" desc="BU id，跨机通信时该BU id影响最终的QoS值" />
+   <entry name="WanType" type="smalluint" defaultvalue="TCM_WAN_TYPE_NONE" bindmacrosgroup="TCM_WAN_TYPE" desc="wan qos type" />
+   <entry name="Domain" type="string" size="TCM_MAX_DOMAIN_LEN" desc="域名的形式，用来修正tbus路由配置中的MConn" />
+   <entry name="CheckRelayUrl" type="smalluint" defaultvalue="TCM_CONFIG_TYPE_NONE" desc="非0：强制检查中继对端的目的IP地址是否发生变化,0x100标示没有这项配置" />
+  </struct>
+
+  <struct name="TPMReqAddTbusLocalConf" version="4" desc="添加tbusLocalConf属性">
+     <entry name="Count" type="int" defaultvalue="0" />
+     <entry name="TbusLocalConf" type="OneTbusLocalConf" count="TPM_MAX_TBUS_LOCAL_CONF_NUM" refer="Count" desc="tbus local conf" />
+  </struct>
+
+  <struct name="TPMResAddTbusLocalConf" version="4" desc="添加tbusLocalConf属性返回">
+     <entry name="Count" type="int" defaultvalue="0" />
+     <entry name="HostName" type="HostName" count="TPM_MAX_TBUS_LOCAL_CONF_NUM" refer="Count" />
+     <entry name="Result" type="int" desc="0:succ; 1:fail" />
+     <entry name="Error" type="string" size="TCM_ERR_DESC_MAX_LEN" refer="Result" />
+  </struct>
+
+  <struct name="TPMReqModifyTbusLocalConf" version="4" desc="修改tbusLocalConf属性">
+     <entry name="Count" type="int" defaultvalue="0" />
+     <entry name="TbusLocalConf" type="OneTbusLocalConf" count="TPM_MAX_TBUS_LOCAL_CONF_NUM" refer="Count" desc="tbus local conf"/>
+  </struct>
+
+  <struct name="TPMResModifyTbusLocalConf" version="4" desc="修改tbusLocalConf属性返回">
+     <entry name="Count" type="int" defaultvalue="0" />
+     <entry name="HostName" type="HostName" count="TPM_MAX_TBUS_LOCAL_CONF_NUM" refer="Count" />
+     <entry name="Result" type="int" desc="0:succ; 1:fail" />
+     <entry name="Error" type="string" size="TCM_ERR_DESC_MAX_LEN" refer="Result" />
+  </struct>
+
+  <struct name="TPMReqDelTbusLocalConf" version="4" desc="删除tbusLocalConf属性请求">
+    <entry name="Count" type="int" defaultvalue="0" />
+    <entry name="HostName" type="HostName" count="TPM_MAX_TBUS_LOCAL_CONF_NUM" refer="Count" />
+  </struct>
+
+  <struct name="TPMResDelTbusLocalConf" version="4" desc="删除tbusLocalConf属性返回">
+     <entry name="Count" type="int" defaultvalue="0" />
+     <entry name="HostName" type="HostName" count="TPM_MAX_TBUS_LOCAL_CONF_NUM" refer="Count" />
+     <entry name="Result" type="int" desc="0:succ; 1:fail" />
+     <entry name="Error" type="string" size="TCM_ERR_DESC_MAX_LEN" refer="Result" />
+  </struct>
+
+  <struct name="TPMReqAddOneAccessWhiteListIP" version="4" desc="添加一个白名单请求" >
+     <entry name="ip" type="ip" />
+  </struct>
+
+  <struct name="TPMResAddOneAccessWhiteListIP" version="4" desc="添加一个白名单返回">
+     <entry name="Result" type="int" desc="0:succ, 1:fail" />
+     <entry name="ip" type="ip" desc="请求的IP" />
+     <entry name="Error" type="string" size="TCM_ERR_DESC_MAX_LEN" refer="Result" />
+  </struct>
+
+  <struct name="TPMReqDelOneAccessWhiteListIP" version="4" desc="删除一个白名单请求" >
+     <entry name="ip" type="ip" />
+  </struct>
+
+  <struct name="TPMResDelOneAccessWhiteListIP" version="4" desc="删除一个白名单返回">
+     <entry name="Result" type="int" desc="0:succ, 1:fail" />
+     <entry name="ip" type="ip" desc="请求的IP" />
+     <entry name="Error" type="string" size="TCM_ERR_DESC_MAX_LEN" refer="Result" />
+  </struct>
+
+  <struct name="TPMReqDumpTcmConfig" version="4" desc="将配置文件导出到DB和XML中请求" >
+     <entry name="Reserve" type="int" />
+  </struct>
+
+  <struct name="TPMResDumpTcmConfig" version="4" desc="将配置文件导出到DB和XML中返回" >
+     <entry name="Result" type="int" desc="0:succ, 1:fail" />
+     <entry name="Error" type="string" size="TCM_ERR_DESC_MAX_LEN" refer="Result" />
+  </struct>
+
+  <struct name="ChangeIpPair" version="4" desc="请求替换的IP对">
+     <entry name="OldIP" type="ip" desc="替换前的IP" />
+     <entry name="NewIP" type="ip" desc="替换之后的IP" />
+  </struct>
+
+  <struct name="TPMReqChangeIP" version="4" desc="替换主机表的内网IP请求" >
+     <entry name="Count" type="int" defaultvalue="0" />
+     <entry name="ChangeIpPair" type="ChangeIpPair" count="TPM_MAX_CHANGE_IP_NUM" refer="Count" />
+  </struct>
+
+  <struct name="TPMResChangeIP" version="4" desc="替换主机表的内网IP返回">
+     <entry name="Result" type="int" desc="0:succ, 1:fail" />
+     <entry name="Error" type="string" size="TCM_ERR_DESC_MAX_LEN" refer="Result" />
+  </struct>
+
+  <struct name="TPMNotifyPushCollectConf" version="4" desc="通知tcmcenter主动下发collect_job.xml" >
+     <entry name="HashValue" type="byte" count="16" desc="文件hash值" />
+     <entry name="Reserve" type="int" desc="预留字段" />
+  </struct>
+
+  <!--2015-07-16 -->  
+  <struct name="DlFile" version="1" desc="ftp下载配置或者二进制文件" >    
+    <entry name="SourceFile" type="string" size="TCM_MAX_PATH_LEN" desc="ftp源文件路径"/>
+    <entry name="SourceFileHash" type="char" count="16" desc="文件hash值,只有在整个文件传输完成才会用来检验"/>
+    <entry name="TargetFile" type="string" size="TCM_MAX_PATH_LEN" desc="目的文件路径"/>   
+  </struct>
+  
+  <struct name="TPMReqAgentFtpDownloadFile" version="1" desc="ftp下载配置或者二进制文件到agent请求" >
+    <entry name="CallBackId" type="int" desc="回调ID"/>
+    <entry name="Count" type="int" defaultvalue="0"/>
+    <entry name="FileArr" type="DlFile" count="TCM_MAX_FTP_FILE_NUM" refer="Count" desc="下载文件数组"/>    
+    <entry name="FtpSvrIp" type="string" size="MAX_IP_LEN" desc="ftp服务器IP" />
+    <entry name="FtpSvrPort" type="int" defaultvalue="21" desc="ftp服务器Port，一般ftp server默认端口21" />
+    <entry name="FtpUser" type="string" size="MAX_USER_LEN" desc="ftp用户名"/>
+    <entry name="FtpPasswd" type="string" size="MAX_PASSWD_LEN" desc="ftp密码"/>
+  </struct>
+
+  <struct name="DlRes" version="1" desc="ftp下载文件结果" >    
+    <entry name="SourceFile" type="string" size="TCM_MAX_PATH_LEN" desc="ftp源文件路径"/>
+    <entry name="RetCode" type="int" desc="下载结果返回码"/>
+    <entry name="Error" type="string" size="TCM_ERR_DESC_MAX_LEN" desc="错误描述信息"/>
+  </struct>
+  
+  <struct name="TPMResAgentFtpDownloadFile" version="1" desc="ftp下载配置或者二进制文件到agent返回" >
+    <entry name="CallBackId" type="int" desc="回调ID"/>
+    <entry name="Count" type="int" defaultvalue="0"/>
+    <entry name="Result" type="DlRes" count="TCM_MAX_FTP_FILE_NUM" refer="Count" desc="下载文件结果"/>
+  </struct>
+
+  <!--RefreshBusCfgEx -->
+  <struct name="TPMReqRefreshTbusConfEx" version="4" desc="可靠刷新进程相关的tbus配置请求" >
+    <entry name="ProcStr" type="string" size="TCM_PROC_STR_MAX_LEN" />
+    <entry name="HostName" type="string" size="TCM_HOST_NAME_MAX_LEN" defaultvalue=""/>
+  </struct>
+
+  <!--refreshbuscfgex 返回码-->
+  <macrosgroup name="TPM_REFRESH_TBUSCFGEX_RETURN_CODE" >
+    <macro name="REFRESH_TBUSCFGEX_RETCODE_SUCC" value="0" desc="成功" />
+    <macro name="REFRESH_TBUSCFGEX_RETCODE_INTERNAL_ERR" value="1" desc="tcmcenter计算主机列表失败" />
+    <macro name="REFRESH_TBUSCFGEX_RETCODE_NOT_SUCC" value="2" desc="刷新tbus配置不成功(失败或者超时)" />
+  </macrosgroup>
+	
+  <struct name="TPMResRefreshTbusConfEx" version="4" desc="强制刷新进程相关的tbus配置应答" >
+  	<entry name="RetCode" type="int" bindmacrosgroup="TPM_REFRESH_TBUSCFGEX_RETURN_CODE" desc="返回结果码: 0表示刷新tbus配置成功, 非0表示刷新失败, 参考具体错误码." />
+  	<entry name="ErrMsg" type="string" size="TCM_ERR_DESC_MAX_LEN" desc="错误描述信息"/>  	
+    <entry name="Total" type="int" desc="所涉及的刷新tbus配置的主机数" />    
+    <entry name="FailedCount" type="int" desc="刷新配置失败的主机数" />
+    <entry name="FailedInnerIP" type="ip" refer="FailedCount" count="TCM_MAX_HOST_NUM" desc="刷新配置失败机器的内网ip地址" /> 
+    <entry name="TimeoutCount" type="int" desc="刷新配置超时的主机数" />    
+	<entry name="TimeoutInnerIP" type="ip" refer="TimeoutCount" count="TCM_MAX_HOST_NUM" desc="刷新配置超时机器的内网ip地址" />	  
+	<entry name="SuccCount" type="int" desc="成功刷新配置的主机数" />
+	<entry name="SuccInnerIP" type="ip" refer="SuccCount" count="TCM_MAX_HOST_NUM" desc="刷新配置成功机器的内网ip地址" />    
+  </struct>
+ 
+  
+  <macrosgroup name="ProcMngCmdIDs" desc="msg cmdid for process mng, scope[1,1000] by TCMPkgBody">
+    <macro name="TMP_CMD_REQ_HEARTBEAT" value="1" />
+    <macro name="TMP_CMD_RES_HEARTBEAT" value="2" />
+    <macro name="TMP_CMD_REQ_LIST_HOSTS" value="3" />
+    <macro name="TMP_CMD_RES_LIST_HOSTS" value="4" />
+    <macro name="TMP_CMD_REQ_START_PROCS" value="5" />
+    <macro name="TMP_CMD_RES_START_PROCS" value="6" />
+    <macro name="TMP_CMD_REQ_STOP_PROCS" value="7" />
+    <macro name="TMP_CMD_RES_STOP_PROCS" value="8" />
+    <macro name="TMP_CMD_REQ_SET_PROPERTY" value="9" />
+    <macro name="TMP_CMD_RES_SET_PROPERTY" value="10" />
+    <macro name="TMP_CMD_REQ_CHECK_PROCS" value="11" />
+    <macro name="TMP_CMD_RES_CHECK_PROCS" value="12" />
+    <macro name="TMP_CMD_REQ_LIST_PROCS" value="13" />
+    <macro name="TMP_CMD_RES_LIST_PROCS" value="14" />
+    <macro name="TMP_CMD_REQ_CREATE_CFG" value="15" />
+    <macro name="TMP_CMD_RES_CREATE_CFG" value="16" />
+    <macro name="TMP_CMD_REQ_TRANS_CFG" value="17" />
+    <macro name="TMP_CMD_RES_TRANS_CFG" value="18" />
+    <macro name="TMP_CMD_REQ_CHECK_CFG" value="19" />
+    <macro name="TMP_CMD_RES_CHECK_CFG" value="20" />
+    <macro name="TMP_CMD_REQ_REFRESH_BUSCFG" value="21" />
+    <macro name="TMP_CMD_RES_REFRESH_BUSCFG" value="22" />
+    <macro name="TMP_CMD_NOTIFY_REFRESH_BUSCFG_REPORT" value="23" />
+    <macro name="TMP_CMD_REQ_CLEAR_BUSCHANNEL" value="24" />
+    <macro name="TMP_CMD_RES_CLEAR_BUSCHANNEL" value="25" />
+    <macro name="TMP_CMD_NOTIFY_CLEAR_BUSCHANNEL_REPORT" value="26" />
+    <macro name="TMP_CMD_REQ_RELOAD_PROCS" value="27" />
+    <macro name="TMP_CMD_RES_RELOAD_PROCS" value="28" />
+    <macro name="TMP_CMD_REQ_LIST" value="29" />
+    <macro name="TMP_CMD_RES_LIST" value="30" />
+    <macro name="TMP_CMD_REQ_CHECK_AGENT" value="31" />
+    <macro name="TMP_CMD_RES_CHECK_AGENT" value="32" />
+
+    <macro name="TMP_CMD_REQ_KILL_PROCS" value="33" />
+    <macro name="TMP_CMD_RES_KILL_PROCS" value="34" />
+    <macro name="TMP_CMD_REQ_KILL2_PROCS" value="35" />
+    <macro name="TMP_CMD_RES_KILL2_PROCS" value="36" />
+
+    <macro name="TMP_CMD_REQ_RESTART_PROCS" value="37" />
+    <macro name="TMP_CMD_RES_RESTART_PROCS" value="38" />
+
+    <macro name="TMP_CMD_REQ_TCMCENTER_CONF" value="39" />
+    <macro name="TMP_CMD_RES_TCMCENTER_CONF" value="40" />
+
+    <macro name="TMP_CMD_REQ_PUSH_COLLECT_CONF"       value="41" />
+    <macro name="TMP_CMD_RES_PUSH_COLLECT_CONF"       value="42" />
+
+    <macro name="TMP_CMD_REQ_RELOAD_COLLECT_CONF"       value="43" />
+    <macro name="TMP_CMD_RES_RELOAD_COLLECT_CONF"       value="44" />
+
+    <macro name="TMP_CMD_REQ_GET_PROC_RUNDATA"       value="45" />
+    <macro name="TMP_CMD_RES_GET_PROC_RUNDATA"       value="46" />
+    <macro name="TMP_CMD_REQ_EXPORT_DEPLOY"       value="47" />
+    <macro name="TMP_CMD_RES_EXPORT_DEPLOY"       value="48" />
+
+    <macro name="TMP_CMD_REQ_BUS_RELATION_BY_HOST"       value="49" />
+    <macro name="TMP_CMD_RES_BUS_RELATION_BY_HOST"       value="50" />
+
+    <macro name="TMP_CMD_REQ_BUS_RELATION_BY_PROC"       value="51" />
+    <macro name="TMP_CMD_RES_BUS_RELATION_BY_PROC"       value="52" />
+
+    <macro name="TMP_CMD_REQ_RUN_SHELL"       value="53" />
+    <macro name="TMP_CMD_RES_RUN_SHELL"       value="54" />
+
+    <macro name="TMP_CMD_REQ_GET_COLLECT_TASK"       value="55" />
+    <macro name="TMP_CMD_RES_GET_COLLECT_TASK"       value="56" />
+
+    <macro name="TMP_CMD_REQ_PUSH_COLLECT_TASK"       value="57" />
+    <macro name="TMP_CMD_RES_PUSH_COLLECT_TASK"       value="58" />
+
+    <macro name="TMP_CMD_REQ_SET_COLLECT_STATUS" value="59"/>
+    <macro name="TMP_CMD_RES_SET_COLLECT_STATUS" value="60"/>
+
+    <macro name="TMP_CMD_REQ_REOPEN_TSM" value="61"/>
+    <macro name="TMP_CMD_RES_REOPEN_TSM" value="62"/>
+
+    <macro name="TMP_CMD_REQ_TRANS_TCM_CFG" value="63"/>
+    <macro name="TMP_CMD_RES_TRANS_TCM_CFG" value="64"/>
+
+    <macro name="TMP_CMD_REQ_TRANS_FILE" value="65"/>
+    <macro name="TMP_CMD_RES_TRANS_FILE" value="66"/>
+
+    <macro name="TMP_CMD_REQ_GET_FILE" value="67"/>
+    <macro name="TMP_CMD_RES_GET_FILE" value="68"/>
+
+    <macro name="TMP_CMD_REQ_LIST_DIR" value="69"/>
+    <macro name="TMP_CMD_RES_LIST_DIR" value="70"/>
+
+    <macro name="TMP_CMD_REQ_TAPP_CTRL" value="71"/>
+    <macro name="TMP_CMD_RES_TAPP_CTRL" value="72"/>
+
+    <macro name="TMP_CMD_REQ_SIGNAL_PROC" value="73"/>
+    <macro name="TMP_CMD_RES_SIGNAL_PROC" value="74"/>
+
+    <macro name="TMP_CMD_REQ_ADD_HOST" value="75"/>
+    <macro name="TMP_CMD_RES_ADD_HOST" value="76"/>
+
+    <macro name="TMP_CMD_REQ_MODIFY_DEPLOY_NODE" value="77"/>
+    <macro name="TMP_CMD_RES_MODIFY_DEPLOY_NODE" value="78"/>
+
+    <macro name="TMP_CMD_REQ_DELETE_DEPLOY_NODE" value="79"/>
+    <macro name="TMP_CMD_RES_DELETE_DEPLOY_NODE" value="80"/>
+
+    <macro name="TMP_CMD_REQ_ADD_DEPLOY_GROUP" value="81"/>
+    <macro name="TMP_CMD_RES_ADD_DEPLOY_GROUP" value="82"/>
+
+    <macro name="TMP_CMD_REQ_MODIFY_DEPLOY_GROUP" value="83"/>
+    <macro name="TMP_CMD_RES_MODIFY_DEPLOY_GROUP" value="84"/>
+
+    <macro name="TMP_CMD_REQ_DELETE_DEPLOY_GROUP" value="85"/>
+    <macro name="TMP_CMD_RES_DELETE_DEPLOY_GROUP" value="86"/>
+
+    <macro name="TMP_CMD_REQ_QUERY_DEPLOY_GROUP" value="87"/>
+    <macro name="TMP_CMD_RES_QUERY_DEPLOY_GROUP" value="88"/>
+    <macro name="TMP_CMD_REQ_TRANS_BIN" value="89" />
+    <macro name="TMP_CMD_RES_TRANS_BIN" value="90" />
+    <macro name="TMP_CMD_REQ_TRANS_CFG2" value="91" />
+    <macro name="TMP_CMD_RES_TRANS_CFG2" value="92" />
+    <macro name="TMP_CMD_REQ_ADD_TBUS_RULE" value="93" />
+    <macro name="TMP_CMD_RES_ADD_TBUS_RULE" value="94" />
+    <macro name="TMP_CMD_REQ_DEL_TBUS_RULE" value="95" />
+    <macro name="TMP_CMD_RES_DEL_TBUS_RULE" value="96" />
+    <macro name="TMP_CMD_REQ_MODIFY_TBUS_RULE" value="97" />
+    <macro name="TMP_CMD_RES_MODIFY_TBUS_RULE" value="99" />
+    <macro name="TMP_CMD_REQ_DEL_HOST" value="200" />
+    <macro name="TMP_CMD_RES_DEL_HOST" value="201" />
+
+    <macro name="TMP_CMD_REQ_CHECK_CHANNEL" value="202" />
+    <macro name="TMP_CMD_RES_CHECK_CHANNEL" value="203" />
+    <macro name="TMP_CMD_REQ_CLEAR_TSM_SHM" value="204" />
+    <macro name="TMP_CMD_RES_CLEAR_TSM_SHM" value="205" />
+    <macro name="TMP_CMD_REQ_TRANSPARENT" value="206" />
+    <macro name="TMP_CMD_RES_TRANSPARENT" value="207" />
+    <macro name="TMP_CMD_REQ_UPLOAD_FILE" value="208" />
+    <macro name="TMP_CMD_RES_UPLOAD_FILE" value="209" />
+    <macro name="TMP_CMD_REQ_DISP_FILE" value="210" />
+    <macro name="TMP_CMD_RES_DISP_FILE" value="211" />
+
+    <macro name="TMP_CMD_REQ_PUSH_TOOLS" value="212" />
+    <macro name="TMP_CMD_RES_PUSH_TOOLS" value="213" />
+
+    <macro name="TMP_CMD_REQ_MODIFY_PROC_LAYER_NODE" value="214" />
+    <macro name="TMP_CMD_RES_MODIFY_PROC_LAYER_NODE" value="215" />
+
+    <macro name="TMP_CMD_REQ_MODIFY_TBUS_GLOBAL_CONF" value="216" />
+    <macro name="TMP_CMD_RES_MODIFY_TBUS_GLOBAL_CONF" value="217" />
+
+    <macro name="TMP_CMD_REQ_ADD_PROC_DESC" value="218" />
+    <macro name="TMP_CMD_RES_ADD_PROC_DESC" value="219" />
+
+    <macro name="TMP_CMD_REQ_DEL_PROC_DESC" value="220" />
+    <macro name="TMP_CMD_RES_DEL_PROC_DESC" value="221" />
+
+    <macro name="TMP_CMD_REQ_MODIFY_PROC_DESC" value="222" />
+    <macro name="TMP_CMD_RES_MODIFY_PROC_DESC" value="223" />
+
+    <macro name="TMP_CMD_REQ_ADD_PROC_GROUP" value="224" />
+    <macro name="TMP_CMD_RES_ADD_PROC_GROUP" value="225" />
+
+    <macro name="TMP_CMD_REQ_DEL_PROC_IN_GROUP" value="226" />
+    <macro name="TMP_CMD_RES_DEL_PROC_IN_GROUP" value="227" />
+
+    <macro name="TMP_CMD_REQ_MODIFY_PROC_GROUP" value="228" />
+    <macro name="TMP_CMD_RES_MODIFY_PROC_GROUP" value="229" />
+
+    <macro name="TMP_CMD_REQ_MODIFY_TCM_BASE_CFG" value="230" />
+    <macro name="TMP_CMD_RES_MODIFY_TCM_BASE_CFG" value="231" />
+
+    <macro name="TMP_CMD_REQ_MODIFY_HOST" value="232" />
+    <macro name="TMP_CMD_RES_MODIFY_HOST" value="233" />
+
+    <macro name="TMP_CMD_REQ_ADD_TBUS_LOCAL_CONF" value="234" />
+    <macro name="TMP_CMD_RES_ADD_TBUS_LOCAL_CONF" value="235" />
+
+    <macro name="TMP_CMD_REQ_MODIFY_TBUS_LOCAL_CONF" value="236" />
+    <macro name="TMP_CMD_RES_MODIFY_TBUS_LOCAL_CONF" value="237" />
+
+    <macro name="TMP_CMD_REQ_DEL_TBUS_LOCAL_CONF" value="238" />
+    <macro name="TMP_CMD_RES_DEL_TBUS_LOCAL_CONF" value="239" />
+
+    <macro name="TMP_CMD_REQ_ADD_ONE_ACCESS_WHITELIST_IP" value="240" />
+    <macro name="TMP_CMD_RES_ADD_ONE_ACCESS_WHITELIST_IP" value="241" />
+    <macro name="TMP_CMD_REQ_DEL_ONE_ACCESS_WHITELIST_IP" value="242" />
+    <macro name="TMP_CMD_RES_DEL_ONE_ACCESS_WHITELIST_IP" value="243" />
+
+    <macro name="TMP_CMD_REQ_ADD_DEPLOY_NODE" value="244" />
+    <macro name="TMP_CMD_RES_ADD_DEPLOY_NODE" value="245" />
+
+    <macro name="TMP_CMD_REQ_DEL_PROC_GROUP" value="246" />
+    <macro name="TMP_CMD_RES_DEL_PROC_GROUP" value="247" />
+
+    <macro name="TMP_CMD_REQ_CHANGE_IP" value="248" />
+    <macro name="TMP_CMD_RES_CHANGE_IP" value="249" />
+
+    <macro name="TMP_CMD_REQ_DELETE_DEPLOY_GROUP_MULTI" value="250" />
+    <macro name="TMP_CMD_RES_DELETE_DEPLOY_GROUP_MULTI" value="251" />
+
+    <macro name="TMP_CMD_RES_MSG" value="98" />
+    <macro name="TMP_CMD_RES_ERR" value="100" />
+    <macro name="TMP_CMD_REQ_AGENT_START_PROC" value="101" />
+    <macro name="TMP_CMD_RES_AGENT_START_PROC" value="102" />
+    <macro name="TMP_CMD_REQ_AGENT_STOP_PROC" value="103" />
+    <macro name="TMP_CMD_RES_AGENT_STOP_PROC" value="104" />
+    <macro name="TMP_CMD_REQ_AGENT_SET_PROP" value="105" />
+    <macro name="TMP_CMD_RES_AGENT_SET_PROP" value="106" />
+    <macro name="TMP_CMD_REQ_AGENT_CHECK" value="107" />
+    <macro name="TMP_CMD_RES_AGENT_CHECK" value="108" />
+    <macro name="TMP_CMD_REQ_AGENT_HEARTBEAT" value="109" />
+    <macro name="TMP_CMD_RES_AGENT_HEARTBEAT" value="110" />
+
+    <macro name="TMP_CMD_REQ_AGENT_TRANS_CFG" value="111" />
+    <macro name="TMP_CMD_RES_AGENT_TRANS_CFG" value="112" />
+
+    <macro name="TMP_CMD_REQ_AGENT_RELOAD_PROCS" value="113" />
+    <macro name="TMP_CMD_RES_AGENT_RELOAD_PROCS" value="114" />
+
+    <macro name="TMP_CMD_REQ_AGENT_GET_PROP" value="115" />
+    <macro name="TMP_CMD_RES_AGENT_GET_PROP" value="116" />
+
+    <macro name="TMP_CMD_REQ_AGENT_TESTCONN" value="117" />
+    <macro name="TMP_CMD_RES_AGENT_TESTCONN" value="118" />
+
+    <macro name="TMP_CMD_REQ_AGENT_KILL_PROC" value="119" />
+    <macro name="TMP_CMD_RES_AGENT_KILL_PROC" value="120" />
+    <macro name="TMP_CMD_REQ_AGENT_KILL2_PROC" value="121" />
+    <macro name="TMP_CMD_RES_AGENT_KILL2_PROC" value="122" />
+
+    <macro name="TMP_CMD_REQ_AGENT_RESTART_PROC" value="123" />
+    <macro name="TMP_CMD_RES_AGENT_RESTART_PROC" value="124" />
+
+    <macro name="TMP_CMD_AGENT_GET_PROC_REQ" value="126" />
+    <macro name="TMP_CMD_AGENT_GET_PROC_RES" value="125" />
+
+    <macro name="TMP_CMD_REQ_AGENT_PUSH_COLLECT_CONF"       value="127" />
+    <macro name="TMP_CMD_RES_AGENT_PUSH_COLLECT_CONF"       value="128" />
+
+    <macro name="TMP_CMD_REQ_AGENT_RELOAD_COLLECT_CONF"       value="129" />
+    <macro name="TMP_CMD_RES_AGENT_RELOAD_COLLECT_CONF"       value="130" />
+
+    <macro name="TMP_CMD_REQ_AGENT_GET_PROC_RUNDATA"       value="131" />
+    <macro name="TMP_CMD_RES_AGENT_GET_PROC_RUNDATA"       value="132" />
+    <macro name="TMP_CMD_REQ_AGENT_RUN_SHELL"       value="133" />
+    <macro name="TMP_CMD_RES_AGENT_RUN_SHELL"       value="134" />
+
+    <macro name="TMP_CMD_REQ_AGENT_SET_COLLECT_STATUS" value="135"/>
+    <macro name="TMP_CMD_RES_AGENT_SET_COLLECT_STATUS" value="136"/>
+    <macro name="TMP_CMD_REQ_AGENT_REOPEN_TSM" value="137"/>
+    <macro name="TMP_CMD_RES_AGENT_REOPEN_TSM" value="138"/>
+
+    <macro name="TMP_CMD_REQ_AGENT_GET_FILE" value="139"/>
+    <macro name="TMP_CMD_RES_AGENT_GET_FILE" value="140"/>
+    <macro name="TMP_CMD_REQ_AGENT_LIST_DIR" value="141"/>
+    <macro name="TMP_CMD_RES_AGENT_LIST_DIR" value="142"/>
+    <macro name="TMP_CMD_REQ_AGENT_TAPP_CTRL" value="143"/>
+    <macro name="TMP_CMD_RES_AGENT_TAPP_CTRL" value="144"/>
+    <macro name="TMP_CMD_REQ_AGENT_SIGNAL_PROC" value="145"/>
+    <macro name="TMP_CMD_RES_AGENT_SIGNAL_PROC" value="146"/>
+    <macro name="TMP_CMD_AGENT_GET_PROC_REQ2" value="147" />
+    <macro name="TMP_CMD_AGENT_GET_PROC_RES2" value="148" />
+    <macro name="TMP_CMD_REQ_AGENT_TRANS_BIN" value="149" />
+    <macro name="TMP_CMD_RES_AGENT_TRANS_BIN" value="150" />
+    <macro name="TMP_CMD_REQ_AGENT_TRANS_CFG2" value="151" />
+    <macro name="TMP_CMD_RES_AGENT_TRANS_CFG2" value="152" />
+    <macro name="TMP_CMD_REQ_AGENT_CLEAR_TSM_SHM" value="161" />
+    <macro name="TMP_CMD_RES_AGENT_CLEAR_TSM_SHM" value="162" />
+    <macro name="TMP_CMD_REQ_AGENT_TRANSPARENT" value="164" />
+    <macro name="TMP_CMD_RES_AGENT_TRANSPARENT" value="165" />
+    <macro name="TMP_CMD_REQ_TRANS_TCM_SEP_CFG" value="166"/>
+    <macro name="TMP_CMD_RES_TRANS_TCM_SEP_CFG" value="167"/>
+
+    <macro name="TMP_CMD_REQ_DUMP_TCM_CONFIG" value="168" />
+    <macro name="TMP_CMD_RES_DUMP_TCM_CONFIG" value="169" />
+
+    <macro name="TMP_CMD_NOTIFY_PUSH_COLLECT_CONF" value="170" />
+
+    <macro name="TMP_CMD_REQ_RESUME_START_PROCS" value="171" />
+    <!--add 2015-07-16 -->
+    <macro name="TMP_CMD_REQ_AGENT_FTP_DOWNLOAD_FILE" value="172" />
+    <macro name="TMP_CMD_RES_AGENT_FTP_DOWNLOAD_FILE" value="173" />
+    <!--add 2016-02-01 -->
+    <macro name="TMP_CMD_REQ_RUN_SHELL2" value="174" />
+    <macro name="TMP_CMD_RES_RUN_SHELL2" value="175" /> 
+    <macro name="TMP_CMD_REQ_AGENT_RUN_SHELL2"  value="176" />
+    <macro name="TMP_CMD_RES_AGENT_RUN_SHELL2"  value="177" />
+	<!--add 2016-12-01 refreshbuscfgex: 可靠刷新tbus配置-->
+    <macro name="TMP_CMD_REQ_REFRESH_BUSCFG_EX" value="178" />
+    <macro name="TMP_CMD_RES_REFRESH_BUSCFG_EX" value="179" />
+  </macrosgroup>
+
+
+  <union name="ProcMngData" version="1">
+    <entry name="ReqHeartbeat" type="TPMReqHeartbeat" id="TMP_CMD_REQ_HEARTBEAT"/>
+    <entry name="ResHeartbeat" type="TPMResHeartbeat" id="TMP_CMD_RES_HEARTBEAT"/>
+    <entry name="TPMReqListHosts" type="TPMReqListHosts" id="TMP_CMD_REQ_LIST_HOSTS"/>
+    <entry name="TPMResListHosts" type="TPMResListHosts" id="TMP_CMD_RES_LIST_HOSTS"/>
+    <entry name="TPMReqList" type="TPMReqListHosts" id="TMP_CMD_REQ_LIST"/>
+    <entry name="TPMResList" type="TPMResListHosts" id="TMP_CMD_RES_LIST"/>
+
+    <entry name="TPMReqCheckAgent" type="TPMReqCheckAgent" id="TMP_CMD_REQ_CHECK_AGENT"/>
+    <entry name="TPMResCheckAgent" type="TPMResCheckAgent" id="TMP_CMD_RES_CHECK_AGENT"/>
+
+    <entry name="TPMReqListProcs" type="TPMReqListProcs" id="TMP_CMD_REQ_LIST_PROCS"/>
+    <entry name="TPMResListProcs" type="TPMResListProcs" id="TMP_CMD_RES_LIST_PROCS"/>
+    <entry name="TPMReqStartProc" type="TPMReqStartProc" id="TMP_CMD_REQ_START_PROCS"/>
+    <entry name="TPMResStartProc" type="TPMResStartProc" id="TMP_CMD_RES_START_PROCS"/>
+    <entry name="TPMReqResumeStartProc" type="TPMReqStartProc" id="TMP_CMD_REQ_RESUME_START_PROCS"/>
+    <entry name="TPMReqStopProc" type="TPMReqStopProc" id="TMP_CMD_REQ_STOP_PROCS"/>
+    <entry name="TPMResStopProc" type="TPMResStopProc" id="TMP_CMD_RES_STOP_PROCS"/>
+
+    <entry name="TPMReqRestartProc" type="TPMReqRestartProc" id="TMP_CMD_REQ_RESTART_PROCS"/>
+    <entry name="TPMResRestartProc" type="TPMResRestartProc" id="TMP_CMD_RES_RESTART_PROCS"/>
+
+    <entry name="TPMReqKillProc" type="TPMReqKillProc" id="TMP_CMD_REQ_KILL_PROCS"/>
+    <entry name="TPMResKillProc" type="TPMResKillProc" id="TMP_CMD_RES_KILL_PROCS"/>
+    <entry name="TPMReqKill2Proc" type="TPMReqKill2Proc" id="TMP_CMD_REQ_KILL2_PROCS"/>
+    <entry name="TPMResKill2Proc" type="TPMResKill2Proc" id="TMP_CMD_RES_KILL2_PROCS"/>
+
+
+    <entry name="TPMReqTCMCfg" type="TPMReqTCMCfg" id="TMP_CMD_REQ_TCMCENTER_CONF"/>
+    <entry name="TPMResTCMCfg" type="TPMResTCMCfg" id="TMP_CMD_RES_TCMCENTER_CONF"/>
+
+    <entry name="TPMReqReloadProc" type="TPMReqReloadProc" id="TMP_CMD_REQ_RELOAD_PROCS" version="3"/>
+    <entry name="TPMResReloadProc" type="TPMResReloadProc" id="TMP_CMD_RES_RELOAD_PROCS" version="3"/>
+
+    <entry name="TPMReqExportDeploy" type="TPMReqExportDeploy" id="TMP_CMD_REQ_EXPORT_DEPLOY" version="3"/>
+    <entry name="TPMResExportDeploy" type="TPMResExportDeploy" id="TMP_CMD_RES_EXPORT_DEPLOY" version="3"/>
+
+    <entry name="TPMReqBusRelationByHost" type="TPMReqBusRelationByHost" id="TMP_CMD_REQ_BUS_RELATION_BY_HOST" version="3"/>
+    <entry name="TPMResBusRelationByHost" type="TPMResBusRelationByHost" id="TMP_CMD_RES_BUS_RELATION_BY_HOST" version="3"/>
+
+    <entry name="TPMReqBusRelationByProc" type="TPMReqBusRelationByProc" id="TMP_CMD_REQ_BUS_RELATION_BY_PROC" version="3"/>
+    <entry name="TPMResBusRelationByProc" type="TPMResBusRelationByProc" id="TMP_CMD_RES_BUS_RELATION_BY_PROC" version="3"/>
+
+    <entry name="TPMReqReloadCollectConf" type="TPMReqReloadCollectConf" id="TMP_CMD_REQ_RELOAD_COLLECT_CONF"/>
+    <entry name="TPMResReloadCollectConf" type="TPMResReloadCollectConf" id="TMP_CMD_RES_RELOAD_COLLECT_CONF"/>
+
+    <entry name="TPMReqSetProp" type="TPMReqSetProp" id="TMP_CMD_REQ_SET_PROPERTY"/>
+    <entry name="TPMResSetProp" type="TPMResSetProp" id="TMP_CMD_RES_SET_PROPERTY"/>
+    <entry name="TPMReqCheckProc" type="TPMReqCheckProc" id="TMP_CMD_REQ_CHECK_PROCS"/>
+    <entry name="TPMResCheckProc" type="TPMResCheckProc" id="TMP_CMD_RES_CHECK_PROCS"/>
+    <entry name="TPMReqCreateCfg" type="TPMReqCreateCfg" id="TMP_CMD_REQ_CREATE_CFG"/>
+    <entry name="TPMResCreateCfg" type="TPMResCreateCfg" id="TMP_CMD_RES_CREATE_CFG"/>
+
+    <entry name="TPMReqTransCfg" type="TPMReqTransCfg" id="TMP_CMD_REQ_TRANS_CFG"/>
+    <entry name="TPMResTransCfg" type="TPMResTransCfg" id="TMP_CMD_RES_TRANS_CFG"/>
+
+    <entry name="TPMReqPushCollectCfg" type="TPMReqPushCollectCfg" id="TMP_CMD_REQ_PUSH_COLLECT_CONF"/>
+    <entry name="TPMResPushCollectCfg" type="TPMResPushCollectCfg" id="TMP_CMD_RES_PUSH_COLLECT_CONF"/>
+
+    <entry name="TPMReqRunShell" type="TPMReqRunShell" id="TMP_CMD_REQ_RUN_SHELL" version="4"/>
+    <entry name="TPMResRunShell" type="TPMResRunShell" id="TMP_CMD_RES_RUN_SHELL" version="4"/>
+
+    <entry name="TPMReqGetCollectTask" type="TPMReqGetCollectTask" id="TMP_CMD_REQ_GET_COLLECT_TASK" version="4"/>
+    <entry name="TPMResGetCollectTask" type="TPMResGetCollectTask" id="TMP_CMD_RES_GET_COLLECT_TASK" version="4"/>
+
+    <entry name="TPMReqPushCollectTask" type="TPMReqPushCollectTask" id="TMP_CMD_REQ_PUSH_COLLECT_TASK" version="4"/>
+    <entry name="TPMResPushCollectTask" type="TPMResPushCollectTask" id="TMP_CMD_RES_PUSH_COLLECT_TASK" version="4"/>
+
+    <entry name="TPMReqSetCollectStatus" type="TPMReqSetCollectStatus" id="TMP_CMD_REQ_SET_COLLECT_STATUS" version="4"/>
+    <entry name="TPMResSetCollectStatus" type="TPMResSetCollectStatus" id="TMP_CMD_RES_SET_COLLECT_STATUS" version="4"/>
+
+    <entry name="TPMReqReopenTsm" type="TPMReqReopenTsm" id="TMP_CMD_REQ_REOPEN_TSM" version="4"/>
+    <entry name="TPMResReopenTsm" type="TPMResReopenTsm" id="TMP_CMD_RES_REOPEN_TSM" version="4"/>
+
+    <entry name="TPMReqTransTcmCfg" type="TPMReqTransTcmCfg" id="TMP_CMD_REQ_TRANS_TCM_CFG" version="4"/>
+    <entry name="TPMResTransTcmCfg" type="TPMResTransTcmCfg" id="TMP_CMD_RES_TRANS_TCM_CFG" version="4"/>
+
+    <entry name="TPMReqTransFile" type="TPMReqTransFile" id="TMP_CMD_REQ_TRANS_FILE" version="4"/>
+    <entry name="TPMResTransFile" type="TPMResTransFile" id="TMP_CMD_RES_TRANS_FILE" version="4"/>
+
+    <entry name="TPMReqGetFile" type="TPMReqGetFile" id="TMP_CMD_REQ_GET_FILE" version="4"/>
+    <entry name="TPMResGetFile" type="TPMResGetFile" id="TMP_CMD_RES_GET_FILE" version="4"/>
+
+    <entry name="TPMReqListDir" type="TPMReqListDir" id="TMP_CMD_REQ_LIST_DIR" version="4"/>
+    <entry name="TPMResListDir" type="TPMResListDir" id="TMP_CMD_RES_LIST_DIR" version="4"/>
+
+    <entry name="TPMReqTappCtrlProc" type="TPMReqTappCtrlProc" id="TMP_CMD_REQ_TAPP_CTRL" version="4"/>
+    <entry name="TPMResTappCtrlProc" type="TPMResTappCtrlProc" id="TMP_CMD_RES_TAPP_CTRL" version="4"/>
+
+    <entry name="TPMReqSignalProc" type="TPMReqSignalProc" id="TMP_CMD_REQ_SIGNAL_PROC" version="4"/>
+    <entry name="TPMResSignalProc" type="TPMResSignalProc" id="TMP_CMD_RES_SIGNAL_PROC" version="4"/>
+
+    <entry name="TPMReqAddHost" type="TPMReqAddHost" id="TMP_CMD_REQ_ADD_HOST" version="4"/>
+    <entry name="TPMResAddHost" type="TPMResAddHost" id="TMP_CMD_RES_ADD_HOST" version="4"/>
+
+    <entry name="TPMReqModifyDeployNode" type="TPMReqModifyDeployNode" id="TMP_CMD_REQ_MODIFY_DEPLOY_NODE" version="4"/>
+    <entry name="TPMResModifyDeployNode" type="TPMResModifyDeployNode" id="TMP_CMD_RES_MODIFY_DEPLOY_NODE" version="4"/>
+
+    <entry name="TPMReqDeleteDeployNode" type="TPMReqDeleteDeployNode" id="TMP_CMD_REQ_DELETE_DEPLOY_NODE" version="4"/>
+    <entry name="TPMResDeleteDeployNode" type="TPMResDeleteDeployNode" id="TMP_CMD_RES_DELETE_DEPLOY_NODE" version="4"/>
+
+    <entry name="TPMReqAddDeployGroup" type="TPMReqAddDeployGroup" id="TMP_CMD_REQ_ADD_DEPLOY_GROUP" version="4"/>
+    <entry name="TPMResAddDeployGroup" type="TPMResAddDeployGroup" id="TMP_CMD_RES_ADD_DEPLOY_GROUP" version="4"/>
+
+    <entry name="TPMReqModifyDeployGroup" type="TPMReqModifyDeployGroup" id="TMP_CMD_REQ_MODIFY_DEPLOY_GROUP" version="4"/>
+    <entry name="TPMResModifyDeployGroup" type="TPMResModifyDeployGroup" id="TMP_CMD_RES_MODIFY_DEPLOY_GROUP" version="4"/>
+
+    <entry name="TPMReqDeleteDeployGroup" type="TPMReqDeleteDeployGroup" id="TMP_CMD_REQ_DELETE_DEPLOY_GROUP" version="4"/>
+    <entry name="TPMResDeleteDeployGroup" type="TPMResDeleteDeployGroup" id="TMP_CMD_RES_DELETE_DEPLOY_GROUP" version="4"/>
+
+    <entry name="TPMReqQueryDeployGroup" type="TPMReqQueryDeployGroup" id="TMP_CMD_REQ_QUERY_DEPLOY_GROUP" version="4"/>
+    <entry name="TPMResQueryDeployGroup" type="TPMResQueryDeployGroup" id="TMP_CMD_RES_QUERY_DEPLOY_GROUP" version="4"/>
+
+    <entry name="TPMReqTransBin" type="TPMReqTransCfg2" id="TMP_CMD_REQ_TRANS_BIN" version="4"/>
+    <entry name="TPMResTransBin" type="TPMResTransCfg2" id="TMP_CMD_RES_TRANS_BIN" version="4"/>
+
+    <entry name="TPMReqTransCfg2" type="TPMReqTransCfg2" id="TMP_CMD_REQ_TRANS_CFG2" version="4"/>
+    <entry name="TPMResTransCfg2" type="TPMResTransCfg2" id="TMP_CMD_RES_TRANS_CFG2" version="4"/>
+
+    <entry name="TPMReqAgentPushCollectCfg" type="TPMReqAgentPushCollectCfg" id="TMP_CMD_REQ_AGENT_PUSH_COLLECT_CONF"/>
+    <entry name="TPMReSAgentPushCollectCfg" type="TPMResAgentPushCollectCfg" id="TMP_CMD_RES_AGENT_PUSH_COLLECT_CONF"/>
+
+    <entry name="TPMReqCheckConf" type="TPMReqCheckConf" id="TMP_CMD_REQ_CHECK_CFG"/>
+    <entry name="TPMResCheckConf" type="TPMResCheckConf" id="TMP_CMD_RES_CHECK_CFG"/>
+
+    <entry name="TPMReqRefreshTbusConf" type="TPMReqRefreshTbusConf" id="TMP_CMD_REQ_REFRESH_BUSCFG"/>
+    <entry name="TPMResRefreshTbusConf" type="TPMResRefreshTbusConf" id="TMP_CMD_RES_REFRESH_BUSCFG"/>
+    <entry name="TPMNotifyRefreshTbusConfReport" type="TPMNotifyRefreshTbusConfReport" id="TMP_CMD_NOTIFY_REFRESH_BUSCFG_REPORT"/>
+
+    <entry name="TPMReqClearTbusChannel" type="TPMReqClearTbusChannel" id="TMP_CMD_REQ_CLEAR_BUSCHANNEL"/>
+    <entry name="TPMResClearTbusChannel" type="TPMResClearTbusChannel" id="TMP_CMD_RES_CLEAR_BUSCHANNEL"/>
+    <entry name="TPMNotifyClearTbusChannelReport" type="TPMNotifyClearTbusChannelReport" id="TMP_CMD_NOTIFY_CLEAR_BUSCHANNEL_REPORT"/>
+
+    <entry name="TPMOperateFail" type="TPMOperateFail" id="TMP_CMD_RES_ERR"/>
+    <entry name="TPMMessage" type="TPMMessage" id="TMP_CMD_RES_MSG"/>
+    <entry name="TPMReqAgentStartProc" type="TPMReqAgentStartProc" id="TMP_CMD_REQ_AGENT_START_PROC"/>
+    <entry name="TPMResAgentStartProc" type="TPMResAgentStartProc" id="TMP_CMD_RES_AGENT_START_PROC"/>
+    <entry name="TPMReqAgentStopProc" type="TPMReqAgentStopProc" id="TMP_CMD_REQ_AGENT_STOP_PROC"/>
+    <entry name="TPMResAgentStopProc" type="TPMResAgentStopProc" id="TMP_CMD_RES_AGENT_STOP_PROC"/>
+
+    <entry name="TPMReqAgentRestartProc" type="TPMReqAgentRestartProc" id="TMP_CMD_REQ_AGENT_RESTART_PROC"/>
+    <entry name="TPMResAgentRestartProc" type="TPMResAgentRestartProc" id="TMP_CMD_RES_AGENT_RESTART_PROC"/>
+
+    <entry name="TPMReqAgentKillProc" type="TPMReqAgentKillProc" id="TMP_CMD_REQ_AGENT_KILL_PROC"/>
+    <entry name="TPMResAgentKillProc" type="TPMResAgentKillProc" id="TMP_CMD_RES_AGENT_KILL_PROC"/>
+    <entry name="TPMReqAgentKill2Proc" type="TPMReqAgentKill2Proc" id="TMP_CMD_REQ_AGENT_KILL2_PROC"/>
+    <entry name="TPMResAgentKill2Proc" type="TPMResAgentKill2Proc" id="TMP_CMD_RES_AGENT_KILL2_PROC"/>
+
+    <entry name="TPMReqAgentSetProp" type="TPMReqAgentSetProp" id="TMP_CMD_REQ_AGENT_SET_PROP"/>
+    <entry name="TPMResAgentSetProp" type="TPMResAgentSetProp" id="TMP_CMD_RES_AGENT_SET_PROP"/>
+
+    <entry name="TPMReqAgentGetProp" type="TPMReqAgentGetProp" id="TMP_CMD_REQ_AGENT_GET_PROP"/>
+    <entry name="TPMResAgentGetProp" type="TPMResAgentGetProp" id="TMP_CMD_RES_AGENT_GET_PROP"/>
+
+    <entry name="TPMReqAgentCheck" type="TPMReqAgentCheck" id="TMP_CMD_REQ_AGENT_CHECK"/>
+    <entry name="TPMResAgentCheck" type="TPMResAgentCheck" id="TMP_CMD_RES_AGENT_CHECK"/>
+
+    <entry name="TPMReqAgentHeartBeat" type="TPMAgentHeartBeat" id="TMP_CMD_REQ_AGENT_HEARTBEAT"/>
+    <entry name="TPMResAgentHeartBeat" type="TPMAgentHeartBeat" id="TMP_CMD_RES_AGENT_HEARTBEAT"/>
+
+    <entry name="TPMReqAgentTestConn" type="TPMAgentHeartBeat" id="TMP_CMD_REQ_AGENT_TESTCONN"/>
+    <entry name="TPMResAgentTestConn" type="TPMAgentHeartBeat" id="TMP_CMD_RES_AGENT_TESTCONN"/>
+
+    <entry name="TPMReqAgentTransCfg" type="TPMReqAgentTransCfg" id="TMP_CMD_REQ_AGENT_TRANS_CFG"/>
+    <entry name="TPMResAgentTransCfg" type="TPMResAgentTransCfg" id="TMP_CMD_RES_AGENT_TRANS_CFG"/>
+
+
+    <entry name="TPMReqAgentReloadProc" type="TPMReqAgentReloadProc" id="TMP_CMD_REQ_AGENT_RELOAD_PROCS"/>
+    <entry name="TPMResAgentReloadProc" type="TPMResAgentReloadProc" id="TMP_CMD_RES_AGENT_RELOAD_PROCS"/>
+
+
+    <entry name="TPMReqAgentReloadCollectConf" type="TPMReqAgentReloadCollectConf" id="TMP_CMD_REQ_AGENT_RELOAD_COLLECT_CONF"/>
+    <entry name="TPMResAgentReloadCollectConf" type="TPMResAgentReloadCollectConf" id="TMP_CMD_RES_AGENT_RELOAD_COLLECT_CONF"/>
+
+
+    <entry name="TPMAgentGetProcReq" type="TPMAgentGetProcReq" id="TMP_CMD_AGENT_GET_PROC_REQ"/>
+    <entry name="TPMAgentGetProcRes" type="TPMAgentGetProcRes" id="TMP_CMD_AGENT_GET_PROC_RES"/>
+
+    <entry name="TPMReqGetProcRundata" type="TPMReqGetProcRundata" id="TMP_CMD_REQ_GET_PROC_RUNDATA"/>
+    <entry name="TPMResGetProcRundata" type="TPMResGetProcRundata" id="TMP_CMD_RES_GET_PROC_RUNDATA"/>
+
+    <entry name="TPMAgentGetProcRundataReq" type="TPMAgentGetProcRundataReq" id="TMP_CMD_REQ_AGENT_GET_PROC_RUNDATA"/>
+    <entry name="TPMAgentGetProcRundataRes" type="TPMAgentGetProcRundataRes" id="TMP_CMD_RES_AGENT_GET_PROC_RUNDATA"/>
+
+    <entry name="TPMReqAgentRunShell" type="TPMReqAgentRunShell" id="TMP_CMD_REQ_AGENT_RUN_SHELL" version="4"/>
+    <entry name="TPMResAgentRunShell" type="TPMResAgentRunShell" id="TMP_CMD_RES_AGENT_RUN_SHELL" version="4"/>
+
+    <entry name="TPMReqAgentSetCollectStatus" type="TPMReqAgentSetCollectStatus" id="TMP_CMD_REQ_AGENT_SET_COLLECT_STATUS" version="4"/>
+    <entry name="TPMResAgentSetCollectStatus" type="TPMResAgentSetCollectStatus" id="TMP_CMD_RES_AGENT_SET_COLLECT_STATUS" version="4"/>
+
+    <entry name="TPMReqAgentReopenTsm" type="TPMReqAgentReopenTsm" id="TMP_CMD_REQ_AGENT_REOPEN_TSM" version="4"/>
+    <entry name="TPMResAgentReopenTsm" type="TPMResAgentReopenTsm" id="TMP_CMD_RES_AGENT_REOPEN_TSM" version="4"/>
+
+    <entry name="TPMReqAgentGetFile" type="TPMReqAgentGetFile" id="TMP_CMD_REQ_AGENT_GET_FILE" version="4"/>
+    <entry name="TPMResAgentGetFile" type="TPMResAgentGetFile" id="TMP_CMD_RES_AGENT_GET_FILE" version="4"/>
+
+    <entry name="TPMReqAgentListDir" type="TPMReqAgentListDir" id="TMP_CMD_REQ_AGENT_LIST_DIR" version="4"/>
+    <entry name="TPMResAgentListDir" type="TPMResAgentListDir" id="TMP_CMD_RES_AGENT_LIST_DIR" version="4"/>
+
+    <entry name="TPMReqAgentTappCtrlProc" type="TPMReqAgentTappCtrlProc" id="TMP_CMD_REQ_AGENT_TAPP_CTRL" version="4"/>
+    <entry name="TPMResAgentTappCtrlProc" type="TPMResAgentTappCtrlProc" id="TMP_CMD_RES_AGENT_TAPP_CTRL" version="4"/>
+    <entry name="TPMReqAgentSignalProc" type="TPMReqAgentSignalProc" id="TMP_CMD_REQ_AGENT_SIGNAL_PROC" version="4"/>
+    <entry name="TPMResAgentSignalProc" type="TPMResAgentSignalProc" id="TMP_CMD_RES_AGENT_SIGNAL_PROC" version="4"/>
+    <entry name="TPMAgentGetProcReq2" type="TPMAgentGetProcReq2" id="TMP_CMD_AGENT_GET_PROC_REQ2" version="4"/>
+    <entry name="TPMAgentGetProcRes2" type="TPMAgentGetProcRes2" id="TMP_CMD_AGENT_GET_PROC_RES2" version="4"/>
+    <entry name="TPMReqAgentTransBin" type="TPMReqAgentTransCfg2" id="TMP_CMD_REQ_AGENT_TRANS_BIN" version="4"/>
+    <entry name="TPMResAgentTransBin" type="TPMResAgentTransCfg2" id="TMP_CMD_RES_AGENT_TRANS_BIN" version="4"/>
+    <entry name="TPMReqAgentTransCfg2" type="TPMReqAgentTransCfg2" id="TMP_CMD_REQ_AGENT_TRANS_CFG2" version="4"/>
+    <entry name="TPMResAgentTransCfg2" type="TPMResAgentTransCfg2" id="TMP_CMD_RES_AGENT_TRANS_CFG2" version="4"/>
+
+    <entry name="TPMReqAddTbusRule" type="TPMReqAddTbusRule" id="TMP_CMD_REQ_ADD_TBUS_RULE" version="4"/>
+    <entry name="TPMResAddTbusRule" type="TPMResAddTbusRule" id="TMP_CMD_RES_ADD_TBUS_RULE" version="4"/>
+
+    <entry name="TPMReqDelTbusRule" type="TPMReqDelTbusRule" id="TMP_CMD_REQ_DEL_TBUS_RULE" version="4"/>
+    <entry name="TPMResDelTbusRule" type="TPMResDelTbusRule" id="TMP_CMD_RES_DEL_TBUS_RULE" version="4"/>
+
+    <entry name="TPMReqModifyTbusRule" type="TPMReqModifyTbusRule" id="TMP_CMD_REQ_MODIFY_TBUS_RULE" version="4" />
+    <entry name="TPMResModifyTbusRule" type="TPMResModifyTbusRule" id="TMP_CMD_RES_MODIFY_TBUS_RULE" version="4" />
+
+    <entry name="TPMReqDelHost" type="TPMReqDelHost" id="TMP_CMD_REQ_DEL_HOST" version="4" />
+    <entry name="TPMResDelHost" type="TPMResDelHost" id="TMP_CMD_RES_DEL_HOST" version="4" />
+    <entry name="TPMReqCheckChannel" type="TPMReqCheckChannel" id="TMP_CMD_REQ_CHECK_CHANNEL" version="4" />
+    <entry name="TPMResCheckChannel" type="TPMResCheckChannel" id="TMP_CMD_RES_CHECK_CHANNEL" version="4" />
+
+    <entry name="TPMReqClearTsmShm" type="TPMReqClearTsmShm" id="TMP_CMD_REQ_CLEAR_TSM_SHM" version="4"/>
+    <entry name="TPMResClearTsmShm" type="TPMResClearTsmShm" id="TMP_CMD_RES_CLEAR_TSM_SHM" version="4"/>
+
+    <entry name="TPMReqAgentClearTsmShm" type="TPMReqAgentClearTsmShm" id="TMP_CMD_REQ_AGENT_CLEAR_TSM_SHM" version="4" />
+    <entry name="TPMResAgentClearTsmShm" type="TPMResAgentClearTsmShm" id="TMP_CMD_RES_AGENT_CLEAR_TSM_SHM" version="4" />
+
+    <entry name="TPMReqTransparent" type="TPMReqTransparent" id="TMP_CMD_REQ_TRANSPARENT" version="4"/>
+    <entry name="TPMResTransparent" type="TPMResTransparent" id="TMP_CMD_RES_TRANSPARENT" version="4"/>
+
+    <entry name="TPMReqAgentTransparent" type="TPMReqAgentTransparent" id="TMP_CMD_REQ_AGENT_TRANSPARENT" version="4" />
+    <entry name="TPMResAgentTransparent" type="TPMResAgentTransparent" id="TMP_CMD_RES_AGENT_TRANSPARENT" version="4" />
+    <entry name="TPMReqUploadFile" type="TPMReqUploadFile" id="TMP_CMD_REQ_UPLOAD_FILE" version="4"/>
+    <entry name="TPMResUploadFile" type="TPMResUploadFile" id="TMP_CMD_RES_UPLOAD_FILE" version="4"/>
+    <entry name="TPMReqDisptchFile" type="TPMReqDisptchFile" id="TMP_CMD_REQ_DISP_FILE" version="4"/>
+    <entry name="TPMResDisptchFile" type="TPMResDisptchFile" id="TMP_CMD_RES_DISP_FILE" version="4"/>
+
+    <entry name="TPMReqTransTcmSepCfg" type="TPMReqTransTcmSepCfg" id="TMP_CMD_REQ_TRANS_TCM_SEP_CFG" version="4"/>
+    <entry name="TPMResTransTcmSepCfg" type="TPMResTransTcmCfg" id="TMP_CMD_RES_TRANS_TCM_SEP_CFG" version="4"/>
+
+    <entry name="TPMReqPushTools" type="TPMReqPushTools" id="TMP_CMD_REQ_PUSH_TOOLS" version="4"/>
+    <entry name="TPMResPushTools" type="TPMResPushTools" id="TMP_CMD_RES_PUSH_TOOLS" version="4"/>
+
+    <entry name="TPMReqModifyProcLayerNode" type="TPMReqModifyProcLayerNode" id="TMP_CMD_REQ_MODIFY_PROC_LAYER_NODE" version="4"/>
+    <entry name="TPMResModifyProcLayerNode" type="TPMResModifyProcLayerNode" id="TMP_CMD_RES_MODIFY_PROC_LAYER_NODE" version="4"/>
+
+    <entry name="TPMReqModifyTbusGlobalConf" type="TPMReqModifyTbusGlobalConf" id="TMP_CMD_REQ_MODIFY_TBUS_GLOBAL_CONF" version="4" />
+    <entry name="TPMResModifyTbusGlobalConf" type="TPMResModifyTbusGlobalConf" id="TMP_CMD_RES_MODIFY_TBUS_GLOBAL_CONF" version="4" />
+
+    <entry name="TPMReqAddProcDesc" type="TPMReqAddProcDesc" id="TMP_CMD_REQ_ADD_PROC_DESC" version="4"/>
+    <entry name="TPMResAddProcDesc" type="TPMResAddProcDesc" id="TMP_CMD_RES_ADD_PROC_DESC" version="4"/>
+
+    <entry name="TPMReqDelProcDesc" type="TPMReqDelProcDesc" id="TMP_CMD_REQ_DEL_PROC_DESC" version="4"/>
+    <entry name="TPMResDelProcDesc" type="TPMResDelProcDesc" id="TMP_CMD_RES_DEL_PROC_DESC" version="4"/>
+
+    <entry name="TPMReqModifyProcDesc" type="TPMReqModifyProcDesc" id="TMP_CMD_REQ_MODIFY_PROC_DESC" version="4"/>
+    <entry name="TPMResModifyProcDesc" type="TPMResModifyProcDesc" id="TMP_CMD_RES_MODIFY_PROC_DESC" version="4"/>
+
+    <entry name="TPMReqAddProcGroup" type="TPMReqAddProcGroup" id="TMP_CMD_REQ_ADD_PROC_GROUP" version="4"/>
+    <entry name="TPMResAddProcGroup" type="TPMResAddProcGroup" id="TMP_CMD_RES_ADD_PROC_GROUP" version="4"/>
+
+    <entry name="TPMReqDelProcInGroup" type="TPMReqDelProcInGroup" id="TMP_CMD_REQ_DEL_PROC_IN_GROUP" version="4"/>
+    <entry name="TPMResDelProcInGroup" type="TPMResDelProcInGroup" id="TMP_CMD_RES_DEL_PROC_IN_GROUP" version="4"/>
+
+    <entry name="TPMReqModifyProcGroup" type="TPMReqModifyProcGroup" id="TMP_CMD_REQ_MODIFY_PROC_GROUP" version="4"/>
+    <entry name="TPMResModifyProcGroup" type="TPMResModifyProcGroup" id="TMP_CMD_RES_MODIFY_PROC_GROUP" version="4"/>
+
+    <entry name="TPMReqModifyTcmBaseCfg" type="TPMReqModifyTcmBaseCfg" id="TMP_CMD_REQ_MODIFY_TCM_BASE_CFG" version="4"/>
+    <entry name="TPMResModifyTcmBaseCfg" type="TPMResModifyTcmBaseCfg" id="TMP_CMD_RES_MODIFY_TCM_BASE_CFG" version="4"/>
+
+    <entry name="TPMReqModifyHost" type="TPMReqModifyHost" id="TMP_CMD_REQ_MODIFY_HOST" version="4" />
+    <entry name="TPMResModifyHost" type="TPMResModifyHost" id="TMP_CMD_RES_MODIFY_HOST" version="4" />
+
+    <entry name="TPMReqAddTbusLocalConf" type="TPMReqAddTbusLocalConf" id="TMP_CMD_REQ_ADD_TBUS_LOCAL_CONF" version="4" />
+    <entry name="TPMResAddTbusLocalConf" type="TPMResAddTbusLocalConf" id="TMP_CMD_RES_ADD_TBUS_LOCAL_CONF" version="4" />
+
+    <entry name="TPMReqModifyTbusLocalConf" type="TPMReqModifyTbusLocalConf" id="TMP_CMD_REQ_MODIFY_TBUS_LOCAL_CONF" version="4" />
+    <entry name="TPMResModifyTbusLocalConf" type="TPMResModifyTbusLocalConf" id="TMP_CMD_RES_MODIFY_TBUS_LOCAL_CONF" version="4" />
+
+    <entry name="TPMReqDelTbusLocalConf" type="TPMReqDelTbusLocalConf" id="TMP_CMD_REQ_DEL_TBUS_LOCAL_CONF" version="4" />
+    <entry name="TPMResDelTbusLocalConf" type="TPMResDelTbusLocalConf" id="TMP_CMD_RES_DEL_TBUS_LOCAL_CONF" version="4" />
+
+    <entry name="TPMReqAddOneAccessWhiteListIP" type="TPMReqAddOneAccessWhiteListIP" id="TMP_CMD_REQ_ADD_ONE_ACCESS_WHITELIST_IP" version="4" />
+    <entry name="TPMResAddOneAccessWhiteListIP" type="TPMResAddOneAccessWhiteListIP" id="TMP_CMD_RES_ADD_ONE_ACCESS_WHITELIST_IP" version="4" />
+    <entry name="TPMReqDelOneAccessWhiteListIP" type="TPMReqDelOneAccessWhiteListIP" id="TMP_CMD_REQ_DEL_ONE_ACCESS_WHITELIST_IP" version="4" />
+    <entry name="TPMResDelOneAccessWhiteListIP" type="TPMResDelOneAccessWhiteListIP" id="TMP_CMD_RES_DEL_ONE_ACCESS_WHITELIST_IP" version="4" />
+
+    <entry name="TPMReqAddDeployNode" type="TPMReqAddDeployNode" id="TMP_CMD_REQ_ADD_DEPLOY_NODE" version="4" />
+    <entry name="TPMResAddDeployNode" type="TPMResAddDeployNode" id="TMP_CMD_RES_ADD_DEPLOY_NODE" version="4" />
+
+    <entry name="TPMReqDelProcGroup" type="TPMReqDelProcGroup" id="TMP_CMD_REQ_DEL_PROC_GROUP" version="4" />
+    <entry name="TPMResDelProcGroup" type="TPMResDelProcGroup" id="TMP_CMD_RES_DEL_PROC_GROUP" version="4" />
+
+    <entry name="TPMReqChangeIP" type="TPMReqChangeIP" id="TMP_CMD_REQ_CHANGE_IP" version="4" />
+    <entry name="TPMResChangeIP" type="TPMResChangeIP" id="TMP_CMD_RES_CHANGE_IP" version="4" />
+
+    <entry name="TPMReqDumpTcmConfig" type="TPMReqDumpTcmConfig" id="TMP_CMD_REQ_DUMP_TCM_CONFIG" version="4" />
+    <entry name="TPMResDumpTcmConfig" type="TPMResDumpTcmConfig" id="TMP_CMD_RES_DUMP_TCM_CONFIG" version="4" />
+
+    <entry name="TPMNotifyPushCollectConf" type="TPMNotifyPushCollectConf" id="TMP_CMD_NOTIFY_PUSH_COLLECT_CONF" version="4" />
+
+    <entry name="TPMReqAgentFtpDownloadFile" type="TPMReqAgentFtpDownloadFile" id="TMP_CMD_REQ_AGENT_FTP_DOWNLOAD_FILE" version="4"/>
+    <entry name="TPMResAgentFtpDownloadFile" type="TPMResAgentFtpDownloadFile" id="TMP_CMD_RES_AGENT_FTP_DOWNLOAD_FILE" version="4"/>
+
+    <entry name="TPMReqRunShell2" type="TPMReqRunShell2" id="TMP_CMD_REQ_RUN_SHELL2" version="4"/>
+    <entry name="TPMResRunShell2" type="TPMResRunShell2" id="TMP_CMD_RES_RUN_SHELL2" version="4"/>
+
+    <entry name="TPMReqAgentRunShell2" type="TPMReqAgentRunShell" id="TMP_CMD_REQ_AGENT_RUN_SHELL2" version="4"/>
+    <entry name="TPMResAgentRunShell2" type="TPMResAgentRunShell" id="TMP_CMD_RES_AGENT_RUN_SHELL2" version="4"/>
+
+    <entry name="TPMReqRefreshTbusConfEx" type="TPMReqRefreshTbusConfEx" id="TMP_CMD_REQ_REFRESH_BUSCFG_EX" version="4"/>
+    <entry name="TPMResRefreshTbusConfEx" type="TPMResRefreshTbusConfEx" id="TMP_CMD_RES_REFRESH_BUSCFG_EX" version="4"/>
+    <entry name="TPMReqDeleteDeployGroupMulti" type="TPMReqDeleteDeployGroupMulti" id="TMP_CMD_REQ_DELETE_DEPLOY_GROUP_MULTI" version="4"/>
+    <entry name="TPMResDeleteDeployGroupMulti" type="TPMResDeleteDeployGroupMulti" id="TMP_CMD_RES_DELETE_DEPLOY_GROUP_MULTI" version="4"/>
+
+  </union>
+
+  <struct name="ProcMngPkg" version="1">
+    <entry name="selector" type="int" bindmacrosgroup="ProcMngCmdIDs" />
+    <entry name="Pkg" type="ProcMngData" select="selector" />
+  </struct>
+
+</metalib>

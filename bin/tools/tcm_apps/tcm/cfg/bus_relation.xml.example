@@ -1,0 +1,34 @@
+<tcmcenter>
+
+ 
+    <!--
+    6)业务系统进程间bus通信关系:请在以下部分描述各进程tbus通信关系
+    请确保进程已经在进程描述部分定义
+    -->
+    <TbusConf BussinessID="0" GCIMShmKey="5600" GRMShmKey="7800" TbusdServicePort="9021" ChannelSize="204800" TbusdConfPath="/data/michaeldeng/tsf4g_release/apps/tcm/example/tsdm/tbusd/cfg/"  >
+        
+        <!--公用tonnd_common和operd_common一一对应-->
+        <Channel ProcSet1="tconnd_common" ProcSet2="operd_common" Mask="255.255.0.255" />
+        
+        <!--公用operd_common可以访问所有的transd-->
+        <Channel ProcSet1="operd_common" ProcSet2="transd" Mask="255.0.0.0" />
+         
+        <!--业务专属operd和tconnd一一对应-->
+        <Channel ProcSet1="tconnd" ProcSet2="operd" Mask="255.255.0.255" />
+        
+        <!--iMonster业务专属operd和tconnd一一对应-->
+        <Channel ProcSet1="tconnd_imonster" ProcSet2="operd_imonster" Mask="0.0.0.0" />
+        
+        <!--iMonster业务接入进程-->
+        <Channel ProcSet1="vImonster1" ProcSet2="operd_imonster" Mask="0.0.0.0" />
+        <Channel ProcSet1="vImonster2" ProcSet2="operd_imonster" Mask="0.0.0.0" />
+        <Channel ProcSet1="vImonster3" ProcSet2="operd_imonster" Mask="0.0.0.0" />
+        
+       
+        <!--业务专属的operd可以访问业务内部的transd-->
+        <Channel ProcSet1="operd_imonster" ProcSet2="transd" Mask="255.255.0.0" />
+        
+        <!--业务的transd可以访问同业务所有dmsd-->
+        <Channel ProcSet1="transd" ProcSet2="dmsd" Mask="255.255.0.0" />
+    </TbusConf>
+</tcmcenter>
