@@ -4,6 +4,9 @@
 #include "linked_list/linked_list.h"
 #include "define/str_def.h"
 
+#include "time/time_mgr.h"
+#include "config/global_config.h"
+
 #define MAX_CORO_TYPE_COUNT     (32)
 #define MAKE_CORO_ID(__server_addr__, __coro_mgr_index__, __coro_index__)       ((((uint64_t)__server_addr__) << 32) + (((uint64_t)__coro_index__) << 10) + __coro_mgr_index__)
 #define GET_CORO_SERVER_ADDR(__coro_id__)                   (__coro_id__ >> 32)
@@ -51,7 +54,7 @@ enum CORO_REPLY_TYPE
   do {											\
     return _yield_func(__COUNTER__ + 1);		\
     case __COUNTER__:; 							\
-  } while(0)
+  } while(0);
 
 #else 
 #define CORO_YIELD()	         					\
