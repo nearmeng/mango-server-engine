@@ -3,6 +3,8 @@
 
 #include "linked_list/linked_list.h"
 #include "define/str_def.h"
+#include "time/time_mgr.h"
+#include "config/global_config.h"
 
 #define MAX_CORO_TYPE_COUNT     (256)
 #define MAKE_CORO_ID(__server_addr__, __coro_mgr_index__, __coro_index__)       ((((uint64_t)__server_addr__) << 32) + (((uint64_t)__coro_index__) << 10) + __coro_mgr_index__)
@@ -51,7 +53,7 @@ enum CORO_REPLY_TYPE
   do {											\
     return _yield_func(__COUNTER__ + 1);		\
     case __COUNTER__:; 							\
-  } while(0)
+  } while(0);
 
 #else 
 #define CORO_YIELD()	         					\
@@ -104,7 +106,7 @@ private:
     int32_t     m_nState;
 
     CORO_REPLY  m_Reply;
-    int32_t     m_nCoroRetCode;         // Ð­³ÌµÄ×´Ì¬Âë, ÃèÊöµ±Ç°×´Ì¬µÄ¾ßÌåÐÅÏ¢
+    int32_t     m_nCoroRetCode;         // Ð­ï¿½Ìµï¿½×´Ì¬ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç°×´Ì¬ï¿½Ä¾ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
 };
 
 template<class T>
@@ -135,9 +137,9 @@ private:
     CShmObjectPool<T, uint64_t>     m_CoroPool;
     int32_t                         m_nMgrIndex;
 
-    LINK_HEAD                       m_ReadyLinkHead;         //³õÊ¼»¯µÄÐ­³ÌÁÐ±í
-    LINK_HEAD                       m_RunLinkHead;           //°´ÕÕÉÏ´ÎyeildÊ±¼äË³ÐòµÄÔËÐÐÁÐ±í
-    LINK_HEAD                       m_DeleteLinkHead;        //°´ÕÕÊ±¼äË³ÐòµÄÉ¾³ýÁÐ±í
+    LINK_HEAD                       m_ReadyLinkHead;         //ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½Ð­ï¿½ï¿½ï¿½Ð±ï¿½
+    LINK_HEAD                       m_RunLinkHead;           //ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½yeildÊ±ï¿½ï¿½Ë³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½
+    LINK_HEAD                       m_DeleteLinkHead;        //ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½Ë³ï¿½ï¿½ï¿½É¾ï¿½ï¿½ï¿½Ð±ï¿½
 };
 
 struct SHM_TYPE_INFO
