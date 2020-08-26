@@ -1,7 +1,7 @@
 #ifndef _SHM_DEF_H_
 #define _SHM_DEF_H_
 
-#define MAX_SHM_TYPE_COUNT 	512
+#define MAX_SHM_TYPE_COUNT 	1024
 
 enum SHM_TYPE_DEF
 {
