@@ -2,6 +2,7 @@ cmake_minimum_required (VERSION 2.8)
 
 get_filename_component (BASE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/.. ABSOLUTE)
 get_filename_component (FOLDER_NAME ${CMAKE_BINARY_DIR} NAME)
+set_property(GLOBAL PROPERTY USE_FOLDERS On)
 
 project (${FOLDER_NAME})
 
@@ -112,17 +113,10 @@ link_directories (
 pre_toluapp(${BASE_DIR}/src)
 preprocess_proto("src/proto")
 
+set(ENGINE_TARGET_LIST common server_base router_client db_proxy_client db_proxy router_server service_mgr_server control_server conn_server)
+set(TOOLS_TARGET_LIST robot)
+
 #project directories
-add_subdirectory (common)
-add_subdirectory (game_data)
-add_subdirectory (server_base)
-add_subdirectory (router_client)
-add_subdirectory (db_proxy_client)
-add_subdirectory (server)
-add_subdirectory (func_server)
-add_subdirectory (router_server)
-add_subdirectory (service_mgr_server)
-add_subdirectory (control_server)
-add_subdirectory (conn_server)
-add_subdirectory (db_proxy)
-add_subdirectory (robot)
+add_subdirectory (engine)
+add_subdirectory (workspace)
+add_subdirectory (tools)

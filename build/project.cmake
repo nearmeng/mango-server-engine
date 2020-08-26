@@ -78,9 +78,25 @@ function (post_project)
 		set_target_properties (${TARGET_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG ${BASE_DIR}/bin/${TARGET_NAME})
 		set_target_properties (${TARGET_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ${BASE_DIR}/bin/${TARGET_NAME})
 	endif ()
-
-	set_target_properties (${TARGET_NAME} PROPERTIES OUTPUT_NAME_DEBUG ${TARGET_NAME}_d)
+	
+    set_target_properties (${TARGET_NAME} PROPERTIES OUTPUT_NAME_DEBUG ${TARGET_NAME}_d)
 	set_target_properties (${TARGET_NAME} PROPERTIES OUTPUT_NAME_RELEASE ${TARGET_NAME})
+
+    if (MSVC)
+        list (FIND ENGINE_TARGET_LIST ${TARGET_NAME} find_engine_index)
+        list (FIND TOOLS_TARGET_LIST ${TARGET_NAME} find_tools_index)
+
+        if (${find_engine_index} GREATER -1)
+            set_target_properties(${TARGET_NAME} PROPERTIES FOLDER "engine") 
+	        message(\tset\ folder\ engine\ for\ ${TARGET_NAME})
+        elseif (${find_tools_index} GREATER -1)
+            set_target_properties(${TARGET_NAME} PROPERTIES FOLDER "tools") 
+	        message(\tset\ folder\ tools\ for\ ${TARGET_NAME})
+        else()
+            set_target_properties(${TARGET_NAME} PROPERTIES FOLDER "workspace") 
+	        message(\tset\ folder\ workspace\ for\ ${TARGET_NAME})
+        endif()
+    endif()
 
 	#default link libaray
 	if (UNIX)
