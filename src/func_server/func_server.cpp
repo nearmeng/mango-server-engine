@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include <time.h>
 
 #include "config/global_config.h"
 #include "app/server_app.h"
