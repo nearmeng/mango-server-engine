@@ -64,18 +64,18 @@ BOOL CGlobalStacklessMgr::init(int32_t nServerAddr, BOOL bResume)
     if (!bResume)
     {
         //construct shm type for every mgr
-        int32_t nCounter = 0;
+        int32_t& nInfoCount = pMgrData->nShmTypeInfoCount;
+        LOG_PROCESS_ERROR(nInfoCount == 0);
+
         for (std::vector<CORO_MGR_DATA>::iterator it = m_CoroStacklessMgrList.begin(); it != m_CoroStacklessMgrList.end(); it++)
         {
-            int32_t& nInfoCount = pMgrData->nShmTypeInfoCount;
             LOG_PROCESS_ERROR(nInfoCount < MAX_CORO_TYPE_COUNT);
 
             strxcpy(pMgrData->stShmTypeInfo[nInfoCount].szMgrName, it->szMgrName, COMMON_NAME_LEN);
-            pMgrData->stShmTypeInfo[nInfoCount].nShmType = stdStacklessCoreBegin + nCounter;
+            pMgrData->stShmTypeInfo[nInfoCount].nShmType = stdStacklessCoreBegin + nInfoCount;
             LOG_PROCESS_ERROR(pMgrData->stShmTypeInfo[nInfoCount].nShmType <= stdStacklessCoreEnd);
 
             nInfoCount++;
-            nCounter++;
         }
     }
 

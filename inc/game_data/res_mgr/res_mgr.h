@@ -33,7 +33,7 @@ public:
 
     inline static CResMgr& instance(void);
 
-    virtual BOOL init(const char* pcszConfigName, const char* pcszPath, 
+    virtual BOOL init(int32_t nShmType, const char* pcszConfigName, const char* pcszPath, 
             const char* pcszObjName, BOOL bResume);
     virtual BOOL uninit(void);
 
@@ -105,7 +105,7 @@ inline CResMgr<T>& CResMgr<T>::instance(void)
 }
 
 template <class T>
-BOOL CResMgr<T>::init(const char* pcszConfigName, const char* pcszPath,
+BOOL CResMgr<T>::init(int32_t nShmType, const char* pcszConfigName, const char* pcszPath,
                                 const char* pcszObjName, BOOL bResume)
 {
     int32_t nRetCode = 0;
@@ -122,7 +122,7 @@ BOOL CResMgr<T>::init(const char* pcszConfigName, const char* pcszPath,
     nRetCode = _init_res_file(oResFile);
     LOG_PROCESS_ERROR(nRetCode);
 
-    nRetCode = m_ResPool.init(stdRes, oResFile.get_row_count(), bResume);
+    nRetCode = m_ResPool.init(nShmType, oResFile.get_row_count(), bResume);
     LOG_PROCESS_ERROR(nRetCode);
 
     if (!bResume)

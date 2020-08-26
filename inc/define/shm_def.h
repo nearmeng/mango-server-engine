@@ -26,12 +26,15 @@ enum SHM_TYPE_DEF
     stdSMSServiceData,
     stdSMSRouterMgr,
     stdSMSTrans,
-    stdRes,
     stdSession,
 
     stdStacklessGlobalMgr,
     stdStacklessCoreBegin,
-    stdStacklessCoreEnd = stdStacklessCoreBegin + 64,
+    stdStacklessCoreEnd = stdStacklessCoreBegin + 256,
+    
+    stdGlobalResMgr,
+    stdResBegin,
+    stdResEnd = stdResBegin + 256,
 
 	stdTotal = MAX_SHM_TYPE_COUNT,
 };

@@ -4,7 +4,7 @@ function read_default(col, value, data)
 	if data[col] then
 		data[col] = value;
 	else
-		warn('wrong col name '..col);
+		warn('data do not has col name '.. col .. ' in data struct, so can not assign value ' .. value);
 	end
 end
 

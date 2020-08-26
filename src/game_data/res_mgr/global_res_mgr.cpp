@@ -25,10 +25,17 @@ BOOL CGlobalResMgr::init(int32_t nResMode, BOOL bResume)
     int32_t nRetCode = 0;
     char szScriptPath[COMMON_NAME_LEN];
     CResMgr<FAKE_RES>* pResMgr = NULL;
+    GLOBAL_RES_MGR_DATA* pMgrData = NULL;
 
     LOG_PROCESS_ERROR(nResMode > rlmInvalid && nResMode < rlmTotal);
 
     m_nResMode = nResMode;
+
+    nRetCode = m_MgrData.init(stdGlobalResMgr, bResume);
+    LOG_PROCESS_ERROR(nRetCode);
+
+    pMgrData = m_MgrData.get_obj();
+    LOG_PROCESS_ERROR(pMgrData);
 
     nRetCode = m_LuaScript.init();
     LOG_PROCESS_ERROR(nRetCode);
@@ -40,16 +47,28 @@ BOOL CGlobalResMgr::init(int32_t nResMode, BOOL bResume)
 
     nRetCode = m_LuaScript.load_from_file(szScriptPath, FALSE);
     LOG_PROCESS_ERROR(nRetCode);
+    
+    if (!bResume)
+    {
+        nRetCode = _init_shm_type_for_all_mgr();
+        LOG_PROCESS_ERROR(nRetCode);
+    }
 
     for (std::map<std::string, RES_INFO>::iterator it = m_ResMgr.begin(); it != m_ResMgr.end(); it++)
     {
         std::string ResName = it->first;
         RES_INFO& rResInfo = it->second;
+        int32_t nShmType = 0;
 
         pResMgr = (CResMgr<FAKE_RES>*)rResInfo.pResMgr;
         LOG_PROCESS_ERROR(pResMgr);
 
-        nRetCode = pResMgr->init(ResName.c_str(), g_ServerConfig.Common.szResPath, rResInfo.ResObjName.c_str(), bResume);
+        nShmType = _get_shm_type_by_mgr_name(ResName.c_str());
+        LOG_PROCESS_ERROR(nShmType > 0);
+
+        INF("res mgr init, name %s shm_type %d", ResName.c_str(), nShmType);
+
+        nRetCode = pResMgr->init(nShmType, ResName.c_str(), g_ServerConfig.Common.szResPath, rResInfo.ResObjName.c_str(), bResume);
         LOG_PROCESS_ERROR(nRetCode);
     }
 
@@ -159,6 +178,55 @@ BOOL CGlobalResMgr::reload(BOOL bForce)
 
         nRetCode = pResMgr->post_check();
         LOG_PROCESS_ERROR(nRetCode);
+    }
+
+    return TRUE;
+Exit0:
+    return FALSE;
+}
+    
+int32_t CGlobalResMgr::_get_shm_type_by_mgr_name(const char* pcszMgrName)
+{
+    int32_t nRetCode = 0;
+    GLOBAL_RES_MGR_DATA* pMgrData = NULL;
+
+    pMgrData = m_MgrData.get_obj();
+    LOG_PROCESS_ERROR(pMgrData);
+
+    for (int32_t i = 0; i < pMgrData->nShmTypeInfoCount; i++)
+    {
+        if (strncmp(pMgrData->stShmTypeInfo[i].szResMgrName, pcszMgrName, sizeof(pMgrData->stShmTypeInfo[i].szResMgrName)) == 0)
+        {
+            return pMgrData->stShmTypeInfo[i].nShmType;
+        }
+    }
+
+Exit0:
+    return 0;
+}
+
+BOOL CGlobalResMgr::_init_shm_type_for_all_mgr(void)
+{
+    int32_t nRetCode = 0;
+    GLOBAL_RES_MGR_DATA* pMgrData = NULL;
+
+    pMgrData = m_MgrData.get_obj();
+    LOG_PROCESS_ERROR(pMgrData);
+    
+    {
+        int32_t& nShmInfoCount = pMgrData->nShmTypeInfoCount;
+        LOG_PROCESS_ERROR(nShmInfoCount == 0);
+
+        for (std::map<std::string, RES_INFO>::iterator it = m_ResMgr.begin(); it != m_ResMgr.end(); it++)
+        {
+            std::string ResName = it->first;
+
+            strxcpy(pMgrData->stShmTypeInfo[nShmInfoCount].szResMgrName, ResName.c_str(), COMMON_NAME_LEN);
+            pMgrData->stShmTypeInfo[nShmInfoCount].nShmType = stdResBegin + nShmInfoCount;
+            LOG_PROCESS_ERROR(pMgrData->stShmTypeInfo[nShmInfoCount].nShmType <= stdResEnd);
+
+            nShmInfoCount++;
+        }
     }
 
     return TRUE;
