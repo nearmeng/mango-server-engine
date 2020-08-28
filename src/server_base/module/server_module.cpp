@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "module/server_module.h"
 #include "string/string_ex.h"
 
@@ -20,10 +21,12 @@ BOOL CServerModuleContainer::add_module(CServerModule* pModule)
     LOG_PROCESS_ERROR(pModule);
     LOG_PROCESS_ERROR(m_nModuleCount < MAX_MODULE_COUNT);
 
+    pModule->set_cont_index(m_nModuleCount);
+
     m_pModules[m_nModuleCount++] = pModule;
     m_Name2Module[pModule->get_name()] = pModule;
 
-    INF("[module container]: add module %s", pModule->get_name());
+    INF("[module container]: add module %s curr count %d", pModule->get_name(), m_nModuleCount);
 
     return TRUE;
 Exit0:

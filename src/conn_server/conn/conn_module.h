@@ -19,7 +19,7 @@ struct CONN_SESSION
     uint32_t    dwLastPingTime;     
 };
 
-class CConnModule : CServerModule
+class CConnModule : public CServerModule
 {
 public:
     CConnModule() {};
@@ -27,8 +27,6 @@ public:
 
     virtual BOOL init(BOOL bResume);
     virtual BOOL uninit(void);
-    
-    inline static CConnModule* instance(const char* pcszModuleName, ...);
 
     inline CONN_SESSION* new_session(uint64_t qwSessionID);
     inline BOOL del_session(CONN_SESSION* pSession);
@@ -42,15 +40,6 @@ private:
 private:
     CShmObjectPool<CONN_SESSION, uint64_t>  m_SessionMgr;
 };
-
-inline CConnModule* CConnModule::instance(const char* pcszModuleName, ...)
-{
-    CConnModule* pModule = new CConnModule();
-
-    pModule->set_name(pcszModuleName);
-
-    return pModule;
-}
 
 inline CONN_SESSION* CConnModule::new_session(uint64_t qwSessionID)
 {

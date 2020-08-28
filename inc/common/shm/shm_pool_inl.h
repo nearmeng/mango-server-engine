@@ -116,6 +116,12 @@ BOOL CShmObjectPool<T, N>::init(int32_t shm_type, int32_t unit_count, BOOL is_re
 Exit0:
 	return FALSE;
 }
+    
+template<class T, class N>
+inline BOOL CShmObjectPool<T, N>::uninit(void)
+{
+    return TRUE;
+}
 
 template<class T, class N>
 inline int32_t CShmObjectPool<T, N>::get_count(void)
@@ -439,6 +445,12 @@ BOOL CShmObject<T>::init(int32_t shm_type, BOOL is_resume)
 	return TRUE;
 Exit0:
 	return FALSE;
+}
+
+template<class T>
+BOOL CShmObject<T>::uninit(void)
+{
+    return TRUE;
 }
 
 template<class T>

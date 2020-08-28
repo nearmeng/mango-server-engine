@@ -22,31 +22,30 @@
 #include "config/global_config.h"
 
 #include "test_coro.h"
+#include "module/server_default_session_module.h"
 
 std::map<uint64_t, int32_t> ms_AddrMap;
 
-void on_conn_start_event(uint64_t qwConnID, int32_t nConnServerAddr)
+void on_conn_start_event(CLIENT_SESSION* pSession)
 {
     int32_t nRetCode = 0;
     SC_MESSAGE_ALLOW_LOGIN msg;
 
-    ms_AddrMap[qwConnID] = nConnServerAddr;
-
-    nRetCode = send_to_client(nConnServerAddr, qwConnID, sc_message_allow_login, &msg);
+    nRetCode = SEND_TO_CLIENT_BY_SESSION(pSession, sc_message_allow_login, &msg);
     LOG_PROCESS_ERROR(nRetCode);
 
-    INF("recv conn %lld ntf start event", qwConnID);
+    INF("recv conn %lld ntf start event from addr %d", pSession->qwConnID, pSession->nConnServerAddr);
 
 Exit0:
     return;
 }
 
-void on_conn_stop_event(uint64_t qwConnID, int32_t nConnServerAddr)
+void on_conn_stop_event(CLIENT_SESSION* pSession)
 {
-    INF("recv conn %lld ntf stop event", qwConnID);
+    INF("recv conn %lld ntf stop event from addr %d", pSession->qwConnID, pSession->nConnServerAddr);
 }
 
-void on_login(uint64_t qwConnID, const CS_HEAD* pHead, const Message* pMsg)
+void on_login(CLIENT_SESSION* pSession, const CS_HEAD* pHead, const Message* pMsg)
 {
 	int32_t nRetCode = 0;
 	CS_MESSAGE_LOGIN* msg = (CS_MESSAGE_LOGIN*)pMsg;
@@ -56,7 +55,7 @@ void on_login(uint64_t qwConnID, const CS_HEAD* pHead, const Message* pMsg)
 	SC_MESSAGE_LOGIN rsp;
 	rsp.set_answer("this is rsp");
 
-    nRetCode = send_to_client(ms_AddrMap[qwConnID], qwConnID, sc_message_login, &rsp);
+    nRetCode = SEND_TO_CLIENT_BY_SESSION(pSession, sc_message_login, &rsp);
     LOG_PROCESS_ERROR(nRetCode);
 
 Exit0:
@@ -146,11 +145,11 @@ BOOL CTestModule::init(BOOL bResume)
 
 	INF("test module is init");
 
-	register_client_msg_handler(cs_message_login, on_login);
-
-	register_server_msg_handler(a2a_control_req, on_control);
-    register_conn_event_handler(cetStart, on_conn_start_event);
-    register_conn_event_handler(cetStop, on_conn_stop_event);
+    REG_SESSION_CONN_EVENT_HANDLER(cetStart, on_conn_start_event);
+    REG_SESSION_CONN_EVENT_HANDLER(cetStop, on_conn_stop_event);
+    REG_SESSION_CLI_MSG_HANDLER(cs_message_login, on_login);
+	
+    register_server_msg_handler(a2a_control_req, on_control);
 
     int32_t nCount = 0;
     const ACHIEVE_RES* pRes = CResMgr<ACHIEVE_RES>::instance().get_first_res();
@@ -172,13 +171,4 @@ BOOL CTestModule::uninit(void)
     return TRUE;
 Exit0:
     return FALSE;
-}
-    
-CTestModule* CTestModule::instance(const char* pcszModuleName, ...)
-{
-    CTestModule* pModule = new CTestModule();
-    
-    pModule->set_name(pcszModuleName);
-
-    return pModule;
 }

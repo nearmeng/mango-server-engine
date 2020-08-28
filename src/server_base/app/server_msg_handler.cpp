@@ -22,7 +22,6 @@
 
 #include "coroutine/coro_stackless.h"
 
-#define MAX_MESSAGE_ID			(65535)
 #define MAX_CONN_EVENT_COUNT	(64)
 #define MAX_SS_MSG_LEN			(256 * 1024)
 #define MAX_SEND_DATA_BUFF_LEN	(512 * 1024)

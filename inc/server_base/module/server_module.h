@@ -9,6 +9,11 @@ public:
     CServerModule() {};
     virtual ~CServerModule() {};
 
+    template<class T>
+    inline static T* create_instance(const char* pcszModuleName, ...);
+
+    virtual BOOL set_create_arg(const char* pcszModuleName, va_list args) { set_name(pcszModuleName); return TRUE; };
+
     inline const char* get_name(void);
     inline void set_name(const char* pcszModuleName);
     
@@ -27,8 +32,8 @@ public:
     virtual BOOL msg_handler_init(void) { return TRUE; };
 
 private:
-    char        m_szName[MAX_MODULE_NAME_LEN];
-    int32_t     m_nContIndex;
+    char                        m_szName[MAX_MODULE_NAME_LEN];
+    int32_t                     m_nContIndex;
 };
 
 class CServerModuleContainer
@@ -77,6 +82,26 @@ inline void CServerModule::set_cont_index(int32_t nContIndex)
 inline int32_t CServerModuleContainer::get_module_count(void)
 {
     return m_nModuleCount;
+}
+
+template<class T>
+inline T* CServerModule::create_instance(const char* pcszModuleName, ...)
+{
+    int32_t nRetCode = 0;
+    va_list args;
+
+    T* pModule = new T();
+    LOG_PROCESS_ERROR(pModule);
+
+    va_start(args, pcszModuleName);
+    nRetCode = ((CServerModule*)pModule)->set_create_arg(pcszModuleName, args);
+    va_end(args);
+
+    LOG_PROCESS_ERROR(nRetCode);
+
+    return pModule;
+Exit0:
+    return NULL;
 }
 
 #endif

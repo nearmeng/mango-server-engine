@@ -36,6 +36,8 @@ enum SHM_TYPE_DEF
     stdResBegin,
     stdResEnd = stdResBegin + 256,
 
+    stdServerSessionDefault,
+
 	stdTotal = MAX_SHM_TYPE_COUNT,
 };
 

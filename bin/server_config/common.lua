@@ -5,6 +5,7 @@ ServerConfig.Common =
 	nInitBtEventCount = 100;
 	nInitBtGlobalEventListCount = 100;
 	nInitTimerPoolCount = 100;
+    nInitDefaultClientSessionCount = 100;
 
 	nInitShmSize = 100 * 1024 * 1024;
 		

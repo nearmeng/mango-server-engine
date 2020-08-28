@@ -28,6 +28,8 @@ BOOL CConnModule::uninit(void)
 {
     int32_t nRetCode = 0;
 
+    nRetCode = m_SessionMgr.uninit();
+    LOG_CHECK_ERROR(nRetCode);
 
     return TRUE;
 Exit0:

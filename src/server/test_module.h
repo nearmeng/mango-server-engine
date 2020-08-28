@@ -3,13 +3,11 @@
 
 #include "module/server_module.h"
 
-class CTestModule : CServerModule
+class CTestModule : public CServerModule
 {
 public:
     CTestModule() {};
     virtual ~CTestModule() {};
-
-    static CTestModule* instance(const char* pcszModuleName, ...);
 
     virtual BOOL init(BOOL bResume);
     virtual BOOL uninit(void);

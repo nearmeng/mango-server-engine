@@ -127,6 +127,11 @@ Exit0:
     return;
 }
 
+void on_conn_stop_notify(uint64_t qwConnID, TFRAMEHEAD* pFrameHead, const char* pBuff, int32_t nSize)
+{
+    INF("recv conn stop notify from conn %llu", qwConnID);
+}
+
 void on_gs_ntf_event_ack(int32_t nSrcAddr, const char* pBuffer, size_t dwSize)
 {
     int32_t nRetCode = 0;
@@ -176,6 +181,9 @@ BOOL CConnModule::_init_msg_handler()
 	register_conn_msg_handler(TFRAMEHEAD_CMD_START, on_conn_start);
 	register_conn_msg_handler(TFRAMEHEAD_CMD_STOP, on_conn_stop);
     register_conn_msg_handler(TFRAMEHEAD_CMD_INPROC, on_conn_proc);
+    register_conn_msg_handler(TFRAMEHEAD_CMD_TCONND_STOP_NOTIFY, on_conn_stop_notify);
+
+    //multicast and broadcast to be done
 
     register_server_msg_handler(conn_transfer_msg, on_gs_transfer_msg);
     register_server_msg_handler(conn_ntf_event_ack, on_gs_ntf_event_ack);

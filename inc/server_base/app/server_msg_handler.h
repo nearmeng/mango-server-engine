@@ -21,7 +21,7 @@ BOOL recv_client_msg_proc(uint64_t qwConnID, const char* pBuff, int32_t nSize);
 void recv_conn_transfer_msg(int32_t nSrcAddr, const char* pBuff, size_t dwSize);
 void recv_conn_ntf_event(int32_t nSrcAddr, const char* pBuff, size_t dwSize);
 
-//api for conn server
+//api for server connected with tconnd directly
 BOOL send_conn_msg(int32_t nDstAddr, TFRAMEHEAD* pFrameHead, const SC_HEAD* pHead, const Message* pMsg);
 BOOL send_conn_msg(int32_t nDstAddr, TFRAMEHEAD* pFrameHead, const char* pBuff, int32_t nSize);
 //api for server connected with conn server

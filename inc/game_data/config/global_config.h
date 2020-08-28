@@ -19,6 +19,7 @@ struct SERVER_CONFIG
 		int32_t nInitBtEventCount;
 		int32_t nInitBtGlobalEventListCount;
 		int32_t nInitTimerPoolCount;
+        int32_t nInitDefaultClientSessionCount;
 
 		int32_t nInitShmSize;
 

@@ -6,7 +6,7 @@
 
 typedef BOOL(*CONTROL_HANDLE_PTR)(std::string& sCmdType, int32_t nTargetType, uint64_t qwTarget, std::string& sCmdStr);
 
-class CControlModule : CServerModule
+class CControlModule : public CServerModule
 {
 public:
     CControlModule() {};
@@ -14,7 +14,6 @@ public:
 
 	virtual BOOL init(BOOL bResume);
 	virtual BOOL uninit(void);
-    inline static CControlModule* instance(const char* pcszModuleName, ...);
 
     const char* help_info(void);
     BOOL proc_cmdline(unsigned short argc, const char** argv);
@@ -30,14 +29,5 @@ private:
 private:
     char m_szCmdBuff[MAX_GM_COMMAND_LEN];
 };
-
-inline CControlModule* CControlModule::instance(const char* pcszModuleName, ...)
-{
-    CControlModule* pModule = new CControlModule();
-
-    pModule->set_name(pcszModuleName);
-
-    return pModule;
-}
 
 #endif   /* ----- #ifndef _CONTROL_MODULE_H_  ----- */

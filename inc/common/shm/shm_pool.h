@@ -48,6 +48,7 @@ public:
 	~CShmObject() {};
 
 	BOOL init(int32_t shm_type, BOOL is_resume);
+	BOOL uninit(void);
 	T* get_obj(void);
 
 private:
@@ -62,6 +63,7 @@ public:
 	~CShmObjectPool() {};
 
 	BOOL init(int32_t shm_type, int32_t unit_count, BOOL is_resume);
+    BOOL uninit(void);
 
 	inline int32_t get_count(void);
 	inline int32_t get_free_count(void);

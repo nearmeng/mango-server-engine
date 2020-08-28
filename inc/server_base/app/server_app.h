@@ -6,7 +6,8 @@
 #include "define/str_def.h"
 
 #define MG_REGISTER_MODULE(__server__, __module_class__, ...)  \
-    __server__->register_module((CServerModule*)__module_class__::instance(#__module_class__, ##__VA_ARGS__)); 
+    __server__->register_module((CServerModule*)__module_class__::create_instance<__module_class__>(#__module_class__, __VA_ARGS__));  \
+
 #define MG_GET_MODULE(__module_class__) \
     (__module_class__*)CMGApp::instance().get_module(#__module_class__);
 

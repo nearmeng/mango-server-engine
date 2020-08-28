@@ -5,7 +5,7 @@
 
 class CRedisCli;
 
-class CRedisModule : CServerModule
+class CRedisModule : public CServerModule
 {
 public:
     CRedisModule() {};
@@ -15,7 +15,6 @@ public:
 	virtual BOOL uninit(void);
     virtual void on_frame(void);
     virtual void on_proc(void);
-    inline static CRedisModule* instance(const char* pcszModuleName, ...);
 
     inline CRedisCli* get_test_client();
 
@@ -25,15 +24,6 @@ private:
 private:
     CRedisCli* pTestRedisCli;
 };
-
-inline CRedisModule* CRedisModule::instance(const char* pcszModuleName, ...)
-{
-    CRedisModule* pModule = new CRedisModule;
-
-    pModule->set_name(pcszModuleName);
-
-    return pModule;
-}
 
 inline CRedisCli* CRedisModule::get_test_client(void)
 {
