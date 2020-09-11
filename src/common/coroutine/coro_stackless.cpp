@@ -203,6 +203,8 @@ BOOL CGlobalStacklessMgr::resume_coro(CCoroStackless* pCoro)
     m_pCoroMgr = (CCoroStacklessMgr<CFakeCoro>*)m_CoroStacklessMgrList[nMgrIndex].pMgr;
     LOG_PROCESS_ERROR(m_pCoroMgr);
 
+    DBG("[CORO]: coro %llu is resume ret_code %d", pCoro->get_coro_id(), pCoro->get_coro_ret_code());
+
     nRetCode = m_pCoroMgr->resume_coro(pCoro);
     LOG_PROCESS_ERROR(nRetCode);
 

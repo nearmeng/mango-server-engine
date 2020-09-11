@@ -23,8 +23,15 @@ public:
 
 	void on_allow_login(SC_HEAD* pSCHead, google::protobuf::Message* pMsg, CRobotUser* pUser);
 	void on_login(SC_HEAD* pSCHead, google::protobuf::Message* pMsg, CRobotUser* pUser);
+	void on_sync_role_list(SC_HEAD* pSCHead, google::protobuf::Message* pMsg, CRobotUser* pUser);
+	void on_recv_error_code(SC_HEAD* pSCHead, google::protobuf::Message* pMsg, CRobotUser* pUser);
+	void on_sync_role_data(SC_HEAD* pSCHead, google::protobuf::Message* pMsg, CRobotUser* pUser);
 	
 	BOOL do_gm_command(const char* pGMCommand, CRobotUser* pUser);
+
+private:
+    BOOL do_create_role(CRobotUser* pUser, const char* pcszRoleName);
+    BOOL do_select_role(CRobotUser* pUser, uint64_t qwRoleID);
 
 private:
 	static CClientMessageHandler ms_Instance;

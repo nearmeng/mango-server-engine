@@ -13,7 +13,8 @@
 #include "app/server_app.h"
 
 #include "module/server_default_session_module.h"
-#include "test_module.h"
+#include "module/gs_user_module.h"
+#include "module/role_module.h"
 
 extern LUA_FUNC g_RegPackageList[];
 extern LUA_FUNC g_RegLuaFunc[];
@@ -360,7 +361,8 @@ Exit1:
     pServer->set_use_db_proxy(TRUE);
     
     MG_REGISTER_MODULE(pServer, CServerDefaultSessionModule);
-    MG_REGISTER_MODULE(pServer, CTestModule);
+    MG_REGISTER_MODULE(pServer, CUserModule);
+    MG_REGISTER_MODULE(pServer, CRoleModule);
 
     nRetCode = pServer->init("test_server", argc, argv);
     LOG_PROCESS_ERROR(nRetCode);

@@ -40,13 +40,13 @@ BOOL CConnModule::kick_conn_by_session(uint64_t qwSessionID, int32_t nReason)
 {
     int32_t nRetCode = 0;
     CONN_SESSION* pSession = NULL;
-    SC_MESSAGE_ERROR_CODE msg;
+    SC_ERROR_CODE msg;
 
     pSession = find_session(qwSessionID);
     LOG_PROCESS_ERROR(pSession);
 
     msg.set_error_code(nReason);
-    nRetCode = send_to_client(pSession, sc_message_error_code, msg);
+    nRetCode = send_to_client(pSession, sc_error_code, msg);
     LOG_PROCESS_ERROR(nRetCode);
 
     nRetCode = send_to_tconnd(pSession, TFRAMEHEAD_CMD_STOP, NULL, 0);

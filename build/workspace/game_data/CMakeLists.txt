@@ -22,6 +22,13 @@ list (APPEND SRC_FILES
 	"${BASE_DIR}/build/toluapp.cmake"
 )
 
+list (APPEND SRC_FILES
+	"${BASE_DIR}/bin/tools/deploy/config/hosts.yml"
+	"${BASE_DIR}/bin/tools/deploy/config/local_deploy.yml"
+	"${BASE_DIR}/bin/tools/deploy/config/proc.yml"
+	"${BASE_DIR}/bin/tools/deploy/config/tcm_deploy.yml"
+)
+
 process_proto("src/proto")
 
 add_project ()

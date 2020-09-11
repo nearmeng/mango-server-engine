@@ -26,6 +26,8 @@ struct SERVER_CONFIG
 		int32_t nServerStopTimeout;
 		int32_t nServerEndWaitTimeout;
 
+        int32_t nClientPingTimeout;
+
         int32_t nResMode;
         char    szScriptPath[64];
         char    szResPath[64];
@@ -50,6 +52,8 @@ struct SERVER_CONFIG
     struct GS_CONFIG
     {
     	int32_t nTestValue;
+        int32_t nUserCount;
+        int32_t nRoleCount;
 	} GS;
 
 	struct SERVICE_CONFIG
@@ -71,6 +75,11 @@ struct SERVER_CONFIG
         int32_t nDBPingTimeout;
         int32_t nDBReConnectInterval;
     }DP;
+    
+    struct OS_CONFIG
+    {
+    	int32_t nUserObjCount;
+	} OS;
 };
 
 struct REDIS_SCRIPT

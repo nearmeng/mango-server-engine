@@ -200,7 +200,7 @@ BOOL CDBProxyClient::_command(uint64_t qwCoroID, int32_t nCmdID, const char* pUs
     LOG_PROCESS_ERROR(nRetCode);
 
     LOG_PROCESS_ERROR(pMsg->nCommandSize > 0);
-    DBG("redis command, packed command size %d", pMsg->nCommandSize);
+    //DBG("redis command, packed command size %d", pMsg->nCommandSize);
 
     nRetCode = send_server_msg_by_routerid(CMGApp::instance().get_tbus_addr(), svrDBProxy, db_proxy_client_redis_req, pMsg, sizeof(DB_PROXY_CLIENT_REDIS_REQ) + nCommandSize);
     LOG_PROCESS_ERROR(nRetCode);
@@ -282,6 +282,10 @@ BOOL CDBProxyClient::_pack_redis_command(char* pPackedBuffer, int32_t &nPackedSi
 {
     int32_t nRetCode = 0;
     const char* pAnalysis = format;
+    char szFormat[32] = { 0 };
+    uint32_t dwSize = 0;
+    const char* pCurrEnd = NULL;
+    const char* pSymbal = NULL;
 
     LOG_PROCESS_ERROR(pPackedBuffer);
     LOG_PROCESS_ERROR(format);
@@ -293,64 +297,79 @@ BOOL CDBProxyClient::_pack_redis_command(char* pPackedBuffer, int32_t &nPackedSi
             pAnalysis++;
             continue;
         }
+
+        pCurrEnd = pAnalysis;
+        while (*pCurrEnd != ' ' && *pCurrEnd != '\0')
+            pCurrEnd++;
+
+        pSymbal = pAnalysis;
+        while (*pSymbal != '%' && pSymbal != pCurrEnd)
+            pSymbal++;
         
-        if (*pAnalysis != '%')
+        if (pSymbal == pCurrEnd)
         {
             //command string or arg string
-            DBG("get base string");
-
-            const char* pArg = pAnalysis;
-            uint32_t dwSize = 0;
-            const char* pCurr = pAnalysis;
-            while (*pCurr != ' ' && *pCurr != '\0')
-                pCurr++;
-
-            dwSize = pCurr - pArg;
-            pAnalysis = pCurr;
+            //DBG("get base string");
+            dwSize = pCurrEnd - pAnalysis;
 
             nPackedSize += dwSize + sizeof(int);
             LOG_PROCESS_ERROR(nPackedSize < MAX_REDIS_COMMAND_SIZE);
-
+            
+            memcpy(pPackedBuffer + sizeof(int), pAnalysis, dwSize);
             *(int*)pPackedBuffer = (int)dwSize;
-            memcpy(pPackedBuffer + sizeof(int), pArg, dwSize);
+
             pPackedBuffer += sizeof(int) + dwSize;
+
+            pAnalysis += dwSize;
         }
         else
         {
-            if (pAnalysis[1] == '\0') //end
+            const char* pCurr = pSymbal + 1;
+
+            if (pSymbal[1] == '\0') //end
                 break;
             else
             {
                 char* pArg = NULL;
                 size_t dwSize = 0;
 
-                switch (pAnalysis[1])
+                if (pSymbal[1] == 'b')
                 {
-                case 's':
-                    DBG("get string");
-                    pArg = va_arg(valist, char*);
-                    dwSize = strlen(pArg);
+                    //DBG("get binary");
+                    LOG_PROCESS_ERROR(pSymbal == pAnalysis);
 
-                    pAnalysis += 2;
-                    break;
-                case 'b':
-                    DBG("get binary");
                     pArg = va_arg(valist, char*);
                     dwSize = va_arg(valist, size_t);
+                    LOG_PROCESS_ERROR(dwSize > 0 && dwSize < 1024 * 1024);
 
                     pAnalysis += 2;
-                    break;
+                }
+                else
+                {
+                    va_list vaCopy;
+                    char szArgStr[128];
 
-                default:
+                    dwSize = pCurrEnd - pAnalysis;
+                    memcpy(szFormat, pAnalysis, dwSize);
+                    szFormat[dwSize] = '\0';
+
+                    va_copy(vaCopy, valist);
+
+                    dwSize = vsprintf(szArgStr, szFormat, vaCopy);
+                    LOG_PROCESS_ERROR(dwSize > 0);
+
+                    pArg = szArgStr;
+                    dwSize = dwSize;
+                    
+                    pAnalysis = pCurrEnd;
+                }
+
+                //clear valist
+                while(pCurr != pCurrEnd)
                 {
                     static const char intfmts[] = "diouxX";
                     static const char doublefmts[] = "eEfFgGaA";
                     static const char flags[] = "#0-+ ";
-                    char format[32];
-                    char szArgStr[128];
-                    int32_t nFormatSize = 0;
-                    const char* pCurr = pAnalysis + 1;
-                    va_list vaCopy;
 
                     // flags
                     while (*pCurr != '\0' && strchr(flags, *pCurr) != NULL) pCurr++;
@@ -365,16 +384,29 @@ BOOL CDBProxyClient::_pack_redis_command(char* pPackedBuffer, int32_t &nPackedSi
                         while (*pCurr != '\0' && isdigit(*pCurr)) pCurr++;
                     }
 
-                    //copy
-                    va_copy(vaCopy, valist);
+                    //string
+                    if (*pCurr == 's')
+                    {
+                        pCurr++;
+                        va_arg(valist, char*);
+                        goto go_on;
+                    }
 
                     //interger conversion
                     if (strchr(intfmts, *pCurr) != NULL)
+                    {
+                        pCurr++;
                         va_arg(valist, int);
+                        goto go_on;
+                    }
 
                     //double conversion
                     if (strchr(doublefmts, *pCurr) != NULL)
+                    {
+                        pCurr++;
                         va_arg(valist, double);
+                        goto go_on;
+                    }
 
                     //short
                     if (*pCurr == 'h')
@@ -382,6 +414,7 @@ BOOL CDBProxyClient::_pack_redis_command(char* pPackedBuffer, int32_t &nPackedSi
                         pCurr++;
                         LOG_PROCESS_ERROR(*pCurr != '\0' && strchr(intfmts, *pCurr) != NULL);
                         va_arg(valist, int);
+                        goto go_on;
                     }
 
                     //long long
@@ -390,6 +423,7 @@ BOOL CDBProxyClient::_pack_redis_command(char* pPackedBuffer, int32_t &nPackedSi
                         pCurr += 2;
                         LOG_PROCESS_ERROR(*pCurr != '\0' && strchr(intfmts, *pCurr) != NULL);
                         va_arg(valist, long long);
+                        goto go_on;
                     }
 
                     //long
@@ -398,21 +432,12 @@ BOOL CDBProxyClient::_pack_redis_command(char* pPackedBuffer, int32_t &nPackedSi
                         pCurr += 1;
                         LOG_PROCESS_ERROR(*pCurr != '\0' && strchr(intfmts, *pCurr) != NULL);
                         va_arg(valist, long);
+                        goto go_on;
                     }
 
-                    nFormatSize = pCurr + 1 - pAnalysis;
-                    LOG_PROCESS_ERROR(nFormatSize < sizeof(format));
-                    memcpy(format, pAnalysis, nFormatSize);
-                    format[nFormatSize] = '\0';
-
-                    vsprintf(szArgStr, format, vaCopy);
-                    pAnalysis = pCurr + 1;
-
-                    pArg = szArgStr;
-                    dwSize = strlen(szArgStr);
-
-                    break;
-                }
+                go_on:
+                    while (*pCurr != '%' && pCurr != pCurrEnd)
+                        pCurr++;
                 }
 
                 nPackedSize += (int)dwSize + sizeof(int);

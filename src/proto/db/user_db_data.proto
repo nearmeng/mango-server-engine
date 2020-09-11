@@ -1,0 +1,8 @@
+package USER_DB;
+
+message USER_DATA
+{
+    optional    int32       user_id             =   1;
+    optional    int32       ban_end_time        =   3;
+    optional    string      ban_reason          =   4;
+}

@@ -233,6 +233,13 @@ function (post_project)
 				get_filename_component (PARENT_DIR "${PARENT_DIR}" NAME)
 				set (PARENT_DIR "lua\\${PARENT_DIR}")
 			endif ()
+			
+            #yaml file parent dir
+			if (${SRC_FILE} MATCHES ".*[.]yml$")
+				get_filename_component (PARENT_DIR "${SRC_FILE}" PATH)
+				get_filename_component (PARENT_DIR "${PARENT_DIR}" NAME)
+				set (PARENT_DIR "yaml\\${PARENT_DIR}")
+			endif ()
 
 			source_group ("${PARENT_DIR}" FILES "${SRC_FILE}")
 			

@@ -33,7 +33,10 @@ void protobuf_ShutdownFile_proto_5fmsgid_2eproto();
 
 enum CS_MESSAGE_ID {
   cs_message_begin = 0,
-  cs_message_login = 1,
+  cs_login = 1,
+  cs_ping = 2,
+  cs_create_role = 3,
+  cs_select_role = 4,
   cs_message_end = 65535
 };
 bool CS_MESSAGE_ID_IsValid(int value);
@@ -53,9 +56,11 @@ inline bool CS_MESSAGE_ID_Parse(
 }
 enum SC_MESSAGE_ID {
   sc_message_begin = 0,
-  sc_message_login = 1,
-  sc_message_error_code = 2,
-  sc_message_allow_login = 3,
+  sc_login = 1,
+  sc_error_code = 2,
+  sc_allow_login = 3,
+  sc_sync_role_list = 4,
+  sc_sync_role_data = 5,
   sc_message_end = 65535
 };
 bool SC_MESSAGE_ID_IsValid(int value);

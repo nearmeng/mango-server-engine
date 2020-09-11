@@ -1,6 +1,7 @@
 #ifndef  _ROUTER_MESSAGE_H_
 #define  _ROUTER_MESSAGE_H_
 
+#include "define/session_def.h"
 #include "protocol/internal_message_header.h"
 
 #pragma pack(push, 1)
@@ -16,6 +17,7 @@ struct CONN_NTF_EVENT : INTERNAL_MESSAGE_HEADER
 {
     uint64_t    qwConnID;
     int32_t     nEventType;
+    char        szOpenID[MAX_OPENID_LEN];
 };
 
 struct CONN_NTF_EVENT_ACK : INTERNAL_MESSAGE_HEADER

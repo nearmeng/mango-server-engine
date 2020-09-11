@@ -26,6 +26,9 @@ enum INTERNAL_MESSAGE_ID
     db_proxy_message_begin = conn_message_end,
     db_proxy_message_end = 0x400,
 
+    game_online_message_begin = db_proxy_message_end,
+    game_online_message_end = 0x500,
+
 	internal_message_end
 };
 

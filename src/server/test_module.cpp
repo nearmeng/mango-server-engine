@@ -24,44 +24,6 @@
 #include "test_coro.h"
 #include "module/server_default_session_module.h"
 
-std::map<uint64_t, int32_t> ms_AddrMap;
-
-void on_conn_start_event(CLIENT_SESSION* pSession)
-{
-    int32_t nRetCode = 0;
-    SC_MESSAGE_ALLOW_LOGIN msg;
-
-    nRetCode = SEND_TO_CLIENT_BY_SESSION(pSession, sc_message_allow_login, &msg);
-    LOG_PROCESS_ERROR(nRetCode);
-
-    INF("recv conn %lld ntf start event from addr %d", pSession->qwConnID, pSession->nConnServerAddr);
-
-Exit0:
-    return;
-}
-
-void on_conn_stop_event(CLIENT_SESSION* pSession)
-{
-    INF("recv conn %lld ntf stop event from addr %d", pSession->qwConnID, pSession->nConnServerAddr);
-}
-
-void on_login(CLIENT_SESSION* pSession, const CS_HEAD* pHead, const Message* pMsg)
-{
-	int32_t nRetCode = 0;
-	CS_MESSAGE_LOGIN* msg = (CS_MESSAGE_LOGIN*)pMsg;
-
-	INF("login msg, id %d password %s", msg->userid(), msg->password().c_str());
-
-	SC_MESSAGE_LOGIN rsp;
-	rsp.set_answer("this is rsp");
-
-    nRetCode = SEND_TO_CLIENT_BY_SESSION(pSession, sc_message_login, &rsp);
-    LOG_PROCESS_ERROR(nRetCode);
-
-Exit0:
-	return;
-}
-
 BOOL do_send_control_ack(int32_t nResult, const char* pDesc, int32_t nDstAddr)
 {
 	int32_t nRetCode = 0;
@@ -144,10 +106,6 @@ BOOL CTestModule::init(BOOL bResume)
     int32_t nRetCode = 0;
 
 	INF("test module is init");
-
-    REG_SESSION_CONN_EVENT_HANDLER(cetStart, on_conn_start_event);
-    REG_SESSION_CONN_EVENT_HANDLER(cetStop, on_conn_stop_event);
-    REG_SESSION_CLI_MSG_HANDLER(cs_message_login, on_login);
 	
     register_server_msg_handler(a2a_control_req, on_control);
 

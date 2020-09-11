@@ -80,6 +80,10 @@ BOOL CCoroStacklessMgr<T>::init(int32_t nShmType, BOOL nInitCoroCount, BOOL bRes
 
     if (bResume)
     {
+        //traverse resume
+        TRAVERSE_CORO_RESUME coro_resume;
+        m_CoroPool.traverse(coro_resume);
+
         //construct index
         T* pCoro = m_CoroPool.get_first_object();
         while (pCoro)

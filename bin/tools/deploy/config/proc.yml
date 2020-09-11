@@ -100,6 +100,17 @@ procs:
            - local
           monlog: 
            - local
+  online_server:
+      layer: world
+      func_id: 9
+      deploy_unit: group_func
+      tlog_config:
+          text: 
+           - local
+          oss: 
+           - local
+          monlog: 
+           - local
 
 proc_connect:
     - peer1: router_server
@@ -124,5 +135,9 @@ proc_connect:
       MaskCtrl: local
     - peer1: router_server
       peer2: func_server
+      Mask: 63.0.0.0
+      MaskCtrl: local
+    - peer1: router_server
+      peer2: online_server
       Mask: 63.0.0.0
       MaskCtrl: local

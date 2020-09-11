@@ -1,3 +1,4 @@
+/*
 #ifndef  _ROLE_H_
 #define  _ROLE_H_
 
@@ -37,4 +38,3 @@ private:
 };
 
 #endif   /* ----- #ifndef _ROLE_H_  ----- */
-

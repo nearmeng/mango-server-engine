@@ -2,7 +2,7 @@
 
 #include "define/bt_def.h"
 #include "bt/bt_mgr.h"
-#include "define/role.h"
+#include "object/role.h"
 
 extern int32_t check_operator(int32_t nOperator, INT64 nLeftValue, INT64 nRightValue);
 

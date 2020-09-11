@@ -59,6 +59,7 @@ void on_conn_start(uint64_t qwConnID, TFRAMEHEAD* pFrameHead, const char* pBuff,
     //send to back end server
     msg.nEventType = cetStart;
     msg.qwConnID = qwConnID;
+    strxcpy(msg.szOpenID, pSession->szUserStr, sizeof(msg.szOpenID));
     nRetCode = send_server_msg_by_routerid(hash_string(pSession->szUserStr), svrGS, conn_ntf_event, &msg, sizeof(msg));
     LOG_PROCESS_ERROR(nRetCode);
 

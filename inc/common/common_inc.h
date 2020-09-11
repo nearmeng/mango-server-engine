@@ -47,5 +47,17 @@
 
 #include "shm/shm_pool.h"
 
+#include "config/global_config.h"
+
+#include "app/server_app.h"
+#include "app/server_msg_handler.h"
+
+#include "module/server_module.h"
+
+#include "define/server_def.h"
+#include "define/error_def.h"
+
+#include "tbus/tbus_wrapper.h"
+
 #endif   /* ----- #ifndef _COMMON_INC_H_  ----- */
 

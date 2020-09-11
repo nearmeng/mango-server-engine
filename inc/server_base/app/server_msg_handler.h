@@ -35,7 +35,7 @@ BOOL send_server_msg_by_objid(uint64_t qwObjID, int32_t nMsgID, const void* pBuf
 BOOL send_server_msg_by_load(int32_t nServiceType, int32_t nMsgID, const void* pBuffer, size_t dwSize, uint64_t qwCoroID = 0);
 BOOL send_server_msg_to_mgr(int32_t nMsgID, const void* pBuffer, size_t dwSize, uint64_t qwCoroID = 0);
 
-typedef void(*CONN_EVENT_HANDLER)(uint64_t qwConnID, int32_t nConnServerAddr);
+typedef void(*CONN_EVENT_HANDLER)(uint64_t qwConnID, const char* pcszOpenID, int32_t nConnServerAddr);
 BOOL register_conn_event_handler(int32_t nEventType, CONN_EVENT_HANDLER pEventHandler);
 
 typedef void(*CONN_MSG_HANDLER)(uint64_t qwConnID, TFRAMEHEAD* pFrameHead, const char* pBuff, int32_t nSize);

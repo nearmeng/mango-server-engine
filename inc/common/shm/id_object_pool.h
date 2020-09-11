@@ -191,7 +191,7 @@ CIDObjectPool<T, N>::~CIDObjectPool()
 template<class T, class N>
 BOOL CIDObjectPool<T, N>::_create_chunk_head(void)
 {
-	int32_t result = -1;
+	int32_t nResult = -1;
 	int32_t nRetCode = 0;
 	int32_t nHandle = -1;
 	char szChunkHeadName[ID_POOL_NAME_LEN] = { 0 };
@@ -346,7 +346,7 @@ Exit0:
 template<class T, class N>
 BOOL CIDObjectPool<T, N>::_create_chunk(int32_t nSize)
 {
-	int32_t result = 0;
+	int32_t nResult = 0;
 	int32_t nRetCode = 0;
 	RB_TREE_NODE<N>* pNewChunk = NULL;
 	CHUNK_NODE* pNewChunkNode = NULL;

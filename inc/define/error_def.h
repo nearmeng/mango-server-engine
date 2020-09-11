@@ -7,8 +7,15 @@ enum ERROR_DEF
 	errSuccess = 0,
 
     errConnBegin            =   1,
-    errConnAlreadyExist     =   2,
+    errConnAlreadyExist,
     errConnEnd              =   100,
+
+    errLoginBegin           =   101,
+    errLoginNotInWhiteList,
+    errLoginUserBanned,
+    errLoginAlreadyLogin,
+    errLoginRepeated,
+    errLoginEnd             =   200,
 
 	errTotal
 };

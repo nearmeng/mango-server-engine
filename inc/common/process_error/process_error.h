@@ -94,7 +94,7 @@
 		}                                                    \
 		else                                                 \
 		{                                                    \
-			result = __result__;                             \
+			nResult = __result__;                             \
 			goto Exit0;                                      \
 		}                                                    \
 	}while(0)
@@ -107,7 +107,7 @@
 		}                                                      \
 		else                                                   \
 		{                                                      \
-			result = __result__;                               \
+			nResult = __result__;                               \
 			ERR("%s(%d): LOG_PROCESS_ERROR_RET_CODE("#__condition__") in function %s()", __FILE__, __LINE__, __FUNCTION__);           \
 			goto Exit0;                                        \
 		}                                                      \

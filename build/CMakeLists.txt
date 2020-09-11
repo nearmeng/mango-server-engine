@@ -82,6 +82,7 @@ include_directories (
 	${BASE_DIR}/inc/common
 	${BASE_DIR}/inc/server_base
 	${BASE_DIR}/inc/game_data
+	${BASE_DIR}/inc/server
 	${BASE_DIR}/src/proto
 	${BASE_DIR}/thirdparty
 	${BASE_DIR}/thirdparty/lua/inc

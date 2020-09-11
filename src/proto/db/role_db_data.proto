@@ -1,12 +1,18 @@
 package ROLE_DB;
 
-message BASE_DATA
+message ROLE_BASE_DATA
 {
-	required uint64   role_id       = 1;
-	required uint64   user_id       = 2;
+    optional    uint64          role_id         =   1;
+	required    uint64          user_id         =   2;
+    optional    string          role_name       =   3;
+    optional    int32           level           =   4;
+
+    optional    int32           create_time     =   5;
+    optional    int32           last_login_time =   6;
+    optional    int32           last_save_time  =   7;
 }
 
 message ROLE_DATA
 {
-	optional BASE_DATA  base_data = 1;
+	optional ROLE_BASE_DATA  base_data = 1;
 }

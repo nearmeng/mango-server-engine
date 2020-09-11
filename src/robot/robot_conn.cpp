@@ -928,7 +928,7 @@ static BOOL unpack_data(const char* pszData, int32_t nDataSize, SC_HEAD* pHead, 
 	transform(sMsgStr.begin(), sMsgStr.end(), sMsgStr.begin(), ::toupper);
 
 	pDescriptor = google::protobuf::DescriptorPool::generated_pool()->FindMessageTypeByName(sMsgStr);
-	LOG_PROCESS_ERROR(pDescriptor);
+	LOG_PROCESS_ERROR_DETAIL(pDescriptor, "msg str is %s", sMsgStr.c_str());
 
 	pType = google::protobuf::MessageFactory::generated_factory()->GetPrototype(pDescriptor);
 	LOG_PROCESS_ERROR(pType);

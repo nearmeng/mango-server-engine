@@ -78,6 +78,7 @@ public:
 
     BOOL init(uint64_t qwCoroID);
     BOOL uninit();
+    virtual BOOL on_resume(void) { return TRUE; };
 
     inline uint64_t get_coro_id(void);
     inline int32_t get_yield_id(void);
@@ -131,6 +132,14 @@ public:
 
 private:
     BOOL _on_coro_process_run(CCoroStackless* pCoro, int32_t nReturnState);
+
+    struct TRAVERSE_CORO_RESUME
+    {
+        BOOL operator()(uint64_t qwCoroID, T* pCoro)
+        {
+            return pCoro->on_resume();
+        };
+    };
 
 private:
     static CCoroStacklessMgr<T>     ms_Instance;

@@ -11,6 +11,7 @@ ServerConfig.Common =
 		
 	nServerStopTimeout = 20 * 1000;
 	nServerEndWaitTimeout = 3 * 1000;
+	nClientPingTimeout = 10 * 1000;
         
     szScriptPath = "../script";
     szResPath = "../res";

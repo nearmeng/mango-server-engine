@@ -178,7 +178,7 @@ void recv_conn_ntf_event(int32_t nSrcAddr, const char* pBuff, size_t dwSize)
     //call user func
     if (g_ConnEventHandler[msg->nEventType])
     {
-        g_ConnEventHandler[msg->nEventType](msg->qwConnID, nSrcAddr);
+        g_ConnEventHandler[msg->nEventType](msg->qwConnID, msg->szOpenID, nSrcAddr);
     }
 
 Exit0:
