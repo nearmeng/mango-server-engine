@@ -44,7 +44,7 @@ public:
 	BT_NODE* bt_get_node(uint32_t dwNodeID);
 	BOOL bt_add_child(uint32_t dwParent, uint32_t dwChild);
 
-	BOOL register_owner_data(int32_t nOwnerType, char* pcszName, GET_OWNER pGetOwnerFunc, GET_OWNER_VAR pGetOwnerVarFunc);
+	BOOL register_owner_data(int32_t nOwnerType, const char* pcszName, GET_OWNER pGetOwnerFunc, GET_OWNER_VAR pGetOwnerVarFunc);
 
 private:
 	int32_t _run(BT_CTX& rCtx, void* pOwner, CLuaScript* pScript);

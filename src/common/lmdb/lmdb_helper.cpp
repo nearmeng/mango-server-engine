@@ -73,14 +73,14 @@ Exit0:
 	return 0;
 }
 
-BOOL lmdb_gets(MDB_env *env, MDB_dbi dbi, char* keystr, MDB_val* val)
+BOOL lmdb_gets(MDB_env *env, MDB_dbi dbi, const char* keystr, MDB_val* val)
 {
 	int32_t nRetCode = 0;
     MDB_txn *txn = NULL;
     MDB_val key = { 0 };
 
 	key.mv_size = strlen(keystr);
-	key.mv_data = keystr;
+	key.mv_data = (char*)keystr;
 
 	nRetCode = mdb_txn_begin(env, NULL, 0, &txn);
 	LOG_PROCESS_ERROR(nRetCode == 0);
@@ -106,7 +106,7 @@ Exit0:
 	return FALSE;
 }
 
-BOOL lmdb_gets_int(MDB_env *env, MDB_dbi dbi, char* keystr, int *out)
+BOOL lmdb_gets_int(MDB_env *env, MDB_dbi dbi, const char* keystr, int *out)
 {
 	int32_t nRetCode = 0;
     MDB_val val;
@@ -124,7 +124,7 @@ Exit0:
     return FALSE;
 }
 
-BOOL lmdb_puts(MDB_env *env, MDB_dbi dbi, char* pKeyStr, MDB_val* pValue)
+BOOL lmdb_puts(MDB_env *env, MDB_dbi dbi, const char* pKeyStr, MDB_val* pValue)
 {
 	int32_t nRetCode = 0;
 	MDB_val key;
@@ -134,7 +134,7 @@ BOOL lmdb_puts(MDB_env *env, MDB_dbi dbi, char* pKeyStr, MDB_val* pValue)
 	LOG_PROCESS_ERROR(nRetCode == 0);
 
 	key.mv_size = strlen(pKeyStr);
-	key.mv_data = pKeyStr;
+	key.mv_data = (char*)pKeyStr;
 
     nRetCode = mdb_put(txn, dbi, &key, pValue, 0);
 	LOG_PROCESS_ERROR(nRetCode == 0);
@@ -147,7 +147,7 @@ Exit0:
 	return FALSE;
 }
 
-BOOL lmdb_puts_int(MDB_env *env, MDB_dbi dbi, char* pKeyStr, int32_t nValue)
+BOOL lmdb_puts_int(MDB_env *env, MDB_dbi dbi, const char* pKeyStr, int32_t nValue)
 {
 	int32_t nRetCode = 0;
     MDB_val val;

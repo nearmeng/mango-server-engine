@@ -1223,7 +1223,7 @@ Exit0:
 	return 0;
 }
 
-BOOL CBTMgr::register_owner_data(int32_t nOwnerType, char* pcszName, GET_OWNER pGetOwnerFunc, GET_OWNER_VAR pGetOwnerVarFunc)
+BOOL CBTMgr::register_owner_data(int32_t nOwnerType, const char* pcszName, GET_OWNER pGetOwnerFunc, GET_OWNER_VAR pGetOwnerVarFunc)
 {
 	int32_t nRetCode = 0;
 

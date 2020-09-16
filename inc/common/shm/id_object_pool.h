@@ -413,7 +413,7 @@ BOOL CIDObjectPool<T, N>::_create_chunk(int32_t nSize)
 
 	return TRUE;
 Exit0:
-	CRI("failed to create data chunk %s size %d by reason %d", szPoolIndexName, nSize, result);
+	CRI("failed to create data chunk %s size %d by reason %d", szPoolIndexName, nSize, nResult);
 
 #if defined(WIN32) || defined(WIN64)
 	SAFE_FREE(pNewChunkNode);
