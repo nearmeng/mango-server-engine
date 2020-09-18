@@ -65,6 +65,7 @@ enum SERVER_EVENT_TYPE
 	setTotal
 };
 
+//tolua_end
 
 struct SERVER_INFO
 {
@@ -95,8 +96,6 @@ struct FULL_SERVICE_DATA
 	inline SERVER_INFO* get_server_info_by_index(int32_t nServerInfoIndex);
 	inline BOOL set_in_service(void);
 };
-
-//tolua_end
 
 //note server index is instid of server
 inline BOOL FULL_SERVICE_DATA::add_server_node(SERVER_INFO stServerInfo) 
