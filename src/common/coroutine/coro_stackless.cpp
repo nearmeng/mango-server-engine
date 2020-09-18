@@ -50,8 +50,9 @@ BOOL CGlobalStacklessMgr::init(int32_t nServerAddr, BOOL bResume)
     int32_t nRetCode = 0;
     GLOBAL_STACKLESS_MGR_DATA* pMgrData = NULL;
 
-    m_pCurrCoro = NULL;
     m_nServerAddr = nServerAddr;
+    m_nCurrCoroStackIndex = 0;
+    memset(m_pCurrCoro, 0, sizeof(m_pCurrCoro));
 
     nRetCode = m_MgrData.init(stdStacklessGlobalMgr, bResume);
     LOG_PROCESS_ERROR(nRetCode);
@@ -156,6 +157,34 @@ int32_t CGlobalStacklessMgr::_get_shm_type_by_mgr_name(const char* pcszMgrName)
 
 Exit0:
     return 0;
+}
+    
+BOOL CGlobalStacklessMgr::push_curr_coro(CCoroStackless* pCoro)
+{
+    int32_t nRetCode = 0;
+
+    LOG_PROCESS_ERROR(pCoro);
+    LOG_PROCESS_ERROR(m_nCurrCoroStackIndex < MAX_CORO_STACK_DEPTH);
+
+    m_pCurrCoro[m_nCurrCoroStackIndex++] = pCoro;
+
+    return TRUE;
+Exit0:
+    return FALSE;
+}
+
+BOOL CGlobalStacklessMgr::pop_curr_coro(void)
+{
+    int32_t nRetCode = 0;
+
+    LOG_PROCESS_ERROR(m_nCurrCoroStackIndex > 0);
+
+    m_pCurrCoro[m_nCurrCoroStackIndex - 1] = NULL;
+    m_nCurrCoroStackIndex--;
+
+    return TRUE;
+Exit0:
+    return FALSE;
 }
 
 uint64_t CGlobalStacklessMgr::generate_coro_id(int32_t nMgrIndex)

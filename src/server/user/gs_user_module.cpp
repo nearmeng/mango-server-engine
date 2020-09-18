@@ -5,6 +5,8 @@
 #include "db/user_db_data.pb.h"
 #include "db/role_db_data.pb.h"
 
+#include "gs_user_module_coro.h"
+
 BOOL CUserModule::init(BOOL bResume)
 {
     int32_t nRetCode = 0;
@@ -35,9 +37,21 @@ void CUserModule::on_frame()
     return;
 }
 
-BOOL CUserModule::kick_user(USER* pUser)
+BOOL CUserModule::kick_user(uint64_t qwUserID, int32_t nReason, uint64_t qwReasonParam)
 {
+    USER* pUser = NULL;
+    int32_t nRetCode = 0;
+    CKickUserCoro* pCoro = NULL;
+
+    pUser = find_user(qwUserID);
     LOG_PROCESS_ERROR(pUser);
+
+    pCoro = CCoroStacklessMgr<CKickUserCoro>::instance().new_coro();
+    LOG_PROCESS_ERROR(pCoro);
+
+    pCoro->set_start_arg(qwUserID, pUser->qwSessionID, nReason, qwReasonParam);
+    nRetCode = CCoroStacklessMgr<CKickUserCoro>::instance().start_coro(pCoro);
+    LOG_PROCESS_ERROR(nRetCode);
 
     return TRUE;
 Exit0:

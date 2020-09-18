@@ -4,6 +4,7 @@
 
 #include "protocol/proto_msgid.pb.h"
 #include "protocol/external_message.pb.h"
+#include "protocol/game_online_msg.h"
 
 #include "gs_user_module_coro.h"
 
@@ -90,8 +91,8 @@ void on_conn_stop_event(CLIENT_SESSION* pSession)
     pUser =  pModule->find_user(pSession->qwUserID);
     LOG_PROCESS_ERROR(pUser);
 
-    nRetCode = pModule->destroy_user(pUser);
-    LOG_PROCESS_ERROR(nRetCode);
+    //nRetCode = pModule->destroy_user(pUser);
+    //LOG_PROCESS_ERROR(nRetCode);
 
 Exit0:
     return;
@@ -114,6 +115,21 @@ void on_login(CLIENT_SESSION* pSession, const CS_HEAD* pHead, const google::prot
 
 Exit0:
 	return;
+}
+
+void on_logout(CLIENT_SESSION* pSession, const CS_HEAD* pHead, const google::protobuf::Message* pMsg)
+{
+    int32_t nRetCode = 0;
+    CUserModule* pModule = NULL;
+
+    pModule = MG_GET_MODULE(CUserModule);
+    LOG_PROCESS_ERROR(pModule);
+
+    nRetCode = pModule->kick_user(pSession->qwUserID, errLogoutNormal, 0);
+    LOG_PROCESS_ERROR(nRetCode);
+
+Exit0:
+    return;
 }
 
 void on_create_role(CLIENT_SESSION* pSession, const CS_HEAD* pHead, const google::protobuf::Message* pMsg)
@@ -159,6 +175,22 @@ void on_relay(CLIENT_SESSION* pSession, const CS_HEAD* pHead, const google::prot
 
 }
 
+void on_os_user_kick(int32_t nSrcAddr, const char* pBuffer, size_t dwSize)
+{
+    int32_t nRetCode = 0;
+    CUserModule* pModule = NULL;
+    O2G_USER_KICK* msg = (O2G_USER_KICK*)pBuffer;
+
+    pModule = MG_GET_MODULE(CUserModule);
+    LOG_PROCESS_ERROR(pModule);
+
+    nRetCode = pModule->kick_user(msg->qwUserID, msg->nErrorCode, 0);
+    LOG_PROCESS_ERROR(nRetCode);
+
+Exit0:
+    return;
+}
+
 BOOL CUserModule::_init_msg_handler()
 {
     int32_t nRetCode = 0;
@@ -167,9 +199,12 @@ BOOL CUserModule::_init_msg_handler()
     REG_SESSION_CONN_EVENT_HANDLER(cetStop, on_conn_stop_event);
     
     REG_SESSION_CLI_MSG_HANDLER(cs_login, on_login);
+    REG_SESSION_CLI_MSG_HANDLER(cs_logout, on_logout);
     REG_SESSION_CLI_MSG_HANDLER(cs_create_role, on_create_role);
     REG_SESSION_CLI_MSG_HANDLER(cs_select_role, on_select_role);
     //REG_SESSION_CLI_MSG_HANDLER(cs_message_relay, on_relay);
+
+    register_server_msg_handler(o2g_user_kick, on_os_user_kick);
 
     return TRUE;
 }

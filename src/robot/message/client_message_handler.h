@@ -32,6 +32,7 @@ public:
 private:
     BOOL do_create_role(CRobotUser* pUser, const char* pcszRoleName);
     BOOL do_select_role(CRobotUser* pUser, uint64_t qwRoleID);
+    BOOL do_logout(CRobotUser* pUser);
 
 private:
 	static CClientMessageHandler ms_Instance;

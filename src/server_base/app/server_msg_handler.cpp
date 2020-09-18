@@ -276,6 +276,24 @@ Exit0:
 	return FALSE;
 }
 
+BOOL send_to_conn_server(int32_t nConnServerAddr, uint64_t qwConnID, int32_t nEventType, uint64_t qwEventParam0, uint64_t qwEventParam1)
+{
+    int32_t nRetCode = 0;
+    CONN_BUSINESS_EVENT msg;
+
+    msg.qwConnID = qwConnID;
+    msg.nEventType = nEventType;
+    msg.qwEventParam0 = qwEventParam0;
+    msg.qwEventParam1 = qwEventParam1;
+
+    nRetCode = send_server_msg_by_addr(nConnServerAddr, conn_business_event, &msg, sizeof(msg));
+    LOG_PROCESS_ERROR(nRetCode);
+    
+    return TRUE;
+Exit0:
+    return FALSE;
+}
+
 BOOL send_to_client(int32_t nConnServerAddr, uint64_t qwConnID, int32_t nMsgID, const Message* pMsg)
 {
     int32_t nRetCode = 0;

@@ -109,7 +109,9 @@ void on_user_logout(int32_t nSrcAddr, const char* pBuffer, size_t dwSize)
     nRetCode = do_user_logout_ack(nSrcAddr, errSuccess, msg->qwUserID, msg->qwSessionID, msg->qwCoroID);
     LOG_PROCESS_ERROR(nRetCode);
 
+    return;
 Exit0:
+    LOG_CHECK_ERROR(do_user_logout_ack(nSrcAddr, errUnknown, msg->qwUserID, msg->qwSessionID, msg->qwCoroID));
     return;
 }
 

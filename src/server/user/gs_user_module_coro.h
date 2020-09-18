@@ -5,6 +5,7 @@
 
 #include "define/session_def.h"
 
+struct USER;
 class CRole;
 class CUserModule;
 class CRoleModule;
@@ -71,6 +72,30 @@ private:
 
     CUserModule* m_pUserModule;
     CRoleModule* m_pRoleModule;
+};
+
+class CKickUserCoro : public CCoroStackless
+{
+public:
+    CKickUserCoro() {};
+    ~CKickUserCoro() {};
+
+    BOOL on_resume();
+    void set_start_arg(uint64_t qwUserID, uint64_t qwSessionID, int32_t nKickReason, uint64_t qwKickParam);
+    virtual CORO_STATE coro_process();
+
+private:
+    uint64_t        m_qwUserID;
+    uint64_t        m_qwSessionID;
+    int32_t         m_nKickReason;
+    uint64_t        m_qwKickParam;
+
+    USER*           m_pUser;
+    CRole*          m_pRole;
+
+    CUserModule*    m_pUserModule;
+    CRoleModule*    m_pRoleModule;
+    CServerDefaultSessionModule*    m_pSessionModule;
 };
 
 #endif

@@ -292,9 +292,9 @@ BOOL CCoroStacklessMgr<T>::start_coro(CCoroStackless* pCoro, BOOL bImmediate)
     {
         pCoro->set_state(crsStart);
 
-        CGlobalStacklessMgr::instance().set_curr_coro(pCoro);
+        CGlobalStacklessMgr::instance().push_curr_coro(pCoro);
         nReturnState = pCoro->coro_process();
-        CGlobalStacklessMgr::instance().set_curr_coro(NULL);
+        CGlobalStacklessMgr::instance().pop_curr_coro();
 
         nRetCode = _on_coro_process_run(pCoro, nReturnState);
         LOG_PROCESS_ERROR(nRetCode);
@@ -331,9 +331,9 @@ BOOL CCoroStacklessMgr<T>::resume_coro(CCoroStackless* pCoro)
     nRetCode = del_node<T>(&m_RunLinkHead, qwCoroMid);
     LOG_CHECK_ERROR(nRetCode);
 
-    CGlobalStacklessMgr::instance().set_curr_coro(pCoro);
+    CGlobalStacklessMgr::instance().push_curr_coro(pCoro);
     nReturnState = pCoro->coro_process();
-    CGlobalStacklessMgr::instance().set_curr_coro(NULL);
+    CGlobalStacklessMgr::instance().pop_curr_coro();
 
     nRetCode = _on_coro_process_run(pCoro, nReturnState);
     LOG_PROCESS_ERROR(nRetCode);
@@ -357,14 +357,12 @@ inline CGlobalStacklessMgr& CGlobalStacklessMgr::instance(void)
     return *ms_Instance;
 }
 
-inline void CGlobalStacklessMgr::set_curr_coro(CCoroStackless * pCoro)
-{
-    m_pCurrCoro = pCoro;
-}
-
 inline CCoroStackless* CGlobalStacklessMgr::get_curr_coro(void)
 {
-    return m_pCurrCoro;
+    if (m_nCurrCoroStackIndex <= 0)
+        return NULL;
+    else
+        return m_pCurrCoro[m_nCurrCoroStackIndex - 1];
 }
 
 #endif

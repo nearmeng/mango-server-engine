@@ -26,6 +26,7 @@ BOOL send_conn_msg(int32_t nDstAddr, TFRAMEHEAD* pFrameHead, const SC_HEAD* pHea
 BOOL send_conn_msg(int32_t nDstAddr, TFRAMEHEAD* pFrameHead, const char* pBuff, int32_t nSize);
 //api for server connected with conn server
 BOOL send_to_client(int32_t nConnServerAddr, uint64_t qwConnID, int32_t nMsgID, const Message* pMsg);
+BOOL send_to_conn_server(int32_t nConnServerAddr, uint64_t qwConnID, int32_t nEventType, uint64_t qwEventParam0, uint64_t qwEventParam1);
 
 BOOL send_server_msg_by_routerid(uint64_t qwRouterID, int32_t nServiceType, int32_t nMsgID, const void* pBuffer, size_t dwSize, uint64_t qwCoroID = 0);
 BOOL send_server_msg_by_service_type(int32_t nServiceType, int32_t nMsgID, const void* pBuffer, size_t dwSize, uint64_t qwCoroID = 0);

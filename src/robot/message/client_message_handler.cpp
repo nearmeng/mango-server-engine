@@ -147,6 +147,19 @@ BOOL CClientMessageHandler::do_select_role(CRobotUser* pUser, uint64_t qwRoleID)
 Exit0:
     return FALSE;
 }
+    
+BOOL CClientMessageHandler::do_logout(CRobotUser* pUser)
+{
+    int32_t nRetCode = 0;
+    CS_LOGOUT msg;
+
+    nRetCode = send(pUser, cs_logout, msg);
+    LOG_PROCESS_ERROR(nRetCode);
+
+    return TRUE;
+Exit0:
+    return FALSE;
+}
 
 void CClientMessageHandler::on_sync_role_data(SC_HEAD * pSCHead, google::protobuf::Message * pMsg, CRobotUser * pUser)
 {
@@ -154,6 +167,12 @@ void CClientMessageHandler::on_sync_role_data(SC_HEAD * pSCHead, google::protobu
     SC_SYNC_ROLE_DATA* msg = (SC_SYNC_ROLE_DATA*)pMsg;
 
     INF("recv sync role data, roleid %llu role_name %s level %d", msg->roleid(), msg->rolename().c_str(), msg->level());
+
+    nRetCode = do_logout(pUser);
+    LOG_PROCESS_ERROR(nRetCode);
+
+Exit0:
+    return;
 }
 
 void CClientMessageHandler::on_sync_role_list(SC_HEAD * pSCHead, google::protobuf::Message * pMsg, CRobotUser * pUser)

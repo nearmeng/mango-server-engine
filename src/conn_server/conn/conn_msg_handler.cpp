@@ -36,7 +36,7 @@ void on_conn_start(uint64_t qwConnID, TFRAMEHEAD* pFrameHead, const char* pBuff,
 
     if (pModule->find_session(qwConnID))
     {
-        pModule->kick_conn_by_session(qwConnID, errConnAlreadyExist);
+        pModule->kick_conn_by_session(qwConnID, errConnAlreadyExist, 0);
     }
 
     pSession = pModule->new_session(qwConnID);
@@ -133,6 +133,32 @@ void on_conn_stop_notify(uint64_t qwConnID, TFRAMEHEAD* pFrameHead, const char* 
     INF("recv conn stop notify from conn %llu", qwConnID);
 }
 
+void on_gs_business_event(int32_t nSrcAddr, const char* pBuffer, size_t dwSize)
+{
+    int32_t nRetCode = 0;
+    CConnModule* pModule = NULL;
+    CONN_BUSINESS_EVENT* msg = (CONN_BUSINESS_EVENT*)pBuffer;
+
+    pModule = MG_GET_MODULE(CConnModule);
+    LOG_PROCESS_ERROR(pModule);
+
+    switch (msg->nEventType)
+    {
+    case cetStop:
+    {
+        nRetCode = pModule->kick_conn_by_session(msg->qwConnID, (int32_t)msg->qwEventParam0, msg->qwEventParam1);
+        LOG_PROCESS_ERROR(nRetCode);
+        break;
+    }
+    default:
+        LOG_PROCESS_ERROR(FALSE);
+        break;
+    }
+
+Exit0:
+    return;
+}
+
 void on_gs_ntf_event_ack(int32_t nSrcAddr, const char* pBuffer, size_t dwSize)
 {
     int32_t nRetCode = 0;
@@ -188,6 +214,7 @@ BOOL CConnModule::_init_msg_handler()
 
     register_server_msg_handler(conn_transfer_msg, on_gs_transfer_msg);
     register_server_msg_handler(conn_ntf_event_ack, on_gs_ntf_event_ack);
+    register_server_msg_handler(conn_business_event, on_gs_business_event);
 
     return TRUE;
 }

@@ -7,6 +7,7 @@
 #include "config/global_config.h"
 
 #define MAX_CORO_TYPE_COUNT     (256)
+#define MAX_CORO_STACK_DEPTH    (5)
 #define MAKE_CORO_ID(__server_addr__, __coro_mgr_index__, __coro_index__)       ((((uint64_t)__server_addr__) << 32) + (((uint64_t)__coro_index__) << 10) + __coro_mgr_index__)
 #define GET_CORO_SERVER_ADDR(__coro_id__)                   (__coro_id__ >> 32)
 #define GET_CORO_MGR_INDEX(__coro_id__)                     (__coro_id__ & 0x3FF)
@@ -183,8 +184,9 @@ public:
 
     inline static CGlobalStacklessMgr& instance(void);
 
-    inline void set_curr_coro(CCoroStackless* pCoro);
     inline CCoroStackless* get_curr_coro(void);
+    BOOL push_curr_coro(CCoroStackless* pCoro);
+    BOOL pop_curr_coro(void);
 
     BOOL add_coro_stackless_mgr(const char* pcszMgrName, void* pMgr);
     uint64_t generate_coro_id(int32_t nMgrIndex);
@@ -195,11 +197,13 @@ public:
 private:
     int32_t _get_shm_type_by_mgr_name(const char* pcszMgrName);
 
+
 private:
     static CGlobalStacklessMgr*             ms_Instance;
 
     int32_t                                 m_nServerAddr;
-    CCoroStackless*                         m_pCurrCoro;
+    int32_t                                 m_nCurrCoroStackIndex;
+    CCoroStackless*                         m_pCurrCoro[MAX_CORO_STACK_DEPTH];
     CShmObject<GLOBAL_STACKLESS_MGR_DATA>   m_MgrData;
 
     std::vector<CORO_MGR_DATA>              m_CoroStacklessMgrList;

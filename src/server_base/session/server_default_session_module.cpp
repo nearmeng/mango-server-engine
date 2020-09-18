@@ -76,12 +76,13 @@ Exit0:
     return FALSE;
 }
     
-BOOL CServerDefaultSessionModule::send_error_code_to_client(CLIENT_SESSION* pSession, int32_t nErrorCode)
+BOOL CServerDefaultSessionModule::send_error_code_to_client(CLIENT_SESSION* pSession, int32_t nErrorCode, uint64_t qwParam)
 {
     int32_t nRetCode = 0;
     SC_ERROR_CODE msg;
 
     msg.set_error_code(nErrorCode);
+    msg.set_param(qwParam);
 
     nRetCode = send_to_client(pSession, sc_error_code, &msg);
     LOG_PROCESS_ERROR(nRetCode);
@@ -91,7 +92,7 @@ Exit0:
     return FALSE;
 }
 
-BOOL CServerDefaultSessionModule::send_error_code_to_client_by_sessionid(uint64_t qwSessionID, int32_t nErrorCode)
+BOOL CServerDefaultSessionModule::send_error_code_to_client_by_sessionid(uint64_t qwSessionID, int32_t nErrorCode, uint64_t qwParam)
 {
     int32_t nRetCode = 0;
     CLIENT_SESSION* pSession = NULL;
@@ -101,7 +102,7 @@ BOOL CServerDefaultSessionModule::send_error_code_to_client_by_sessionid(uint64_
     pSession = pModule->m_SessionMgr.find_session(qwSessionID);
     LOG_PROCESS_ERROR(pSession);
 
-    nRetCode = send_error_code_to_client(pSession, nErrorCode);
+    nRetCode = send_error_code_to_client(pSession, nErrorCode, qwParam);
     LOG_PROCESS_ERROR(nRetCode);
 
     return TRUE;
@@ -221,13 +222,19 @@ CLIENT_SESSION* CServerDefaultSessionModule::find_session(uint64_t qwSessionID)
     return m_SessionMgr.find_session(qwSessionID);
 }
 
-BOOL CServerDefaultSessionModule::kick_session(CLIENT_SESSION * pSession)
+BOOL CServerDefaultSessionModule::kick_session(CLIENT_SESSION * pSession, int32_t nReason, uint64_t qwReasonParam)
 {
     int32_t nRetCode = 0;
 
+    LOG_PROCESS_ERROR(pSession);
+
     //send stop to tconnd
+    nRetCode = send_to_conn_server(pSession->nConnServerAddr, pSession->qwConnID, cetStop, nReason, qwReasonParam);
+    LOG_PROCESS_ERROR(nRetCode);
 
     //clear session
+    nRetCode = m_SessionMgr.destroy_session(pSession);
+    LOG_PROCESS_ERROR(nRetCode);
 
     return TRUE;
 Exit0:

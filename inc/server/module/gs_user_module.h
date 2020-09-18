@@ -10,6 +10,21 @@
 #define MAX_BAN_REASON_LEN      (128)
 #define MAX_USER_DATA_SIZE      (1024)
 
+enum USER_STATE
+{
+    usInvalid,
+
+    usLogin,
+    usFinishLogin,
+    usCreateRole,
+    usFinishCreateRole,
+    usSelectRole,
+    usPlaying,
+    usKick,
+
+    usTotal
+};
+
 struct ROLE_BASE
 {
     uint64_t            qwRoleID;
@@ -33,6 +48,8 @@ struct USER
 
     uint32_t            dwBanEndTime;
     char                szBanReason[MAX_BAN_REASON_LEN];
+
+    int32_t             nState;
 
     BOOL is_role(uint64_t qwRoleID);
 
@@ -60,7 +77,7 @@ public:
     inline BOOL destroy_user(USER* pUser);
     inline USER* find_user(uint64_t qwUserID);
 
-    BOOL kick_user(USER* pUser);
+    BOOL kick_user(uint64_t qwUserID, int32_t nReason, uint64_t qwReasonParam);
 
 private:
     BOOL _init_msg_handler(void);

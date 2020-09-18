@@ -32,7 +32,7 @@ public:
     inline BOOL del_session(CONN_SESSION* pSession);
     inline CONN_SESSION* find_session(uint64_t qwSessionID);
 
-    BOOL kick_conn_by_session(uint64_t qwSessionID, int32_t nReason);
+    BOOL kick_conn_by_session(uint64_t qwSessionID, int32_t nReason, uint64_t qwParam);
 
 private:
     BOOL _init_msg_handler(void);

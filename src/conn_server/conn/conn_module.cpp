@@ -36,7 +36,7 @@ Exit0:
     return FALSE;
 }
     
-BOOL CConnModule::kick_conn_by_session(uint64_t qwSessionID, int32_t nReason)
+BOOL CConnModule::kick_conn_by_session(uint64_t qwSessionID, int32_t nReason, uint64_t qwParam)
 {
     int32_t nRetCode = 0;
     CONN_SESSION* pSession = NULL;
@@ -46,10 +46,14 @@ BOOL CConnModule::kick_conn_by_session(uint64_t qwSessionID, int32_t nReason)
     LOG_PROCESS_ERROR(pSession);
 
     msg.set_error_code(nReason);
+    msg.set_param(qwParam);
     nRetCode = send_to_client(pSession, sc_error_code, msg);
     LOG_PROCESS_ERROR(nRetCode);
 
     nRetCode = send_to_tconnd(pSession, TFRAMEHEAD_CMD_STOP, NULL, 0);
+    LOG_PROCESS_ERROR(nRetCode);
+
+    nRetCode = m_SessionMgr.delete_object(pSession);
     LOG_PROCESS_ERROR(nRetCode);
 
     return TRUE;

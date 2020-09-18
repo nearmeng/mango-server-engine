@@ -101,6 +101,7 @@ CORO_STATE CLoginCoro::coro_process()
 
         pUser->qwUserID = m_qwUserID;
         pUser->qwSessionID = m_qwSessionID;
+        pUser->nState = usLogin;
     }
     else
     {
@@ -120,6 +121,9 @@ CORO_STATE CLoginCoro::coro_process()
 
         nRetCode = pUser->load_user(pReply->element[1]->str, pReply->element[1]->len);
         LOG_PROCESS_ERROR(nRetCode);
+
+        pUser->qwSessionID = m_qwSessionID;
+        pUser->nState = usLogin;
     }
 
     //check user account valid
@@ -197,14 +201,14 @@ CORO_STATE CLoginCoro::coro_process()
     nRetCode = do_g2c_sync_role_list(m_qwSessionID, pUser);
     LOG_PROCESS_ERROR(nRetCode);
 
+    pUser->nState = usFinishLogin;
+
     CORO_END()
 
 Exit0:
     if (nResult != errUnknown)
     {
-        LOG_CHECK_ERROR(SEND_TO_CLIENT_ERRORCODE_BY_ID(m_qwSessionID, nResult));
-
-        //nRetCode = kick_session();
+        LOG_CHECK_ERROR(m_pUserModule->kick_user(m_qwUserID, nResult, 0));
     }
 
     return crsFailed;
@@ -246,6 +250,12 @@ CORO_STATE CCreateRoleCoro::coro_process()
     redisReply* pReply = NULL;
 
     CORO_BEGIN()
+
+    pUser = m_pUserModule->find_user(m_qwUserID);
+    LOG_PROCESS_ERROR(pUser);
+    LOG_PROCESS_ERROR(pUser->nState == usFinishLogin || pUser->nState == usFinishCreateRole);
+
+    pUser->nState = usCreateRole;
 
     // get role id
     nRetCode = CDBProxyClient::instance().redis_command_coro(get_coro_id(), "INCR role_id_generator");
@@ -332,6 +342,8 @@ CORO_STATE CCreateRoleCoro::coro_process()
     nRetCode = do_g2c_sync_role_list(m_qwSessionID, pUser);
     LOG_PROCESS_ERROR(nRetCode);
 
+    pUser->nState = usFinishCreateRole;
+
     CORO_END()
 
 Exit0:
@@ -374,6 +386,9 @@ CORO_STATE CSelectRoleCoro::coro_process()
     pUser = m_pUserModule->find_user(m_qwUserID);
     LOG_PROCESS_ERROR(pUser);
     LOG_PROCESS_ERROR(pUser->is_role(m_qwRoleID));
+    LOG_PROCESS_ERROR(pUser->nState == usFinishCreateRole || pUser->nState == usFinishLogin);
+
+    pUser->nState = usSelectRole;
 
     // load from db
     nRetCode = CDBProxyClient::instance().redis_command_coro(get_coro_id(), "get role:%llu", m_qwRoleID);
@@ -412,10 +427,132 @@ CORO_STATE CSelectRoleCoro::coro_process()
     nRetCode = do_g2c_sync_role_data(m_qwSessionID, pRole);
     LOG_PROCESS_ERROR(nRetCode);
     
+    pUser->nState = usPlaying;
+    
     CORO_END()
 
 Exit0:
     if (pRole)
         m_pRoleModule->destroy_role(pRole);
+    return crsFailed;
+}
+    
+BOOL CKickUserCoro::on_resume()
+{
+    m_pUserModule = MG_GET_MODULE(CUserModule);
+    m_pRoleModule = MG_GET_MODULE(CRoleModule);
+    m_pSessionModule = MG_GET_MODULE(CServerDefaultSessionModule);
+
+    return TRUE;
+}
+
+void CKickUserCoro::set_start_arg(uint64_t qwUserID, uint64_t qwSessionID, int32_t nKickReason, uint64_t qwKickParam)
+{
+    m_qwUserID = qwUserID;
+    m_qwSessionID = qwSessionID;
+    m_nKickReason = nKickReason;
+    m_qwKickParam = qwKickParam;
+
+    m_pRole = NULL;
+    m_pUser = NULL;
+
+    m_pUserModule = MG_GET_MODULE(CUserModule);
+    m_pRoleModule = MG_GET_MODULE(CRoleModule);
+    m_pSessionModule = MG_GET_MODULE(CServerDefaultSessionModule);
+}
+ 
+CORO_STATE CKickUserCoro::coro_process()
+{
+    int32_t nRetCode = 0;
+    CLIENT_SESSION* pSession = NULL;
+    redisReply* pReply = NULL;
+    uint32_t dwRoleSize = 0;
+    uint32_t dwRoleBaseSize = 0;
+
+    CORO_BEGIN()
+
+    m_pUser = m_pUserModule->find_user(m_qwUserID);
+    if (m_pUser)
+    {
+        LOG_CHECK_ERROR(m_pUser->nState != usKick);
+
+        m_pUser->nState = usKick;
+
+        if (m_pUser->qwCurrPlayingRole > 0)
+        {
+            dwRoleSize = sizeof(s_szRoleData);
+            dwRoleBaseSize = sizeof(s_szRoleBaseData);
+
+            // save role
+            m_pRole = m_pRoleModule->find_role(m_pUser->qwCurrPlayingRole);
+            LOG_PROCESS_ERROR(m_pRole);
+
+            nRetCode = m_pRole->save(s_szRoleData, dwRoleSize, s_szRoleBaseData, dwRoleBaseSize);
+            LOG_PROCESS_ERROR(nRetCode);
+
+            nRetCode = CDBProxyClient::instance().redis_command_coro(get_coro_id(), "set role:%llu %b", m_pRole->get_obj_id(), s_szRoleData, (size_t)dwRoleSize);
+            LOG_PROCESS_ERROR(nRetCode);
+
+            CORO_YIELD()
+
+            LOG_PROCESS_ERROR(get_coro_ret_code() == crcSuccess);
+            LOG_PROCESS_ERROR(get_coro_reply().nReplyType == crtDB);
+
+            pReply = (redisReply*)(get_coro_reply().pReplyData);
+            LOG_PROCESS_ERROR(pReply);
+            LOG_PROCESS_ERROR(pReply->type == REDIS_REPLY_STATUS);
+            LOG_PROCESS_ERROR(pReply->integer == REDIS_OK);
+
+            m_pUser = m_pUserModule->find_user(m_qwUserID);
+            LOG_PROCESS_ERROR(m_pUser);
+
+            m_pRole = m_pRoleModule->find_role(m_pUser->qwCurrPlayingRole);
+            LOG_PROCESS_ERROR(m_pRole);
+
+            LOG_CHECK_ERROR(m_pRole->uninit());
+            nRetCode = m_pRoleModule->destroy_role(m_pRole);
+            LOG_PROCESS_ERROR(nRetCode);
+
+            m_pUser->qwCurrPlayingRole = 0;
+        }
+
+        // logout from online server
+        {
+            G2O_USER_LOGOUT msg;
+            msg.qwUserID = m_qwUserID;
+            msg.qwSessionID = m_qwSessionID;
+            msg.nServerAddr = CMGApp::instance().get_tbus_addr();
+
+            nRetCode = send_server_msg_by_routerid(m_qwUserID, svrOnline, g2o_user_logout, &msg, sizeof(msg), get_coro_id());
+            LOG_PROCESS_ERROR(nRetCode);
+        }
+    
+        CORO_YIELD()
+    
+        LOG_PROCESS_ERROR(get_coro_ret_code() == crcSuccess);
+        LOG_PROCESS_ERROR(get_coro_reply().nReplyType == crtMsg);
+
+        {
+            O2G_USER_LOGOUT_ACK* msg = (O2G_USER_LOGOUT_ACK*)(get_coro_reply().pReplyData);
+            LOG_PROCESS_ERROR(msg->qwSessionID == m_qwSessionID);
+            LOG_PROCESS_ERROR(msg->qwUserID == m_qwUserID);
+            LOG_CHECK_ERROR(msg->nErrorCode == errSuccess);
+        }
+
+        // delete user
+        nRetCode = m_pUserModule->destroy_user(m_pUser);
+        LOG_PROCESS_ERROR(nRetCode);
+    }
+
+    // kick session
+    pSession = m_pSessionModule->find_session(m_qwSessionID);
+    LOG_PROCESS_ERROR(pSession);
+
+    nRetCode = m_pSessionModule->kick_session(pSession, m_nKickReason, m_qwKickParam);
+    LOG_PROCESS_ERROR(nRetCode);
+
+    CORO_END()
+
+Exit0:
     return crsFailed;
 }

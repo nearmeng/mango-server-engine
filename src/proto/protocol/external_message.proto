@@ -4,6 +4,10 @@ message CS_LOGIN
     optional int32  server_group    =   1;
 }
 
+message CS_LOGOUT
+{
+}
+
 message SC_ALLOW_LOGIN
 {
 }
@@ -16,6 +20,7 @@ message SC_LOGIN
 message SC_ERROR_CODE
 {
     optional    int32   error_code  =   1;
+    optional    uint64  param       =   2;
 }
 
 message CS_PING

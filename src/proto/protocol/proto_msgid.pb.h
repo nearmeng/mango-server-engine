@@ -37,6 +37,7 @@ enum CS_MESSAGE_ID {
   cs_ping = 2,
   cs_create_role = 3,
   cs_select_role = 4,
+  cs_logout = 5,
   cs_message_end = 65535
 };
 bool CS_MESSAGE_ID_IsValid(int value);
