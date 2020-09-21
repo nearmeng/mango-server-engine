@@ -32,8 +32,31 @@ BOOL CUserModule::uninit()
     return TRUE;
 }
 
+BOOL CUserModule::TRAVERSE_USER_SESSION_CHECK::operator()(uint64_t qwUserID, USER* pUser)
+{
+    int32_t nRetCode = 0;
+    CUserModule* pModule = NULL;
+
+    if (pUser->qwSessionID == 0 && CTimeMgr::instance().get_time_sec() > pUser->nSessionStopTime + g_ServerConfig.GS.nUserKickAfterSessionStopTime / 1000)
+    {
+        pModule = MG_GET_MODULE(CUserModule);
+        LOG_PROCESS_ERROR(pModule);
+
+        nRetCode = pModule->kick_user(qwUserID, 0, 0);
+        LOG_PROCESS_ERROR(nRetCode);
+    }
+
+    return TRUE;
+Exit0:
+    return FALSE;
+}
+
 void CUserModule::on_frame()
 {
+    //check session timeout 
+    TRAVERSE_USER_SESSION_CHECK SessionCheck;
+    m_UserPool.traverse(SessionCheck);
+
     return;
 }
 
@@ -48,6 +71,8 @@ BOOL CUserModule::kick_user(uint64_t qwUserID, int32_t nReason, uint64_t qwReaso
 
     pCoro = CCoroStacklessMgr<CKickUserCoro>::instance().new_coro();
     LOG_PROCESS_ERROR(pCoro);
+
+    INF("begin kick user %llu reason %d param %llu", qwUserID, nReason, qwReasonParam);
 
     pCoro->set_start_arg(qwUserID, pUser->qwSessionID, nReason, qwReasonParam);
     nRetCode = CCoroStacklessMgr<CKickUserCoro>::instance().start_coro(pCoro);

@@ -23,6 +23,7 @@ public:
     virtual void on_frame();
 
     CLIENT_SESSION* find_session(uint64_t qwSessionID);
+    BOOL destroy_session(CLIENT_SESSION* pSession);
     BOOL kick_session(CLIENT_SESSION* pSession, int32_t nReason, uint64_t qwParam);
 
     static BOOL register_conn_event_handler_for_session(int32_t nEventType, CONN_EVENT_HANDLER_FOR_SESSION pEventHandler);
@@ -37,6 +38,8 @@ private:
     static void _on_conn_stop_event(uint64_t qwConnID, const char* pcszOpenID, int32_t nConnServerAddr);
     static void _on_recv_client_msg(uint64_t qwConnID, const CS_HEAD* pHead, const google::protobuf::Message* pMsg);
     static void _on_recv_client_ping(uint64_t qwConnID, const CS_HEAD* pHead, const google::protobuf::Message* pMsg);
+
+    friend class CSessionMgr;
 
 private:
     CLIENT_MSG_HANDLER_FOR_SESSION              m_ClientMsgHandler[MAX_MESSAGE_ID];

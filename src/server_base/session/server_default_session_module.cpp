@@ -221,6 +221,11 @@ CLIENT_SESSION* CServerDefaultSessionModule::find_session(uint64_t qwSessionID)
 {
     return m_SessionMgr.find_session(qwSessionID);
 }
+    
+BOOL CServerDefaultSessionModule::destroy_session(CLIENT_SESSION* pSession)
+{
+    return m_SessionMgr.destroy_session(pSession);
+}
 
 BOOL CServerDefaultSessionModule::kick_session(CLIENT_SESSION * pSession, int32_t nReason, uint64_t qwReasonParam)
 {

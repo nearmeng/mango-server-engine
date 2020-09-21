@@ -546,10 +546,11 @@ CORO_STATE CKickUserCoro::coro_process()
 
     // kick session
     pSession = m_pSessionModule->find_session(m_qwSessionID);
-    LOG_PROCESS_ERROR(pSession);
-
-    nRetCode = m_pSessionModule->kick_session(pSession, m_nKickReason, m_qwKickParam);
-    LOG_PROCESS_ERROR(nRetCode);
+    if (pSession)
+    {
+        nRetCode = m_pSessionModule->kick_session(pSession, m_nKickReason, m_qwKickParam);
+        LOG_PROCESS_ERROR(nRetCode);
+    }
 
     CORO_END()
 

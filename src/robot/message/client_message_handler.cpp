@@ -168,8 +168,8 @@ void CClientMessageHandler::on_sync_role_data(SC_HEAD * pSCHead, google::protobu
 
     INF("recv sync role data, roleid %llu role_name %s level %d", msg->roleid(), msg->rolename().c_str(), msg->level());
 
-    nRetCode = do_logout(pUser);
-    LOG_PROCESS_ERROR(nRetCode);
+    //nRetCode = do_logout(pUser);
+    //LOG_PROCESS_ERROR(nRetCode);
 
 Exit0:
     return;

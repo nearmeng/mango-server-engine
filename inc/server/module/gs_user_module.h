@@ -50,6 +50,7 @@ struct USER
     char                szBanReason[MAX_BAN_REASON_LEN];
 
     int32_t             nState;
+    int32_t             nSessionStopTime;
 
     BOOL is_role(uint64_t qwRoleID);
 
@@ -81,6 +82,11 @@ public:
 
 private:
     BOOL _init_msg_handler(void);
+
+    struct TRAVERSE_USER_SESSION_CHECK
+    {
+        BOOL operator()(uint64_t qwUserID, USER* pUser);
+    };
 
 private:
     CShmObjectPool<USER, uint64_t>      m_UserPool;

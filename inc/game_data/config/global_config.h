@@ -54,6 +54,7 @@ struct SERVER_CONFIG
     	int32_t nTestValue;
         int32_t nUserCount;
         int32_t nRoleCount;
+        int32_t nUserKickAfterSessionStopTime;
 	} GS;
 
 	struct SERVICE_CONFIG

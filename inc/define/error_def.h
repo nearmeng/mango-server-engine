@@ -8,6 +8,7 @@ enum ERROR_DEF
 
     errConnBegin            =   1,
     errConnAlreadyExist,
+    errConnTimeout,
     errConnEnd              =   100,
 
     errLoginBegin           =   101,

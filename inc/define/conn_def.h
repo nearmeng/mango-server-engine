@@ -9,6 +9,7 @@ enum CONN_EVENT_TYPE
 
     cetStart,
     cetStop,
+    cetTimeout,
 
     cetTotal
 };

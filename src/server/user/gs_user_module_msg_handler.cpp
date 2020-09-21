@@ -81,18 +81,53 @@ void on_conn_stop_event(CLIENT_SESSION* pSession)
 {
     int32_t nRetCode = 0;
     USER* pUser = NULL;
-    CUserModule* pModule = NULL;
+    CUserModule* pUserModule = NULL;
+    CServerDefaultSessionModule* pSessionModule = NULL;
     
     INF("recv conn %lld ntf stop event from addr %d", pSession->qwConnID, pSession->nConnServerAddr);
 
-    pModule = MG_GET_MODULE(CUserModule);
-    LOG_PROCESS_ERROR(pModule);
+    pUserModule = MG_GET_MODULE(CUserModule);
+    LOG_PROCESS_ERROR(pUserModule);
+
+    pSessionModule = MG_GET_MODULE(CServerDefaultSessionModule);
+    LOG_PROCESS_ERROR(pSessionModule);
     
-    pUser =  pModule->find_user(pSession->qwUserID);
+    pUser =  pUserModule->find_user(pSession->qwUserID);
     LOG_PROCESS_ERROR(pUser);
 
-    //nRetCode = pModule->destroy_user(pUser);
-    //LOG_PROCESS_ERROR(nRetCode);
+    nRetCode = pSessionModule->destroy_session(pSession);
+    LOG_PROCESS_ERROR(nRetCode);
+
+    pUser->qwSessionID = 0;
+    pUser->nSessionStopTime = CTimeMgr::instance().get_time_sec();
+
+Exit0:
+    return;
+}
+
+void on_conn_timeout_event(CLIENT_SESSION* pSession)
+{
+    int32_t nRetCode = 0;
+    USER* pUser = NULL;
+    CUserModule* pUserModule = NULL;
+    CServerDefaultSessionModule* pSessionModule = NULL;
+    
+    INF("recv conn %lld timeout, last ping %d", pSession->qwConnID, pSession->dwLastPingTime);
+
+    pUserModule = MG_GET_MODULE(CUserModule);
+    LOG_PROCESS_ERROR(pUserModule);
+
+    pSessionModule = MG_GET_MODULE(CServerDefaultSessionModule);
+    LOG_PROCESS_ERROR(pSessionModule);
+
+    nRetCode = pSessionModule->kick_session(pSession, errConnTimeout, 0);
+    LOG_PROCESS_ERROR(nRetCode);
+    
+    pUser =  pUserModule->find_user(pSession->qwUserID);
+    LOG_PROCESS_ERROR(pUser);
+    
+    pUser->qwSessionID = 0;
+    pUser->nSessionStopTime = CTimeMgr::instance().get_time_sec();
 
 Exit0:
     return;
@@ -197,6 +232,7 @@ BOOL CUserModule::_init_msg_handler()
 
     REG_SESSION_CONN_EVENT_HANDLER(cetStart, on_conn_start_event);
     REG_SESSION_CONN_EVENT_HANDLER(cetStop, on_conn_stop_event);
+    REG_SESSION_CONN_EVENT_HANDLER(cetTimeout, on_conn_timeout_event);
     
     REG_SESSION_CLI_MSG_HANDLER(cs_login, on_login);
     REG_SESSION_CLI_MSG_HANDLER(cs_logout, on_logout);
