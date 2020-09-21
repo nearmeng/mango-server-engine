@@ -389,10 +389,10 @@ inline int32_t CShmObjectPool<T, N>::traverse(Func& rFunc)
 			SHM_UNIT_INDEX<N>* unit_index = (SHM_UNIT_INDEX<N>*)OFFSET2PTR(curr_offset);
             SHM_UNIT_DATA<T>* unit_data = _get_unit_data(pool, unit_index);
 
+			curr_offset = unit_index->next_unit_offset;
+
 			ret_code = rFunc(unit_index->id, (T*)unit_data);
 			LOG_CHECK_ERROR(ret_code);
-
-			curr_offset = unit_index->next_unit_offset;
 		}
 	}
 
