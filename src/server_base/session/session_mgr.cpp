@@ -42,7 +42,6 @@ BOOL CSessionMgr::TRAVERSE_SESSION::operator()(uint64_t qwSessionID, CLIENT_SESS
 
     if (dwCurrTime > pSession->dwLastPingTime + g_ServerConfig.Common.nClientPingTimeout / 1000)
     {
-        CLIENT_SESSION* pSession = NULL;
         CServerDefaultSessionModule* pModule = NULL;
 
         CRI("session %llu is timeout, do kick", qwSessionID);

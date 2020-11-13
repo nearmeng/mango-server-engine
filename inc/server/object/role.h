@@ -2,11 +2,26 @@
 #define _ROLE_H_
 
 #include "define/str_def.h"
+#include "module/role_sub_module.h"
+#include "role_sub_module/achieve.h"
 
 namespace ROLE_DB
 {
     class ROLE_BASE_DATA;
 }
+
+#define MAX_ROLE_SUB_MODULE_COUNT   (50)
+
+typedef BOOL(*INIT_MSG_HANDLER_FUNC)(void);
+
+enum ROLE_SUB_MODULE_TYPE
+{
+    rsmtInvalid,
+
+    rsmtAchieve,
+
+    rsmtTotal
+};
 
 class CRole
 {
@@ -16,8 +31,11 @@ public:
 
     BOOL init(uint64_t qwObjID);
     BOOL uninit(void);
+    
+    static BOOL init_msg_handler(void);
 
     void mainloop(void);
+    void on_resume(void);
     
     BOOL save(char* pData, uint32_t &dwSize, char* pBaseData, uint32_t &dwBaseDataSize);
     BOOL load(const char* pData, uint32_t dwSize);
@@ -60,6 +78,11 @@ private:
 
     char        m_szName[COMMON_NAME_LEN];
     int32_t     m_nLevel;
+    
+    static int32_t m_nSubModuleOffset[rsmtTotal];
+    static INIT_MSG_HANDLER_FUNC m_pSubModuleMsg[rsmtTotal];
+
+    REG_ROLE_SUB_MODULE(CAchieve, achieve, rsmtAchieve);
 };
 
 #include "object/role_inl.h"

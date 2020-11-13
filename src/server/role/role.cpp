@@ -3,8 +3,13 @@
 
 #include "db/role_db_data.pb.h"
 
+int32_t CRole::m_nSubModuleOffset[rsmtTotal] = { 0 };
+INIT_MSG_HANDLER_FUNC CRole::m_pSubModuleMsg[rsmtTotal] = { 0 };
+
 BOOL CRole::init(uint64_t qwObjID)
 {
+    int32_t nRetCode = 0;
+
     m_qwObjID = qwObjID;
     m_qwUserID = 0;
     m_qwSessionID = 0;
@@ -16,6 +21,17 @@ BOOL CRole::init(uint64_t qwObjID)
     memset(m_szName, 0, sizeof(m_szName));
     m_nLevel = 0;
 
+    for (int32_t i = rsmtInvalid + 1; i < rsmtTotal; i++)
+    {
+        CRoleSubModule* pSubModule  = (CRoleSubModule*)((char*)this + m_nSubModuleOffset[i]);
+        LOG_PROCESS_ERROR(pSubModule);
+
+        nRetCode = pSubModule->init(this);
+        LOG_PROCESS_ERROR(nRetCode);
+    }
+
+    DBG("role %lld is inited", m_qwObjID);
+
     return TRUE;
 Exit0:
     return FALSE;
@@ -23,11 +39,49 @@ Exit0:
 
 BOOL CRole::uninit(void)
 {
+    int32_t nRetCode = 0;
+
+    for (int32_t i = rsmtInvalid + 1; i < rsmtTotal; i++)
+    {
+        CRoleSubModule* pSubModule  = (CRoleSubModule*)((char*)this + m_nSubModuleOffset[i]);
+        LOG_PROCESS_ERROR(pSubModule);
+
+        nRetCode = pSubModule->uninit();
+        LOG_PROCESS_ERROR(nRetCode);
+    }
+    
+    DBG("role %lld is uninited", m_qwObjID);
+
     return TRUE;
+Exit0:
+    return FALSE;
 }
 
 void CRole::mainloop()
 {
+    for (int32_t i = rsmtInvalid + 1; i < rsmtTotal; i++)
+    {
+        CRoleSubModule* pSubModule  = (CRoleSubModule*)((char*)this + m_nSubModuleOffset[i]);
+        LOG_PROCESS_ERROR(pSubModule);
+
+        pSubModule->mainloop();
+    }
+
+Exit0:
+    return;
+}
+    
+void CRole::on_resume(void)
+{
+    for (int32_t i = rsmtInvalid + 1; i < rsmtTotal; i++)
+    {
+        CRoleSubModule* pSubModule  = (CRoleSubModule*)((char*)this + m_nSubModuleOffset[i]);
+        LOG_PROCESS_ERROR(pSubModule);
+
+        pSubModule->on_resume();
+    }
+
+Exit0:
     return;
 }
     
@@ -96,6 +150,24 @@ BOOL CRole::load(const char* pData, uint32_t dwSize)
 
     nRetCode = _load_base_data(RoleData.base_data());
     LOG_PROCESS_ERROR(nRetCode);
+
+    return TRUE;
+Exit0:
+    return FALSE;
+}
+
+BOOL CRole::init_msg_handler(void)
+{
+    int32_t nRetCode = 0;
+
+    for (int32_t i = rsmtInvalid + 1; i < rsmtTotal; i++)
+    {
+        INIT_MSG_HANDLER_FUNC pMsgHandlerFunc = m_pSubModuleMsg[i];
+        LOG_PROCESS_ERROR(pMsgHandlerFunc);
+
+        nRetCode = pMsgHandlerFunc();
+        LOG_PROCESS_ERROR(nRetCode);
+    }
 
     return TRUE;
 Exit0:
