@@ -121,6 +121,15 @@ BOOL CRole::save(char* pData, uint32_t &dwSize, char* pBaseData, uint32_t &dwBas
 
     nRetCode = _save_base_data(*RoleData.mutable_base_data());
     LOG_PROCESS_ERROR(nRetCode);
+    
+    for (int32_t i = rsmtInvalid + 1; i < rsmtTotal; i++)
+    {
+        CRoleSubModule* pSubModule  = (CRoleSubModule*)((char*)this + m_nSubModuleOffset[i]);
+        LOG_PROCESS_ERROR(pSubModule);
+
+        nRetCode = pSubModule->save_data(RoleData);
+        LOG_PROCESS_ERROR(nRetCode);
+    }
 
     nRetCode = RoleData.base_data().SerializeToArray(pBaseData, dwBaseDataSize);
     LOG_PROCESS_ERROR(nRetCode);
@@ -150,6 +159,15 @@ BOOL CRole::load(const char* pData, uint32_t dwSize)
 
     nRetCode = _load_base_data(RoleData.base_data());
     LOG_PROCESS_ERROR(nRetCode);
+    
+    for (int32_t i = rsmtInvalid + 1; i < rsmtTotal; i++)
+    {
+        CRoleSubModule* pSubModule  = (CRoleSubModule*)((char*)this + m_nSubModuleOffset[i]);
+        LOG_PROCESS_ERROR(pSubModule);
+
+        nRetCode = pSubModule->load_data(RoleData);
+        LOG_PROCESS_ERROR(nRetCode);
+    }
 
     return TRUE;
 Exit0:
