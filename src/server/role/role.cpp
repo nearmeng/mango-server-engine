@@ -3,8 +3,12 @@
 
 #include "db/role_db_data.pb.h"
 
+#include "bt/bt_event.h"
+
 int32_t CRole::m_nSubModuleOffset[rsmtTotal] = { 0 };
 INIT_MSG_HANDLER_FUNC CRole::m_pSubModuleMsg[rsmtTotal] = { 0 };
+ROLE_SUB_MODULE_INIT CRole::m_pSubModuleInit[rsmtTotal] = { 0 };
+ROLE_SUB_MODULE_UNINIT CRole::m_pSubModuleUnInit[rsmtTotal] = { 0 };
 
 BOOL CRole::init(uint64_t qwObjID)
 {
@@ -173,6 +177,50 @@ BOOL CRole::load(const char* pData, uint32_t dwSize)
 Exit0:
     return FALSE;
 }
+    
+BOOL CRole::module_init(BOOL bResume)
+{
+    int32_t nRetCode = 0;
+    int32_t nEventID = 0;
+    
+    nEventID = CEventMgr::instance().create_c_event(evtRoleSyncData, 0, 0, _on_event_role_sync_data, 0);
+    LOG_PROCESS_ERROR(nEventID != 0);
+
+    nRetCode = CGlobalEventListMgr::instance().register_global_event(nEventID);
+    LOG_PROCESS_ERROR(nRetCode);
+
+
+    for (int32_t i = rsmtInvalid + 1; i < rsmtTotal; i++)
+    {
+        ROLE_SUB_MODULE_INIT pSubModuleInit = m_pSubModuleInit[i];
+        LOG_PROCESS_ERROR(pSubModuleInit);
+
+        nRetCode = pSubModuleInit(bResume);
+        LOG_PROCESS_ERROR(nRetCode);
+    }
+
+    return TRUE;
+Exit0:
+    return FALSE;
+}
+
+BOOL CRole::module_uninit(void)
+{
+    int32_t nRetCode = 0;
+
+    for (int32_t i = rsmtInvalid + 1; i < rsmtTotal; i++)
+    {
+        ROLE_SUB_MODULE_UNINIT pSubModuleUnInit = m_pSubModuleUnInit[i];
+        LOG_PROCESS_ERROR(pSubModuleUnInit);
+
+        nRetCode = pSubModuleUnInit();
+        LOG_CHECK_ERROR(nRetCode);
+    }
+
+    return TRUE;
+Exit0:
+    return FALSE;
+}
 
 BOOL CRole::init_msg_handler(void)
 {
@@ -190,4 +238,29 @@ BOOL CRole::init_msg_handler(void)
     return TRUE;
 Exit0:
     return FALSE;
+}
+    
+void CRole::_on_event_role_sync_data(BT_EVENT* pEvent, EVENT_PARAM& stEventParam)
+{
+    int32_t nRetCode = 0;
+    CRole* pRole = NULL;
+
+    LOG_PROCESS_ERROR(pEvent);
+    LOG_PROCESS_ERROR(stEventParam.nOwnerType == botRole);
+
+    pRole = (CRole*)stEventParam.pOwner;
+    LOG_PROCESS_ERROR(pRole);
+
+    INF("on event role sync data, roleid %lld param %lld %lld", stEventParam.qwOwnerID, stEventParam.llTriggerVar0, stEventParam.llTriggerVar1);
+
+    for (int32_t i = rsmtInvalid + 1; i < rsmtTotal; i++)
+    {
+        CRoleSubModule* pSubModule  = (CRoleSubModule*)((char*)pRole + pRole->m_nSubModuleOffset[i]);
+        LOG_PROCESS_ERROR(pSubModule);
+
+        pSubModule->on_event_sync_data();
+    }
+
+Exit0:
+    return;
 }

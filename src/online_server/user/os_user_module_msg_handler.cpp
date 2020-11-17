@@ -83,6 +83,8 @@ void on_user_login(int32_t nSrcAddr, const char* pBuffer, size_t dwSize)
         pUser->qwSessionID = msg->qwSessionID;
         pUser->nServerAddr = msg->nServerAddr;
 
+        INF("on user login, userid %lld sessionid %lld server_addr %d", pUser->qwUserID, pUser->qwSessionID, pUser->nServerAddr);
+
         nRetCode = do_user_login_ack(nSrcAddr, errSuccess, msg->qwUserID, msg->qwSessionID, msg->qwCoroID);
         LOG_PROCESS_ERROR(nRetCode);
     }
@@ -101,9 +103,11 @@ void on_user_logout(int32_t nSrcAddr, const char* pBuffer, size_t dwSize)
     pUserModule = MG_GET_MODULE(CUserModule);
     LOG_PROCESS_ERROR(pUserModule);
 
+    INF("on user logout, report user id %lld sessionid %lld server_addr %d", msg->qwUserID, msg->qwSessionID, msg->nServerAddr);
+
     pUser = pUserModule->find_user(msg->qwUserID);
     LOG_PROCESS_ERROR(pUser);
-    LOG_PROCESS_ERROR(pUser->qwSessionID == msg->qwSessionID);
+    //LOG_PROCESS_ERROR(pUser->qwSessionID == msg->qwSessionID);
     LOG_PROCESS_ERROR(pUser->nServerAddr == msg->nServerAddr);
 
     nRetCode = do_user_logout_ack(nSrcAddr, errSuccess, msg->qwUserID, msg->qwSessionID, msg->qwCoroID);

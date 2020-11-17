@@ -72,7 +72,7 @@ BOOL CUserModule::kick_user(uint64_t qwUserID, int32_t nReason, uint64_t qwReaso
     pCoro = CCoroStacklessMgr<CKickUserCoro>::instance().new_coro();
     LOG_PROCESS_ERROR(pCoro);
 
-    INF("begin kick user %llu reason %d param %llu", qwUserID, nReason, qwReasonParam);
+    INF("begin kick user %llu session %lld reason %d param %llu", qwUserID, pUser->qwSessionID, nReason, qwReasonParam);
 
     pCoro->set_start_arg(qwUserID, pUser->qwSessionID, nReason, qwReasonParam);
     nRetCode = CCoroStacklessMgr<CKickUserCoro>::instance().start_coro(pCoro);

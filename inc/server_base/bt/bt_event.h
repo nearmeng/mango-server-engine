@@ -15,8 +15,10 @@ public:
 
 	inline static CEventMgr& instance(void);
 
-	int32_t create_event(const char* pcszEventName, int32_t nEventType, int32_t nTemplateID, int32_t nEventParam, 
+	int32_t create_lua_event(const char* pcszEventName, int32_t nEventType, int32_t nTemplateID, int32_t nEventParam, 
 		int32_t nTreeID, CLuaScript* pScript, uint64_t qwSourceID, int64_t llVar0 = 0, int64_t llVar1 = 0);
+	int32_t create_c_event(int32_t nEventType, int32_t nTemplateID, int32_t nEventParam, 
+		EVENT_CALLBACK pEventCallBack, uint64_t qwSourceID, int64_t llVar0 = 0, int64_t llVar1 = 0);
 	BOOL destroy_event(int32_t nEventID);
 	BT_EVENT* find_event(int32_t nEventID);
 

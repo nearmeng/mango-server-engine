@@ -10,6 +10,8 @@
 #include "protocol/game_online_msg.h"
 #include "gs_user_module_msg_handler.h"
 
+#include "bt/bt_event.h"
+
 static char s_szUserData[MAX_USER_DATA_SIZE];
 static char s_szRoleData[MAX_ROLE_DATA_SIZE];
 static char s_szRoleBaseData[MAX_ROLE_DATA_SIZE/2];
@@ -426,6 +428,11 @@ CORO_STATE CSelectRoleCoro::coro_process()
     //sync role data
     nRetCode = do_g2c_sync_role_data(m_qwSessionID, pRole);
     LOG_PROCESS_ERROR(nRetCode);
+
+    nRetCode = CGlobalEventListMgr::instance().trigger_global_event(evtRoleSyncData, 0, 0, pRole, pRole->get_obj_id(), 1, 2);
+    LOG_CHECK_ERROR(nRetCode);
+
+    INF("role sync data finished");
     
     pUser->nState = usPlaying;
     

@@ -27,6 +27,8 @@ class CRoleSubModuleParam
                     {                                                                   \
                         CRole::m_nSubModuleOffset[__module_enum__] = offsetof(CRole, m_##__module_name__);   \
                         CRole::m_pSubModuleMsg[__module_enum__] = &__module_class__::init_msg_handler;        \
+                        CRole::m_pSubModuleInit[__module_enum__] = &__module_class__::module_init;        \
+                        CRole::m_pSubModuleUnInit[__module_enum__] = &__module_class__::module_uninit;        \
                     }                                                                   \
                 };                                                                      \
         };                                                                              \
@@ -41,6 +43,8 @@ public:
 
     virtual BOOL init(CRole* pRole) = 0;
     virtual BOOL uninit(void) = 0;
+
+    virtual void on_event_sync_data(void) = 0;
 
     virtual void mainloop(void) = 0;
     virtual void on_resume(void) = 0;

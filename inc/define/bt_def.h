@@ -38,6 +38,17 @@
 	nRetCode |= CBTMgr::instance().register_owner_data(__type__, __class_name__, __get_owner_func__, __get_owner_var_func__); \
 	LOG_PROCESS_ERROR(nRetCode)
 
+struct BT_EVENT;
+struct EVENT_PARAM
+{
+    int32_t     nOwnerType;
+    void*       pOwner;
+    uint64_t    qwOwnerID;
+    int64_t     llTriggerVar0;
+    int64_t     llTriggerVar1;
+};
+
+typedef void(*EVENT_CALLBACK)(BT_EVENT* pEvent, EVENT_PARAM& stEventParam);
 
 //tolua_begin
 
@@ -102,7 +113,7 @@ enum BT_EVENT_TYPE
 
 	evtStaticRoleBegin = evtStaticBegin,
 	
-	evtRoleCreate,
+	evtRoleSyncData,
 
 	evtStaticRoleEnd,
 	
@@ -258,6 +269,7 @@ struct BT_EVENT
 	int32_t			nTreeID;			// 触发的行为树ID
 	uint64_t		qwSourceID;			// 事件源ID
 	int64_t			llEventVar[2];		// 事件注册参数
+    EVENT_CALLBACK  pEventCallback;     // C回调函数
 };
 	
 //事件基本定义

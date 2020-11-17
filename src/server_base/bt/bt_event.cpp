@@ -21,7 +21,7 @@ BOOL CEventMgr::_init_event_def(void)
 {
 	int32_t nRetCode = 0;
 
-	REG_EVENT_DEF(evtRoleCreate, botRole, evtStaticRoleBegin, evtStaticRoleEnd);
+	REG_EVENT_DEF(evtRoleSyncData, botRole, evtStaticRoleBegin, evtStaticRoleEnd);
 	REG_EVENT_DEF(evtRoleKillNpc, botRole, evtDynamicBegin, evtDynamicEnd);
 
 	return TRUE;
@@ -53,7 +53,7 @@ Exit0:
 	return FALSE;
 }
 
-int32_t CEventMgr::create_event(const char* pcszEventName, int32_t nEventType, int32_t nTemplateID, int32_t nEventParam,
+int32_t CEventMgr::create_lua_event(const char* pcszEventName, int32_t nEventType, int32_t nTemplateID, int32_t nEventParam,
 	int32_t nTreeID, CLuaScript* pScript, uint64_t qwSourceID, int64_t llVar0, int64_t llVar1)
 {
 	int32_t nRetCode = 0;
@@ -82,6 +82,46 @@ int32_t CEventMgr::create_event(const char* pcszEventName, int32_t nEventType, i
 	return nEventID;
 Exit0:
 	return 0;
+}
+	
+int32_t CEventMgr::create_c_event(int32_t nEventType, int32_t nTemplateID, int32_t nEventParam,
+    EVENT_CALLBACK pEventCallBack, uint64_t qwSourceID, int64_t llVar0, int64_t llVar1)
+{
+    int32_t nRetCode = 0;
+    int32_t nEventID = 0;
+    BT_EVENT* pEvent = NULL;
+    char szEventName[BT_EVENT_NAME_LEN];
+
+	snprintf(szEventName, BT_EVENT_NAME_LEN, "%s_%d_%d_%d", "c_register", nEventType, nTemplateID, nEventParam);
+	nEventID = hash_string(szEventName);
+
+	pEvent = m_EventPool.find_object(nEventID);
+    if (pEvent == NULL)
+    {
+        pEvent = m_EventPool.new_object(nEventID);
+        LOG_PROCESS_ERROR(pEvent);
+
+        pEvent->nEventID = nEventID;
+        pEvent->nEventType = nEventType;
+        pEvent->nEventTemplateID = nTemplateID;
+        pEvent->nEventParam = nEventParam;
+        pEvent->nTreeID = 0;
+        pEvent->qwSourceID = qwSourceID;
+        pEvent->llEventVar[0] = llVar0;
+        pEvent->llEventVar[1] = llVar1;
+        pEvent->pEventCallback = pEventCallBack;
+
+        INF("create new event success, eventid %d, event_name %s sourceid %lld val %d %d", nEventID, szEventName, qwSourceID, llVar0, llVar1);
+    }
+    else
+    {
+        INF("detect event resume, eventid %d, event_name %s sourceid %lld val %d %d", nEventID, szEventName, qwSourceID, llVar0, llVar1);
+        pEvent->pEventCallback = pEventCallBack;
+    }
+
+    return nEventID;
+Exit0:
+    return 0;
 }
 
 BOOL CEventMgr::destroy_event(int32_t nEventID)
@@ -286,10 +326,24 @@ int32_t CBTEventList::trigger_event(int32_t nEventType, int32_t nEventTemplateID
 
 		nOwnerType = CEventMgr::instance().get_event_owner(m_EventInfo[i].pEvent->nEventType);
 
-		nRetCode = CBTMgr::instance().start_run(Ctx, m_EventInfo[i].pEvent->nTreeID, 
-			nOwnerType, pOwner, qwOwnerID, llTriggerVar0, llTriggerVar1,
-			m_EventInfo[i].pEvent->llEventVar[0], m_EventInfo[i].pEvent->llEventVar[1], bRollBack);
-		LOG_CHECK_ERROR(nRetCode != brvError);
+        if (m_EventInfo[i].pEvent->nTreeID > 0)
+        {
+            nRetCode = CBTMgr::instance().start_run(Ctx, m_EventInfo[i].pEvent->nTreeID,
+                nOwnerType, pOwner, qwOwnerID, llTriggerVar0, llTriggerVar1,
+                m_EventInfo[i].pEvent->llEventVar[0], m_EventInfo[i].pEvent->llEventVar[1], bRollBack);
+            LOG_CHECK_ERROR(nRetCode != brvError);
+        }
+        else if(m_EventInfo[i].pEvent->pEventCallback)
+        {
+            EVENT_PARAM stParam;
+            stParam.pOwner = pOwner;
+            stParam.llTriggerVar0 = llTriggerVar0;
+            stParam.llTriggerVar1 = llTriggerVar1;
+            stParam.qwOwnerID = qwOwnerID;
+            stParam.nOwnerType = nOwnerType;
+
+            m_EventInfo[i].pEvent->pEventCallback(m_EventInfo[i].pEvent, stParam);
+        }
 
 		if (bBreakOnFail)
 		{
@@ -499,7 +553,7 @@ int lua_create_bt_event(lua_State* L)
 	pScript = CLuaScript::get_script_from_state(L);
 	LOG_PROCESS_ERROR(pScript);
 
-	nEventID = CEventMgr::instance().create_event(pcszEventName, nEventType, nTemplateID, nEventParam, nTreeID, pScript, qwSourceID);
+	nEventID = CEventMgr::instance().create_lua_event(pcszEventName, nEventType, nTemplateID, nEventParam, nTreeID, pScript, qwSourceID);
 	LOG_PROCESS_ERROR(nEventID > 0);
 
 	lua_pushinteger(L, nEventID);

@@ -40,3 +40,20 @@ BOOL CAchieve::init_msg_handler(void)
 Exit0:
     return FALSE;
 }
+
+BOOL CAchieve::module_init(BOOL bResume)
+{
+    INF("achieve sub module init");
+    return TRUE;
+}
+    
+BOOL CAchieve::module_uninit()
+{
+    INF("achieve sub module uninit");
+    return TRUE;
+}
+    
+void CAchieve::on_event_sync_data()
+{
+    INF("achieve on event sync data");
+}

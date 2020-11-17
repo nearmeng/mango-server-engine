@@ -12,15 +12,18 @@ BOOL CRoleModule::init(BOOL bResume)
 
     nRetCode = m_RolePool.init(stdRole, g_ServerConfig.GS.nRoleCount, bResume);
     LOG_PROCESS_ERROR(nRetCode);
+    
+    nRetCode = CRole::module_init(bResume);
+    LOG_PROCESS_ERROR(nRetCode);
+
+    nRetCode = CRole::init_msg_handler();
+    LOG_PROCESS_ERROR(nRetCode);
 
     if (bResume)
     {
         TRAVERSE_ROLE_RESUME TraverseRoleResume;
         m_RolePool.traverse(TraverseRoleResume);
     }
-
-    nRetCode = CRole::init_msg_handler();
-    LOG_PROCESS_ERROR(nRetCode);
 
     return TRUE;
 Exit0:
@@ -30,6 +33,9 @@ Exit0:
 BOOL CRoleModule::uninit(void)
 {
     int32_t nRetCode = 0;
+    
+    nRetCode = CRole::module_uninit();
+    LOG_CHECK_ERROR(nRetCode);
 
     nRetCode = m_RolePool.uninit();
     LOG_CHECK_ERROR(nRetCode);
@@ -108,3 +114,4 @@ ROLE_MSG_HANDLER CRoleModule::get_msg_handler(int32_t nMsgID)
     else
         return pModule->m_MsgHandler[nMsgID];
 }
+    
