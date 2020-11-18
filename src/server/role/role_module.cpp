@@ -61,6 +61,7 @@ void _on_recv_client_msg_for_role(CLIENT_SESSION* pSession, const CS_HEAD* pHead
     USER* pUser = NULL;
     CRoleModule* pRoleModule = NULL;
     CUserModule* pUserModule = NULL;
+    ROLE_MSG_HANDLER pMsgHandler = NULL;
 
     LOG_PROCESS_ERROR(pSession->qwUserID > 0);
 
@@ -76,7 +77,7 @@ void _on_recv_client_msg_for_role(CLIENT_SESSION* pSession, const CS_HEAD* pHead
     pRole = pRoleModule->find_role(pUser->qwCurrPlayingRole);
     LOG_PROCESS_ERROR(pRole);
 
-    ROLE_MSG_HANDLER pMsgHandler = CRoleModule::get_msg_handler(pHead->msgid());
+    pMsgHandler = CRoleModule::get_msg_handler(pHead->msgid());
     if(pMsgHandler != NULL)
     {
         pMsgHandler(pRole, pHead, pMsg);
