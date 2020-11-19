@@ -10,6 +10,7 @@ cd universe
 if [ -f CMakeCache.txt ];then
 	rm CMakeCache.txt
 fi
-cmake -DCMAKE_BUILD_TYPE=Release ..
+#cmake -DCMAKE_BUILD_TYPE=Release ..
+cmake ..
 #-DCMAKE_C_COMPILER=/usr/bin/gcc -DCMAKE_CXX_COMPILER=/usr/bin/g++ ..
 make -j16

@@ -5,6 +5,7 @@ LPTLOGCATEGORYINST g_pSvrLogCat;
 LPTLOGCATEGORYINST g_pOssLogCat;
 
 char g_szLogMessage[4096];
+bool g_bNeedConsole;
 
 #if defined(WIN32)
 
@@ -33,5 +34,14 @@ void init_console_window(void)
 Exit0:
 	return;
 }
+
+#else
+
+#if defined(_DEBUG)
+void set_need_console(bool bNeedConsole)
+{
+	g_bNeedConsole = bNeedConsole;
+}
+#endif
 
 #endif	// WIN32

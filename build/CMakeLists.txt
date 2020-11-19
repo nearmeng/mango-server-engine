@@ -26,7 +26,7 @@ if (UNIX)
 	message("os is linux")
 
 	if (NOT CMAKE_BUILD_TYPE)
-		set(CMAKE_BUILD_TYPE Debug)
+		set(CMAKE_BUILD_TYPE "Debug")
 	endif ()
 
 	string(COMPARE EQUAL ${CMAKE_BUILD_TYPE} "Release" is_release)

@@ -7,7 +7,7 @@ extern LPTLOGCATEGORYINST g_pSvrLogCat;
 extern LPTLOGCATEGORYINST g_pOssLogCat;
 
 #ifdef __linux__
-	#ifndef __ROBOT__
+	#ifndef _DEBUG
 		#define CRI(__fmt__, args...) 	tlog_crit(g_pSvrLogCat, 0, 0, __fmt__, ##args)
 		#define WRN(__fmt__, args...) 	tlog_warn(g_pSvrLogCat, 0, 0, __fmt__, ##args)
 		#define ERR(__fmt__, args...)   tlog_error(g_pSvrLogCat, 0, 0, __fmt__, ##args)
@@ -15,13 +15,19 @@ extern LPTLOGCATEGORYINST g_pOssLogCat;
 		#define DBG(__fmt__, args...)   tlog_debug(g_pSvrLogCat, 0, 0, __fmt__, ##args)
 	#else
 		extern char g_szLogMessage[4096];
+		extern bool g_bNeedConsole;
+		void set_need_console(bool bNeedConsole);
+
 		#define CONSOLE_LOG(__priority__, __fmt__, args...)						\
-				do																	\
-				{																	\
+				do																\
+				{																\
 					__priority__(g_pSvrLogCat, 0, 0, __fmt__, ##args);			\
-					snprintf(g_szLogMessage, 1024, __fmt__, ##args);			\
-					strxcat(g_szLogMessage, "\n", 1024);							\
-					printf(g_szLogMessage);											\
+					if (g_bNeedConsole)                                         \
+					{                                                           \
+						snprintf(g_szLogMessage, 1024, __fmt__, ##args);		\
+						strxcat(g_szLogMessage, "\n", 1024);					\
+						printf(g_szLogMessage);									\
+					}                                                          \
 				} while (0)
 		#define CRI(__fmt__, args...)		CONSOLE_LOG(tlog_crit, __fmt__, ##args)
 		#define ERR(__fmt__, args...)		CONSOLE_LOG(tlog_error, __fmt__, ##args)

@@ -204,7 +204,9 @@ void CRobotInteractMgr::_process_user_input(const char* pInput)
 		nRetCode = m_pScript->call_function("gmcommand", "s", pInput);
 		LOG_PROCESS_ERROR(nRetCode);
 
+		fflush(stdout);
 		printf(">> ");
+		fflush(stdout);
 	}
 
 Exit0:

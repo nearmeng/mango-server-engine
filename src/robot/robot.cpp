@@ -21,6 +21,10 @@ static BOOL do_init(void)
 	WSADATA wsaData;
 	nRetCode = WSAStartup(0x202, &wsaData);
 	LOG_PROCESS_ERROR(nRetCode == 0);
+#else
+#if defined(_DEBUG)
+	set_need_console(true);
+#endif
 #endif	// WIN32
 
 	pLogCtx = tlog_init_from_file("./tlog.xml");
