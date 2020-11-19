@@ -42,7 +42,7 @@
                     <SizeLimit> 10240000 </SizeLimit>
                     <Precision> 1 </Precision>
                     <MaxRotate> 0 </MaxRotate>
-                    <SyncTime> 1 </SyncTime>
+                    <SyncTime> 0 </SyncTime>
                     <NoFindLatest> 0 </NoFindLatest>
                 </File>
             </Device>
