@@ -4,10 +4,11 @@
 LPTLOGCATEGORYINST g_pSvrLogCat;
 LPTLOGCATEGORYINST g_pOssLogCat;
 
+char g_szLogMessage[4096];
+
 #if defined(WIN32)
 
 HANDLE g_hConsole = INVALID_HANDLE_VALUE;
-char g_szLogMessage[4096];
 
 void init_console_window(void)
 {

@@ -20,5 +20,5 @@ else ()
 	)
 endif ()
 
-
+add_definitions ("/D__ROBOT__")
 add_dependencies (${TARGET_NAME} game_data)

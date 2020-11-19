@@ -15,7 +15,7 @@ class CRoleSubModuleParam
 
 #define  REG_ROLE_SUB_MODULE(__module_class__, __module_name__, __module_enum__)        \
     public:                                                                             \
-        inline __module_class__&  ##__module_name__()                                   \
+        inline __module_class__& __module_name__()                                   \
         { return m_##__module_name__; };                                               \
     private:                                                                            \
         __module_class__    m_##__module_name__;                                        \

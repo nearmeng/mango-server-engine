@@ -53,6 +53,8 @@ static BOOL do_init(void)
 	nRetCode = CRobotInteractMgr::instance().init();
 	LOG_PROCESS_ERROR(nRetCode);
 
+	INF("init robot success");
+
 	return TRUE;
 Exit0:
 	return FALSE;

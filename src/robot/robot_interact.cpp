@@ -63,7 +63,6 @@ void CRobotInteractMgr::mainloop()
 	pReadData = read_data();
 	if (pReadData)
 	{
-		//INF("read user input %s", pReadData);
 		_process_user_input(pReadData);
 	}
 
@@ -94,7 +93,9 @@ void* console_input(void* pParam)
 		{
 			pthread_mutex_lock(&g_process_lock[i]);
 			fgets(g_nbstdin_buffer[i], 1024, stdin);
+
 			g_input[i] = TRUE;
+
 			pthread_cond_wait(&g_process[i], &g_process_lock[i]);
 			pthread_mutex_unlock(&g_process_lock[i]);
 		}
@@ -159,8 +160,12 @@ const char* CRobotInteractMgr::read_data(void)
 	{
 		if (g_input[i])
 		{
-			pthread_cond_signal(&g_process[i]);
 			g_input[i] = FALSE;
+
+			pthread_mutex_lock(&g_process_lock[i]);
+			pthread_cond_signal(&g_process[i]);
+			pthread_mutex_unlock(&g_process_lock[i]);
+
 			return g_nbstdin_buffer[i];
 		}
 	}
