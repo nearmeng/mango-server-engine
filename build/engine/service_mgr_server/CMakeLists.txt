@@ -14,6 +14,6 @@ if (MSVC)
 	)
 else ()
 	target_link_libraries (${TARGET_NAME} 
-		lmdb
+		liblmdb.a
 	)
 endif ()

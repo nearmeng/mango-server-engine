@@ -6,31 +6,17 @@
     <WanType>BEST_EFFORT </WanType>
     <Channels type="ChannelCnf">
         <Address>1.0.1.1</Address>
-        <Address>1.0.2.1</Address>
+        <Address>1.0.7.1</Address>
         <RecvSize>10240000 </RecvSize>
         <SendSize>10240000 </SendSize>
-        <Desc>channel for tconnd(1.0.1.1) with server(1.0.2.1)</Desc>
-    </Channels>
-    <Channels type="ChannelCnf">
-        <Address>1.0.1.1</Address>
-        <Address>1.0.2.2</Address>
-        <RecvSize>10240000 </RecvSize>
-        <SendSize>10240000 </SendSize>
-        <Desc>channel for tconnd(1.0.1.1) with server(1.0.2.2)</Desc>
+        <Desc>channel for tconnd(1.0.1.1) with conn_server(1.0.7.1)</Desc>
     </Channels>
     <Channels type="ChannelCnf">
         <Address>1.0.1.2</Address>
-        <Address>1.0.2.1</Address>
+        <Address>1.0.7.2</Address>
         <RecvSize>10240000 </RecvSize>
         <SendSize>10240000 </SendSize>
-        <Desc>channel for tconnd(1.0.1.2) with server(1.0.2.1)</Desc>
-    </Channels>
-    <Channels type="ChannelCnf">
-        <Address>1.0.1.2</Address>
-        <Address>1.0.2.2</Address>
-        <RecvSize>10240000 </RecvSize>
-        <SendSize>10240000 </SendSize>
-        <Desc>channel for tconnd(1.0.1.2) with server(1.0.2.2)</Desc>
+        <Desc>channel for tconnd(1.0.1.2) with conn_server(1.0.7.2)</Desc>
     </Channels>
     <Channels type="ChannelCnf">
         <Address>1.0.3.1</Address>
@@ -73,5 +59,40 @@
         <RecvSize>10240000 </RecvSize>
         <SendSize>10240000 </SendSize>
         <Desc>channel for router_server(1.0.3.1) with func_server(1.0.6.2)</Desc>
+    </Channels>
+    <Channels type="ChannelCnf">
+        <Address>1.0.3.1</Address>
+        <Address>1.0.7.1</Address>
+        <RecvSize>10240000 </RecvSize>
+        <SendSize>10240000 </SendSize>
+        <Desc>channel for router_server(1.0.3.1) with conn_server(1.0.7.1)</Desc>
+    </Channels>
+    <Channels type="ChannelCnf">
+        <Address>1.0.3.1</Address>
+        <Address>1.0.7.2</Address>
+        <RecvSize>10240000 </RecvSize>
+        <SendSize>10240000 </SendSize>
+        <Desc>channel for router_server(1.0.3.1) with conn_server(1.0.7.2)</Desc>
+    </Channels>
+    <Channels type="ChannelCnf">
+        <Address>1.0.3.1</Address>
+        <Address>1.0.8.1</Address>
+        <RecvSize>10240000 </RecvSize>
+        <SendSize>10240000 </SendSize>
+        <Desc>channel for router_server(1.0.3.1) with db_proxy(1.0.8.1)</Desc>
+    </Channels>
+    <Channels type="ChannelCnf">
+        <Address>1.0.3.1</Address>
+        <Address>1.0.9.1</Address>
+        <RecvSize>10240000 </RecvSize>
+        <SendSize>10240000 </SendSize>
+        <Desc>channel for router_server(1.0.3.1) with online_server(1.0.9.1)</Desc>
+    </Channels>
+    <Channels type="ChannelCnf">
+        <Address>1.0.3.1</Address>
+        <Address>1.0.9.2</Address>
+        <RecvSize>10240000 </RecvSize>
+        <SendSize>10240000 </SendSize>
+        <Desc>channel for router_server(1.0.3.1) with online_server(1.0.9.2)</Desc>
     </Channels>
 </TbusGCIM>

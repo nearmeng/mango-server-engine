@@ -6,11 +6,7 @@
 #    exit -1
 #fi
 
-if [ $# -ne 1 ];then
-    echo "Usage: tagent_init.sh value1 "
-    exit -1
-else
-    sed -i s#127.0.0.1#$1#g ../tagent/cfg/tagent.xml
-fi
+local_ip=`/sbin/ifconfig -a|grep inet|grep -v 127.0.0.1| grep -v 192.168|grep -v inet6|awk '{print $2}'|tr -d "addr:"`
+sed -i s#0.0.0.0#$local_ip#g ../tagent/cfg/tagent.xml
 
 echo "Msg:You can start tagent!"

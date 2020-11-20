@@ -30,7 +30,7 @@
         
             <Listeners type="Listener">
             <Name>server_text.1.0.2.1</Name>
-            <Url>udp://10.85.45.212:2001?reuse=1</Url>
+            <Url>udp://9.134.145.178:2001?reuse=1</Url>
             <SendBuff>0 </SendBuff>
             <RecvBuff>2048000</RecvBuff>
             <MaxIdle>0 </MaxIdle>
@@ -55,7 +55,57 @@
 		
             <Listeners type="Listener">
             <Name>server_text.1.0.2.2</Name>
-            <Url>udp://10.85.45.212:2002?reuse=1</Url>
+            <Url>udp://9.134.145.178:2002?reuse=1</Url>
+            <SendBuff>0 </SendBuff>
+            <RecvBuff>2048000</RecvBuff>
+            <MaxIdle>0 </MaxIdle>
+            <LogBin>0 </LogBin>
+            <TransLimit type="TransLimit">
+                <PkgHiMark>0 </PkgHiMark>
+                <PkgLoMark>0 </PkgLoMark>
+                <Period>0 </Period>
+                <Decay>0 </Decay>
+            </TransLimit>
+            <ConnLimit type="ConnLimit">
+                <Backlog>0 </Backlog>
+                <MaxConn>0 </MaxConn>
+                <Permit>0 </Permit>
+                <HighMark>0 </HighMark>
+                <LowMark>0 </LowMark>
+                <Period>0 </Period>
+            </ConnLimit>
+            <FailWait>0 </FailWait>
+            <FailOp>0 </FailOp>
+        </Listeners>
+		
+            <Listeners type="Listener">
+            <Name>conn_server_text.1.0.7.1</Name>
+            <Url>udp://9.134.145.178:7001?reuse=1</Url>
+            <SendBuff>0 </SendBuff>
+            <RecvBuff>2048000</RecvBuff>
+            <MaxIdle>0 </MaxIdle>
+            <LogBin>0 </LogBin>
+            <TransLimit type="TransLimit">
+                <PkgHiMark>0 </PkgHiMark>
+                <PkgLoMark>0 </PkgLoMark>
+                <Period>0 </Period>
+                <Decay>0 </Decay>
+            </TransLimit>
+            <ConnLimit type="ConnLimit">
+                <Backlog>0 </Backlog>
+                <MaxConn>0 </MaxConn>
+                <Permit>0 </Permit>
+                <HighMark>0 </HighMark>
+                <LowMark>0 </LowMark>
+                <Period>0 </Period>
+            </ConnLimit>
+            <FailWait>0 </FailWait>
+            <FailOp>0 </FailOp>
+        </Listeners>
+		
+            <Listeners type="Listener">
+            <Name>conn_server_text.1.0.7.2</Name>
+            <Url>udp://9.134.145.178:7002?reuse=1</Url>
             <SendBuff>0 </SendBuff>
             <RecvBuff>2048000</RecvBuff>
             <MaxIdle>0 </MaxIdle>
@@ -80,7 +130,7 @@
 		
             <Listeners type="Listener">
             <Name>func_server_text.1.0.6.1</Name>
-            <Url>udp://10.85.45.212:6001?reuse=1</Url>
+            <Url>udp://9.134.145.178:6001?reuse=1</Url>
             <SendBuff>0 </SendBuff>
             <RecvBuff>2048000</RecvBuff>
             <MaxIdle>0 </MaxIdle>
@@ -105,7 +155,7 @@
 		
             <Listeners type="Listener">
             <Name>func_server_text.1.0.6.2</Name>
-            <Url>udp://10.85.45.212:6002?reuse=1</Url>
+            <Url>udp://9.134.145.178:6002?reuse=1</Url>
             <SendBuff>0 </SendBuff>
             <RecvBuff>2048000</RecvBuff>
             <MaxIdle>0 </MaxIdle>
@@ -161,6 +211,46 @@
                 	<Device>
                     	<File>
                         	<Pattern>/data/home/stevhuang/binlog/%F/server_text.1.0.2.2_%H.log</Pattern>						
+                        	<BuffSize> 1024000 </BuffSize>
+                        	<SizeLimit> 51200000 </SizeLimit>
+                        	<Precision> 1 </Precision>
+                        	<MaxRotate> 0 </MaxRotate>
+                        	<SyncTime> 1 </SyncTime>
+                        	<NoFindLatest> 0 </NoFindLatest>
+                     	</File>
+                	</Device>
+            	</Logger>
+            	<DropHead>0 </DropHead>
+        	</Serializers>
+
+		
+		 	<Serializers type="Serializer">
+            	<Name>conn_server_text.1.0.7.1</Name>
+            	<Logger type="TLOGDevAny">
+                	<Type> FILE </Type>
+                	<Device>
+                    	<File>
+                        	<Pattern>/data/home/stevhuang/binlog/%F/conn_server_text.1.0.7.1_%H.log</Pattern>						
+                        	<BuffSize> 1024000 </BuffSize>
+                        	<SizeLimit> 51200000 </SizeLimit>
+                        	<Precision> 1 </Precision>
+                        	<MaxRotate> 0 </MaxRotate>
+                        	<SyncTime> 1 </SyncTime>
+                        	<NoFindLatest> 0 </NoFindLatest>
+                     	</File>
+                	</Device>
+            	</Logger>
+            	<DropHead>0 </DropHead>
+        	</Serializers>
+
+		
+		 	<Serializers type="Serializer">
+            	<Name>conn_server_text.1.0.7.2</Name>
+            	<Logger type="TLOGDevAny">
+                	<Type> FILE </Type>
+                	<Device>
+                    	<File>
+                        	<Pattern>/data/home/stevhuang/binlog/%F/conn_server_text.1.0.7.2_%H.log</Pattern>						
                         	<BuffSize> 1024000 </BuffSize>
                         	<SizeLimit> 51200000 </SizeLimit>
                         	<Precision> 1 </Precision>
@@ -241,6 +331,30 @@
             <PDU>default </PDU>
             <Listener>server_text.1.0.2.2</Listener>
             <Serializer>server_text.1.0.2.2</Serializer>
+        </NetTrans>
+
+		
+    		<NetTrans type="NetTrans">
+            <Name>conn_server_text.1.0.7.1</Name>
+            <LoadRatio>0 </LoadRatio>
+            <MaxFD>10240 </MaxFD>
+            <UseTimeStamp>0 </UseTimeStamp>
+            <Res>0 </Res>
+            <PDU>default </PDU>
+            <Listener>conn_server_text.1.0.7.1</Listener>
+            <Serializer>conn_server_text.1.0.7.1</Serializer>
+        </NetTrans>
+
+		
+    		<NetTrans type="NetTrans">
+            <Name>conn_server_text.1.0.7.2</Name>
+            <LoadRatio>0 </LoadRatio>
+            <MaxFD>10240 </MaxFD>
+            <UseTimeStamp>0 </UseTimeStamp>
+            <Res>0 </Res>
+            <PDU>default </PDU>
+            <Listener>conn_server_text.1.0.7.2</Listener>
+            <Serializer>conn_server_text.1.0.7.2</Serializer>
         </NetTrans>
 
 		

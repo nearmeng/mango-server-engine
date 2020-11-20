@@ -3,8 +3,8 @@
 <tagentconf __version="1">
 
     <!--DEFAULT VALUE: '10.85.45.212:8899'-->
-    <master>10.85.45.212:8899</master>
-    <slave>10.85.45.212:8899</slave>
+    <master>9.134.145.178:8899</master>
+    <slave>9.134.145.178:8899</slave>
 
 
     <!--DEFAULT VALUE: 'lib'-->

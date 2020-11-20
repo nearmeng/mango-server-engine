@@ -119,7 +119,7 @@ proc_connect:
       MaskCtrl: local
     - peer1: tconnd
       peer2: conn_server
-      Mask: 63.0.0.1024
+      Mask: 63.0.0.1023
     - peer1: router_server
       peer2: conn_server
       Mask: 63.0.0.0

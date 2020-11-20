@@ -3,10 +3,11 @@
     <Count>1 </Count>
     <tagent type="tagent">
         <tagentipcf type="tagentipcf">
-            <Hostname>TENCENT64.site</Hostname>
-            <EthConn>10.85.45.212</EthConn>
-            <Count>1 </Count>
-            <EthList>0.0.0.0</EthList>
+            <Hostname>VM_145_178_centos</Hostname>
+            <EthConn>9.134.145.178</EthConn>
+            <Count>2 </Count>
+            <EthList>9.134.145.178</EthList>
+            <EthList>192.168.10.1</EthList>
         </tagentipcf>
         <Count>3 </Count>
         <appInfo type="AppInfo">

@@ -1,5 +1,0 @@
-port: 9001
-tlog_home: ../log/%F
-log_priority: DEBUG
-tglog_addr: udp://127.0.0.1:6666
-tlog_write_interval: 0
