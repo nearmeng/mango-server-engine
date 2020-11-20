@@ -1,2 +1,20 @@
 1 断线重连
 2 文档补充
+
+
+部署方式
+1 两个包或者一个包
+编译成功后，会产生一个mango.tar.gz发布包，或者还有一个工具包tools.tar.sz。也可以从mango包中提取出工具内容。
+工具包可以进行服务器环境的初始化操作。
+
+2 如何使用工具包初始环境
+主要使用工具包中的tcm工具，进行环境的初始化。tcm工具包括tcm控制端和tagent受控端两个部分。
+如果需要安装tcm控制端，则使用脚本tcm_init.sh进行初始化，然后使用脚本start_tcm.sh进行起tcm环境。
+如果需要安装tagent受控端，则使用脚本tagent_init.sh进行初始化，然后使用脚本start_tagent.sh进行起tagent环境。
+
+在发布一个版本包的时候，首先将打好的包传输到各个机器上，然后将该包解压到两个地方：
+1 标准化的/data/home/stevhuang/mango 目录下，该目录的名字可以在depoly的配置中指定
+2 标准化的tcm的conf模板中，用来给tcm生成配置
+
+在解压完成之后，就可以通过tcm进行进程的集中化的管理了。
+createcfg/pushcfg/refreshbuscfg/start/stop...
