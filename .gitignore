@@ -242,6 +242,7 @@ bin/*proxy
 bin/procmgr.py
 
 lib/*.a
+
 bin/tools/deploy/tcm/conf_output/*
 bin/tools/tcm_apps/tagent/TbusWorkDir/*
 bin/tools/tcm_apps/tcm/conf/template/*
@@ -252,3 +253,5 @@ bin/tools/tcm_apps/tcm/bin/tcm_bak/
 bin/tools/tcm_apps/tcm/conf/tbusconf/
 bin/tools/tcm_apps/tcm/log/
 bin/tools/tcm_apps/tcm/tcm_water_log/
+
+.vscode
