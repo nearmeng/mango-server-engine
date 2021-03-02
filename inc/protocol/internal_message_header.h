@@ -34,6 +34,20 @@ enum INTERNAL_MESSAGE_ID
 
 struct INTERNAL_MESSAGE_HEADER
 {
+    INTERNAL_MESSAGE_HEADER()
+    {
+        wMsg = 0;
+        nMsgSrcAddr = 0;
+        qwCoroID = 0;
+    }
+
+    void init_by_header(INTERNAL_MESSAGE_HEADER* pHeader)
+    {
+        wMsg = 0;
+        nMsgSrcAddr = 0;
+        qwCoroID = pHeader->qwCoroID;
+    }
+
 	uint16_t wMsg;
 	int32_t  nMsgSrcAddr;
     uint64_t qwCoroID;

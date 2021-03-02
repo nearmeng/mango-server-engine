@@ -35,7 +35,7 @@ static Message* g_CacheMsgInst[MAX_MESSAGE_ID];
 #define INIT_INTERNAL_MSG_VEC()					                                            \
 	INTERNAL_MESSAGE_HEADER* pstHeader = (INTERNAL_MESSAGE_HEADER*)pBuffer;                 \
 	pstHeader->wMsg = nMsgID; pstHeader->nMsgSrcAddr = CMGApp::instance().get_tbus_addr();	\
-    if(qwCoroID > 0) pstHeader->qwCoroID = qwCoroID; else pstHeader->qwCoroID = 0;          \
+    if(qwCoroID > 0) pstHeader->qwCoroID = qwCoroID;                                        
 	
 
 static Message* get_msg_inst(int32_t nMsgID)

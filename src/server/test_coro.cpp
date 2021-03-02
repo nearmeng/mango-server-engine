@@ -30,11 +30,13 @@ CORO_STATE CTestCoro::coro_process()
     pReply = (redisReply*)(get_coro_reply().pReplyData);
     INF("get result is %s", pReply->str);
 
-	TEST_SEND_DATA msg;
-	msg.nData = 123;
+    {
+        TEST_SEND_DATA msg;
+        msg.nData = 123;
 
-	nRetCode = send_server_msg_by_routerid(0, svrTest, 263, &msg, sizeof(msg), get_coro_id());
-	LOG_PROCESS_ERROR(nRetCode);
+        nRetCode = send_server_msg_by_routerid(0, svrTest, 263, &msg, sizeof(msg), get_coro_id());
+        LOG_PROCESS_ERROR(nRetCode);
+    }
 
     CORO_YIELD()
 

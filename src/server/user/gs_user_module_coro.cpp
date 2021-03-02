@@ -148,13 +148,15 @@ CORO_STATE CLoginCoro::coro_process()
     LOG_PROCESS_ERROR_RET_CODE(CTimeMgr::instance().get_time_sec() > pUser->dwBanEndTime, errLoginUserBanned);
 
     //check user login uniq
-    G2O_USER_LOGIN msg;
-	msg.qwUserID = m_qwUserID;
-    msg.qwSessionID = m_qwSessionID;
-    msg.nServerAddr = CMGApp::instance().get_tbus_addr();
+    {
+        G2O_USER_LOGIN msg;
+        msg.qwUserID = m_qwUserID;
+        msg.qwSessionID = m_qwSessionID;
+        msg.nServerAddr = CMGApp::instance().get_tbus_addr();
 
-	nRetCode = send_server_msg_by_routerid(m_qwUserID, svrOnline, g2o_user_login, &msg, sizeof(msg), get_coro_id());
-	LOG_PROCESS_ERROR(nRetCode);
+        nRetCode = send_server_msg_by_routerid(m_qwUserID, svrOnline, g2o_user_login, &msg, sizeof(msg), get_coro_id());
+        LOG_PROCESS_ERROR(nRetCode);
+    }
 
     CORO_YIELD()
     
