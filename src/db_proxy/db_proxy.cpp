@@ -7,7 +7,10 @@ int main(int argc, char* argv[])
     int32_t nRetCode = 0;
     CMGApp* pServer = &CMGApp::instance();
 
-    pServer->set_use_router(TRUE);
+    MG_CONFIG config;
+    config.bUseRouter = TRUE;
+    pServer->set_config(config);
+
     MG_REGISTER_MODULE(pServer, CRedisModule);
 
     nRetCode = pServer->init("redis_server", argc, argv);

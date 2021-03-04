@@ -55,8 +55,16 @@ int main(int argc, char* argv[])
     int32_t nRetCode = 0;
     CMGApp* pServer = &CMGApp::instance();
 
-    pServer->set_use_router(TRUE);
-    pServer->set_control_func(control_init, control_fini, control_pre_proc_cmdline, control_proc_cmdline, control_help);
+    MG_CONFIG config;
+    config.bUseRouter = TRUE;
+    config.pControlInit = control_init;
+    config.pControlFini = control_fini;
+    config.pControlPreProc = control_pre_proc_cmdline;
+    config.pControlProc = control_proc_cmdline;
+    config.pControlHelp = control_help;
+
+    pServer->set_config(config);
+
     MG_REGISTER_MODULE(pServer, CControlModule);
 
     nRetCode = pServer->init("control_server", argc, argv);

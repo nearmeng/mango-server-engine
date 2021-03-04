@@ -95,6 +95,8 @@ include_directories (
 	${BASE_DIR}/thirdparty/libevent/inc
 	${BASE_DIR}/thirdparty/tgcpapi/inc
     ${BASE_DIR}/thirdparty/hiredis/inc
+	${BASE_DIR}/thirdparty/gtest
+	${BASE_DIR}/thirdparty/gmock
 )
 
 link_directories (
@@ -109,13 +111,15 @@ link_directories (
 	${BASE_DIR}/thirdparty/libevent/lib
 	${BASE_DIR}/thirdparty/tgcpapi/lib
     ${BASE_DIR}/thirdparty/hiredis/lib
+	${BASE_DIR}/thirdparty/gtest/lib
+	${BASE_DIR}/thirdparty/gmock/lib
 )
 
 pre_toluapp(${BASE_DIR}/src)
 preprocess_proto("src/proto")
 
 set(ENGINE_TARGET_LIST common server_base router_client db_proxy_client db_proxy router_server service_mgr_server control_server conn_server)
-set(TOOLS_TARGET_LIST robot)
+set(TOOLS_TARGET_LIST robot test)
 
 #project directories
 add_subdirectory (engine)

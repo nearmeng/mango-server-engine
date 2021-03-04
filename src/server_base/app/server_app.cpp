@@ -68,7 +68,7 @@ BOOL CMGApp::_default_msg_recv_proc(const char* pBuff, size_t nSize, int32_t nSr
 		//default process
 		if (nServerType == svrTconnd)
 		{
-			LOG_PROCESS_ERROR(ms_Instance.m_bUseTconnd);
+			LOG_PROCESS_ERROR(ms_Instance.m_Config.bUseTconnd);
 			recv_conn_msg_proc(nSrcAddr, pBuff, nSize);
 		}
 		else
@@ -100,9 +100,9 @@ void CMGApp::_frame_timeout(uint64_t qwTimerID, void* pCbData, int32_t nCbDataLe
     CGlobalStacklessMgr::instance().mainloop();
 
     //user callback
-    if (ms_Instance.m_pUserFrame)
+    if (ms_Instance.m_Config.pAppFrame)
     {
-        ms_Instance.m_pUserFrame();
+        ms_Instance.m_Config.pAppFrame();
     }
 
     ms_Instance.m_nServerFrame++;
@@ -115,6 +115,8 @@ int32_t CMGApp::_app_init(TAPPCTX* pCtx, void* pArg)
 {
 	int32_t nRetCode = 0;
 	BOOL bResume = ms_Instance.is_resume();
+    int32_t nShmSize = (ms_Instance.m_Config.nInitShmSize == 0) ? g_ServerConfig.Common.nInitShmSize : ms_Instance.m_Config.nInitShmSize;
+    int32_t nResMode = (ms_Instance.m_Config.nResMode == 0) ? g_ServerConfig.Common.nResMode : ms_Instance.m_Config.nResMode;
 
 	//log
 	nRetCode = ms_Instance._init_tlog();
@@ -138,7 +140,7 @@ int32_t CMGApp::_app_init(TAPPCTX* pCtx, void* pArg)
 	LOG_PROCESS_ERROR(nRetCode);
 
 	//shm
-	nRetCode = CShmMgr::get_instance().init(pCtx->iId, g_ServerConfig.Common.nInitShmSize, bResume);
+	nRetCode = CShmMgr::get_instance().init(pCtx->iId, nShmSize, bResume);
 	LOG_PROCESS_ERROR(nRetCode);
 
 	//guid
@@ -163,7 +165,7 @@ int32_t CMGApp::_app_init(TAPPCTX* pCtx, void* pArg)
 	}
 	
 	//router client or tbus 
-	if (!ms_Instance.m_bUseRouter)
+	if (!ms_Instance.m_Config.bUseRouter)
 	{
 		nRetCode = tbus_system_init(pCtx->iId, pCtx->iBus, _default_msg_recv_proc, bResume);
 		LOG_PROCESS_ERROR(nRetCode);
@@ -181,16 +183,16 @@ int32_t CMGApp::_app_init(TAPPCTX* pCtx, void* pArg)
 	nRetCode = CGlobalEventListMgr::instance().init(bResume);
 	LOG_PROCESS_ERROR(nRetCode);
 
-	if (ms_Instance.m_bUseTconnd)
+	if (ms_Instance.m_Config.bUseTconnd)
 	{
 		nRetCode = tconnapi_init((unsigned int)atol(pCtx->pszGCIMKey));
 		LOG_PROCESS_ERROR(nRetCode == 0);
 	}
 
     //res
-    if (ms_Instance.m_bUseRouter)
+    if (ms_Instance.m_Config.bUseRouter)
     {
-        nRetCode = CGlobalResMgr::instance().init(g_ServerConfig.Common.nResMode, bResume);
+        nRetCode = CGlobalResMgr::instance().init(nResMode, bResume);
         LOG_PROCESS_ERROR(nRetCode);
     }
 
@@ -208,22 +210,22 @@ int32_t CMGApp::_app_init(TAPPCTX* pCtx, void* pArg)
         LOG_PROCESS_ERROR(nRetCode);
     }
 
-    if (ms_Instance.m_bUseConn)
+    if (ms_Instance.m_Config.bUseConn)
     {
         register_server_msg_handler(conn_ntf_event, recv_conn_ntf_event);
         register_server_msg_handler(conn_transfer_msg, recv_conn_transfer_msg);
     }
 
-    if (ms_Instance.m_bUseDBProxy)
+    if (ms_Instance.m_Config.bUseDBProxy)
     {
         nRetCode = CDBProxyClient::instance().init(bResume);
         LOG_PROCESS_ERROR(nRetCode);
     }
 
     //user callback
-    if (ms_Instance.m_pUserInit)
+    if (ms_Instance.m_Config.pAppInit)
     {
-        nRetCode = ms_Instance.m_pUserInit(pCtx, ms_Instance.is_resume());
+        nRetCode = ms_Instance.m_Config.pAppInit(pCtx, ms_Instance.is_resume());
         LOG_PROCESS_ERROR(nRetCode);
     }
 
@@ -240,9 +242,9 @@ int32_t CMGApp::_app_fini(TAPPCTX* pCtx, void* pArg)
     BOOL bResume = ms_Instance.is_resume();
 
     //user callback
-    if (ms_Instance.m_pUserFini)
+    if (ms_Instance.m_Config.pAppFini)
     {
-        nRetCode = ms_Instance.m_pUserFini(pCtx, ms_Instance.is_resume());
+        nRetCode = ms_Instance.m_Config.pAppFini(pCtx, ms_Instance.is_resume());
         LOG_CHECK_ERROR(nRetCode);
     }
 
@@ -263,19 +265,19 @@ int32_t CMGApp::_app_fini(TAPPCTX* pCtx, void* pArg)
     nRetCode = CGlobalStacklessMgr::instance().uninit();
     LOG_CHECK_ERROR(nRetCode);
 
-	if (ms_Instance.m_bUseTconnd)
+	if (ms_Instance.m_Config.bUseTconnd)
 		tconnapi_fini();
 
 	nRetCode = guid_uninit();
 	LOG_CHECK_ERROR(nRetCode);
 
-    if (ms_Instance.m_bUseDBProxy)
+    if (ms_Instance.m_Config.bUseDBProxy)
     {
         nRetCode = CDBProxyClient::instance().uninit();
         LOG_CHECK_ERROR(nRetCode);
     }
     
-    if (ms_Instance.m_bUseRouter)
+    if (ms_Instance.m_Config.bUseRouter)
     {
         nRetCode = CGlobalResMgr::instance().uninit();
         LOG_CHECK_ERROR(nRetCode);
@@ -290,7 +292,7 @@ int32_t CMGApp::_app_fini(TAPPCTX* pCtx, void* pArg)
 	nRetCode = CScriptMgr::instance().uninit();
 	LOG_CHECK_ERROR(nRetCode);
 
-	if (!ms_Instance.m_bUseRouter)
+	if (!ms_Instance.m_Config.bUseRouter)
 	{
 		nRetCode = tbus_system_uninit();
 		LOG_CHECK_ERROR(nRetCode);
@@ -317,7 +319,7 @@ int32_t CMGApp::_app_proc(TAPPCTX* pCtx, void* pArg)
 	int32_t nRetCode = 0;
 
     //tbus
-	if (!ms_Instance.m_bUseRouter)
+	if (!ms_Instance.m_Config.bUseRouter)
 		nRetCode = tbus_recv_data();
 	else
 		nRetCode = CRouterClient::instance().mainloop();
@@ -367,9 +369,9 @@ int32_t CMGApp::_app_reload(TAPPCTX* pCtx, void* pArg)
     }
 
     //user callback
-    if (ms_Instance.m_pUserReload)
+    if (ms_Instance.m_Config.pAppReload)
     {
-        ms_Instance.m_pUserReload(pCtx, ms_Instance.is_resume());
+        ms_Instance.m_Config.pAppReload(pCtx, ms_Instance.is_resume());
     }
 
 	ms_Instance.m_dwLastReloadTime = nCurrTime;
@@ -423,9 +425,9 @@ int32_t CMGApp::_app_stop(TAPPCTX* pCtx, void* pArg)
             }
         }
 
-        if (ms_Instance.m_pUserStop)
+        if (ms_Instance.m_Config.pAppStop)
         {
-            nRetCode = ms_Instance.m_pUserStop(pCtx, ms_Instance.is_resume());
+            nRetCode = ms_Instance.m_Config.pAppStop(pCtx, ms_Instance.is_resume());
             if (nRetCode == FALSE)
                 bAllStop = FALSE;
         }
@@ -463,17 +465,7 @@ CMGApp::CMGApp(void)
 
     m_dwLastReloadTime = 0;
     m_bNeedExitClean = TRUE;
-    m_bUseTconnd = FALSE;
-    m_bUseRouter = FALSE;
-    m_bUseConn = FALSE;
-    m_bUseDBProxy = FALSE;
-    
-    m_pUserInit = NULL;
-    m_pUserFini = NULL;
-    m_pUserFrame = NULL;
-    m_pUserReload = NULL;
-    m_pUserStop = NULL;
-
+    memset(&m_Config, 0, sizeof(m_Config));
     memset(m_UserMsgHandler, 0, sizeof(m_UserMsgHandler));
     m_ModuleCont.init();
 }
@@ -527,41 +519,6 @@ void CMGApp::fini()
     return ;
 }
     
-BOOL CMGApp::set_app_func(APP_FUNC pInit, APP_FUNC pFini, APP_FRAME_FUNC pFrame, APP_FUNC pReload, APP_FUNC pStop)
-{
-    int32_t nRetCode = 0;
-
-    m_pUserInit = pInit;
-    m_pUserFini = pFini;
-    m_pUserFrame = pFrame;
-    m_pUserReload = pReload;
-    m_pUserStop = pStop;
-
-    return TRUE;
-Exit0:
-    return FALSE;
-}
-    
-BOOL CMGApp::set_control_func(CONTROL_INIT_FUNC pInit, CONTROL_FINI_FUNC pFini, CONTROL_PRE_PROC_FUNC pPreProc, 
-        CONTROL_PROC_FUNC pProc, CONTROL_HELP_FUNC pHelp)
-{
-    LOG_PROCESS_ERROR(pInit);
-    LOG_PROCESS_ERROR(pFini);
-    LOG_PROCESS_ERROR(pPreProc);
-    LOG_PROCESS_ERROR(pProc);
-    LOG_PROCESS_ERROR(pHelp);
-
-    m_stAppCtx.pfnControllerInit = pInit;
-    m_stAppCtx.pfnPreprocCmdLine = pPreProc;
-    m_stAppCtx.pfnControllerFini = pFini;
-    m_stAppCtx.pfnProcCmdLine = pProc;
-    m_stAppCtx.pfnGetCtrlUsage = pHelp;
-
-    return TRUE;
-Exit0:
-    return FALSE;
-}
-    
 BOOL CMGApp::set_user_msg_handler(int32_t nServerType, USER_MSG_HANDLER pMsgHandler)
 {
 	LOG_PROCESS_ERROR(pMsgHandler);
@@ -607,4 +564,15 @@ CServerModule* CMGApp::get_module(const char* pcszModuleName)
 
 Exit0:
     return NULL;
+}
+
+void CMGApp::set_config(MG_CONFIG& config)
+{
+    m_Config = config;
+    
+    m_stAppCtx.pfnControllerInit = config.pControlInit;
+    m_stAppCtx.pfnPreprocCmdLine = config.pControlPreProc;
+    m_stAppCtx.pfnControllerFini = config.pControlFini;
+    m_stAppCtx.pfnProcCmdLine = config.pControlProc;
+    m_stAppCtx.pfnGetCtrlUsage = config.pControlHelp;
 }

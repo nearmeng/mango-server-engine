@@ -331,6 +331,8 @@ BOOL CCoroStacklessMgr<T>::resume_coro(CCoroStackless* pCoro)
     nRetCode = del_node<T>(&m_RunLinkHead, qwCoroMid);
     LOG_CHECK_ERROR(nRetCode);
 
+    pCoro->set_state(crsStart);
+
     CGlobalStacklessMgr::instance().push_curr_coro(pCoro);
     nReturnState = pCoro->coro_process();
     CGlobalStacklessMgr::instance().pop_curr_coro();

@@ -355,10 +355,13 @@ Exit1:
 
     int32_t nRetCode = 0;
     CMGApp* pServer = &CMGApp::instance();
+    
+    MG_CONFIG config;
+    config.bUseRouter = TRUE;
+    config.bUseConn = TRUE;
+    config.bUseDBProxy = TRUE;
 
-    pServer->set_use_router(TRUE);
-    pServer->set_use_conn(TRUE);
-    pServer->set_use_db_proxy(TRUE);
+    pServer->set_config(config);
     
     MG_REGISTER_MODULE(pServer, CServerDefaultSessionModule);
     MG_REGISTER_MODULE(pServer, CUserModule);

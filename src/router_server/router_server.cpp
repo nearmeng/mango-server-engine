@@ -103,8 +103,15 @@ int main(int argc, char* argv[])
     int32_t nRetCode = 0;
     CMGApp* pServer = &CMGApp::instance();
 
+    MG_CONFIG config;
+    config.pAppInit = server_init;
+    config.pAppFini = server_fini;
+    config.pAppFrame = server_frame;
+    config.pAppReload = server_reload;
+    config.pAppStop = server_stop;
+
+    pServer->set_config(config);
     pServer->set_user_msg_handler(svrTotal, CRSMessageHandler::msg_handler);
-    pServer->set_app_func(server_init, server_fini, server_frame, server_reload, server_stop);
 
     nRetCode = pServer->init("router_server", argc, argv);
     LOG_PROCESS_ERROR(nRetCode);
