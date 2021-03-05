@@ -1,10 +1,12 @@
 #include "stdafx.h"
-#include "bt/bt_event.h"
-#include "bt/bt_mgr.h"
+#include "event/server_event.h"
+
+#include "config/global_config.h"
 
 #include "define/error_def.h"
 
-#include "config/global_config.h"
+#include "bt/bt_mgr.h"
+
 
 int32_t CBTEventList::ms_nTriggerLayer;
 int32_t CBTEventList::ms_nTriggerCounter;
@@ -21,8 +23,8 @@ BOOL CEventMgr::_init_event_def(void)
 {
 	int32_t nRetCode = 0;
 
-	REG_EVENT_DEF(evtRoleSyncData, botRole, evtStaticRoleBegin, evtStaticRoleEnd);
-	REG_EVENT_DEF(evtRoleKillNpc, botRole, evtDynamicBegin, evtDynamicEnd);
+	REG_EVENT_DEF(evtRoleSyncData, otRole, evtStaticRoleBegin, evtStaticRoleEnd);
+	REG_EVENT_DEF(evtRoleKillNpc, otRole, evtDynamicBegin, evtDynamicEnd);
 
 	return TRUE;
 Exit0:
@@ -58,10 +60,10 @@ int32_t CEventMgr::create_lua_event(const char* pcszEventName, int32_t nEventTyp
 {
 	int32_t nRetCode = 0;
 	int32_t nEventID = 0;
-	BT_EVENT* pEvent = NULL;
-	char szEventName[BT_EVENT_NAME_LEN];
+	EVENT_INFO* pEvent = NULL;
+	char szEventName[EVENT_NAME_LEN];
 
-	snprintf(szEventName, BT_EVENT_NAME_LEN, "%s_%s_%d_%d", pcszEventName, pScript->get_script_name(), nTemplateID, nEventParam);
+	snprintf(szEventName, EVENT_NAME_LEN, "%s_%s_%d_%d", pcszEventName, pScript->get_script_name(), nTemplateID, nEventParam);
 	nEventID = hash_string(szEventName);
 
 	pEvent = m_EventPool.find_object(nEventID);
@@ -89,10 +91,10 @@ int32_t CEventMgr::create_c_event(int32_t nEventType, int32_t nTemplateID, int32
 {
     int32_t nRetCode = 0;
     int32_t nEventID = 0;
-    BT_EVENT* pEvent = NULL;
-    char szEventName[BT_EVENT_NAME_LEN];
+    EVENT_INFO* pEvent = NULL;
+    char szEventName[EVENT_NAME_LEN];
 
-	snprintf(szEventName, BT_EVENT_NAME_LEN, "%s_%d_%d_%d", "c_register", nEventType, nTemplateID, nEventParam);
+	snprintf(szEventName, EVENT_NAME_LEN, "%s_%d_%d_%d", "c_register", nEventType, nTemplateID, nEventParam);
 	nEventID = hash_string(szEventName);
 
 	pEvent = m_EventPool.find_object(nEventID);
@@ -127,7 +129,7 @@ Exit0:
 BOOL CEventMgr::destroy_event(int32_t nEventID)
 {
 	int32_t nRetCode = 0;
-	BT_EVENT* pEvent = NULL;
+	EVENT_INFO* pEvent = NULL;
 
 	pEvent = m_EventPool.find_object(nEventID);
 	LOG_PROCESS_ERROR(pEvent);
@@ -140,7 +142,7 @@ Exit0:
 	return FALSE;
 }
 
-BT_EVENT* CEventMgr::find_event(int32_t nEventID)
+EVENT_INFO* CEventMgr::find_event(int32_t nEventID)
 {
 	return m_EventPool.find_object(nEventID);
 }
@@ -196,10 +198,10 @@ BOOL CBTEventList::init(int32_t nStartEventType, int32_t nEndEventType)
 {
 	int32_t nRetCode = 0;
 
-	LOG_PROCESS_ERROR(nEndEventType - nStartEventType < MAX_BT_EVENT_PER_OWNER);
+	LOG_PROCESS_ERROR(nEndEventType - nStartEventType < MAX_EVENT_PER_OWNER);
 
 	m_nEventCount = 0;
-	memset(m_EventInfo, 0, sizeof(m_EventInfo));
+	memset(m_EventData, 0, sizeof(m_EventData));
 
 	memset(m_byTypeCountList, 0, sizeof(m_byTypeCountList));
 	m_nStartEventType = nStartEventType;
@@ -224,8 +226,8 @@ BOOL CBTEventList::resume(void)
 
 	for (int32_t i = 0; i < m_nEventCount; i++)
 	{
-		m_EventInfo[i].pEvent = CEventMgr::instance().find_event(m_EventInfo[i].nEventID);
-		LOG_PROCESS_ERROR_DETAIL(m_EventInfo[i].pEvent, "can not find event %d", m_EventInfo[i].nEventID);
+		m_EventData[i].pEvent = CEventMgr::instance().find_event(m_EventData[i].nEventID);
+		LOG_PROCESS_ERROR_DETAIL(m_EventData[i].pEvent, "can not find event %d", m_EventData[i].nEventID);
 	}
 
 	return TRUE;
@@ -236,18 +238,18 @@ Exit0:
 BOOL CBTEventList::register_event(int32_t nEventID)
 {
 	int32_t nRetCode = 0;
-	BT_EVENT* pEvent = NULL;
+	EVENT_INFO* pEvent = NULL;
 
-	LOG_PROCESS_ERROR(m_nEventCount < MAX_BT_EVENT_COUNT);
+	LOG_PROCESS_ERROR(m_nEventCount < MAX_EVENT_COUNT);
 
 	pEvent = CEventMgr::instance().find_event(nEventID);
 	LOG_PROCESS_ERROR(pEvent);
 	LOG_PROCESS_ERROR_DETAIL(pEvent->nEventType >= m_nStartEventType, "invalid type %d", pEvent->nEventType);
 	LOG_PROCESS_ERROR_DETAIL(pEvent->nEventType < m_nEndEventType, "invalid Type %d", pEvent->nEventType);
 
-	m_EventInfo[m_nEventCount].nEventID = nEventID;
-	m_EventInfo[m_nEventCount].pEvent = pEvent;
-	m_EventInfo[m_nEventCount].bDeleted = FALSE;
+	m_EventData[m_nEventCount].nEventID = nEventID;
+	m_EventData[m_nEventCount].pEvent = pEvent;
+	m_EventData[m_nEventCount].bDeleted = FALSE;
 	m_nEventCount++;
 
 	m_byTypeCountList[pEvent->nEventType - m_nStartEventType]++;
@@ -263,21 +265,21 @@ BOOL CBTEventList::unregister_event(int32_t nEventID)
 
 	for (int32_t i = 0; i < m_nEventCount; i++)
 	{
-		if (m_EventInfo[i].nEventID == nEventID)
+		if (m_EventData[i].nEventID == nEventID)
 		{
-			int32_t nEventType = m_EventInfo[i].pEvent->nEventType;
+			int32_t nEventType = m_EventData[i].pEvent->nEventType;
 
 			if (m_nTriggerLayer <= 0)
 			{
 				for (int32_t j = i; j < m_nEventCount; j++)
-					m_EventInfo[j] = m_EventInfo[j + 1];
+					m_EventData[j] = m_EventData[j + 1];
 
 				m_nEventCount--;
 				m_byTypeCountList[nEventType - m_nStartEventType]--;
 			}
 			else
 			{
-				m_EventInfo[i].bDeleted = TRUE;
+				m_EventData[i].bDeleted = TRUE;
 				m_bPendingDelete = TRUE;
 			}
 
@@ -302,38 +304,40 @@ int32_t CBTEventList::trigger_event(int32_t nEventType, int32_t nEventTemplateID
 	if (m_nEventCount <= 0 || m_byTypeCountList[nEventType - m_nStartEventType] <= 0)
 		return brvSuccess;
 
-	LOG_PROCESS_ERROR(ms_nTriggerLayer < MAX_BT_EVENT_RECURSIVE_COUNT);
+	LOG_PROCESS_ERROR(ms_nTriggerLayer < MAX_EVENT_RECURSIVE_COUNT);
 
 	ms_nTriggerLayer++;
 	m_nTriggerLayer++;
 
 	for (int32_t i = 0; i < m_nEventCount; i++)
 	{
-		if (m_EventInfo[i].pEvent == NULL)
+        EVENT_INFO* pEventInfo = m_EventData[i].pEvent;
+
+		if (pEventInfo == NULL)
 			continue;
 
-		if (m_EventInfo[i].bDeleted)
+		if (m_EventData[i].bDeleted)
 			continue;
 
-		if (m_EventInfo[i].pEvent->nEventType != nEventType)
+		if (pEventInfo->nEventType != nEventType)
 			continue;
 
-		if (m_EventInfo[i].pEvent->nEventParam != nEventParam)
+		if (pEventInfo->nEventParam != nEventParam)
 			continue;
 
-		if (m_EventInfo[i].pEvent->nEventTemplateID != nEventTemplateID)
+		if (pEventInfo->nEventTemplateID != nEventTemplateID)
 			continue;
 
-		nOwnerType = CEventMgr::instance().get_event_owner(m_EventInfo[i].pEvent->nEventType);
+		nOwnerType = CEventMgr::instance().get_event_owner(pEventInfo->nEventType);
 
-        if (m_EventInfo[i].pEvent->nTreeID > 0)
+        if (pEventInfo->nTreeID > 0)
         {
-            nRetCode = CBTMgr::instance().start_run(Ctx, m_EventInfo[i].pEvent->nTreeID,
+            nRetCode = CBTMgr::instance().start_run(Ctx, pEventInfo->nTreeID,
                 nOwnerType, pOwner, qwOwnerID, llTriggerVar0, llTriggerVar1,
-                m_EventInfo[i].pEvent->llEventVar[0], m_EventInfo[i].pEvent->llEventVar[1], bRollBack);
+                pEventInfo->llEventVar[0], pEventInfo->llEventVar[1], bRollBack);
             LOG_CHECK_ERROR(nRetCode != brvError);
         }
-        else if(m_EventInfo[i].pEvent->pEventCallback)
+        else if(pEventInfo->pEventCallback)
         {
             EVENT_PARAM stParam;
             stParam.pOwner = pOwner;
@@ -342,7 +346,13 @@ int32_t CBTEventList::trigger_event(int32_t nEventType, int32_t nEventTemplateID
             stParam.qwOwnerID = qwOwnerID;
             stParam.nOwnerType = nOwnerType;
 
-            m_EventInfo[i].pEvent->pEventCallback(m_EventInfo[i].pEvent, stParam);
+            pEventInfo->pEventCallback(pEventInfo, stParam);
+        }
+        else
+        {
+            WRN("can not trigger event, eventid %d type %d template_id %d param %d", pEventInfo->nEventID, pEventInfo->nEventType,
+                pEventInfo->nEventTemplateID, pEventInfo->nEventParam);
+            LOG_PROCESS_ERROR(FALSE);
         }
 
 		if (bBreakOnFail)
@@ -361,12 +371,12 @@ int32_t CBTEventList::trigger_event(int32_t nEventType, int32_t nEventTemplateID
 	{
 		for (int32_t i = m_nEventCount - 1; i >= 0; i--)
 		{
-			if (m_EventInfo[i].bDeleted)
+			if (m_EventData[i].bDeleted)
 			{
-				int32_t nEventType = m_EventInfo[i].pEvent->nEventType;
+				int32_t nEventType = m_EventData[i].pEvent->nEventType;
 
 				for (int32_t j = i; j < m_nEventCount; j++)
-					m_EventInfo[j] = m_EventInfo[j + 1];
+					m_EventData[j] = m_EventData[j + 1];
 
 				m_nEventCount--;
 				m_byTypeCountList[nEventType - m_nStartEventType]--;
@@ -394,7 +404,7 @@ BOOL CBTEventList::is_event_registed(int32_t nEventType, int32_t nEventTemplateI
 
 	for (int32_t i = 0; i < m_nEventCount; i++)
 	{
-		BT_EVENT* pEvent = m_EventInfo[i].pEvent;
+		EVENT_INFO* pEvent = m_EventData[i].pEvent;
 		LOG_PROCESS_ERROR(pEvent);
 
 		if (pEvent->nEventType != nEventType)
@@ -452,7 +462,7 @@ BOOL CGlobalEventListMgr::register_global_event(int32_t nEventID)
 	int32_t nRetCode = 0;
 	uint64_t qwEventListID = 0;
 	CBTEventList* pEventList = NULL;
-	BT_EVENT* pEvent = NULL;
+	EVENT_INFO* pEvent = NULL;
 	int32_t nStartType = 0;
 	int32_t nEndType = 0;
 
@@ -484,7 +494,7 @@ Exit0:
 BOOL CGlobalEventListMgr::unregister_global_event(int32_t nEventID)
 {
 	int32_t nRetCode = 0;
-	BT_EVENT* pEvent = NULL;
+	EVENT_INFO* pEvent = NULL;
 	int32_t nStartType = 0;
 	uint64_t qwEventListID = 0;
 	CBTEventList* pEventList = NULL;

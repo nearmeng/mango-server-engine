@@ -64,8 +64,8 @@ BOOL reg_bt_owner(void)
 {
 	int32_t nRetCode = 0;
 
-	REG_BT_OWNER(botRole, "CRole", bt_get_role, bt_get_role_var);
-	REG_BT_OWNER(botScene, "CScene", bt_get_scene, bt_get_scene_var);
+	REG_BT_OWNER(otRole, "CRole", bt_get_role, bt_get_role_var);
+	REG_BT_OWNER(otScene, "CScene", bt_get_scene, bt_get_scene_var);
 
 	return TRUE;
 Exit0:

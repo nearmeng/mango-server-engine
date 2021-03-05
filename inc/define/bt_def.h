@@ -1,19 +1,16 @@
 #ifndef _BT_DEF_H_
 #define _BT_DEF_H_
 
+#include "object_def.h"
+
 #define MAX_BT_CHILD_COUNT		(64)
 #define MAX_CALL_FRAME			(16)
 #define MAX_BT_PARAM			(6)
 #define BT_NODE_NAME_LEN		(32)
 #define MAX_BT_REPEAT_TIME		(32)
 #define BT_LOCAL_VAR_COUNT		(4)
-#define MAX_BT_EVENT_COUNT		(32)
-#define MAX_BT_EVENT_PER_OWNER	(64)
-#define MAX_BT_EVENT_TRIGGER_COUNT	(256)
-#define BT_EVENT_NAME_LEN		(128)
-#define MAX_BT_EVENT_RECURSIVE_COUNT  (8)
-#define MAX_BT_EVENT_VAR_COUNT		(2)
 #define MAX_BT_TRIGGER_VAR_COUNT	(2)
+#define MAX_BT_EVENT_VAR_COUNT		(2)
 
 #define BT_COMMON_LEN			(128)
 #define BT_ACTION_NAME_LEN		(32)
@@ -30,25 +27,9 @@
 	nRetCode = CBTMgr::instance().register_c_action(#__type__, __type__, __func__); \
 	LOG_PROCESS_ERROR(nRetCode);
 
-#define REG_EVENT_DEF(__type__, __owner__, __start_type__, __end_type__)  \
-	nRetCode |= CEventMgr::instance().register_event_def(__type__, #__type__, __owner__, __start_type__, __end_type__); \
-	LOG_PROCESS_ERROR(nRetCode);
-
 #define REG_BT_OWNER(__type__, __class_name__, __get_owner_func__, __get_owner_var_func__) \
 	nRetCode |= CBTMgr::instance().register_owner_data(__type__, __class_name__, __get_owner_func__, __get_owner_var_func__); \
 	LOG_PROCESS_ERROR(nRetCode)
-
-struct BT_EVENT;
-struct EVENT_PARAM
-{
-    int32_t     nOwnerType;
-    void*       pOwner;
-    uint64_t    qwOwnerID;
-    int64_t     llTriggerVar0;
-    int64_t     llTriggerVar1;
-};
-
-typedef void(*EVENT_CALLBACK)(BT_EVENT* pEvent, EVENT_PARAM& stEventParam);
 
 //tolua_begin
 
@@ -93,43 +74,6 @@ enum BT_NODE_TYPE
 	btUserDefine,
 
 	btTotal = 1024
-};
-
-enum BT_OWNER_TYPE
-{
-	botInvalid,
-
-	botRole,
-	botScene,
-
-	botTotal
-};
-
-enum BT_EVENT_TYPE
-{
-	evtInvalid,
-
-	evtStaticBegin,
-
-	evtStaticRoleBegin = evtStaticBegin,
-	
-	evtRoleSyncData,
-
-	evtStaticRoleEnd,
-	
-	evtStaticEnd,
-
-	evtDynamicBegin,
-
-	evtDynamicRoleBegin,
-
-	evtRoleKillNpc,
-
-	evtDynamicRoleEnd,
-
-	evtDynamicEnd,
-
-	evtTotal
 };
 
 enum BT_TARGET
@@ -259,29 +203,6 @@ struct BT_MGR_DATA
 	BT_ACTION_FUNC_DEF ActionDefList[btTotal];
 };
 
-//事件基础信息
-struct BT_EVENT
-{
-	int32_t			nEventID;			// 事件ID
-	int32_t			nEventType;			// 事件类型
-	int32_t			nEventTemplateID;	// 事件的模板ID
-	int32_t			nEventParam;		// 事件参数
-	int32_t			nTreeID;			// 触发的行为树ID
-	uint64_t		qwSourceID;			// 事件源ID
-	int64_t			llEventVar[2];		// 事件注册参数
-    EVENT_CALLBACK  pEventCallback;     // C回调函数
-};
-	
-//事件基本定义
-struct BT_EVENT_DEF
-{
-	int32_t			nEventType;
-	char			szName[BT_ACTION_NAME_LEN];
-	int32_t			nOwnerType;
-	int32_t			nStartEventType;
-	int32_t			nEndEventType;
-};
-	
 typedef void* (*GET_OWNER)(uint64_t qwOwnerID);
 typedef int32_t (*GET_OWNER_VAR)(uint64_t qwOwnerID, int32_t nVarType, int32_t nVarIndex);
 typedef int32_t (*REG_BT_OWNER_FUNC)(void);

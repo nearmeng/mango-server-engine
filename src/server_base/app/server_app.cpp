@@ -5,7 +5,7 @@
 #include "res_mgr/global_res_mgr.h"
 
 #include "bt/bt_mgr.h"
-#include "bt/bt_event.h"
+#include "event/server_event.h"
 
 #include "time/time_mgr.h"
 #include "guid/guid.h"
@@ -115,8 +115,8 @@ int32_t CMGApp::_app_init(TAPPCTX* pCtx, void* pArg)
 {
 	int32_t nRetCode = 0;
 	BOOL bResume = ms_Instance.is_resume();
-    int32_t nShmSize = (ms_Instance.m_Config.nInitShmSize == 0) ? g_ServerConfig.Common.nInitShmSize : ms_Instance.m_Config.nInitShmSize;
-    int32_t nResMode = (ms_Instance.m_Config.nResMode == 0) ? g_ServerConfig.Common.nResMode : ms_Instance.m_Config.nResMode;
+    int32_t nShmSize = 0; 
+    int32_t nResMode = 0; 
 
 	//log
 	nRetCode = ms_Instance._init_tlog();
@@ -138,6 +138,9 @@ int32_t CMGApp::_app_init(TAPPCTX* pCtx, void* pArg)
 	//server config
 	nRetCode = load_global_server_config();
 	LOG_PROCESS_ERROR(nRetCode);
+
+    nShmSize = (ms_Instance.m_Config.nInitShmSize == 0) ? g_ServerConfig.Common.nInitShmSize : ms_Instance.m_Config.nInitShmSize;
+    nResMode = (ms_Instance.m_Config.nResMode == 0) ? g_ServerConfig.Common.nResMode : ms_Instance.m_Config.nResMode;
 
 	//shm
 	nRetCode = CShmMgr::get_instance().init(pCtx->iId, nShmSize, bResume);

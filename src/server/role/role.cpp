@@ -3,7 +3,8 @@
 
 #include "db/role_db_data.pb.h"
 
-#include "bt/bt_event.h"
+#include "event/server_event.h"
+#include "define/bt_def.h"
 
 int32_t CRole::m_nSubModuleOffset[rsmtTotal] = { 0 };
 INIT_MSG_HANDLER_FUNC CRole::m_pSubModuleMsg[rsmtTotal] = { 0 };
@@ -240,13 +241,13 @@ Exit0:
     return FALSE;
 }
     
-void CRole::_on_event_role_sync_data(BT_EVENT* pEvent, EVENT_PARAM& stEventParam)
+void CRole::_on_event_role_sync_data(EVENT_INFO* pEvent, EVENT_PARAM& stEventParam)
 {
     int32_t nRetCode = 0;
     CRole* pRole = NULL;
 
     LOG_PROCESS_ERROR(pEvent);
-    LOG_PROCESS_ERROR(stEventParam.nOwnerType == botRole);
+    LOG_PROCESS_ERROR(stEventParam.nOwnerType == otRole);
 
     pRole = (CRole*)stEventParam.pOwner;
     LOG_PROCESS_ERROR(pRole);

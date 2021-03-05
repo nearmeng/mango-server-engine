@@ -10,7 +10,7 @@
 #include "protocol/game_online_msg.h"
 #include "gs_user_module_msg_handler.h"
 
-#include "bt/bt_event.h"
+#include "event/server_event.h"
 
 static char s_szUserData[MAX_USER_DATA_SIZE];
 static char s_szRoleData[MAX_ROLE_DATA_SIZE];

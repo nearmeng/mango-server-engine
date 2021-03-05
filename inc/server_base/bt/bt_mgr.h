@@ -85,7 +85,7 @@ private:
 		GET_OWNER		pGetOwnerFunc;
 		GET_OWNER_VAR	pGetOwnerVarFunc;
 	};
-	OWNER_DATA m_OwnerDataList[botTotal];
+	OWNER_DATA m_OwnerDataList[otTotal];
 	
 	struct TRAVERSE_BT_CTX_RESUME
 	{

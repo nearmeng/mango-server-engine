@@ -7,7 +7,7 @@
 #include "config/global_config.h"
 
 #include "bt/bt_mgr.h"
-#include "bt/bt_event.h"
+#include "event/server_event.h"
 
 #include "define/role.h"
 #include "app/server_app.h"

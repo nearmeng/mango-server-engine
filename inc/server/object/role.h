@@ -9,7 +9,7 @@ namespace ROLE_DB
 {
     class ROLE_BASE_DATA;
 }
-struct BT_EVENT;
+struct EVENT_INFO;
 struct EVENT_PARAM;
 
 #define MAX_ROLE_SUB_MODULE_COUNT   (50)
@@ -76,7 +76,7 @@ private:
     BOOL _load_base_data(const ROLE_DB::ROLE_BASE_DATA& BaseData);
 
 private:
-    static void _on_event_role_sync_data(BT_EVENT* pEvent, EVENT_PARAM& stParam);
+    static void _on_event_role_sync_data(EVENT_INFO* pEvent, EVENT_PARAM& stParam);
 
 private:
     uint64_t    m_qwObjID;

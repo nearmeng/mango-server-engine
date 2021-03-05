@@ -1,7 +1,7 @@
-#ifndef _BT_EVENT_H_
-#define _BT_EVENT_H_
+#ifndef _SERVER_EVENT_H_
+#define _SERVER_EVENT_H_
 
-#include "define/bt_def.h"
+#include "define/event_def.h"
 #include "shm/shm_pool.h"
 
 class CEventMgr
@@ -20,7 +20,7 @@ public:
 	int32_t create_c_event(int32_t nEventType, int32_t nTemplateID, int32_t nEventParam, 
 		EVENT_CALLBACK pEventCallBack, uint64_t qwSourceID, int64_t llVar0 = 0, int64_t llVar1 = 0);
 	BOOL destroy_event(int32_t nEventID);
-	BT_EVENT* find_event(int32_t nEventID);
+	EVENT_INFO* find_event(int32_t nEventID);
 
 	int32_t get_event_owner(int32_t nEventType);
 	int32_t get_event_start_type(int32_t nEventType);
@@ -34,8 +34,8 @@ private:
 
 private:
 
-	CShmObjectPool<BT_EVENT, int32_t>  m_EventPool;
-	BT_EVENT_DEF ms_EventDefList[evtTotal];
+	CShmObjectPool<EVENT_INFO, int32_t>  m_EventPool;
+	EVENT_DEF ms_EventDefList[evtTotal];
 	static CEventMgr ms_Instance;
 };
 
@@ -59,15 +59,15 @@ public:
 
 private:
 	int32_t						m_nEventCount;
-	struct EVENT_INFO
+	struct EVENT_DATA
 	{
 		int32_t		nEventID;
-		BT_EVENT*	pEvent;
+		EVENT_INFO*	pEvent;
 		BOOL		bDeleted;
 	};
-	EVENT_INFO m_EventInfo[MAX_BT_EVENT_COUNT];
+	EVENT_DATA m_EventData[MAX_EVENT_COUNT];
 
-	uint8_t						m_byTypeCountList[MAX_BT_EVENT_PER_OWNER];
+	uint8_t						m_byTypeCountList[MAX_EVENT_PER_OWNER];
 	int32_t						m_nStartEventType;
 	int32_t						m_nEndEventType;
 

@@ -6,7 +6,7 @@
 
 #include "config/global_config.h"
 
-#include "bt/bt_event.h"
+#include "event/server_event.h"
 
 #ifdef _linux__
 #include <sys/types.h>
@@ -342,7 +342,7 @@ int32_t CBTMgr::start_run(BT_CTX& rCtx, int32_t nTreeID, int32_t nOwnerType, voi
 	uint64_t qwOwnerID, int64_t llEventVar0 /* = 0 */, int64_t llEventVar1 /* = 0 */, int64_t llTriggerVar0 /* = 0 */, int64_t llTriggerVar1 /* = 0 */, BOOL bRollback /* = FALSE */)
 {
 	int32_t nRetCode = 0;
-	BT_EVENT* pEvent = NULL;
+	EVENT_INFO* pEvent = NULL;
 	CLuaScript* pScript = m_pMgrData->stBtTree[nTreeID].pScript;
 
 	LOG_PROCESS_ERROR(nTreeID > 0 && nTreeID < MAX_BT_TREE_COUNT);
@@ -1232,7 +1232,7 @@ BOOL CBTMgr::register_owner_data(int32_t nOwnerType, const char* pcszName, GET_O
 	LOG_PROCESS_ERROR(pGetOwnerFunc);
 	LOG_PROCESS_ERROR(pGetOwnerVarFunc);
 
-	LOG_PROCESS_ERROR(nOwnerType > botInvalid && nOwnerType < botTotal);
+	LOG_PROCESS_ERROR(nOwnerType > otInvalid && nOwnerType < otTotal);
 
 	strxcpy(m_OwnerDataList[nOwnerType].szName, pcszName, BT_COMMON_LEN);
 	m_OwnerDataList[nOwnerType].pGetOwnerFunc = pGetOwnerFunc;
