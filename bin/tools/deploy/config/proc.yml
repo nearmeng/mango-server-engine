@@ -114,6 +114,9 @@ procs:
 
 proc_connect:
     - peer1: router_server
+      peer2: router_server
+      Mask: 63.0.0.0
+    - peer1: router_server
       peer2: server
       Mask: 63.0.0.0
       MaskCtrl: local
