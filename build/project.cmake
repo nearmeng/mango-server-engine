@@ -68,9 +68,20 @@ function (post_project)
 		set_target_properties (${TARGET_NAME} PROPERTIES ARCHIVE_OUTPUT_DIRECTORY_DEBUG ${BASE_DIR}/lib)
 		set_target_properties (${TARGET_NAME} PROPERTIES ARCHIVE_OUTPUT_DIRECTORY_RELEASE ${BASE_DIR}/lib)
 	elseif (TARGET_TYPE STREQUAL "DYNAMIC")
-		set_target_properties (${TARGET_NAME} PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${BASE_DIR}/bin)	
-		set_target_properties (${TARGET_NAME} PROPERTIES LIBRARY_OUTPUT_DIRECTORY_DEBUG ${BASE_DIR}/bin)	
-		set_target_properties (${TARGET_NAME} PROPERTIES LIBRARY_OUTPUT_DIRECTORY_RELEASE ${BASE_DIR}/bin)	
+        if(MSVC)
+            #windows, see dll as runtime target, and imported lib as archive target
+		    set_target_properties (${TARGET_NAME} PROPERTIES ARCHIVE_OUTPUT_DIRECTORY ${BASE_DIR}/lib)
+		    set_target_properties (${TARGET_NAME} PROPERTIES ARCHIVE_OUTPUT_DIRECTORY_DEBUG ${BASE_DIR}/lib)
+		    set_target_properties (${TARGET_NAME} PROPERTIES ARCHIVE_OUTPUT_DIRECTORY_RELEASE ${BASE_DIR}/lib)
+		
+            set_target_properties (${TARGET_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${BASE_DIR}/lib)
+		    set_target_properties (${TARGET_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG ${BASE_DIR}/lib)
+		    set_target_properties (${TARGET_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ${BASE_DIR}/lib})
+        else()
+		    set_target_properties (${TARGET_NAME} PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${BASE_DIR}/bin)	
+		    set_target_properties (${TARGET_NAME} PROPERTIES LIBRARY_OUTPUT_DIRECTORY_DEBUG ${BASE_DIR}/bin)	
+		    set_target_properties (${TARGET_NAME} PROPERTIES LIBRARY_OUTPUT_DIRECTORY_RELEASE ${BASE_DIR}/bin)	
+        end()
 	elseif (TARGET_TYPE STREQUAL "RUNTIME")
 		set_target_properties (${TARGET_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${BASE_DIR}/bin/${TARGET_NAME})
 		set_target_properties (${TARGET_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG ${BASE_DIR}/bin/${TARGET_NAME})
@@ -132,9 +143,12 @@ function (post_project)
 			lua
 			toluapp
 			protobuf
+            curl
 		)
 		endif ()
 	elseif (MSVC)
+	    add_definitions(-DCURL_STATICLIB)
+
 		target_link_libraries (${TARGET_NAME}
 		    libevent.lib libevent_core.lib libevent_extras.lib
 			debug lua.lib
@@ -143,6 +157,12 @@ function (post_project)
 			optimized toluapp.lib
 			debug libprotobufd.lib
 			optimized libprotobuf.lib
+            debug libcurld.lib
+            optimized libcurl.lib
+            libssl.lib
+            libcrypto.lib
+            crypt32.lib
+		    Wldap32.lib
 		)
 
 		if (TARGET_TYPE STREQUAL "RUNTIME")
