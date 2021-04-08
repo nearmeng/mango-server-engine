@@ -11,6 +11,6 @@ if (MSVC)
 	)
 else ()
 	target_link_libraries (${TARGET_NAME} 
-        curl
+        curl z crypto ssl
 	)
 endif ()

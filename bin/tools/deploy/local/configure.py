@@ -138,6 +138,9 @@ def write_channel(addr1, addr2, desc1, desc2, inst1, inst2, size = 4096000):
     file.write("\n")
 
 def write_across_channel(proc1, proc2, inst_num1 = 1, inst_num2 = 1):
+    if proc1 == proc2 :
+        return
+
     for inst1 in range(inst_num1):
         for inst2 in range(inst_num2):
             proc1_addr = "%s.%s.%s.%s" % (idc_id, zone_id, proc_funcid(proc1), inst1 + 1)

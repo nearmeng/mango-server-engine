@@ -11,7 +11,7 @@ include (toluapp.cmake)
 include (proto.cmake)
 include (project.cmake)
 
-set(CMAKE_VERBOSE_MAKEFILE on)
+#set(CMAKE_VERBOSE_MAKEFILE on)
 
 #set visual studio build type
 if (CMAKE_CONFIGURATION_TYPES)
@@ -35,9 +35,9 @@ if (UNIX)
 	string(COMPARE EQUAL ${CMAKE_BUILD_TYPE} "Debug" is_debug)
 
 	if (${is_release})
-		set(CMAKE_CXX_FLAGS "-O2 -fPIC -g -msse4.2 -std=c++0x -Wno-multichar -Wno-invalid-offsetof")
+		set(CMAKE_CXX_FLAGS "-O2 -fPIC -g -msse4.2 -std=c++11 -Wno-multichar -Wno-invalid-offsetof")
 	elseif (${is_debug})
-		set(CMAKE_CXX_FLAGS "-fPIC -g -msse4.2 -std=c++0x -Wno-multichar -Wno-invalid-offsetof")
+		set(CMAKE_CXX_FLAGS "-fPIC -g -msse4.2 -std=c++11 -Wno-multichar -Wno-invalid-offsetof")
 	endif ()
 elseif (MSVC)
 	message("os is windows")
