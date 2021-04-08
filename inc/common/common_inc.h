@@ -59,5 +59,7 @@
 
 #include "tbus/tbus_wrapper.h"
 
+#include "curl/curl_client.h"
+
 #endif   /* ----- #ifndef _COMMON_INC_H_  ----- */
 

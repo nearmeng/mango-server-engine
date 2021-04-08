@@ -11,6 +11,8 @@ include (toluapp.cmake)
 include (proto.cmake)
 include (project.cmake)
 
+set(CMAKE_VERBOSE_MAKEFILE on)
+
 #set visual studio build type
 if (CMAKE_CONFIGURATION_TYPES)
 	set (CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "" FORCE)
@@ -97,6 +99,7 @@ include_directories (
     ${BASE_DIR}/thirdparty/hiredis/inc
 	${BASE_DIR}/thirdparty/gtest
 	${BASE_DIR}/thirdparty/gmock
+    ${BASE_DIR}/thirdparty/curl/include
 )
 
 link_directories (
@@ -113,6 +116,7 @@ link_directories (
     ${BASE_DIR}/thirdparty/hiredis/lib
 	${BASE_DIR}/thirdparty/gtest/lib
 	${BASE_DIR}/thirdparty/gmock/lib
+	${BASE_DIR}/thirdparty/curl/lib
 )
 
 pre_toluapp(${BASE_DIR}/src)

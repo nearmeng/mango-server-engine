@@ -7,6 +7,7 @@
 #include "define/server_def.h"
 
 #include "protocol/common_message.h"
+#include "monitor/monitor_module.h"
 
 void test_func(int32_t nSrcAddr, const char* pBuffer, size_t dwSize)
 {
@@ -101,6 +102,8 @@ int main(int argc, char* argv[])
     config.bUseRouter = TRUE;
 
     pServer->set_config(config);
+
+    MG_REGISTER_MODULE(pServer, CMonitorModule, mtWeb, "http://appletuan.com/quotes/1");
 
     nRetCode = pServer->init("func_server", argc, argv);
     LOG_PROCESS_ERROR(nRetCode);
