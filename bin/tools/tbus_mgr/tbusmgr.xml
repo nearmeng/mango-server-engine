@@ -2,7 +2,6 @@
 <BusinessID>0</BusinessID>
 <AddrTemplet>6.8.8.10</AddrTemplet>
 <GCIMShmKey>669001</GCIMShmKey>
-
 <Channels>
     <Priority>8</Priority>
     <Address>1.0.3.1</Address>

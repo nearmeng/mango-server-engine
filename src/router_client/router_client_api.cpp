@@ -98,7 +98,7 @@ BOOL CRouterClient::init(int32_t nTbusHandle, int32_t nTbusID, MESSAGE_FUNC pMsg
 	LOG_PROCESS_ERROR(m_nRouterTbusID > 0);
 	LOG_PROCESS_ERROR(nCheckRounterCount == 1);
 
-    DBG("send register to router %s", tbus_get_str(m_nRouterTbusID));
+    DBG("[service mesh]: send register to router %s", tbus_get_str(m_nRouterTbusID));
 
 	nRetCode = _send_register(bResume);
 	LOG_PROCESS_ERROR(nRetCode);
@@ -605,7 +605,7 @@ BOOL CRouterClient::on_router_ntf_msg_clear(const char* pBuffer, size_t dwSize)
 	int32_t nRetCode = 0;
 	ROUTER_NTF_MSG_CLEAR* msg = (ROUTER_NTF_MSG_CLEAR*)pBuffer;
 
-	INF("router client recv msg clear, begin to ack, service_type %d event_type %d event_param %d", msg->nServiceType, msg->nEventType, msg->nEventParam);
+	INF("[service mesh]: router client recv msg clear, begin to ack, service_type %d event_type %d event_param %d", msg->nServiceType, msg->nEventType, msg->nEventParam);
 	
 	nRetCode = _send_msg_clear_ack(msg->nServiceType, msg->nEventType, msg->nEventParam);
 	LOG_PROCESS_ERROR(nRetCode);
@@ -623,8 +623,6 @@ BOOL CRouterClient::on_router_ntf_server_event(const char* pBuffer, size_t dwSiz
 
 	LOG_PROCESS_ERROR(msg->nEventType > setInvalid && msg->nEventType < setTotal);
 
-	INF("on router ntf event, event_type %d event_param %d", msg->nEventType, msg->nEventParam);
-
 	switch (msg->nEventType)
 	{
 	case setServerInit:
@@ -633,12 +631,19 @@ BOOL CRouterClient::on_router_ntf_server_event(const char* pBuffer, size_t dwSiz
 		if(m_pServerEventHandle[msg->nEventType])
 			(*m_pServerEventHandle[msg->nEventType])(tbus_get_type(msg->nEventParam), msg->nEventParam, 0, 0);
 
+        if(msg->nEventType == setServerInit)
+	        INF("[service mesh]: on router ntf event setServerInit service_type %d server_addr %s", tbus_get_type(msg->nEventParam), tbus_get_str(msg->nEventParam));
+        else if(msg->nEventType == setServerResume)
+	        INF("[service mesh]: on router ntf event setServerResume service_type %d server_addr %s", tbus_get_type(msg->nEventParam), tbus_get_str(msg->nEventParam));
+
 		break;
 	}
 	case setServerEndService:
 	{
 		if (m_pServerEventHandle[setServerEndService])
 			(*m_pServerEventHandle[setServerEndService])(0, 0, 0, 0);
+	        
+        INF("[service mesh]: on router ntf event setServerEndService");
 
 		break;
 	}
@@ -650,6 +655,11 @@ BOOL CRouterClient::on_router_ntf_server_event(const char* pBuffer, size_t dwSiz
 
 		nRetCode = _send_server_event_ack(msg->nEventType, msg->nEventParam);
 		LOG_PROCESS_ERROR(nRetCode);
+        
+        if(msg->nEventType == setServerDown)
+	        INF("[service_mesh]: on router ntf event setServerDown service_type %d server_addr %s server_op_phase %d", tbus_get_type(msg->nEventParam), tbus_get_str(msg->nEventParam), msg->nExtraParam);
+        else if(msg->nEventType == setServerRecover)
+	        INF("[service_mesh]: on router ntf event setServerRecover service_type %d server_addr %s server_op_phase %d", tbus_get_type(msg->nEventParam), tbus_get_str(msg->nEventParam), msg->nExtraParam);
 
 		break;
 	}
@@ -661,6 +671,11 @@ BOOL CRouterClient::on_router_ntf_server_event(const char* pBuffer, size_t dwSiz
 
 		nRetCode = _send_server_event_ack(msg->nEventType, msg->nEventParam);
 		LOG_PROCESS_ERROR(nRetCode);
+        
+        if(msg->nEventType == setServerExpand)
+	        INF("[service mesh]: on router ntf event setServerExpand service_type %d expand_target_server_count %d server_op_phase %d", (msg->nEventParam) >> 16, (msg->nEventParam) & 0xFFFF, msg->nExtraParam);
+        else if(msg->nEventType == setServerReduce)
+	        INF("[service mesh]: on router ntf event setServerReduce service_type %d reduce_target_server_count %d server_op_phase %d", (msg->nEventParam) >> 16, (msg->nEventParam) & 0xFFFF, msg->nExtraParam);
 
 		break;
 	}
@@ -668,6 +683,8 @@ BOOL CRouterClient::on_router_ntf_server_event(const char* pBuffer, size_t dwSiz
 	{
 		if (m_pServerEventHandle[msg->nEventType])
 			(*m_pServerEventHandle[msg->nEventType])(tbus_get_type(msg->nEventParam), msg->nEventParam, msg->nExtraParam, 0);
+	        
+        INF("[service mesh]: on router ntf event setServerInfoNtf service_type %d server_addr %s server_state %d", tbus_get_type(msg->nEventParam), tbus_get_str(msg->nEventParam), msg->nExtraParam);
 		break;
 	}
 	default:

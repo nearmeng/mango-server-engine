@@ -27,6 +27,7 @@ list (APPEND SRC_FILES
 	"${BASE_DIR}/bin/tools/deploy/config/local_deploy.yml"
 	"${BASE_DIR}/bin/tools/deploy/config/proc.yml"
 	"${BASE_DIR}/bin/tools/deploy/config/tcm_deploy.yml"
+	"${BASE_DIR}/bin/tools/deploy/local/configure.py"
 )
 
 process_proto("src/proto")

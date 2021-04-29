@@ -687,7 +687,6 @@ void CSMSMessageHandler::on_register(const char* pBuffer, size_t dwSize, int32_t
 				INF("sync data to registered router %d", tbus_get_inst(nSrcAddr));
 			}
 
-			INF("[service mgr]: recv router %s registerd", tbus_get_str(nSrcAddr));
 			break;
 		}
 		case svrServiceMgr:
@@ -1263,7 +1262,7 @@ void CSMSMessageHandler::on_router_alive_report(const char* pBuffer, size_t dwSi
 		return;
 
 	pRouterInfo = CServiceMgr::get_instance().get_router(nSrcAddr);
-	LOG_PROCESS_ERROR(pRouterInfo);
+	LOG_PROCESS_ERROR(pRouterInfo);         // may be old tbus msg
 
 	pRouterInfo->dwLastReportTime = CTimeMgr::instance().get_time_sec();
 	pRouterInfo->nState = svstInService;

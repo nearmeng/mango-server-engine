@@ -1130,8 +1130,10 @@ void CRSMessageHandler::on_service_mgr_server_info_ntf(const char* pBuffer, size
 			*pServerInfo = msg->ServerInfo[i];
 		}
 		
-		INF("[router network]: service mgr ntf server info, server %s router %s state %d load %d", tbus_get_str(msg->ServerInfo[i].nTbusAddr),
-									tbus_get_str(msg->ServerInfo[i].nRouterAddr), msg->ServerInfo[i].nState, msg->ServerInfo[i].nLoadValue);
+		std::string server_str = tbus_get_str(msg->ServerInfo[i].nTbusAddr);
+		std::string router_str = tbus_get_str(msg->ServerInfo[i].nRouterAddr);
+		INF("[router network]: service mgr ntf server info, server %s router %s state %d load %d", server_str.c_str(),
+									router_str.c_str(), msg->ServerInfo[i].nState, msg->ServerInfo[i].nLoadValue);
 	}
 
 Exit0:
