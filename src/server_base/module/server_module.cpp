@@ -62,7 +62,7 @@ Exit0:
 CServerModule* CServerModuleContainer::get_module_by_name(const char* pcszName)
 {
     LOG_PROCESS_ERROR(pcszName);
-    LOG_PROCESS_ERROR(m_Name2Module.find(pcszName) != m_Name2Module.end());
+    PROCESS_ERROR(m_Name2Module.find(pcszName) != m_Name2Module.end());
 
     return m_Name2Module[pcszName];
 Exit0:

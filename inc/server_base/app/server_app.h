@@ -2,14 +2,9 @@
 #define _SERVER_APP_H_
 
 #include "module/server_module.h"
+#include "module/server_component.h"
 #include "define/server_def.h"
 #include "define/str_def.h"
-
-#define MG_REGISTER_MODULE(__server__, __module_class__, ...)  \
-    __server__->register_module((CServerModule*)__module_class__::create_instance<__module_class__>(#__module_class__, ##__VA_ARGS__));  
-
-#define MG_GET_MODULE(__module_class__) \
-    (__module_class__*)CMGApp::instance().get_module(#__module_class__);
 
 typedef BOOL(*APP_FUNC)(TAPPCTX* pCtx, BOOL bResume);
 typedef BOOL(*APP_FRAME_FUNC)();
@@ -101,6 +96,8 @@ public:
     BOOL register_module(CServerModule* pModule);
     CServerModule* get_module(const char* pcszModuleName);
     
+    inline std::list<CComponentModule*>& get_component_list(int32_t nOwnerType);
+    
     BOOL set_user_msg_handler(int32_t nServerType, USER_MSG_HANDLER pMsgHandler);
 
 private:
@@ -129,14 +126,19 @@ private:
     MG_CONFIG m_Config;
 
     USER_MSG_HANDLER m_UserMsgHandler[svrTotal + 1];
-    CServerModuleContainer m_ModuleCont;
 
-    static CMGApp ms_Instance;
+    CServerModuleContainer m_ModuleCont;
+    std::map<int32_t, std::list<CComponentModule*> > m_ComponentModuleList;
+
+    static CMGApp* ms_Instance;  // to avoid construct behind other static auto register class 
 };
     
 inline CMGApp& CMGApp::instance()
 {
-    return ms_Instance;
+    if (ms_Instance == NULL)
+        ms_Instance = new CMGApp();
+
+    return *ms_Instance;
 }
 
 inline void CMGApp::set_state(int32_t nState)
@@ -174,5 +176,9 @@ inline BOOL CMGApp::is_resume(void)
 	return (m_stAppCtx.iStartMode == TAPP_START_MODE_RESUME);
 }
     
+inline std::list<CComponentModule*>& CMGApp::get_component_list(int32_t nOwnerType)
+{
+    return m_ComponentModuleList[nOwnerType];
+}
 
 #endif

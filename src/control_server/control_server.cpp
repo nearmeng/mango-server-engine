@@ -65,8 +65,6 @@ int main(int argc, char* argv[])
 
     pServer->set_config(config);
 
-    MG_REGISTER_MODULE(pServer, CControlModule);
-
     nRetCode = pServer->init("control_server", argc, argv);
     LOG_PROCESS_ERROR(nRetCode);
 

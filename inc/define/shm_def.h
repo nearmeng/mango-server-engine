@@ -41,6 +41,7 @@ enum SHM_TYPE_DEF
 
     stdOnlineUser,
     stdRole,
+    stdAchieve,
 
 	stdTotal = MAX_SHM_TYPE_COUNT,
 };

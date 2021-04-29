@@ -71,7 +71,7 @@ elseif (MSVC)
 		string (REPLACE "/MD" "/MT" "${flag}" "${${flag}}")
 		string (REPLACE "EHsc" "" "${flag}" "${${flag}}")
 
-		set ("${flag}" "${${flag}} /bigobj /GR- /fp:fast /Zc:wchar_t-")
+		set ("${flag}" "${${flag}} /bigobj /GR /fp:fast /Zc:wchar_t-")
 		message ("${flag} ${${flag}}")
 	endforeach ()
 

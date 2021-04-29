@@ -2,18 +2,14 @@
 #include "object/role.h"
 
 #include "db/role_db_data.pb.h"
+#include "define/object_def.h"
 
-#include "event/server_event.h"
-#include "define/bt_def.h"
-
-int32_t CRole::m_nSubModuleOffset[rsmtTotal] = { 0 };
-INIT_MSG_HANDLER_FUNC CRole::m_pSubModuleMsg[rsmtTotal] = { 0 };
-ROLE_SUB_MODULE_INIT CRole::m_pSubModuleInit[rsmtTotal] = { 0 };
-ROLE_SUB_MODULE_UNINIT CRole::m_pSubModuleUnInit[rsmtTotal] = { 0 };
+#include "guid/guid.h"
 
 BOOL CRole::init(uint64_t qwObjID)
 {
     int32_t nRetCode = 0;
+    std::list<CComponentModule*> ModuleList = CMGApp::instance().get_component_list(cotRole);
 
     m_qwObjID = qwObjID;
     m_qwUserID = 0;
@@ -25,13 +21,25 @@ BOOL CRole::init(uint64_t qwObjID)
 
     memset(m_szName, 0, sizeof(m_szName));
     m_nLevel = 0;
+    
+    nRetCode = m_ComponentCont.init();
+    LOG_PROCESS_ERROR(nRetCode);
 
-    for (int32_t i = rsmtInvalid + 1; i < rsmtTotal; i++)
+    for (std::list<CComponentModule*>::iterator it = ModuleList.begin(); it != ModuleList.end(); it++)
     {
-        CRoleSubModule* pSubModule  = (CRoleSubModule*)((char*)this + m_nSubModuleOffset[i]);
-        LOG_PROCESS_ERROR(pSubModule);
+        CComponent* pComp = NULL;
+        CComponentModule * pCompModule = *it;
 
-        nRetCode = pSubModule->init(this);
+        uint64_t qwComponentID = guid_alloc(gtdComponent);
+        LOG_PROCESS_ERROR(qwComponentID > 0);
+
+        pComp = pCompModule->new_component(qwComponentID);
+        LOG_PROCESS_ERROR(pComp);
+
+        nRetCode = pComp->init(this);
+        LOG_PROCESS_ERROR(nRetCode);
+
+        nRetCode = m_ComponentCont.add_component(pCompModule->get_owner_type(), qwComponentID, pComp);
         LOG_PROCESS_ERROR(nRetCode);
     }
 
@@ -46,14 +54,18 @@ BOOL CRole::uninit(void)
 {
     int32_t nRetCode = 0;
 
-    for (int32_t i = rsmtInvalid + 1; i < rsmtTotal; i++)
+    for (int32_t i = 0; i < MAX_COMPONENT_COUNT; i++)
     {
-        CRoleSubModule* pSubModule  = (CRoleSubModule*)((char*)this + m_nSubModuleOffset[i]);
-        LOG_PROCESS_ERROR(pSubModule);
-
-        nRetCode = pSubModule->uninit();
-        LOG_PROCESS_ERROR(nRetCode);
+        CComponent* pCompnent = m_ComponentCont.get_component(i);
+        if(pCompnent)
+        {
+            nRetCode = pCompnent->uninit();
+            LOG_CHECK_ERROR(nRetCode);
+        }
     }
+
+    nRetCode = m_ComponentCont.uninit();
+    LOG_CHECK_ERROR(nRetCode);
     
     DBG("role %lld is uninited", m_qwObjID);
 
@@ -64,30 +76,45 @@ Exit0:
 
 void CRole::mainloop()
 {
-    for (int32_t i = rsmtInvalid + 1; i < rsmtTotal; i++)
-    {
-        CRoleSubModule* pSubModule  = (CRoleSubModule*)((char*)this + m_nSubModuleOffset[i]);
-        LOG_PROCESS_ERROR(pSubModule);
+    m_ComponentCont.mainloop();
+}
+    
+void CRole::on_resume(void)
+{
+    int32_t nRetCode = 0;
 
-        pSubModule->mainloop();
+    std::list<CComponentModule*> ModuleList = CMGApp::instance().get_component_list(cotRole);
+    for (std::list<CComponentModule*>::iterator it = ModuleList.begin(); it != ModuleList.end(); it++)
+    {
+        CComponent* pComp = NULL;
+        CComponentModule * pCompModule = *it;
+
+        uint64_t qwComponentID = m_ComponentCont.get_component_id(pCompModule->get_owner_type());
+        LOG_PROCESS_ERROR(qwComponentID > 0);
+
+        pComp = pCompModule->find_component(qwComponentID);
+        LOG_PROCESS_ERROR(pComp);
+        
+        nRetCode = m_ComponentCont.set_component(pCompModule->get_owner_type(), pComp);
+        LOG_PROCESS_ERROR(nRetCode);
+
+        pComp->on_resume();
     }
 
 Exit0:
     return;
 }
     
-void CRole::on_resume(void)
+void CRole::on_event_sync_data(void)
 {
-    for (int32_t i = rsmtInvalid + 1; i < rsmtTotal; i++)
+    for (int32_t i = 0; i < MAX_COMPONENT_COUNT; i++)
     {
-        CRoleSubModule* pSubModule  = (CRoleSubModule*)((char*)this + m_nSubModuleOffset[i]);
-        LOG_PROCESS_ERROR(pSubModule);
-
-        pSubModule->on_resume();
+        CComponent* pCompnent = m_ComponentCont.get_component(i);
+        if(pCompnent)
+        {
+            pCompnent->on_event_sync_data();
+        }
     }
-
-Exit0:
-    return;
 }
     
 BOOL CRole::_save_base_data(ROLE_DB::ROLE_BASE_DATA& BaseData)
@@ -127,13 +154,13 @@ BOOL CRole::save(char* pData, uint32_t &dwSize, char* pBaseData, uint32_t &dwBas
     nRetCode = _save_base_data(*RoleData.mutable_base_data());
     LOG_PROCESS_ERROR(nRetCode);
     
-    for (int32_t i = rsmtInvalid + 1; i < rsmtTotal; i++)
+    for (int32_t i = 0; i < MAX_COMPONENT_COUNT; i++)
     {
-        CRoleSubModule* pSubModule  = (CRoleSubModule*)((char*)this + m_nSubModuleOffset[i]);
-        LOG_PROCESS_ERROR(pSubModule);
-
-        nRetCode = pSubModule->save_data(RoleData);
-        LOG_PROCESS_ERROR(nRetCode);
+        CComponent* pCompnent = m_ComponentCont.get_component(i);
+        if(pCompnent)
+        {
+            pCompnent->save_data(&RoleData);
+        }
     }
 
     nRetCode = RoleData.base_data().SerializeToArray(pBaseData, dwBaseDataSize);
@@ -165,13 +192,13 @@ BOOL CRole::load(const char* pData, uint32_t dwSize)
     nRetCode = _load_base_data(RoleData.base_data());
     LOG_PROCESS_ERROR(nRetCode);
     
-    for (int32_t i = rsmtInvalid + 1; i < rsmtTotal; i++)
+    for (int32_t i = 0; i < MAX_COMPONENT_COUNT; i++)
     {
-        CRoleSubModule* pSubModule  = (CRoleSubModule*)((char*)this + m_nSubModuleOffset[i]);
-        LOG_PROCESS_ERROR(pSubModule);
-
-        nRetCode = pSubModule->load_data(RoleData);
-        LOG_PROCESS_ERROR(nRetCode);
+        CComponent* pCompnent = m_ComponentCont.get_component(i);
+        if(pCompnent)
+        {
+            pCompnent->load_data(&RoleData);
+        }
     }
 
     return TRUE;
@@ -179,89 +206,3 @@ Exit0:
     return FALSE;
 }
     
-BOOL CRole::module_init(BOOL bResume)
-{
-    int32_t nRetCode = 0;
-    int32_t nEventID = 0;
-    
-    nEventID = CEventMgr::instance().create_c_event(evtRoleSyncData, 0, 0, _on_event_role_sync_data, 0);
-    LOG_PROCESS_ERROR(nEventID != 0);
-
-    nRetCode = CGlobalEventListMgr::instance().register_global_event(nEventID);
-    LOG_PROCESS_ERROR(nRetCode);
-
-
-    for (int32_t i = rsmtInvalid + 1; i < rsmtTotal; i++)
-    {
-        ROLE_SUB_MODULE_INIT pSubModuleInit = m_pSubModuleInit[i];
-        LOG_PROCESS_ERROR(pSubModuleInit);
-
-        nRetCode = pSubModuleInit(bResume);
-        LOG_PROCESS_ERROR(nRetCode);
-    }
-
-    return TRUE;
-Exit0:
-    return FALSE;
-}
-
-BOOL CRole::module_uninit(void)
-{
-    int32_t nRetCode = 0;
-
-    for (int32_t i = rsmtInvalid + 1; i < rsmtTotal; i++)
-    {
-        ROLE_SUB_MODULE_UNINIT pSubModuleUnInit = m_pSubModuleUnInit[i];
-        LOG_PROCESS_ERROR(pSubModuleUnInit);
-
-        nRetCode = pSubModuleUnInit();
-        LOG_CHECK_ERROR(nRetCode);
-    }
-
-    return TRUE;
-Exit0:
-    return FALSE;
-}
-
-BOOL CRole::init_msg_handler(void)
-{
-    int32_t nRetCode = 0;
-
-    for (int32_t i = rsmtInvalid + 1; i < rsmtTotal; i++)
-    {
-        INIT_MSG_HANDLER_FUNC pMsgHandlerFunc = m_pSubModuleMsg[i];
-        LOG_PROCESS_ERROR(pMsgHandlerFunc);
-
-        nRetCode = pMsgHandlerFunc();
-        LOG_PROCESS_ERROR(nRetCode);
-    }
-
-    return TRUE;
-Exit0:
-    return FALSE;
-}
-    
-void CRole::_on_event_role_sync_data(EVENT_INFO* pEvent, EVENT_PARAM& stEventParam)
-{
-    int32_t nRetCode = 0;
-    CRole* pRole = NULL;
-
-    LOG_PROCESS_ERROR(pEvent);
-    LOG_PROCESS_ERROR(stEventParam.nOwnerType == otRole);
-
-    pRole = (CRole*)stEventParam.pOwner;
-    LOG_PROCESS_ERROR(pRole);
-
-    INF("on event role sync data, roleid %lld param %lld %lld", stEventParam.qwOwnerID, stEventParam.llTriggerVar0, stEventParam.llTriggerVar1);
-
-    for (int32_t i = rsmtInvalid + 1; i < rsmtTotal; i++)
-    {
-        CRoleSubModule* pSubModule  = (CRoleSubModule*)((char*)pRole + pRole->m_nSubModuleOffset[i]);
-        LOG_PROCESS_ERROR(pSubModule);
-
-        pSubModule->on_event_sync_data();
-    }
-
-Exit0:
-    return;
-}

@@ -9,7 +9,7 @@ struct USER;
 class CRole;
 class CUserModule;
 class CRoleModule;
-class CServerDefaultSessionModule;
+class CSessionModule;
 
 class CLoginCoro : public CCoroStackless
 {
@@ -27,7 +27,7 @@ private:
     uint64_t    m_qwSessionID;
 
     CUserModule* m_pUserModule;
-    CServerDefaultSessionModule* m_pSessionModule;
+    CSessionModule* m_pSessionModule;
 };
 
 class CCreateRoleCoro : public CCoroStackless
@@ -72,6 +72,7 @@ private:
 
     CUserModule* m_pUserModule;
     CRoleModule* m_pRoleModule;
+    CSessionModule* m_pSessionModule;
 };
 
 class CKickUserCoro : public CCoroStackless
@@ -95,7 +96,7 @@ private:
 
     CUserModule*    m_pUserModule;
     CRoleModule*    m_pRoleModule;
-    CServerDefaultSessionModule*    m_pSessionModule;
+    CSessionModule* m_pSessionModule;
 };
 
 #endif

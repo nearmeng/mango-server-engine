@@ -1,6 +1,8 @@
 #include "stdafx.h"
+
 #include "module/gs_user_module.h"
-#include "module/server_default_session_module.h"
+#include "module/session_module.h"
+#include "module/msg_handler_module.h"
 
 #include "protocol/proto_msgid.pb.h"
 #include "protocol/external_message.pb.h"
@@ -14,12 +16,8 @@ BOOL do_g2c_sync_role_list(uint64_t qwSessionID, USER* pUser)
 {
     int32_t nRetCode = 0;
     SC_SYNC_ROLE_LIST msg;
-    CServerDefaultSessionModule* pModule = NULL;
 
     LOG_PROCESS_ERROR(pUser);
-
-    pModule = MG_GET_MODULE(CServerDefaultSessionModule);
-    LOG_PROCESS_ERROR(pModule);
 
     for (int32_t i = 0; i < pUser->nRoleCount; i++)
     {
@@ -32,7 +30,7 @@ BOOL do_g2c_sync_role_list(uint64_t qwSessionID, USER* pUser)
         pRoleInfo->set_create_time(pUser->stRoleBase[i].dwCreateTime);
     }
 
-    nRetCode = SEND_TO_CLIENT_BY_SESSION(pModule->find_session(qwSessionID), sc_sync_role_list, &msg);
+    nRetCode = g_MsgHandlerModule->send_to_client(qwSessionID, sc_sync_role_list, &msg);
     LOG_PROCESS_ERROR(nRetCode);
 
     return TRUE;
@@ -43,19 +41,15 @@ Exit0:
 BOOL do_g2c_sync_role_data(uint64_t qwSessionID, CRole* pRole)
 {
     int32_t nRetCode = 0;
-    CServerDefaultSessionModule* pModule = NULL;
     SC_SYNC_ROLE_DATA msg;
 
     LOG_PROCESS_ERROR(pRole);
-
-    pModule = MG_GET_MODULE(CServerDefaultSessionModule);
-    LOG_PROCESS_ERROR(pModule);
 
     msg.set_roleid(pRole->get_obj_id());
     msg.set_rolename(pRole->get_name());
     msg.set_level(pRole->get_level());
     
-    nRetCode = SEND_TO_CLIENT_BY_SESSION(pModule->find_session(qwSessionID), sc_sync_role_data, &msg);
+    nRetCode = g_MsgHandlerModule->send_to_client(qwSessionID, sc_sync_role_data, &msg);
     LOG_PROCESS_ERROR(nRetCode);
 
     return TRUE;
@@ -68,7 +62,7 @@ void on_conn_start_event(CLIENT_SESSION* pSession)
     int32_t nRetCode = 0;
     SC_ALLOW_LOGIN msg;
 
-    nRetCode = SEND_TO_CLIENT_BY_SESSION(pSession, sc_allow_login, &msg);
+    nRetCode = g_MsgHandlerModule->send_to_client(pSession, sc_allow_login, &msg);
     LOG_PROCESS_ERROR(nRetCode);
 
     INF("recv conn %lld ntf start event from addr %d", pSession->qwConnID, pSession->nConnServerAddr);
@@ -82,14 +76,14 @@ void on_conn_stop_event(CLIENT_SESSION* pSession)
     int32_t nRetCode = 0;
     USER* pUser = NULL;
     CUserModule* pUserModule = NULL;
-    CServerDefaultSessionModule* pSessionModule = NULL;
+    CSessionModule* pSessionModule = NULL;
     
     INF("recv conn %lld ntf stop event from addr %d", pSession->qwConnID, pSession->nConnServerAddr);
 
     pUserModule = MG_GET_MODULE(CUserModule);
     LOG_PROCESS_ERROR(pUserModule);
 
-    pSessionModule = MG_GET_MODULE(CServerDefaultSessionModule);
+    pSessionModule = MG_GET_MODULE(CSessionModule);
     LOG_PROCESS_ERROR(pSessionModule);
     
     pUser =  pUserModule->find_user(pSession->qwUserID);
@@ -110,14 +104,14 @@ void on_conn_timeout_event(CLIENT_SESSION* pSession)
     int32_t nRetCode = 0;
     USER* pUser = NULL;
     CUserModule* pUserModule = NULL;
-    CServerDefaultSessionModule* pSessionModule = NULL;
+    CSessionModule* pSessionModule = NULL;
     
     INF("recv conn %lld timeout, last ping %d", pSession->qwConnID, pSession->dwLastPingTime);
 
     pUserModule = MG_GET_MODULE(CUserModule);
     LOG_PROCESS_ERROR(pUserModule);
 
-    pSessionModule = MG_GET_MODULE(CServerDefaultSessionModule);
+    pSessionModule = MG_GET_MODULE(CSessionModule);
     LOG_PROCESS_ERROR(pSessionModule);
 
     nRetCode = pSessionModule->kick_session(pSession, errConnTimeout, 0);
@@ -228,19 +222,16 @@ Exit0:
 
 BOOL CUserModule::_init_msg_handler()
 {
-    int32_t nRetCode = 0;
-
-    REG_SESSION_CONN_EVENT_HANDLER(cetStart, on_conn_start_event);
-    REG_SESSION_CONN_EVENT_HANDLER(cetStop, on_conn_stop_event);
-    REG_SESSION_CONN_EVENT_HANDLER(cetTimeout, on_conn_timeout_event);
+    g_MsgHandlerModule->register_conn_event_handler(cetStart, on_conn_start_event);
+    g_MsgHandlerModule->register_conn_event_handler(cetStop, on_conn_stop_event);
+    g_MsgHandlerModule->register_conn_event_handler(cetTimeout, on_conn_timeout_event);
     
-    REG_SESSION_CLI_MSG_HANDLER(cs_login, on_login);
-    REG_SESSION_CLI_MSG_HANDLER(cs_logout, on_logout);
-    REG_SESSION_CLI_MSG_HANDLER(cs_create_role, on_create_role);
-    REG_SESSION_CLI_MSG_HANDLER(cs_select_role, on_select_role);
-    //REG_SESSION_CLI_MSG_HANDLER(cs_message_relay, on_relay);
+    g_MsgHandlerModule->register_client_msg_handler(cs_login, on_login);
+    g_MsgHandlerModule->register_client_msg_handler(cs_logout, on_logout);
+    g_MsgHandlerModule->register_client_msg_handler(cs_create_role, on_create_role);
+    g_MsgHandlerModule->register_client_msg_handler(cs_select_role, on_select_role);
 
-    register_server_msg_handler(o2g_user_kick, on_os_user_kick);
+    g_MsgHandlerModule->register_server_msg_handler(o2g_user_kick, on_os_user_kick);
 
     return TRUE;
 }

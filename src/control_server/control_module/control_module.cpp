@@ -5,6 +5,8 @@
 #define SEPERATOR       " \t\r\n"
 #define JOIN_SEP " "
 
+MG_REGISTER_MODULE(CControlModule);
+
 enum CONTROL_TARGET_TYPE
 {
 	cttInvalid,

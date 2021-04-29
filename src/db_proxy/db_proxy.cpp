@@ -11,8 +11,6 @@ int main(int argc, char* argv[])
     config.bUseRouter = TRUE;
     pServer->set_config(config);
 
-    MG_REGISTER_MODULE(pServer, CRedisModule);
-
     nRetCode = pServer->init("redis_server", argc, argv);
     LOG_PROCESS_ERROR(nRetCode);
 

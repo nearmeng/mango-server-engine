@@ -49,6 +49,8 @@ Exit0:
     return;
 }
 
+MG_REGISTER_MODULE(CRedisModule);
+
 BOOL CRedisModule::init(BOOL bResume)
 {
     int32_t nRetCode = 0;

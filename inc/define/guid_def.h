@@ -6,6 +6,7 @@ enum GUID_TYPE_DEF
 	gtdInvalid,
 
 	gtdTimer,
+    gtdComponent,
 
 	gtdTotal
 };

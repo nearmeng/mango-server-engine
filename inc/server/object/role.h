@@ -2,8 +2,7 @@
 #define _ROLE_H_
 
 #include "define/str_def.h"
-#include "module/role_sub_module.h"
-#include "role_sub_module/achieve.h"
+#include "module/server_component.h"
 
 namespace ROLE_DB
 {
@@ -12,36 +11,18 @@ namespace ROLE_DB
 struct EVENT_INFO;
 struct EVENT_PARAM;
 
-#define MAX_ROLE_SUB_MODULE_COUNT   (50)
-
-typedef BOOL(*INIT_MSG_HANDLER_FUNC)(void);
-typedef BOOL(*ROLE_SUB_MODULE_INIT)(BOOL bResume);
-typedef BOOL(*ROLE_SUB_MODULE_UNINIT)(void);
-
-enum ROLE_SUB_MODULE_TYPE
-{
-    rsmtInvalid,
-
-    rsmtAchieve,
-
-    rsmtTotal
-};
-
 class CRole
 {
 public:
     CRole() {};
     ~CRole() {};
-    
-    static BOOL module_init(BOOL bResume);
-    static BOOL module_uninit(void);
-    static BOOL init_msg_handler(void);
 
     BOOL init(uint64_t qwObjID);
     BOOL uninit(void);
 
     void mainloop(void);
     void on_resume(void);
+    void on_event_sync_data(void);
     
     BOOL save(char* pData, uint32_t &dwSize, char* pBaseData, uint32_t &dwBaseDataSize);
     BOOL load(const char* pData, uint32_t dwSize);
@@ -69,14 +50,9 @@ public:
     inline void set_user_id(uint64_t qwUserID);
     inline uint64_t get_user_id(void);
 
-    void on_event_role_sync_data();
-
 private:
     BOOL _save_base_data(ROLE_DB::ROLE_BASE_DATA& BaseData);
     BOOL _load_base_data(const ROLE_DB::ROLE_BASE_DATA& BaseData);
-
-private:
-    static void _on_event_role_sync_data(EVENT_INFO* pEvent, EVENT_PARAM& stParam);
 
 private:
     uint64_t    m_qwObjID;
@@ -89,13 +65,8 @@ private:
 
     char        m_szName[COMMON_NAME_LEN];
     int32_t     m_nLevel;
-    
-    static int32_t m_nSubModuleOffset[rsmtTotal];
-    static INIT_MSG_HANDLER_FUNC m_pSubModuleMsg[rsmtTotal];
-    static ROLE_SUB_MODULE_INIT m_pSubModuleInit[rsmtTotal];
-    static ROLE_SUB_MODULE_UNINIT m_pSubModuleUnInit[rsmtTotal];
 
-    REG_ROLE_SUB_MODULE(CAchieve, achieve, rsmtAchieve);
+    CComponentContainer        m_ComponentCont;
 };
 
 #include "object/role_inl.h"

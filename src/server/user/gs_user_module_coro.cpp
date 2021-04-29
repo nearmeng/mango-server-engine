@@ -4,7 +4,7 @@
 #include "db_proxy_client/db_proxy_client.h"
 
 #include "module/gs_user_module.h"
-#include "module/server_default_session_module.h"
+#include "module/session_module.h"
 #include "module/role_module.h"
 
 #include "protocol/game_online_msg.h"
@@ -22,13 +22,13 @@ void CLoginCoro::set_start_arg(const char * pcszOpenID, uint64_t qwSessionID)
     m_qwSessionID = qwSessionID;
     m_qwUserID = 0;
     m_pUserModule = MG_GET_MODULE(CUserModule);
-    m_pSessionModule = MG_GET_MODULE(CServerDefaultSessionModule);
+    m_pSessionModule = MG_GET_MODULE(CSessionModule);
 }
 
 BOOL CLoginCoro::on_resume()
 {
     m_pUserModule = MG_GET_MODULE(CUserModule);
-    m_pSessionModule = MG_GET_MODULE(CServerDefaultSessionModule);
+    m_pSessionModule = MG_GET_MODULE(CSessionModule);
     return TRUE;
 }
 
@@ -363,6 +363,7 @@ BOOL CSelectRoleCoro::on_resume()
 {
     m_pUserModule = MG_GET_MODULE(CUserModule);
     m_pRoleModule = MG_GET_MODULE(CRoleModule);
+    m_pSessionModule = MG_GET_MODULE(CSessionModule);
 
     return TRUE;
 }
@@ -375,6 +376,7 @@ void CSelectRoleCoro::set_start_arg(uint64_t qwSessionID, uint64_t qwUserID, uin
 
     m_pUserModule = MG_GET_MODULE(CUserModule);
     m_pRoleModule = MG_GET_MODULE(CRoleModule);
+    m_pSessionModule = MG_GET_MODULE(CSessionModule);
 }
 
 CORO_STATE CSelectRoleCoro::coro_process()
@@ -383,6 +385,7 @@ CORO_STATE CSelectRoleCoro::coro_process()
     CRole* pRole = NULL;
     USER* pUser = NULL;
     redisReply* pReply = NULL;
+    CLIENT_SESSION* pSession = NULL;
 
     CORO_BEGIN()
 
@@ -423,7 +426,11 @@ CORO_STATE CSelectRoleCoro::coro_process()
     pUser = m_pUserModule->find_user(m_qwUserID);
     LOG_PROCESS_ERROR(pUser);
 
+    pSession = m_pSessionModule->find_session(pUser->qwSessionID);
+    LOG_PROCESS_ERROR(pSession);
+
     pUser->qwCurrPlayingRole = m_qwRoleID;
+    pSession->qwCurrRoleID = m_qwRoleID;
 
     // enter scene to do
 
@@ -450,7 +457,7 @@ BOOL CKickUserCoro::on_resume()
 {
     m_pUserModule = MG_GET_MODULE(CUserModule);
     m_pRoleModule = MG_GET_MODULE(CRoleModule);
-    m_pSessionModule = MG_GET_MODULE(CServerDefaultSessionModule);
+    m_pSessionModule = MG_GET_MODULE(CSessionModule);
 
     return TRUE;
 }
@@ -467,7 +474,7 @@ void CKickUserCoro::set_start_arg(uint64_t qwUserID, uint64_t qwSessionID, int32
 
     m_pUserModule = MG_GET_MODULE(CUserModule);
     m_pRoleModule = MG_GET_MODULE(CRoleModule);
-    m_pSessionModule = MG_GET_MODULE(CServerDefaultSessionModule);
+    m_pSessionModule = MG_GET_MODULE(CSessionModule);
 }
  
 CORO_STATE CKickUserCoro::coro_process()

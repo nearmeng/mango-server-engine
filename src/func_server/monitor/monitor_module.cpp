@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "monitor_module.h"
 
+MG_REGISTER_MODULE(CMonitorModule, mtWeb, "http://appletuan.com/quotes/1");
+
 BOOL CMonitorModule::init(BOOL bResume)
 {
     int nRetCode = 0;

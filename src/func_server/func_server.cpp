@@ -103,8 +103,6 @@ int main(int argc, char* argv[])
 
     pServer->set_config(config);
 
-    MG_REGISTER_MODULE(pServer, CMonitorModule, mtWeb, "http://appletuan.com/quotes/1");
-
     nRetCode = pServer->init("func_server", argc, argv);
     LOG_PROCESS_ERROR(nRetCode);
 

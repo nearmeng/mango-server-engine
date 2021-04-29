@@ -7,6 +7,8 @@
 
 #include "gs_user_module_coro.h"
 
+MG_REGISTER_MODULE(CUserModule);
+
 BOOL CUserModule::init(BOOL bResume)
 {
     int32_t nRetCode = 0;

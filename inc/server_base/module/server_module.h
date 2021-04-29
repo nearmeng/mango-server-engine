@@ -3,6 +3,34 @@
 
 #include "define/str_def.h"
 
+#define MG_REGISTER_MODULE_PRE_INIT(__module_class__, ...)                       \
+    class __module_class__##_auto_register                                      \
+    {                                                                           \
+    public:                                                                     \
+        __module_class__##_auto_register()                                      \
+        {                                                                       \
+            CServerModule* pServerModule = (CServerModule*)__module_class__::create_instance<__module_class__>(#__module_class__, ##__VA_ARGS__); \
+            pServerModule->set_pre_init(TRUE);                                  \
+            CMGApp::instance().register_module(pServerModule);                  \
+        };                                                                      \
+    };                                                                          \
+    static __module_class__##_auto_register __module_class__##Auto;
+
+#define MG_REGISTER_MODULE(__module_class__, ...)                               \
+    class __module_class__##_auto_register                                      \
+    {                                                                           \
+    public:                                                                     \
+        __module_class__##_auto_register()                                      \
+        {                                                                       \
+            CServerModule* pServerModule = (CServerModule*)__module_class__::create_instance<__module_class__>(#__module_class__, ##__VA_ARGS__); \
+            CMGApp::instance().register_module(pServerModule);                  \
+        };                                                                      \
+    };                                                                          \
+    static __module_class__##_auto_register __module_class__##Auto;
+
+#define MG_GET_MODULE(__module_class__) \
+    (__module_class__*)CMGApp::instance().get_module(#__module_class__);
+
 class CServerModule
 {
 public:
@@ -31,9 +59,13 @@ public:
 
     virtual BOOL msg_handler_init(void) { return TRUE; };
 
+    BOOL get_pre_init(void) { return m_bPreInit; };
+    void set_pre_init(BOOL bPreInit) { m_bPreInit = bPreInit; };
+
 private:
     char                        m_szName[MAX_MODULE_NAME_LEN];
     int32_t                     m_nContIndex;
+    BOOL                        m_bPreInit;
 };
 
 class CServerModuleContainer
@@ -89,12 +121,16 @@ inline T* CServerModule::create_instance(const char* pcszModuleName, ...)
 {
     int32_t nRetCode = 0;
     va_list args;
+    CServerModule* pServerModule = NULL;
 
     T* pModule = new T();
     LOG_PROCESS_ERROR(pModule);
 
+    pServerModule = (CServerModule*)pModule;
+    pServerModule->set_pre_init(FALSE);
+
     va_start(args, pcszModuleName);
-    nRetCode = ((CServerModule*)pModule)->set_create_arg(pcszModuleName, args);
+    nRetCode = pServerModule->set_create_arg(pcszModuleName, args);
     va_end(args);
 
     LOG_PROCESS_ERROR(nRetCode);

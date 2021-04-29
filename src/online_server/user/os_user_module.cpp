@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "os_user_module.h"
+    
+MG_REGISTER_MODULE(CUserModule);
 
 BOOL CUserModule::init(BOOL bResume)
 {
@@ -25,3 +27,4 @@ BOOL CUserModule::uninit(void)
 
     return TRUE;
 }
+    

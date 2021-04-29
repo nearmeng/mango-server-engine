@@ -12,8 +12,6 @@ int main(int argc, char* argv[])
     config.bUseTconnd = TRUE;
     config.bUseRouter = TRUE;
     pServer->set_config(config);
-    
-    MG_REGISTER_MODULE(pServer, CConnModule);
 
     nRetCode = pServer->init("conn_server", argc, argv);
     LOG_PROCESS_ERROR(nRetCode);

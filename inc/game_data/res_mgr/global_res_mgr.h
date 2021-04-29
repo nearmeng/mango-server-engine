@@ -58,7 +58,7 @@ private:
 inline CGlobalResMgr& CGlobalResMgr::instance(void)
 {
     if (ms_Instance == NULL)
-        ms_Instance = new CGlobalResMgr;
+        ms_Instance = new CGlobalResMgr();
 
     return *ms_Instance;
 }

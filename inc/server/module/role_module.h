@@ -7,8 +7,6 @@
 
 #define MAX_ROLE_DATA_SIZE       (500 * 1024)
 
-typedef void(*ROLE_MSG_HANDLER)(CRole* pRole, const CS_HEAD* pHead, const google::protobuf::Message* pMsg);
-
 class CRoleModule : public CServerModule
 {
 public:
@@ -19,13 +17,13 @@ public:
     virtual BOOL uninit(void);
     virtual void mainloop(void);
 
-    inline CRole* create_role(uint64_t qwRoleID);
-    inline BOOL destroy_role(CRole* pRole);
+    CRole* create_role(uint64_t qwRoleID);
+    BOOL destroy_role(CRole* pRole);
     inline CRole* find_role(uint64_t qwRoleID);
     inline int32_t get_role_count(void);
 
-    static BOOL reg_msg_handler(int32_t nMsgID, ROLE_MSG_HANDLER pHandler);
-    static ROLE_MSG_HANDLER get_msg_handler(int32_t nMsgID);
+private:
+    static void _on_event_role_sync_data(EVENT_INFO* pEvent, EVENT_PARAM& stEventParam);
 
 private:
     struct TRAVERSE_ROLE_RESUME
@@ -33,9 +31,13 @@ private:
         BOOL operator()(uint64_t qwRoleID, CRole* pRole);
     };
 
+    struct TRAVERSE_ROLE
+    {
+        BOOL operator()(uint64_t qwRoleID, CRole* pRole);
+    };
+
 private:
     CShmObjectPool<CRole, uint64_t>     m_RolePool;
-    std::map<int32_t, ROLE_MSG_HANDLER> m_MsgHandler;
 };
 
 inline CRole* CRoleModule::create_role(uint64_t qwRoleID)
@@ -57,7 +59,5 @@ inline int32_t CRoleModule::get_role_count()
 {
     return m_RolePool.get_used_count();
 }
-
-#define REG_ROLE_MSG_HANDLER(__msgid__, __handler__)             (CRoleModule::reg_msg_handler(__msgid__, __handler__))
 
 #endif

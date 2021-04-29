@@ -12,7 +12,7 @@
 #include "define/role.h"
 #include "app/server_app.h"
 
-#include "module/server_default_session_module.h"
+#include "module/session_module.h"
 #include "module/gs_user_module.h"
 #include "module/role_module.h"
 
@@ -362,10 +362,6 @@ Exit1:
     config.bUseDBProxy = TRUE;
 
     pServer->set_config(config);
-    
-    MG_REGISTER_MODULE(pServer, CServerDefaultSessionModule);
-    MG_REGISTER_MODULE(pServer, CUserModule);
-    MG_REGISTER_MODULE(pServer, CRoleModule);
 
     nRetCode = pServer->init("test_server", argc, argv);
     LOG_PROCESS_ERROR(nRetCode);

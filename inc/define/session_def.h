@@ -11,6 +11,8 @@ struct CLIENT_SESSION
     uint64_t    qwUserID;
     char        szOpenID[MAX_OPENID_LEN];
     uint32_t    dwLastPingTime;
+
+    uint64_t    qwCurrRoleID;
 };
 
 #endif

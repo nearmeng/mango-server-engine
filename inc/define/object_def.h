@@ -11,4 +11,23 @@ enum OBJECT_TYPE
     otTotal
 };
 
+enum COMPONENT_OWNER_TYPE
+{
+    cotInvalid,
+
+    cotRole,
+
+    cotTotal
+};
+
+enum COMPONENT_TYPE
+{
+    ctInvalid,
+
+    ctAchieve,
+
+    ctTotal
+};
+
+
 #endif

@@ -58,7 +58,7 @@ Exit0:
     return FALSE;
 }
 
-void on_user_login(int32_t nSrcAddr, const char* pBuffer, size_t dwSize)
+void CUserModule::on_user_login(int32_t nSrcAddr, const char* pBuffer, size_t dwSize)
 {
     int32_t nRetCode = 0;
     int32_t nResult = errSuccess;
@@ -97,7 +97,7 @@ Exit0:
     return;
 }
 
-void on_user_logout(int32_t nSrcAddr, const char* pBuffer, size_t dwSize)
+void CUserModule::on_user_logout(int32_t nSrcAddr, const char* pBuffer, size_t dwSize)
 {
     int32_t nRetCode = 0;
     CUserModule* pUserModule = NULL;

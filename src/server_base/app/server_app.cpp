@@ -26,7 +26,7 @@
 extern LUA_FUNC g_ServerBasePackageList[];
 extern LUA_FUNC g_ServerBaseLuaFunc[];
 
-CMGApp CMGApp::ms_Instance;
+CMGApp* CMGApp::ms_Instance = NULL;
 
 BOOL CMGApp::_init_tlog(void)
 {
@@ -53,22 +53,22 @@ BOOL CMGApp::_default_msg_recv_proc(const char* pBuff, size_t nSize, int32_t nSr
 	int32_t nServerType = tbus_get_type(nSrcAddr);
 	LOG_PROCESS_ERROR_DETAIL(nServerType > svrInvalid && nServerType < svrTotal, "type %d", nServerType);
 		
-	if (ms_Instance.m_UserMsgHandler[nServerType])
+	if (ms_Instance->m_UserMsgHandler[nServerType])
 	{
 		//user server type process
-		ms_Instance.m_UserMsgHandler[nServerType](pBuff, nSize, nSrcAddr);
+		ms_Instance->m_UserMsgHandler[nServerType](pBuff, nSize, nSrcAddr);
 	}
-	else if (ms_Instance.m_UserMsgHandler[svrTotal])
+	else if (ms_Instance->m_UserMsgHandler[svrTotal])
 	{
 		// user default process
-		ms_Instance.m_UserMsgHandler[svrTotal](pBuff, nSize, nSrcAddr);
+		ms_Instance->m_UserMsgHandler[svrTotal](pBuff, nSize, nSrcAddr);
 	}
 	else
 	{
 		//default process
 		if (nServerType == svrTconnd)
 		{
-			LOG_PROCESS_ERROR(ms_Instance.m_Config.bUseTconnd);
+			LOG_PROCESS_ERROR(ms_Instance->m_Config.bUseTconnd);
 			recv_conn_msg_proc(nSrcAddr, pBuff, nSize);
 		}
 		else
@@ -85,9 +85,9 @@ Exit0:
 void CMGApp::_frame_timeout(uint64_t qwTimerID, void* pCbData, int32_t nCbDataLen)
 {
     //module cont
-    for (int32_t nIndex = 0; nIndex < ms_Instance.m_ModuleCont.get_module_count(); nIndex++)
+    for (int32_t nIndex = 0; nIndex < ms_Instance->m_ModuleCont.get_module_count(); nIndex++)
     {
-        CServerModule* pModule = ms_Instance.m_ModuleCont.get_module_by_idx(nIndex);
+        CServerModule* pModule = ms_Instance->m_ModuleCont.get_module_by_idx(nIndex);
         LOG_CHECK_ERROR(pModule);
 
         if(pModule)
@@ -100,12 +100,12 @@ void CMGApp::_frame_timeout(uint64_t qwTimerID, void* pCbData, int32_t nCbDataLe
     CGlobalStacklessMgr::instance().mainloop();
 
     //user callback
-    if (ms_Instance.m_Config.pAppFrame)
+    if (ms_Instance->m_Config.pAppFrame)
     {
-        ms_Instance.m_Config.pAppFrame();
+        ms_Instance->m_Config.pAppFrame();
     }
 
-    ms_Instance.m_nServerFrame++;
+    ms_Instance->m_nServerFrame++;
 
 Exit0:
 	return;
@@ -114,12 +114,12 @@ Exit0:
 int32_t CMGApp::_app_init(TAPPCTX* pCtx, void* pArg)
 {
 	int32_t nRetCode = 0;
-	BOOL bResume = ms_Instance.is_resume();
+	BOOL bResume = ms_Instance->is_resume();
     int32_t nShmSize = 0; 
     int32_t nResMode = 0; 
 
 	//log
-	nRetCode = ms_Instance._init_tlog();
+	nRetCode = ms_Instance->_init_tlog();
 	LOG_PROCESS_ERROR(nRetCode);
 
 	//script
@@ -139,8 +139,8 @@ int32_t CMGApp::_app_init(TAPPCTX* pCtx, void* pArg)
 	nRetCode = load_global_server_config();
 	LOG_PROCESS_ERROR(nRetCode);
 
-    nShmSize = (ms_Instance.m_Config.nInitShmSize == 0) ? g_ServerConfig.Common.nInitShmSize : ms_Instance.m_Config.nInitShmSize;
-    nResMode = (ms_Instance.m_Config.nResMode == 0) ? g_ServerConfig.Common.nResMode : ms_Instance.m_Config.nResMode;
+    nShmSize = (ms_Instance->m_Config.nInitShmSize == 0) ? g_ServerConfig.Common.nInitShmSize : ms_Instance->m_Config.nInitShmSize;
+    nResMode = (ms_Instance->m_Config.nResMode == 0) ? g_ServerConfig.Common.nResMode : ms_Instance->m_Config.nResMode;
 
 	//shm
 	nRetCode = CShmMgr::get_instance().init(pCtx->iId, nShmSize, bResume);
@@ -168,7 +168,7 @@ int32_t CMGApp::_app_init(TAPPCTX* pCtx, void* pArg)
 	}
 	
 	//router client or tbus 
-	if (!ms_Instance.m_Config.bUseRouter)
+	if (!ms_Instance->m_Config.bUseRouter)
 	{
 		nRetCode = tbus_system_init(pCtx->iId, pCtx->iBus, _default_msg_recv_proc, bResume);
 		LOG_PROCESS_ERROR(nRetCode);
@@ -186,14 +186,14 @@ int32_t CMGApp::_app_init(TAPPCTX* pCtx, void* pArg)
 	nRetCode = CGlobalEventListMgr::instance().init(bResume);
 	LOG_PROCESS_ERROR(nRetCode);
 
-	if (ms_Instance.m_Config.bUseTconnd)
+	if (ms_Instance->m_Config.bUseTconnd)
 	{
 		nRetCode = tconnapi_init((unsigned int)atol(pCtx->pszGCIMKey));
 		LOG_PROCESS_ERROR(nRetCode == 0);
 	}
 
     //res
-    if (ms_Instance.m_Config.bUseRouter)
+    if (ms_Instance->m_Config.bUseRouter)
     {
         nRetCode = CGlobalResMgr::instance().init(nResMode, bResume);
         LOG_PROCESS_ERROR(nRetCode);
@@ -204,35 +204,50 @@ int32_t CMGApp::_app_init(TAPPCTX* pCtx, void* pArg)
     LOG_PROCESS_ERROR(nRetCode);
 
     //module cont
-    for (int32_t nIndex = 0; nIndex < ms_Instance.m_ModuleCont.get_module_count(); nIndex++)
+    for (int32_t nIndex = 0; nIndex < ms_Instance->m_ModuleCont.get_module_count(); nIndex++)
     {
-        CServerModule* pModule = ms_Instance.m_ModuleCont.get_module_by_idx(nIndex);
+        CServerModule* pModule = ms_Instance->m_ModuleCont.get_module_by_idx(nIndex);
         LOG_PROCESS_ERROR(pModule);
 
-        nRetCode = pModule->init(bResume);
-        LOG_PROCESS_ERROR(nRetCode);
+        if (pModule->get_pre_init())
+        {
+            nRetCode = pModule->init(bResume);
+            LOG_PROCESS_ERROR(nRetCode);
+        }
+    }
+    
+    for (int32_t nIndex = 0; nIndex < ms_Instance->m_ModuleCont.get_module_count(); nIndex++)
+    {
+        CServerModule* pModule = ms_Instance->m_ModuleCont.get_module_by_idx(nIndex);
+        LOG_PROCESS_ERROR(pModule);
+
+        if (!pModule->get_pre_init())
+        {
+            nRetCode = pModule->init(bResume);
+            LOG_PROCESS_ERROR(nRetCode);
+        }
     }
 
-    if (ms_Instance.m_Config.bUseConn)
+    if (ms_Instance->m_Config.bUseConn)
     {
         register_server_msg_handler(conn_ntf_event, recv_conn_ntf_event);
         register_server_msg_handler(conn_transfer_msg, recv_conn_transfer_msg);
     }
 
-    if (ms_Instance.m_Config.bUseDBProxy)
+    if (ms_Instance->m_Config.bUseDBProxy)
     {
         nRetCode = CDBProxyClient::instance().init(bResume);
         LOG_PROCESS_ERROR(nRetCode);
     }
 
     //user callback
-    if (ms_Instance.m_Config.pAppInit)
+    if (ms_Instance->m_Config.pAppInit)
     {
-        nRetCode = ms_Instance.m_Config.pAppInit(pCtx, ms_Instance.is_resume());
+        nRetCode = ms_Instance->m_Config.pAppInit(pCtx, ms_Instance->is_resume());
         LOG_PROCESS_ERROR(nRetCode);
     }
 
-	INF("%s inited success", ms_Instance.m_szServerName);
+	INF("%s inited success", ms_Instance->m_szServerName);
 
 	return 0;
 Exit0:
@@ -242,22 +257,34 @@ Exit0:
 int32_t CMGApp::_app_fini(TAPPCTX* pCtx, void* pArg)
 {
 	int32_t nRetCode = 0;
-    BOOL bResume = ms_Instance.is_resume();
+    BOOL bResume = ms_Instance->is_resume();
 
     //user callback
-    if (ms_Instance.m_Config.pAppFini)
+    if (ms_Instance->m_Config.pAppFini)
     {
-        nRetCode = ms_Instance.m_Config.pAppFini(pCtx, ms_Instance.is_resume());
+        nRetCode = ms_Instance->m_Config.pAppFini(pCtx, ms_Instance->is_resume());
         LOG_CHECK_ERROR(nRetCode);
     }
 
     //module cont
-    for (int32_t nIndex = 0; nIndex < ms_Instance.m_ModuleCont.get_module_count(); nIndex++)
+    for (int32_t nIndex = 0; nIndex < ms_Instance->m_ModuleCont.get_module_count(); nIndex++)
     {
-        CServerModule* pModule = ms_Instance.m_ModuleCont.get_module_by_idx(nIndex);
+        CServerModule* pModule = ms_Instance->m_ModuleCont.get_module_by_idx(nIndex);
         LOG_CHECK_ERROR(pModule);
 
-        if (pModule)
+        if (pModule && !pModule->get_pre_init())
+        {
+            nRetCode = pModule->uninit();
+            LOG_PROCESS_ERROR(nRetCode);
+        }
+    }
+    
+    for (int32_t nIndex = 0; nIndex < ms_Instance->m_ModuleCont.get_module_count(); nIndex++)
+    {
+        CServerModule* pModule = ms_Instance->m_ModuleCont.get_module_by_idx(nIndex);
+        LOG_CHECK_ERROR(pModule);
+
+        if (pModule && pModule->get_pre_init())
         {
             nRetCode = pModule->uninit();
             LOG_PROCESS_ERROR(nRetCode);
@@ -268,19 +295,19 @@ int32_t CMGApp::_app_fini(TAPPCTX* pCtx, void* pArg)
     nRetCode = CGlobalStacklessMgr::instance().uninit();
     LOG_CHECK_ERROR(nRetCode);
 
-	if (ms_Instance.m_Config.bUseTconnd)
+	if (ms_Instance->m_Config.bUseTconnd)
 		tconnapi_fini();
 
 	nRetCode = guid_uninit();
 	LOG_CHECK_ERROR(nRetCode);
 
-    if (ms_Instance.m_Config.bUseDBProxy)
+    if (ms_Instance->m_Config.bUseDBProxy)
     {
         nRetCode = CDBProxyClient::instance().uninit();
         LOG_CHECK_ERROR(nRetCode);
     }
     
-    if (ms_Instance.m_Config.bUseRouter)
+    if (ms_Instance->m_Config.bUseRouter)
     {
         nRetCode = CGlobalResMgr::instance().uninit();
         LOG_CHECK_ERROR(nRetCode);
@@ -295,7 +322,7 @@ int32_t CMGApp::_app_fini(TAPPCTX* pCtx, void* pArg)
 	nRetCode = CScriptMgr::instance().uninit();
 	LOG_CHECK_ERROR(nRetCode);
 
-	if (!ms_Instance.m_Config.bUseRouter)
+	if (!ms_Instance->m_Config.bUseRouter)
 	{
 		nRetCode = tbus_system_uninit();
 		LOG_CHECK_ERROR(nRetCode);
@@ -322,7 +349,7 @@ int32_t CMGApp::_app_proc(TAPPCTX* pCtx, void* pArg)
 	int32_t nRetCode = 0;
 
     //tbus
-	if (!ms_Instance.m_Config.bUseRouter)
+	if (!ms_Instance->m_Config.bUseRouter)
 		nRetCode = tbus_recv_data();
 	else
 		nRetCode = CRouterClient::instance().mainloop();
@@ -331,9 +358,9 @@ int32_t CMGApp::_app_proc(TAPPCTX* pCtx, void* pArg)
 	CTimeMgr::instance().mainloop();
 
     //module cont
-    for (int32_t nIndex = 0; nIndex < ms_Instance.m_ModuleCont.get_module_count(); nIndex++)
+    for (int32_t nIndex = 0; nIndex < ms_Instance->m_ModuleCont.get_module_count(); nIndex++)
     {
-        CServerModule* pModule = ms_Instance.m_ModuleCont.get_module_by_idx(nIndex);
+        CServerModule* pModule = ms_Instance->m_ModuleCont.get_module_by_idx(nIndex);
         if (pModule)
         {
             pModule->on_proc();
@@ -348,7 +375,7 @@ int32_t CMGApp::_app_reload(TAPPCTX* pCtx, void* pArg)
 	int32_t nRetCode = 0;
 	int32_t nCurrTime = CTimeMgr::instance().get_time_sec();
 
-	LOG_PROCESS_ERROR(nCurrTime - ms_Instance.m_dwLastReloadTime >= MAX_SERVER_RELOAD_INTERVAL / 1000);
+	LOG_PROCESS_ERROR(nCurrTime - ms_Instance->m_dwLastReloadTime >= MAX_SERVER_RELOAD_INTERVAL / 1000);
 
     //global config
 	nRetCode = load_global_server_config();
@@ -359,9 +386,9 @@ int32_t CMGApp::_app_reload(TAPPCTX* pCtx, void* pArg)
     LOG_PROCESS_ERROR(nRetCode);
 
     //module cont
-    for (int32_t nIndex = 0; nIndex < ms_Instance.m_ModuleCont.get_module_count(); nIndex++)
+    for (int32_t nIndex = 0; nIndex < ms_Instance->m_ModuleCont.get_module_count(); nIndex++)
     {
-        CServerModule* pModule = ms_Instance.m_ModuleCont.get_module_by_idx(nIndex);
+        CServerModule* pModule = ms_Instance->m_ModuleCont.get_module_by_idx(nIndex);
         LOG_CHECK_ERROR(pModule);
 
         if (pModule)
@@ -372,12 +399,12 @@ int32_t CMGApp::_app_reload(TAPPCTX* pCtx, void* pArg)
     }
 
     //user callback
-    if (ms_Instance.m_Config.pAppReload)
+    if (ms_Instance->m_Config.pAppReload)
     {
-        ms_Instance.m_Config.pAppReload(pCtx, ms_Instance.is_resume());
+        ms_Instance->m_Config.pAppReload(pCtx, ms_Instance->is_resume());
     }
 
-	ms_Instance.m_dwLastReloadTime = nCurrTime;
+	ms_Instance->m_dwLastReloadTime = nCurrTime;
 
 	return 0;
 Exit0:
@@ -390,21 +417,21 @@ int32_t CMGApp::_app_stop(TAPPCTX* pCtx, void* pArg)
 	int32_t nRetCode = 0;
 	uint64_t qwCurrTick = CTimeMgr::instance().get_server_tick();
 
-	switch (ms_Instance.m_nState)
+	switch (ms_Instance->m_nState)
 	{
 	case svstInit:
 	case svstInService:
 	{
         //wait for config time
-        if (ms_Instance.m_qwStopTimer == 0)
+        if (ms_Instance->m_qwStopTimer == 0)
         {
-            ms_Instance.set_stop_timer(qwCurrTick + g_ServerConfig.Common.nServerStopTimeout);
+            ms_Instance->set_stop_timer(qwCurrTick + g_ServerConfig.Common.nServerStopTimeout);
 		}
-		else if (qwCurrTick > ms_Instance.m_qwStopTimer)
+		else if (qwCurrTick > ms_Instance->m_qwStopTimer)
         {
             INF("wait for stop msg timeout, begin to server complete");
-            ms_Instance.set_stop_timer(0);
-            ms_Instance.m_nState = svstEndService;
+            ms_Instance->set_stop_timer(0);
+            ms_Instance->m_nState = svstEndService;
         }
 		break;
 	}
@@ -412,9 +439,9 @@ int32_t CMGApp::_app_stop(TAPPCTX* pCtx, void* pArg)
 	{
         //call user stop
         BOOL bAllStop = TRUE;
-        for (int32_t nIndex = 0; nIndex < ms_Instance.m_ModuleCont.get_module_count(); nIndex++)
+        for (int32_t nIndex = 0; nIndex < ms_Instance->m_ModuleCont.get_module_count(); nIndex++)
         {
-            CServerModule* pModule = ms_Instance.m_ModuleCont.get_module_by_idx(nIndex);
+            CServerModule* pModule = ms_Instance->m_ModuleCont.get_module_by_idx(nIndex);
             LOG_CHECK_ERROR(pModule);
 
             if (pModule)
@@ -428,9 +455,9 @@ int32_t CMGApp::_app_stop(TAPPCTX* pCtx, void* pArg)
             }
         }
 
-        if (ms_Instance.m_Config.pAppStop)
+        if (ms_Instance->m_Config.pAppStop)
         {
-            nRetCode = ms_Instance.m_Config.pAppStop(pCtx, ms_Instance.is_resume());
+            nRetCode = ms_Instance->m_Config.pAppStop(pCtx, ms_Instance->is_resume());
             if (nRetCode == FALSE)
                 bAllStop = FALSE;
         }
@@ -454,7 +481,7 @@ int32_t CMGApp::_app_quit(TAPPCTX* pCtx, void* pArg)
 {
 	INF("recv server quit signal, used to resume");
 
-	ms_Instance.m_bNeedExitClean = FALSE;
+	ms_Instance->m_bNeedExitClean = FALSE;
 
 	return -1;
 }
@@ -549,10 +576,19 @@ Exit0:
 BOOL CMGApp::register_module(CServerModule* pModule)
 {
     int32_t nRetCode = 0;
+    CComponentModule * pCompModule = NULL;
 
     LOG_PROCESS_ERROR(pModule);
+    LOG_PROCESS_ERROR(get_module(pModule->get_name()) == NULL);
 
-    m_ModuleCont.add_module(pModule);
+    nRetCode = m_ModuleCont.add_module(pModule);
+    LOG_PROCESS_ERROR(nRetCode);
+
+    pCompModule = dynamic_cast<CComponentModule*>(pModule);
+    if (pCompModule)
+    {
+        m_ComponentModuleList[pCompModule->get_owner_type()].push_back(pCompModule);
+    }
 
     return TRUE;
 Exit0:

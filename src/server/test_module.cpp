@@ -22,7 +22,7 @@
 #include "config/global_config.h"
 
 #include "test_coro.h"
-#include "module/server_default_session_module.h"
+#include "module/session_module.h"
 
 BOOL do_send_control_ack(int32_t nResult, const char* pDesc, int32_t nDstAddr)
 {

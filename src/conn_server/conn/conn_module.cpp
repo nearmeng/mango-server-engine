@@ -9,6 +9,8 @@
 
 #include "tconnd/inc/tconnapi/tframehead.h"
 
+MG_REGISTER_MODULE(CConnModule);
+
 BOOL CConnModule::init(BOOL bResume)
 {
     int32_t nRetCode = 0;
