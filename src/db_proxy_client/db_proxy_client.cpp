@@ -76,7 +76,7 @@ Exit0:
     return FALSE;
 }
 
-static void on_db_proxy_client_redis_rsp(int32_t nSrcAddr, const char* pBuffer, size_t dwSize)
+static void on_db_proxy_client_redis_rsp(SSMSG_CONTEXT* pCtx, const char* pBuffer, size_t dwSize)
 {
     int32_t nRetCode = 0;
     redisReply* pReply = NULL;
@@ -87,9 +87,9 @@ static void on_db_proxy_client_redis_rsp(int32_t nSrcAddr, const char* pBuffer, 
     nRetCode = _unpack_redis_reply(pReplyBuffer, msg->nReplySize, &pReply);
     LOG_PROCESS_ERROR(nRetCode);
     
-    if (msg->qwCoroID > 0)
+    if (pCtx->qwCoroID > 0)
     {
-        CCoroStackless* pCoro = CGlobalStacklessMgr::instance().get_coro(msg->qwCoroID);
+        CCoroStackless* pCoro = CGlobalStacklessMgr::instance().get_coro(pCtx->qwCoroID);
         LOG_PROCESS_ERROR(pCoro);
 
         pCoro->set_coro_ret_code(crcSuccess);
@@ -187,7 +187,6 @@ BOOL CDBProxyClient::_command(uint64_t qwCoroID, int32_t nCmdID, const char* pUs
     char* pCommandBuffer = pMsg->szCommandBuffer;
     int32_t& nCommandSize = pMsg->nCommandSize;
     
-    pMsg->qwCoroID = qwCoroID;
     pMsg->nCmdID = nCmdID;
     pMsg->nCommandSize = 0;
     pMsg->nUserDataSize = 0;
@@ -209,7 +208,8 @@ BOOL CDBProxyClient::_command(uint64_t qwCoroID, int32_t nCmdID, const char* pUs
     LOG_PROCESS_ERROR(pMsg->nCommandSize > 0);
     //DBG("redis command, packed command size %d", pMsg->nCommandSize);
 
-    nRetCode = send_server_msg_by_routerid(CMGApp::instance().get_tbus_addr(), svrDBProxy, db_proxy_client_redis_req, pMsg, sizeof(DB_PROXY_CLIENT_REDIS_REQ) + nCommandSize);
+    nRetCode = send_server_msg_by_routerid(CMGApp::instance().get_tbus_addr(), 
+                    svrDBProxy, db_proxy_client_redis_req, pMsg, sizeof(DB_PROXY_CLIENT_REDIS_REQ) + nCommandSize, qwCoroID);
     LOG_PROCESS_ERROR(nRetCode);
 
     return TRUE;

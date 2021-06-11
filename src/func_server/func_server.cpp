@@ -9,21 +9,21 @@
 #include "protocol/common_message.h"
 #include "monitor/monitor_module.h"
 
-void test_func(int32_t nSrcAddr, const char* pBuffer, size_t dwSize)
+void test_func(SSMSG_CONTEXT* pCtx, const char* pBuffer, size_t dwSize)
 {
     int32_t nRetCode = 0;
 	TEST_SEND_DATA* msg = (TEST_SEND_DATA*)pBuffer;
 
 	INF("recv data is %d", msg->nData);
 
-	nRetCode = send_server_msg_by_addr(nSrcAddr, msg->wMsg, pBuffer, dwSize, msg->qwCoroID);
-	LOG_PROCESS_ERROR(nRetCode);
+    nRetCode = pCtx->send_ack(msg->wMsg, pBuffer, dwSize);
+    LOG_PROCESS_ERROR(nRetCode);
 
 Exit0:
     return;
 }
 
-BOOL do_send_control_ack(int32_t nResult, const char* pDesc, int32_t nDstAddr)
+BOOL do_send_control_ack(SSMSG_CONTEXT* pCtx, int32_t nResult, const char* pDesc)
 {
 	int32_t nRetCode = 0;
 	A2A_CONTROL_ACK msg;
@@ -32,22 +32,22 @@ BOOL do_send_control_ack(int32_t nResult, const char* pDesc, int32_t nDstAddr)
 	strxcpy(msg.szDesc, pDesc, sizeof(msg.szDesc));
 	msg.nDescLen = strlen(pDesc);
 
-	nRetCode = send_server_msg_by_addr(nDstAddr, a2a_control_ack, &msg, sizeof(msg));
-	LOG_PROCESS_ERROR(nRetCode);
+    nRetCode = pCtx->send_ack(a2a_control_ack, &msg, sizeof(msg));
+    LOG_PROCESS_ERROR(nRetCode);
 
 	return TRUE;
 Exit0:
 	return FALSE;
 }
 
-void on_control(int32_t nSrcAddr, const char* pBuffer, size_t dwSize)
+void on_control(SSMSG_CONTEXT* pCtx, const char* pBuffer, size_t dwSize)
 {
 	int32_t nRetCode = 0;
 	A2A_CONTROL_REQ* msg = (A2A_CONTROL_REQ*)pBuffer;
 
 	INF("test on control command type %s command content %s param %lld", msg->szCommandType, msg->szCommandContent, msg->qwParam);
 
-	nRetCode = do_send_control_ack(0, "success", nSrcAddr);
+	nRetCode = do_send_control_ack(pCtx, 0, "success");
 	LOG_PROCESS_ERROR(nRetCode);
 
 Exit0:

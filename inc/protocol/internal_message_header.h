@@ -41,13 +41,6 @@ struct INTERNAL_MESSAGE_HEADER
         qwCoroID = 0;
     }
 
-    void init_by_header(INTERNAL_MESSAGE_HEADER* pHeader)
-    {
-        wMsg = 0;
-        nMsgSrcAddr = 0;
-        qwCoroID = pHeader->qwCoroID;
-    }
-
 	uint16_t wMsg;
 	int32_t  nMsgSrcAddr;
     uint64_t qwCoroID;

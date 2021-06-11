@@ -12,14 +12,23 @@ class SC_HEAD;
 class SS_HEAD;
 typedef struct tagTFrameHead TFRAMEHEAD;
 
+struct SSMSG_CONTEXT
+{
+    int32_t     nSrcServerAddr;         // server where msg come from 
+    int32_t     nRealSrcServerAddr;     // server where msg send
+    uint64_t    qwCoroID;
+
+    BOOL send_ack(int32_t nMsgID, const void* pBuffer, size_t dwSize);
+};
+
 BOOL unpack_client_msg_head(const char* pBuff, int32_t nSize, char* pbyHeadLen, Message* pHead);
 
 BOOL recv_conn_msg_proc(int32_t nSrcAddr, const char* pBuff, int32_t nSize);
 BOOL recv_server_msg_proc(int32_t nSrcAddr, const char* pBuff, int32_t nSize);
 BOOL recv_client_msg_proc(uint64_t qwConnID, const char* pBuff, int32_t nSize);
 
-void recv_conn_transfer_msg(int32_t nSrcAddr, const char* pBuff, size_t dwSize);
-void recv_conn_ntf_event(int32_t nSrcAddr, const char* pBuff, size_t dwSize);
+void recv_conn_transfer_msg(SSMSG_CONTEXT* pCtx, const char* pBuff, size_t dwSize);
+void recv_conn_ntf_event(SSMSG_CONTEXT* pCtx, const char* pBuff, size_t dwSize);
 
 //api for server connected with tconnd directly
 BOOL send_conn_msg(int32_t nDstAddr, TFRAMEHEAD* pFrameHead, const SC_HEAD* pHead, const Message* pMsg);
@@ -53,7 +62,7 @@ BOOL register_conn_msg_handler(int32_t nMsgType, CONN_MSG_HANDLER pMsgHandler);
 typedef void(*CLIENT_MSG_HANDLER)(uint64_t qwConnID, const CS_HEAD* pHead, const Message* pMsg);
 BOOL register_client_msg_handler(int32_t nCSMsgID, CLIENT_MSG_HANDLER pMsgHandler);
 
-typedef void(*SERVER_MSG_HANDLER)(int32_t nSrcAddr, const char* pBuffer, size_t dwSize);
+typedef void(*SERVER_MSG_HANDLER)(SSMSG_CONTEXT* pCtx, const char* pBuffer, size_t dwSize);
 BOOL register_server_msg_handler(int32_t nSSMsgID, SERVER_MSG_HANDLER pMsgHandler);
 
 #endif

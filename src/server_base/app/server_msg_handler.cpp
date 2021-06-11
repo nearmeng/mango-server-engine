@@ -148,7 +148,7 @@ Exit0:
 	return FALSE;
 }
 
-void recv_conn_transfer_msg(int32_t nSrcAddr, const char* pBuff, size_t dwSize)
+void recv_conn_transfer_msg(SSMSG_CONTEXT* pCtx, const char* pBuff, size_t dwSize)
 {
     int32_t nRetCode = 0;
     CONN_TRANSFER_MSG* msg = (CONN_TRANSFER_MSG*)pBuff;
@@ -160,25 +160,26 @@ Exit0:
     return;
 }
 
-void recv_conn_ntf_event(int32_t nSrcAddr, const char* pBuff, size_t dwSize)
+void recv_conn_ntf_event(SSMSG_CONTEXT* pCtx, const char* pBuff, size_t dwSize)
 {
     int32_t nRetCode = 0;
     CONN_NTF_EVENT* msg = (CONN_NTF_EVENT*)pBuff;
-    CONN_NTF_EVENT_ACK ack;
 
     if (msg->nEventType == cetStart)
     {
         //send ack back
+        CONN_NTF_EVENT_ACK ack;
         ack.qwConnID = msg->qwConnID;
         ack.nEventType = msg->nEventType;
-        nRetCode = send_server_msg_by_addr(nSrcAddr, conn_ntf_event_ack, &ack, sizeof(ack));
-        LOG_CHECK_ERROR(nRetCode);
+
+        nRetCode = pCtx->send_ack(conn_ntf_event_ack, &ack, sizeof(ack));
+        LOG_PROCESS_ERROR(nRetCode);
     }
 
     //call user func
     if (g_ConnEventHandler[msg->nEventType])
     {
-        g_ConnEventHandler[msg->nEventType](msg->qwConnID, msg->szOpenID, nSrcAddr);
+        g_ConnEventHandler[msg->nEventType](msg->qwConnID, msg->szOpenID, pCtx->nRealSrcServerAddr);
     }
 
 Exit0:
@@ -267,8 +268,14 @@ BOOL recv_server_msg_proc(int32_t nSrcAddr, const char* pBuff, int32_t nSize)
     }
     else
     {
+        SSMSG_CONTEXT MsgContext;
 	    LOG_PROCESS_ERROR_DETAIL(g_ServerMsgHandler[pHeader->wMsg], "msgid is %d", pHeader->wMsg);
-        g_ServerMsgHandler[pHeader->wMsg](pHeader->nMsgSrcAddr, pBuff, nSize);
+
+        MsgContext.nSrcServerAddr = nSrcAddr;
+        MsgContext.nRealSrcServerAddr = pHeader->nMsgSrcAddr;
+        MsgContext.qwCoroID = pHeader->qwCoroID;
+
+        g_ServerMsgHandler[pHeader->wMsg](&MsgContext, pBuff, nSize);
     }
 
 	return TRUE;
@@ -612,3 +619,22 @@ BOOL send_server_msg_to_mgr_coro(int32_t nMsgID, const void* pBuffer, size_t dwS
 Exit0:
     return FALSE;
 }
+
+BOOL SSMSG_CONTEXT::send_ack(int32_t nMsgID, const void* pBuffer, size_t dwSize)
+{
+    int32_t nRetCode = 0;
+    INTERNAL_MESSAGE_HEADER* pHeader = (INTERNAL_MESSAGE_HEADER*)pBuffer;
+
+    LOG_PROCESS_ERROR(pBuffer);
+
+    pHeader->wMsg = nMsgID;
+    pHeader->nMsgSrcAddr = 0;       // to be set later
+    pHeader->qwCoroID = qwCoroID;
+
+    nRetCode = send_server_msg_by_addr(nRealSrcServerAddr, nMsgID, pBuffer, dwSize);
+    LOG_PROCESS_ERROR(nRetCode);
+
+    return TRUE;
+Exit0:
+    return FALSE;
+};

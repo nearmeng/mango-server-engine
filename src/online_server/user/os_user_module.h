@@ -22,8 +22,8 @@ public:
     inline int32_t get_user_count(void);
 
 private:
-    static void on_user_login(int32_t nSrcAddr, const char* pBuffer, size_t dwSize);
-    static void on_user_logout(int32_t nSrcAddr, const char* pBuffer, size_t dwSize);
+    static void on_user_login(SSMSG_CONTEXT* pCtx, const char* pBuffer, size_t dwSize);
+    static void on_user_logout(SSMSG_CONTEXT* pCtx, const char* pBuffer, size_t dwSize);
 
 private:
     BOOL _init_msg_handler(void);

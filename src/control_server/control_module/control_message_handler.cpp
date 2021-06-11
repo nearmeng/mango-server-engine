@@ -8,14 +8,15 @@
 #include "app/server_msg_handler.h"
 #include "tbus/tbus_wrapper.h"
 
-void on_a2a_control_ack(int32_t nSrcAddr, const char* pBuffer, size_t dwSize)
+void on_a2a_control_ack(SSMSG_CONTEXT* pCtx, const char* pBuffer, size_t dwSize)
 {
 	int32_t nRetCode = 0;
 	char szResult[512] = { 0 };
 	A2A_CONTROL_ACK* msg = (A2A_CONTROL_ACK*)pBuffer;
 
-	snprintf(szResult, sizeof(szResult), "recv server %s result: %s \n\r", tbus_get_str(nSrcAddr), msg->szDesc);
+	snprintf(szResult, sizeof(szResult), "recv server %s result: %s \n\r", tbus_get_str(pCtx->nRealSrcServerAddr), msg->szDesc);
     nRetCode = tappctrl_send_string(szResult);
+    LOG_PROCESS_ERROR(nRetCode == 0);
 
 Exit0:
 	return;
@@ -26,6 +27,7 @@ BOOL CControlModule::_msg_handler_init()
 	register_server_msg_handler(a2a_control_ack, on_a2a_control_ack);
 	return TRUE;
 }
+
 BOOL CControlModule::_msg_handler_uninit()
 {
 	return TRUE;

@@ -204,7 +204,7 @@ void on_relay(CLIENT_SESSION* pSession, const CS_HEAD* pHead, const google::prot
 
 }
 
-void on_os_user_kick(int32_t nSrcAddr, const char* pBuffer, size_t dwSize)
+void on_os_user_kick(SSMSG_CONTEXT* pCtx, const char* pBuffer, size_t dwSize)
 {
     int32_t nRetCode = 0;
     CUserModule* pModule = NULL;

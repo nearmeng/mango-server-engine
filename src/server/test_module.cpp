@@ -24,7 +24,7 @@
 #include "test_coro.h"
 #include "module/session_module.h"
 
-BOOL do_send_control_ack(int32_t nResult, const char* pDesc, int32_t nDstAddr)
+BOOL do_send_control_ack(SSMSG_CONTEXT* pCtx, int32_t nResult, const char* pDesc)
 {
 	int32_t nRetCode = 0;
 	A2A_CONTROL_ACK msg;
@@ -33,8 +33,8 @@ BOOL do_send_control_ack(int32_t nResult, const char* pDesc, int32_t nDstAddr)
 	strxcpy(msg.szDesc, pDesc, sizeof(msg.szDesc));
 	msg.nDescLen = strlen(pDesc);
 
-	nRetCode = send_server_msg_by_addr(nDstAddr, a2a_control_ack, &msg, sizeof(msg));
-	LOG_PROCESS_ERROR(nRetCode);
+    nRetCode = pCtx->send_ack(a2a_control_ack, &msg, sizeof(msg));
+    LOG_PROCESS_ERROR(nRetCode);
 
 	return TRUE;
 Exit0:
@@ -52,7 +52,7 @@ void _test_redis_callback(redisReply* pReply, const char* pUserData, size_t dwDa
     INF("got reply");
 }
 
-void on_control(int32_t nSrcAddr, const char* pBuffer, size_t dwSize)
+void on_control(SSMSG_CONTEXT* pCtx, const char* pBuffer, size_t dwSize)
 {
 	int32_t nRetCode = 0;
 	A2A_CONTROL_REQ* msg = (A2A_CONTROL_REQ*)pBuffer;
@@ -94,7 +94,7 @@ void on_control(int32_t nSrcAddr, const char* pBuffer, size_t dwSize)
         pRes = CResMgr<ACHIEVE_RES>::instance().get_next_res();
     }
 
-	nRetCode = do_send_control_ack(0, "success", nSrcAddr);
+	nRetCode = do_send_control_ack(pCtx, 0, "success");
 	LOG_PROCESS_ERROR(nRetCode);
 
 Exit0:

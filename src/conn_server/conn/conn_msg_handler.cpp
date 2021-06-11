@@ -133,7 +133,7 @@ void on_conn_stop_notify(uint64_t qwConnID, TFRAMEHEAD* pFrameHead, const char* 
     INF("recv conn stop notify from conn %llu", qwConnID);
 }
 
-void on_gs_business_event(int32_t nSrcAddr, const char* pBuffer, size_t dwSize)
+void on_gs_business_event(SSMSG_CONTEXT* pCtx, const char* pBuffer, size_t dwSize)
 {
     int32_t nRetCode = 0;
     CConnModule* pModule = NULL;
@@ -159,7 +159,7 @@ Exit0:
     return;
 }
 
-void on_gs_ntf_event_ack(int32_t nSrcAddr, const char* pBuffer, size_t dwSize)
+void on_gs_ntf_event_ack(SSMSG_CONTEXT* pCtx, const char* pBuffer, size_t dwSize)
 {
     int32_t nRetCode = 0;
     CConnModule* pModule = NULL;
@@ -173,15 +173,15 @@ void on_gs_ntf_event_ack(int32_t nSrcAddr, const char* pBuffer, size_t dwSize)
     LOG_PROCESS_ERROR(pSession);
 
     if(msg->nEventType == cetStart)
-        pSession->nBackendAddr = nSrcAddr;
+        pSession->nBackendAddr = pCtx->nRealSrcServerAddr;
 
-    INF("recv conn event ack from %s, conn %lld event %d", tbus_get_str(nSrcAddr), msg->qwConnID, msg->nEventType);
+    INF("recv conn event ack from %s, conn %lld event %d", tbus_get_str(pCtx->nRealSrcServerAddr), msg->qwConnID, msg->nEventType);
 
 Exit0:
     return;
 }
 
-void on_gs_transfer_msg(int32_t nSrcAddr, const char* pBuffer, size_t dwSize)
+void on_gs_transfer_msg(SSMSG_CONTEXT* pCtx, const char* pBuffer, size_t dwSize)
 {
     int32_t nRetCode = 0;
     CConnModule* pModule = NULL;
