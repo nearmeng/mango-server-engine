@@ -45,7 +45,7 @@ CORO_STATE CLoginCoro::coro_process()
     CORO_BEGIN()
 
     // check is user first login
-    nRetCode = CDBProxyClient::instance().redis_command_coro(get_coro_id(), "hmget user_data:%s userid data", m_szOpenID);
+    nRetCode = CDBProxyClient::instance().redis_command_coro("hmget user_data:%s userid data", m_szOpenID);
     LOG_PROCESS_ERROR(nRetCode);
 
     CORO_YIELD()
@@ -62,7 +62,7 @@ CORO_STATE CLoginCoro::coro_process()
     if (pReply->element[0]->type == REDIS_REPLY_NIL)
     {
         //create user id
-        nRetCode = CDBProxyClient::instance().redis_command_coro(get_coro_id(), "INCR user_id_generator");
+        nRetCode = CDBProxyClient::instance().redis_command_coro("INCR user_id_generator");
         LOG_PROCESS_ERROR(nRetCode);
 
         CORO_YIELD()
@@ -85,7 +85,7 @@ CORO_STATE CLoginCoro::coro_process()
         nRetCode = stUser.save_user(s_szUserData, dwUserDataSize);
         LOG_PROCESS_ERROR(nRetCode);
 
-        nRetCode = CDBProxyClient::instance().redis_command_coro(get_coro_id(), "hmset user_data:%s userid %llu data %b", m_szOpenID, m_qwUserID, s_szUserData, (size_t)dwUserDataSize);
+        nRetCode = CDBProxyClient::instance().redis_command_coro("hmset user_data:%s userid %llu data %b", m_szOpenID, m_qwUserID, s_szUserData, (size_t)dwUserDataSize);
         LOG_PROCESS_ERROR(nRetCode);
 
         CORO_YIELD()
@@ -130,7 +130,7 @@ CORO_STATE CLoginCoro::coro_process()
 
     //check user account valid
     // 1 white list
-    nRetCode = CDBProxyClient::instance().redis_command_coro(get_coro_id(), "SISMEMBER user_white_list %s", m_szOpenID);
+    nRetCode = CDBProxyClient::instance().redis_command_coro("SISMEMBER user_white_list %s", m_szOpenID);
     LOG_PROCESS_ERROR(nRetCode);
 
     CORO_YIELD()
@@ -154,7 +154,7 @@ CORO_STATE CLoginCoro::coro_process()
         msg.qwSessionID = m_qwSessionID;
         msg.nServerAddr = CMGApp::instance().get_tbus_addr();
 
-        nRetCode = send_server_msg_by_routerid(m_qwUserID, svrOnline, g2o_user_login, &msg, sizeof(msg), get_coro_id());
+        nRetCode = send_server_msg_by_routerid_coro(m_qwUserID, svrOnline, g2o_user_login, &msg, sizeof(msg));
         LOG_PROCESS_ERROR(nRetCode);
     }
 
@@ -171,7 +171,7 @@ CORO_STATE CLoginCoro::coro_process()
     }
 
     // get role list
-    nRetCode = CDBProxyClient::instance().redis_command_coro(get_coro_id(), "HVALS user_role_list:%llu", m_qwUserID);
+    nRetCode = CDBProxyClient::instance().redis_command_coro("HVALS user_role_list:%llu", m_qwUserID);
     LOG_PROCESS_ERROR(nRetCode);
     
     CORO_YIELD()
@@ -262,7 +262,7 @@ CORO_STATE CCreateRoleCoro::coro_process()
     pUser->nState = usCreateRole;
 
     // get role id
-    nRetCode = CDBProxyClient::instance().redis_command_coro(get_coro_id(), "INCR role_id_generator");
+    nRetCode = CDBProxyClient::instance().redis_command_coro("INCR role_id_generator");
     LOG_PROCESS_ERROR(nRetCode);
 
     CORO_YIELD()
@@ -292,7 +292,7 @@ CORO_STATE CCreateRoleCoro::coro_process()
         nRetCode = m_pRole->save(s_szRoleData, m_dwRoleSize, s_szRoleBaseData, m_dwRoleBaseSize);
         LOG_PROCESS_ERROR(nRetCode);
 
-        nRetCode = CDBProxyClient::instance().redis_command_coro(get_coro_id(), "set role:%llu %b", m_qwRoleID, s_szRoleData, (size_t)m_dwRoleSize);
+        nRetCode = CDBProxyClient::instance().redis_command_coro("set role:%llu %b", m_qwRoleID, s_szRoleData, (size_t)m_dwRoleSize);
         LOG_PROCESS_ERROR(nRetCode);
     
         CORO_YIELD()
@@ -305,7 +305,7 @@ CORO_STATE CCreateRoleCoro::coro_process()
         LOG_PROCESS_ERROR(pReply->type == REDIS_REPLY_STATUS);
         LOG_PROCESS_ERROR(pReply->integer == REDIS_OK);
 
-        nRetCode = CDBProxyClient::instance().redis_command_coro(get_coro_id(), "hmset user_role_list:%llu %llu %b", m_qwUserID, m_qwRoleID, s_szRoleBaseData, (size_t)m_dwRoleBaseSize);
+        nRetCode = CDBProxyClient::instance().redis_command_coro("hmset user_role_list:%llu %llu %b", m_qwUserID, m_qwRoleID, s_szRoleBaseData, (size_t)m_dwRoleBaseSize);
         LOG_PROCESS_ERROR(nRetCode);
 
         CORO_YIELD()
@@ -398,7 +398,7 @@ CORO_STATE CSelectRoleCoro::coro_process()
     pUser->nState = usSelectRole;
 
     // load from db
-    nRetCode = CDBProxyClient::instance().redis_command_coro(get_coro_id(), "get role:%llu", m_qwRoleID);
+    nRetCode = CDBProxyClient::instance().redis_command_coro("get role:%llu", m_qwRoleID);
     LOG_PROCESS_ERROR(nRetCode);
         
     CORO_YIELD()
@@ -506,7 +506,7 @@ CORO_STATE CKickUserCoro::coro_process()
             nRetCode = m_pRole->save(s_szRoleData, dwRoleSize, s_szRoleBaseData, dwRoleBaseSize);
             LOG_PROCESS_ERROR(nRetCode);
 
-            nRetCode = CDBProxyClient::instance().redis_command_coro(get_coro_id(), "set role:%llu %b", m_pRole->get_obj_id(), s_szRoleData, (size_t)dwRoleSize);
+            nRetCode = CDBProxyClient::instance().redis_command_coro("set role:%llu %b", m_pRole->get_obj_id(), s_szRoleData, (size_t)dwRoleSize);
             LOG_PROCESS_ERROR(nRetCode);
 
             CORO_YIELD()
@@ -539,7 +539,7 @@ CORO_STATE CKickUserCoro::coro_process()
             msg.qwSessionID = m_qwSessionID;
             msg.nServerAddr = CMGApp::instance().get_tbus_addr();
 
-            nRetCode = send_server_msg_by_routerid(m_qwUserID, svrOnline, g2o_user_logout, &msg, sizeof(msg), get_coro_id());
+            nRetCode = send_server_msg_by_routerid_coro(m_qwUserID, svrOnline, g2o_user_logout, &msg, sizeof(msg));
             LOG_PROCESS_ERROR(nRetCode);
         }
     

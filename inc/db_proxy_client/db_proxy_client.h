@@ -20,7 +20,7 @@ public:
     BOOL redis_command(int32_t nCmdID, const char* pUserData, size_t dwUserDataLen, const char* format, ...);
     BOOL redis_eval(int32_t nCmdID, const char* pUserData, size_t dwUserDataLen, const char* pszScript, const char* format, ...);
 
-    BOOL redis_command_coro(uint64_t qwCoroID, const char* format, ...);
+    BOOL redis_command_coro(const char* format, ...);
     BOOL redis_eval_coro(uint64_t qwCoroID, const char* pszScript, const char* format, ...);
 
     inline BOOL reg_redis_callback(int32_t nCmdID, REDIS_CMD_CALLBACK pCallBack);

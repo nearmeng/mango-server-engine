@@ -19,7 +19,7 @@ CORO_STATE CTestCoro::coro_process()
 
     DBG("[CORO]: coro is start %d, server_addr %d mgr_index %d", get_coro_id(), GET_CORO_SERVER_ADDR(get_coro_id()), GET_CORO_MGR_INDEX(get_coro_id()));
 
-    nRetCode = CDBProxyClient::instance().redis_command_coro(get_coro_id(), "get test_key");
+    nRetCode = CDBProxyClient::instance().redis_command_coro("get test_key");
     LOG_PROCESS_ERROR(nRetCode);
 
     CORO_YIELD()
@@ -34,7 +34,7 @@ CORO_STATE CTestCoro::coro_process()
         TEST_SEND_DATA msg;
         msg.nData = 123;
 
-        nRetCode = send_server_msg_by_routerid(0, svrTest, 263, &msg, sizeof(msg), get_coro_id());
+        nRetCode = send_server_msg_by_routerid_coro(0, svrTest, 263, &msg, sizeof(msg));
         LOG_PROCESS_ERROR(nRetCode);
     }
 

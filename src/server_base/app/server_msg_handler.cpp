@@ -543,3 +543,72 @@ BOOL send_server_msg_to_mgr(int32_t nMsgID, const void* pBuffer, size_t dwSize, 
 Exit0:
 	return FALSE;
 }
+
+BOOL send_server_msg_by_routerid_coro(uint64_t qwRouterID, int32_t nServiceType, int32_t nMsgID, const void* pBuffer, size_t dwSize)
+{
+    CCoroStackless* pCoro = CGlobalStacklessMgr::instance().get_curr_coro();
+    LOG_PROCESS_ERROR(pCoro);
+
+    return send_server_msg_by_routerid(qwRouterID, nServiceType, nMsgID, pBuffer, dwSize, pCoro->get_coro_id());
+Exit0:
+    return FALSE;
+}
+
+BOOL send_server_msg_by_service_type_coro(int32_t nServiceType, int32_t nMsgID, const void* pBuffer, size_t dwSize)
+{
+    CCoroStackless* pCoro = CGlobalStacklessMgr::instance().get_curr_coro();
+    LOG_PROCESS_ERROR(pCoro);
+
+    return send_server_msg_by_service_type(nServiceType, nMsgID, pBuffer, dwSize, pCoro->get_coro_id());
+Exit0:
+    return FALSE;
+}
+
+BOOL send_server_msg_by_service_inst_coro(int32_t nServiceType, int32_t nInstID, int32_t nMsgID, const void* pBuffer, size_t dwSize)
+{
+    CCoroStackless* pCoro = CGlobalStacklessMgr::instance().get_curr_coro();
+    LOG_PROCESS_ERROR(pCoro);
+
+    return send_server_msg_by_service_inst(nServiceType, nInstID, nMsgID, pBuffer, dwSize, pCoro->get_coro_id());
+Exit0:
+    return FALSE;
+}
+BOOL send_server_msg_by_addr_coro(int32_t nDstServerAddr, int32_t nMsgID, const void* pBuffer, size_t dwSize)
+{
+    CCoroStackless* pCoro = CGlobalStacklessMgr::instance().get_curr_coro();
+    LOG_PROCESS_ERROR(pCoro);
+
+    return send_server_msg_by_addr(nDstServerAddr, nMsgID, pBuffer, dwSize, pCoro->get_coro_id());
+Exit0:
+    return FALSE;
+}
+
+BOOL send_server_msg_by_objid_coro(uint64_t qwObjID, int32_t nMsgID, const void* pBuffer, size_t dwSize)
+{
+    CCoroStackless* pCoro = CGlobalStacklessMgr::instance().get_curr_coro();
+    LOG_PROCESS_ERROR(pCoro);
+
+    return send_server_msg_by_objid(qwObjID, nMsgID, pBuffer, dwSize, pCoro->get_coro_id());
+Exit0:
+    return FALSE;
+}
+
+BOOL send_server_msg_by_load_coro(int32_t nServiceType, int32_t nMsgID, const void* pBuffer, size_t dwSize)
+{
+    CCoroStackless* pCoro = CGlobalStacklessMgr::instance().get_curr_coro();
+    LOG_PROCESS_ERROR(pCoro);
+
+    return send_server_msg_by_load(nServiceType, nMsgID, pBuffer, dwSize, pCoro->get_coro_id());
+Exit0:
+    return FALSE;
+}
+
+BOOL send_server_msg_to_mgr_coro(int32_t nMsgID, const void* pBuffer, size_t dwSize)
+{
+    CCoroStackless* pCoro = CGlobalStacklessMgr::instance().get_curr_coro();
+    LOG_PROCESS_ERROR(pCoro);
+
+    return send_server_msg_to_mgr(nMsgID, pBuffer, dwSize, pCoro->get_coro_id());
+Exit0:
+    return FALSE;
+}

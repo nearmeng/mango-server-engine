@@ -141,10 +141,17 @@ Exit0:
 }
 
 
-BOOL CDBProxyClient::redis_command_coro(uint64_t qwCoroID, const char* format, ...)
+BOOL CDBProxyClient::redis_command_coro(const char* format, ...)
 {
     int32_t nRetCode = 0;
     va_list args;
+    uint64_t qwCoroID = 0;
+    CCoroStackless* pCurrCoro = NULL;
+
+    pCurrCoro = CGlobalStacklessMgr::instance().get_curr_coro();
+    LOG_PROCESS_ERROR(pCurrCoro);
+
+    qwCoroID = pCurrCoro->get_coro_id();
 
     va_start(args, format);
     nRetCode = _command(qwCoroID, 0, NULL, 0, NULL, format, args);
