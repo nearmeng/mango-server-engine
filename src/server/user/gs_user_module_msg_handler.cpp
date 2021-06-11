@@ -86,14 +86,17 @@ void on_conn_stop_event(CLIENT_SESSION* pSession)
     pSessionModule = MG_GET_MODULE(CSessionModule);
     LOG_PROCESS_ERROR(pSessionModule);
     
-    pUser =  pUserModule->find_user(pSession->qwUserID);
-    LOG_PROCESS_ERROR(pUser);
+    if (pSession->qwUserID > 0)
+    {
+        pUser = pUserModule->find_user(pSession->qwUserID);
+        LOG_PROCESS_ERROR(pUser);
+    
+        pUser->qwSessionID = 0;
+        pUser->nSessionStopTime = CTimeMgr::instance().get_time_sec();
+    }
 
     nRetCode = pSessionModule->destroy_session(pSession);
     LOG_PROCESS_ERROR(nRetCode);
-
-    pUser->qwSessionID = 0;
-    pUser->nSessionStopTime = CTimeMgr::instance().get_time_sec();
 
 Exit0:
     return;

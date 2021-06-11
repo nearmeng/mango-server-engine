@@ -104,7 +104,7 @@ inline BOOL FULL_SERVICE_DATA::add_server_node(SERVER_INFO stServerInfo)
 	int32_t nServiceType = tbus_get_type(stServerInfo.nTbusAddr);
 	int32_t nServerIndex = tbus_get_inst(stServerInfo.nTbusAddr);
 
-	LOG_PROCESS_ERROR(nServiceType > 0 && nServerIndex < MAX_SERVICE_COUNT);
+	LOG_PROCESS_ERROR(nServiceType > 0 && nServiceType < MAX_SERVICE_COUNT);
 	LOG_PROCESS_ERROR(nServerIndex > 0 && nServerIndex <= MAX_SERVER_COUNT_PER_SERVICE);
 
 	if (ServiceInfo[nServiceType].nServerCount < nServerIndex)

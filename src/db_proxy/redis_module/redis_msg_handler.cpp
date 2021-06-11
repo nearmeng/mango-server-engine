@@ -90,6 +90,8 @@ BOOL send_db_proxy_client_redis_rsp(int32_t nTbusAddr, int32_t nCmdID, uint64_t 
     memcpy(msg->szUserData, pUserData, dwUserDataLen);
     msg->nReplySize = nPackedSize;
     memcpy(msg->szReplyBuffer, pPackedBuffer, nPackedSize);
+    
+    msg->bForceProcessByHandler = TRUE;
 
     nRetCode = send_server_msg_by_addr(nTbusAddr, db_proxy_client_redis_rsp, msg, dwTotalSize, qwCoroID);
     LOG_PROCESS_ERROR(nRetCode);

@@ -255,7 +255,8 @@ BOOL recv_server_msg_proc(int32_t nSrcAddr, const char* pBuff, int32_t nSize)
 	LOG_PROCESS_ERROR(nSize > 0);
 	LOG_PROCESS_ERROR(pHeader->wMsg >= internal_message_begin && pHeader->wMsg <= internal_message_end);
 
-    if (pHeader->qwCoroID > 0 && GET_CORO_SERVER_ADDR(pHeader->qwCoroID) == CMGApp::instance().get_tbus_addr())
+    if (pHeader->qwCoroID > 0 && GET_CORO_SERVER_ADDR(pHeader->qwCoroID) == CMGApp::instance().get_tbus_addr() 
+                && !pHeader->bForceProcessByHandler)
     {
         CCoroStackless* pCoro = CGlobalStacklessMgr::instance().get_coro(pHeader->qwCoroID);
         LOG_PROCESS_ERROR(pCoro);

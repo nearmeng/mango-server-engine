@@ -39,11 +39,13 @@ struct INTERNAL_MESSAGE_HEADER
         wMsg = 0;
         nMsgSrcAddr = 0;
         qwCoroID = 0;
+        bForceProcessByHandler = false;
     }
 
 	uint16_t wMsg;
 	int32_t  nMsgSrcAddr;
     uint64_t qwCoroID;
+    uint8_t  bForceProcessByHandler;
 };
 
 // tolua_end
