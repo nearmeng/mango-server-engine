@@ -4,7 +4,7 @@ procs:
       layer: world
       func_id: 62
       flag: notapp
-      local_start: false
+      local_start: false                    #need start in local proc mgr 
       deploy_unit: group_host
   tbusd:
       layer: world
@@ -112,6 +112,8 @@ procs:
           monlog: 
            - local
 
+
+# if use tbus, then should describe connect relationship between procs
 proc_connect:
     - peer1: router_server
       peer2: router_server

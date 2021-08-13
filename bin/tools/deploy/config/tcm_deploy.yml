@@ -29,7 +29,7 @@ cluster:
                 - id_begin : 1
                   id_end : 2
                   host_group : group1
-                  log : test_host1
+                  log : test_host1              # if log is set, group_tlogd will be deployed in specific host automatically
                   count_per_host: 2
             group_gs:
                 - id_begin : 1
