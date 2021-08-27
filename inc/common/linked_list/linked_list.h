@@ -1,17 +1,7 @@
 #ifndef _LINKED_LIST_
 #define _LINKED_LIST_
 
-struct LINK_HEAD
-{
-	uint64_t	qwHeadObjMid;
-	uint64_t	qwTailObjMid;
-};
-
-struct LINK_NODE
-{
-	uint64_t	qwPrevObjMid;
-	uint64_t	qwNextObjMid;
-};
+#include "define/linked_list_def.h"
 
 template<class T>
 BOOL add_head(LINK_HEAD* pHead, uint64_t qwObjMid);

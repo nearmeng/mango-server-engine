@@ -66,6 +66,7 @@ BOOL CShmObjectPool<T, N>::init(int32_t shm_type, int32_t unit_count, BOOL is_re
 	int32_t unit_size = ALIGN8(sizeof(SHM_UNIT_DATA) + sizeof(T));
 	uint64_t pool_size = ALIGN8(sizeof(SHM_POOL) + hash_map_size + (sizeof(SHM_UNIT_INDEX<N>) + unit_size) * unit_count);
 
+	LOG_PROCESS_ERROR(unit_count > 0);
 	LOG_PROCESS_ERROR_DETAIL(shm_type > stdInvalid, "shm_type is %d", shm_type);
 	LOG_PROCESS_ERROR_DETAIL(shm_type < stdTotal, "shm type is %d", shm_type);
 	

@@ -87,7 +87,7 @@ BOOL CGlobalStacklessMgr::init(int32_t nServerAddr, BOOL bResume)
         int32_t nShmType = _get_shm_type_by_mgr_name(it->szMgrName);
         LOG_PROCESS_ERROR(nShmType > 0);
 
-        DBG("[CORO]: init coro mgr %s with shm_type %d", it->szMgrName, nShmType);
+        DBG("[CORO]: init coro mgr %s with shm_type %d count %d", it->szMgrName, nShmType, g_ServerConfig.Common.nCommonCoroCount);
 
         nRetCode = pCoroMgr->init(nShmType, g_ServerConfig.Common.nCommonCoroCount, bResume);
         LOG_PROCESS_ERROR(nRetCode);

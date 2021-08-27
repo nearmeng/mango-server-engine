@@ -10,9 +10,6 @@ struct SHM_TEST_DATA
 TEST(SHM_TEST, SHM_POOL_TEST)
 {
 	int32_t nRetCode = 0;
-    
-	nRetCode = CShmMgr::instance().init(0x1234, 10 * 1024 * 1024, false);
-    ASSERT_TRUE(nRetCode);
 
 	CShmObject<SHM_TEST_DATA> ShmObject;
 	nRetCode = ShmObject.init(2, false);
@@ -32,17 +29,11 @@ TEST(SHM_TEST, SHM_POOL_TEST)
 
     nRetCode = ShmObject.uninit();
     ASSERT_TRUE(nRetCode);
-
-    nRetCode = CShmMgr::instance().uninit();
-    ASSERT_TRUE(nRetCode);
 }
 
 TEST(SHM_TEST, ID_OBJECT_POOL_TEST)
 {
     BOOL nRetCode = 0;
-
-    nRetCode = CShmMgr::instance().init(0x1234, 10 * 1024 * 1024, false);
-    ASSERT_TRUE(nRetCode);
 
     CShmObjectPool<SHM_TEST_DATA, int32_t> TestDataPool;
 
@@ -94,8 +85,5 @@ TEST(SHM_TEST, ID_OBJECT_POOL_TEST)
 	}
 
     nRetCode = TestDataPool.uninit();
-    ASSERT_TRUE(nRetCode);
-
-    nRetCode = CShmMgr::instance().uninit();
     ASSERT_TRUE(nRetCode);
 }

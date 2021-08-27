@@ -11,11 +11,14 @@ if (MSVC)
 	target_link_libraries (${TARGET_NAME} 
 		debug gtestd.lib
 		optimized gtest.lib
+		debug game_data_d.lib
+		optimized game_data.lib
 	)
 else ()
 	target_link_libraries (${TARGET_NAME} 
 		debug libgtestd.a
 		optimized libgtest.a
+		game_data
 	)
 endif ()
 

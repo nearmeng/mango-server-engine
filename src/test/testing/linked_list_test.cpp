@@ -13,11 +13,8 @@ TEST(LIST_TEST, COMMON_TEST)
 	int32_t nRetCode = 0;
 	LINK_HEAD Head = { 0 };
 
-    nRetCode = CShmMgr::instance().init(0x1234, 10 * 1024 * 1024, false);
-    ASSERT_TRUE(nRetCode);
-
     CShmObjectPool<SHM_TEST_DATA_LINK, int32_t> TestDataPool;
-    nRetCode = TestDataPool.init(1, 10, false);
+    nRetCode = TestDataPool.init(3, 10, false);
     ASSERT_TRUE(nRetCode);
 
     SHM_TEST_DATA_LINK* pData1 = TestDataPool.new_object(123);

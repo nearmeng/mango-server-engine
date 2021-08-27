@@ -333,6 +333,8 @@ BOOL CCoroStacklessMgr<T>::resume_coro(CCoroStackless* pCoro)
 
     pCoro->set_state(crsStart);
 
+	INF("[CORO]: coro %llu is resume", pCoro->get_coro_id());
+
     CGlobalStacklessMgr::instance().push_curr_coro(pCoro);
     nReturnState = pCoro->coro_process();
     CGlobalStacklessMgr::instance().pop_curr_coro();
