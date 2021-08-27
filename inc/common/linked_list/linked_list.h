@@ -13,15 +13,14 @@ struct LINK_NODE
 	uint64_t	qwNextObjMid;
 };
 
-// 这里是的模板参数是指当前链表的数据类型 由于需要从mid查找到指针 需要验证mid的合理性 
-// 而验证合理性就需要知道共享内存数据的结构 所以就需要知道数据的类型
 template<class T>
 BOOL add_head(LINK_HEAD* pHead, uint64_t qwObjMid);
+
 template<class T>
 BOOL add_tail(LINK_HEAD* pHead, uint64_t qwObjMid);
+
 template<class T>
 BOOL del_node(LINK_HEAD* pHead, uint64_t qwObjMid);
-
 
 template<class T>
 BOOL add_head(LINK_HEAD* pHead, uint64_t qwObjMid)
@@ -29,10 +28,10 @@ BOOL add_head(LINK_HEAD* pHead, uint64_t qwObjMid)
 	LINK_NODE* pHeadNode = NULL;
 	LINK_NODE* pNewNode = NULL;
 	
-	pNewNode = (LINK_NODE*)CShmMgr::get_instance().mid2ptr<T>(qwObjMid);
+	pNewNode = (T*)SHM_MID2PTR(qwObjMid);
 	LOG_PROCESS_ERROR(pNewNode);
 
-	pHeadNode = (LINK_NODE*)CShmMgr::get_instance().mid2ptr<T>(pHead->qwHeadObjMid);
+	pHeadNode = (T*)SHM_MID2PTR(pHead->qwHeadObjMid);
 	if (pHeadNode == NULL)
 	{
 		pNewNode->qwNextObjMid = 0;
@@ -61,10 +60,10 @@ BOOL add_tail(LINK_HEAD* pHead, uint64_t qwObjMid)
 	LINK_NODE* pNewNode = NULL;
 	LINK_NODE* pTailNode = NULL;
 
-	pNewNode = (LINK_NODE*)CShmMgr::get_instance().mid2ptr<T>(qwObjMid);
+	pNewNode = (T*)SHM_MID2PTR(qwObjMid);
 	LOG_PROCESS_ERROR(pNewNode);
 
-	pTailNode = (LINK_NODE*)CShmMgr::get_instance().mid2ptr<T>(pHead->qwTailObjMid);
+	pTailNode = (T*)SHM_MID2PTR(pHead->qwTailObjMid);
 	if (pTailNode == NULL)
 	{
 		pNewNode->qwNextObjMid = 0;
@@ -94,11 +93,11 @@ BOOL del_node(LINK_HEAD* pHead, uint64_t qwObjMid)
 	LINK_NODE* pPrevNode = NULL;
 	LINK_NODE* pNextNode = NULL;
 
-	pDelNode = (LINK_NODE*)CShmMgr::get_instance().mid2ptr<T>(qwObjMid);
+	pDelNode = (T*)SHM_MID2PTR(qwObjMid);
 	LOG_PROCESS_ERROR(pDelNode);
 
-	pPrevNode = (LINK_NODE*)CShmMgr::get_instance().mid2ptr<T>(pDelNode->qwPrevObjMid);
-	pNextNode = (LINK_NODE*)CShmMgr::get_instance().mid2ptr<T>(pDelNode->qwNextObjMid);
+	pPrevNode = (T*)SHM_MID2PTR(pDelNode->qwPrevObjMid);
+	pNextNode = (T*)SHM_MID2PTR(pDelNode->qwNextObjMid);
 
 	if (pPrevNode != NULL)
 		pPrevNode->qwNextObjMid = pDelNode->qwNextObjMid;

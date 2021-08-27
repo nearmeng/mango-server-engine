@@ -88,7 +88,7 @@ BOOL CCoroStacklessMgr<T>::init(int32_t nShmType, BOOL nInitCoroCount, BOOL bRes
         T* pCoro = m_CoroPool.get_first_object();
         while (pCoro)
         {
-	        uint64_t qwCoroMid = CShmMgr::get_instance().ptr2mid<T>(pCoro);
+			uint64_t qwCoroMid = SHM_PTR2MID(pCoro);
 
             switch (pCoro->get_state())
             {
@@ -137,7 +137,7 @@ void CCoroStacklessMgr<T>::mainloop(void)
     //check ready
     while (m_ReadyLinkHead.qwHeadObjMid != 0 && nCounter < nExecuteReadyCoroPerLoop)
     {
-        T* pCoro = CShmMgr::get_instance().mid2ptr<T>(m_ReadyLinkHead.qwHeadObjMid);
+        T* pCoro = (T*)SHM_MID2PTR(m_ReadyLinkHead.qwHeadObjMid);
         if (pCoro == NULL)
         {
             CRI("[CORO]: get coro from mid %llu failed", m_ReadyLinkHead.qwHeadObjMid);
@@ -157,7 +157,7 @@ void CCoroStacklessMgr<T>::mainloop(void)
     //check run timeout
     while (m_RunLinkHead.qwHeadObjMid != 0)
     {
-        T* pCoro = CShmMgr::get_instance().mid2ptr<T>(m_RunLinkHead.qwHeadObjMid);
+        T* pCoro = (T*)SHM_MID2PTR(m_RunLinkHead.qwHeadObjMid);
         if (pCoro == NULL)
         {
             CRI("[CORO]: get coro from mid %llu failed", m_RunLinkHead.qwHeadObjMid);
@@ -181,7 +181,7 @@ void CCoroStacklessMgr<T>::mainloop(void)
     nCounter = 0;
     while (m_DeleteLinkHead.qwHeadObjMid != 0 && nCounter < nExecuteReadyCoroPerLoop)
     {
-        T* pCoro = CShmMgr::get_instance().mid2ptr<T>(m_DeleteLinkHead.qwHeadObjMid);
+        T* pCoro = (T*)SHM_MID2PTR(m_DeleteLinkHead.qwHeadObjMid);
         if (pCoro == NULL)
         {
             CRI("[CORO]: get coro from mid %llu failed", m_DeleteLinkHead.qwHeadObjMid);
@@ -248,7 +248,7 @@ template<class T>
 BOOL CCoroStacklessMgr<T>::_on_coro_process_run(CCoroStackless* pCoro, int32_t nReturnState)
 {
     int32_t nRetCode = 0;
-	uint64_t qwCoroMid = CShmMgr::get_instance().ptr2mid<T>((T*)pCoro);
+	uint64_t qwCoroMid = SHM_PTR2MID(pCoro);
 
     pCoro->set_state(nReturnState);
 
@@ -301,7 +301,7 @@ BOOL CCoroStacklessMgr<T>::start_coro(CCoroStackless* pCoro, BOOL bImmediate)
     }
     else
     {
-	    uint64_t qwCoroMid = CShmMgr::get_instance().ptr2mid<T>((T*)pCoro);
+	    uint64_t qwCoroMid = SHM_PTR2MID(pCoro);
         pCoro->set_state(crsReady);
 
         add_tail<T>(&m_ReadyLinkHead, qwCoroMid);
@@ -323,7 +323,7 @@ BOOL CCoroStacklessMgr<T>::resume_coro(CCoroStackless* pCoro)
 {
     int32_t nRetCode = 0;
     int32_t nReturnState = 0;
-	uint64_t qwCoroMid = CShmMgr::get_instance().ptr2mid<T>((T*)pCoro);
+	uint64_t qwCoroMid = SHM_PTR2MID(pCoro);
 
     LOG_PROCESS_ERROR(pCoro);
     LOG_PROCESS_ERROR(pCoro->get_state() == crsRunning);

@@ -6,8 +6,12 @@
 #define FENCE_NUM          0xabcddcba
 #define UNIT_SERIAL_MASK	0x3FFFF
 
-#define OFFSET2PTR(offset) ((int64_t)CShmMgr::get_instance()._get_pool_mgr() + (int64_t)(offset))
-#define PTR2OFFSET(ptr) ((int64_t)(ptr) - (int64_t)CShmMgr::get_instance()._get_pool_mgr())
+#define ALIGN8(x) (((x) + 7LL) & (~7LL))
+#define OFFSET2PTR(offset) ((int64_t)CShmMgr::instance()._get_pool_mgr() + (int64_t)(offset))
+#define PTR2OFFSET(ptr) ((int64_t)(ptr) - (int64_t)CShmMgr::instance()._get_pool_mgr())
+
+#define SHM_MID2PTR(mid)	(CShmMgr::instance().mid2ptr(mid))
+#define SHM_PTR2MID(ptr)	(CShmMgr::instance().ptr2mid(ptr))
 
 struct SHM_UNIT_MID
 {
@@ -22,12 +26,11 @@ struct SHM_UNIT_INDEX
 	int64_t next_unit_offset;
 };
 
-template<class T>
 struct SHM_UNIT_DATA
 {
-	T        data;
 	uint32_t fence;					// check overflow
 	uint32_t unit_serial;			// check mid valid
+	char	 data[0];				// data
 };
 
 struct SHM_POOL 

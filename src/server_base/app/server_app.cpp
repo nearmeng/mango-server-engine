@@ -143,7 +143,7 @@ int32_t CMGApp::_app_init(TAPPCTX* pCtx, void* pArg)
     nResMode = (ms_Instance->m_Config.nResMode == 0) ? g_ServerConfig.Common.nResMode : ms_Instance->m_Config.nResMode;
 
 	//shm
-	nRetCode = CShmMgr::get_instance().init(pCtx->iId, nShmSize, bResume);
+	nRetCode = CShmMgr::instance().init(pCtx->iId, nShmSize, bResume);
 	LOG_PROCESS_ERROR(nRetCode);
 
 	//guid
@@ -336,7 +336,7 @@ int32_t CMGApp::_app_fini(TAPPCTX* pCtx, void* pArg)
 	nRetCode = CTimeMgr::instance().uninit();
 	LOG_CHECK_ERROR(nRetCode);
 
-	nRetCode = CShmMgr::get_instance().uninit();
+	nRetCode = CShmMgr::instance().uninit();
 	LOG_CHECK_ERROR(nRetCode);
 
 	return 0;

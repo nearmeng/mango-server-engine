@@ -14,7 +14,7 @@ public:
 	template<class T, class N> 
 	friend class CShmObjectPool;
 
-	inline static CShmMgr& get_instance(void);
+	inline static CShmMgr& instance(void);
 
 	BOOL init(int32_t shm_key, int32_t shm_size, BOOL is_resume);
 	BOOL uninit(void);
@@ -22,10 +22,8 @@ public:
 	SHM_POOL* init_pool(int32_t shm_type, int32_t pool_size);
 	inline SHM_POOL* get_pool(int32_t shm_type);
 
-	template<class T>
-	uint64_t ptr2mid(T* object);
-	template<class T>
-	T* mid2ptr(uint64_t mid);
+	uint64_t ptr2mid(void* object);
+	void* mid2ptr(uint64_t mid);
 
 private:
 	int32_t _shm_create(int32_t shm_key, int32_t shm_size);
@@ -82,8 +80,8 @@ public:
 private:
 	inline int32_t _get_hash_map_count(int32_t unit_count);
 	inline int32_t _get_hash_index(N id, int32_t hash_map_count);
-    inline SHM_UNIT_DATA<T>* _get_unit_data(SHM_POOL* pool, SHM_UNIT_INDEX<N>* index);
-    inline SHM_UNIT_INDEX<N>* _get_unit_index(SHM_POOL* pool, SHM_UNIT_DATA<T>* data);
+    inline SHM_UNIT_DATA* _get_unit_data(SHM_POOL* pool, SHM_UNIT_INDEX<N>* index);
+    inline SHM_UNIT_INDEX<N>* _get_unit_index(SHM_POOL* pool, SHM_UNIT_DATA* data);
 
 private:
 	int32_t m_shm_type;

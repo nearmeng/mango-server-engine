@@ -132,7 +132,7 @@ BOOL CTimeMgr::add_timer(int32_t nFirstInterval, int32_t nRepeatInterval, int32_
 	pLinkList = _find_handle_list(pTimerHandler->llExpires);
 	pTimerHandler->llListOffset = (int64_t)pLinkList - (int64_t)m_pTimeMgr;
 	
-	qwHandlerMid = CShmMgr::get_instance().ptr2mid<TIMER_HANDLER>(pTimerHandler);
+	qwHandlerMid = SHM_PTR2MID(pTimerHandler);
 	add_tail<TIMER_HANDLER>(pLinkList, qwHandlerMid);
 
 	INF("add timer, type %d, interval %d expires %d", pTimerHandler->wTimerType, 
@@ -152,7 +152,7 @@ BOOL CTimeMgr::del_timer(uint64_t qwTimerMid)
 	
 	LOG_PROCESS_ERROR(qwTimerMid > 0);
 
-	pTimerHandler = CShmMgr::get_instance().mid2ptr<TIMER_HANDLER>(qwTimerMid);
+	pTimerHandler = (TIMER_HANDLER*)SHM_MID2PTR(qwTimerMid);
 	LOG_PROCESS_ERROR(pTimerHandler);
 
 	if (pTimerHandler->bRunning)
@@ -253,7 +253,7 @@ void CTimeMgr::_internal_run_timer(void)
 	while (pTimerList->qwHeadObjMid != 0)
 	{
 		uint64_t qwTimerMid = pTimerList->qwHeadObjMid;
-		TIMER_HANDLER* pTimerHandler = CShmMgr::get_instance().mid2ptr<TIMER_HANDLER>(qwTimerMid);
+		TIMER_HANDLER* pTimerHandler = (TIMER_HANDLER*)SHM_MID2PTR(qwTimerMid);
 		LOG_PROCESS_ERROR(pTimerHandler);
 
 		// perhaps core when running
@@ -275,7 +275,7 @@ void CTimeMgr::_internal_run_timer(void)
 		m_pTimeMgr->pTimeoutFunc[pTimerHandler->wTimerType](qwTimerMid, pTimerHandler->byData, pTimerHandler->wDataLen);
 
 		// just in cast of delete self in timeout func
-		pTimerHandler = CShmMgr::get_instance().mid2ptr<TIMER_HANDLER>(qwTimerMid);
+		pTimerHandler = (TIMER_HANDLER*)SHM_MID2PTR(qwTimerMid);
 		if (pTimerHandler == NULL)
 		{
 			continue;
@@ -320,7 +320,7 @@ void CTimeMgr::_cascade(LINK_HEAD* pTimerList)
 		LINK_HEAD* pNewList = NULL;
 		TIMER_HANDLER* pTimerHandler = NULL; 
 		
-		pTimerHandler = CShmMgr::get_instance().mid2ptr<TIMER_HANDLER>(qwTimerMid);
+		pTimerHandler = (TIMER_HANDLER*)SHM_MID2PTR(qwTimerMid);
 		LOG_PROCESS_ERROR(pTimerHandler);
 
 		pNewList = _find_handle_list(pTimerHandler->llExpires);
