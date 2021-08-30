@@ -490,7 +490,7 @@ CORO_STATE CKickUserCoro::coro_process()
     m_pUser = m_pUserModule->find_user(m_qwUserID);
     if (m_pUser)
     {
-        LOG_CHECK_ERROR(m_pUser->nState != usKick);
+        LOG_PROCESS_ERROR(m_pUser->nState != usKick);
 
         m_pUser->nState = usKick;
 

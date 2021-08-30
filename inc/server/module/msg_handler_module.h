@@ -31,6 +31,8 @@ public:
 
     BOOL send_to_client(uint64_t qwSessionID, int32_t nMsgID, const google::protobuf::Message* pMsg);
     BOOL send_to_client(CLIENT_SESSION* pSession, int32_t nMsgID, const google::protobuf::Message* pMsg);
+	BOOL broadcast_to_client(int32_t nMsgID, const google::protobuf::Message* pMsg);
+	BOOL multicast_to_client(std::vector<CLIENT_SESSION*> vSession, int32_t nMsgID, const google::protobuf::Message* pMsg);
     
     BOOL send_error_code_to_client(CLIENT_SESSION* pSession, int32_t nErrorCode, uint64_t qwParam);
     BOOL send_error_code_to_client_by_sessionid(uint64_t qwSessionID, int32_t nErrorCode, uint64_t qwParam);

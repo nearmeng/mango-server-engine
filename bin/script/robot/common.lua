@@ -46,3 +46,6 @@ end
 
 GLOBAL_CONFIG = {}
 register_msgid()
+
+-- default config
+GLOBAL_CONFIG["server_url"] = "tcp://127.0.0.1:9001"

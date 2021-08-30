@@ -91,6 +91,7 @@ public:
     
     inline int32_t get_frame(void);
     inline int32_t get_tbus_addr(void);
+    inline int32_t get_tbus_handle(void);
     inline BOOL is_resume(void);
 
     BOOL register_module(CServerModule* pModule);
@@ -164,6 +165,11 @@ inline uint64_t CMGApp::get_stop_timer(void)
 inline int32_t CMGApp::get_frame(void)
 {
     return m_nServerFrame;
+}
+    
+inline int32_t CMGApp::get_tbus_handle(void)
+{
+	return m_stAppCtx.iBus;
 }
 
 inline int32_t CMGApp::get_tbus_addr(void)

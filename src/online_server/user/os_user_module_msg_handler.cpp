@@ -114,6 +114,9 @@ void CUserModule::on_user_logout(SSMSG_CONTEXT* pCtx, const char* pBuffer, size_
     //LOG_PROCESS_ERROR(pUser->qwSessionID == msg->qwSessionID);
     LOG_PROCESS_ERROR(pUser->nServerAddr == msg->nServerAddr);
 
+	nRetCode = pUserModule->del_user(pUser);
+	LOG_CHECK_ERROR(nRetCode);
+
     nRetCode = do_user_logout_ack(pCtx, errSuccess, msg->qwUserID, msg->qwSessionID);
     LOG_PROCESS_ERROR(nRetCode);
 

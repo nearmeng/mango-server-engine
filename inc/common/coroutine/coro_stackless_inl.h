@@ -96,7 +96,7 @@ BOOL CCoroStacklessMgr<T>::init(int32_t nShmType, BOOL nInitCoroCount, BOOL bRes
                 add_tail<T>(&m_ReadyLinkHead, qwCoroMid);
                 break;
             case crsStart:
-                CRI("[CORO]: coro %llu was cored when execute, so discard", pCoro->get_coro_id());
+                CRI("[CORO]: coro %s %llu was cored when execute, so discard", typeid(T).name(), pCoro->get_coro_id());
                 add_tail<T>(&m_DeleteLinkHead, qwCoroMid);
                 break;
             case crsRunning:
@@ -107,7 +107,7 @@ BOOL CCoroStacklessMgr<T>::init(int32_t nShmType, BOOL nInitCoroCount, BOOL bRes
                 add_tail<T>(&m_DeleteLinkHead, qwCoroMid);
                 break;
             default:
-                CRI("[CORO]: coro %llu has invalid state %d, so discard", pCoro->get_coro_id(), pCoro->get_state());
+                CRI("[CORO]: coro %s %llu has invalid state %d, so discard", typeid(T).name(), pCoro->get_coro_id(), pCoro->get_state());
                 add_tail<T>(&m_DeleteLinkHead, qwCoroMid);
                 break;
             }
@@ -222,7 +222,7 @@ T* CCoroStacklessMgr<T>::new_coro(void)
     nRetCode = pCoro->init(qwCoroID);
     LOG_PROCESS_ERROR(nRetCode);
 
-    DBG("[CORO]: coro %llu created", qwCoroID);
+    DBG("[CORO]: coro %s %llu created", typeid(T).name(), qwCoroID);
 
     return pCoro;
 Exit0:
@@ -240,7 +240,7 @@ T* CCoroStacklessMgr<T>::find_coro(uint64_t qwCoroID)
 template<class T>
 BOOL CCoroStacklessMgr<T>::del_coro(T* pCoro)
 {
-    DBG("[CORO]: coro %llu deleted", pCoro->get_coro_id());
+    DBG("[CORO]: coro %s %llu deleted", typeid(T).name(), pCoro->get_coro_id());
     return m_CoroPool.delete_object(pCoro);
 }
 
@@ -255,16 +255,16 @@ BOOL CCoroStacklessMgr<T>::_on_coro_process_run(CCoroStackless* pCoro, int32_t n
     switch (nReturnState)
     {
     case crsRunning:
-        DBG("[CORO]: coro %llu is yield", pCoro->get_coro_id());
+        DBG("[CORO]: coro %s %llu is yield", typeid(T).name(), pCoro->get_coro_id());
         LOG_CHECK_ERROR(add_tail<T>(&m_RunLinkHead, qwCoroMid));
         break;
     case crsStop:
     case crsFailed:
         if (nReturnState == crsStop)
-            DBG("[CORO]: coro %llu is finished", pCoro->get_coro_id());
+            DBG("[CORO]: coro %s %llu is finished", typeid(T).name(), pCoro->get_coro_id());
         else
         {
-            DBG("[CORO]: coro %llu is failed for internal error", pCoro->get_coro_id());
+            ERR("[CORO]: coro %s %llu is failed for internal error", typeid(T).name(), pCoro->get_coro_id());
             pCoro->set_coro_ret_code(crcInternalError);
         }
         LOG_CHECK_ERROR(add_tail<T>(&m_DeleteLinkHead, qwCoroMid));
@@ -305,14 +305,14 @@ BOOL CCoroStacklessMgr<T>::start_coro(CCoroStackless* pCoro, BOOL bImmediate)
         pCoro->set_state(crsReady);
 
         add_tail<T>(&m_ReadyLinkHead, qwCoroMid);
-        INF("[CORO]: coro %llu put into ready list to execute", pCoro->get_coro_id());
+        INF("[CORO]: coro %s %llu put into ready list to execute", typeid(T).name(), pCoro->get_coro_id());
     }
 
     return TRUE;
 Exit0:
     if (pCoro)
     {
-        CRI("[CORO]: coro %llu start failed", pCoro->get_coro_id());
+        CRI("[CORO]: coro %s %llu start failed", typeid(T).name(), pCoro->get_coro_id());
     }
 
     return FALSE;
@@ -333,7 +333,7 @@ BOOL CCoroStacklessMgr<T>::resume_coro(CCoroStackless* pCoro)
 
     pCoro->set_state(crsStart);
 
-	INF("[CORO]: coro %llu is resume", pCoro->get_coro_id());
+	DBG("[CORO]: coro %s %llu is resume ret_code %d", typeid(T).name(), pCoro->get_coro_id(), pCoro->get_coro_ret_code());
 
     CGlobalStacklessMgr::instance().push_curr_coro(pCoro);
     nReturnState = pCoro->coro_process();
@@ -346,7 +346,7 @@ BOOL CCoroStacklessMgr<T>::resume_coro(CCoroStackless* pCoro)
 Exit0:
     if (pCoro)
     {
-        CRI("[CORO]: coro %llu resume failed", pCoro->get_coro_id());
+        CRI("[CORO]: coro %s %llu resume failed", typeid(T).name(), pCoro->get_coro_id());
     }
     return FALSE;
 }

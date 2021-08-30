@@ -21,6 +21,9 @@ BOOL CConnModule::init(BOOL bResume)
     nRetCode = _init_msg_handler();
     LOG_PROCESS_ERROR(nRetCode);
 
+	nRetCode = _init_tconnd_addr();
+	LOG_PROCESS_ERROR(nRetCode);
+
     return TRUE;
 Exit0:
     return FALSE;
@@ -61,4 +64,37 @@ BOOL CConnModule::kick_conn_by_session(uint64_t qwSessionID, int32_t nReason, ui
     return TRUE;
 Exit0:
     return FALSE;
+}
+	
+BOOL CConnModule::_init_tconnd_addr(void)
+{
+	int32_t nRetCode = 0;
+	int32_t nPeerCount = 0;
+    int32_t* pnAddrList = NULL;
+	int32_t nTbusHandle = CMGApp::instance().get_tbus_handle();
+	int32_t nTbusAddr = CMGApp::instance().get_tbus_addr();
+	
+	nRetCode = tbus_get_peer_count(nTbusHandle, nTbusAddr, &nPeerCount);
+	LOG_PROCESS_ERROR(nRetCode == TBUS_SUCCESS);
+
+	pnAddrList = (int32_t*)alloca(sizeof(int32_t) * nPeerCount);
+	LOG_PROCESS_ERROR(pnAddrList);
+
+	nRetCode = tbus_get_peer_addr(nTbusHandle, nTbusAddr, pnAddrList, &nPeerCount);
+	LOG_PROCESS_ERROR(nRetCode == TBUS_SUCCESS);
+
+	m_nTconndAddrCount = 0;
+	for (int32_t nIndex = 0; nIndex < nPeerCount; nIndex++)
+	{
+		int32_t nServerType = tbus_get_type(pnAddrList[nIndex]);
+		if (nServerType == svrTconnd)
+		{
+			LOG_PROCESS_ERROR(m_nTconndAddrCount < MAX_TCONND_COUNT);
+			m_nTconndAddr[m_nTconndAddrCount++] = pnAddrList[nIndex];
+		}
+	}
+
+	return TRUE;
+Exit0:
+	return FALSE;
 }

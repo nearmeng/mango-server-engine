@@ -31,6 +31,7 @@ static CONN_MSG_HANDLER g_ConnMsgHandler[MAX_CONN_EVENT_COUNT];
 static CLIENT_MSG_HANDLER g_ClientMsgHandler[MAX_MESSAGE_ID];
 static SERVER_MSG_HANDLER g_ServerMsgHandler[MAX_MESSAGE_ID];
 static Message* g_CacheMsgInst[MAX_MESSAGE_ID];
+static char szDataBuff[MAX_SEND_DATA_BUFF_LEN];
 
 #define INIT_INTERNAL_MSG_VEC()					                                            \
 	INTERNAL_MESSAGE_HEADER* pstHeader = (INTERNAL_MESSAGE_HEADER*)pBuffer;                 \
@@ -302,11 +303,104 @@ Exit0:
     return FALSE;
 }
 
+BOOL broadcast_to_client(int32_t nMsgID, const Message* pMsg)
+{
+	int32_t nRetCode = 0;
+	SC_HEAD head;
+	int32_t nDataLen = sizeof(szDataBuff);
+	int32_t nAllDataSize = 0;
+	CONN_BROADCAST_MSG* msg = NULL;
+
+	LOG_PROCESS_ERROR(pMsg);
+
+	head.set_msgid(nMsgID);
+	head.set_seqid(0);
+		
+	nRetCode = pack_msg(szDataBuff, &nDataLen, &head, pMsg);
+	LOG_PROCESS_ERROR(nRetCode);
+
+    nAllDataSize = sizeof(CONN_BROADCAST_MSG) + nDataLen;
+    msg = (CONN_BROADCAST_MSG*)alloca(nAllDataSize);
+
+    msg->nMsgSize = nDataLen;
+    memcpy(msg->szMsg, szDataBuff, nDataLen);
+    
+    {
+        std::string sMsgStr;
+        std::string sMsgName = SC_MESSAGE_ID_Name((SC_MESSAGE_ID)nMsgID);
+
+        nRetCode = google::protobuf::TextFormat::PrintToString(*pMsg, &sMsgStr);
+        LOG_CHECK_ERROR(nRetCode);
+
+        INF("broadcast msg %s to all: \n%s", sMsgName.c_str(), sMsgStr.c_str());
+    }
+
+    nRetCode = send_server_msg_by_service_type(svrConn, conn_broadcast_msg, msg, nAllDataSize);
+    LOG_PROCESS_ERROR(nRetCode);
+
+	return TRUE;
+Exit0:
+	return FALSE;
+}
+
+BOOL multicast_to_client(std::map<int32_t, std::vector<uint64_t> > mTarget, int32_t nMsgID, const Message* pMsg)
+{
+	int32_t nRetCode = 0;
+	SC_HEAD head;
+	int32_t nDataLen = sizeof(szDataBuff);
+	int32_t nAllDataSize = 0;
+	int32_t nTotalConnCount = 0;
+	CONN_MULTICAST_MSG* msg = NULL;
+
+	LOG_PROCESS_ERROR(pMsg);
+
+	head.set_msgid(nMsgID);
+	head.set_seqid(0);
+	
+	nRetCode = pack_msg(szDataBuff, &nDataLen, &head, pMsg);
+	LOG_PROCESS_ERROR(nRetCode);
+
+    nAllDataSize = sizeof(CONN_MULTICAST_MSG) + nDataLen;
+    msg = (CONN_MULTICAST_MSG*)alloca(nAllDataSize);
+		
+	msg->nMsgSize = nDataLen;
+	memcpy(msg->szMsg, szDataBuff, nDataLen);
+
+	for (std::map<int32_t, std::vector<uint64_t> >::iterator it = mTarget.begin(); it != mTarget.end(); it++)
+	{
+		msg->nConnIDCount = 0;
+
+		int32_t nConnServerAddr = it->first;
+		std::vector<uint64_t>& ConnVec = it->second;
+		for (int32_t i = 0; i < ConnVec.size() && i < MAX_MULTICAST_CONN_PER_TCONND; i++)
+		{
+			msg->qwConnID[msg->nConnIDCount++] = ConnVec[i];
+			nTotalConnCount++;
+		}
+
+		nRetCode = send_server_msg_by_addr(nConnServerAddr, conn_multicast_msg, msg, nAllDataSize);
+		LOG_PROCESS_ERROR(nRetCode);
+	}
+    
+    {
+        std::string sMsgStr;
+        std::string sMsgName = SC_MESSAGE_ID_Name((SC_MESSAGE_ID)nMsgID);
+
+        nRetCode = google::protobuf::TextFormat::PrintToString(*pMsg, &sMsgStr);
+        LOG_CHECK_ERROR(nRetCode);
+
+        INF("multicast msg %s tconnd_count %d to session %d: \n%s", sMsgName.c_str(), mTarget.size(), nTotalConnCount, sMsgStr.c_str());
+    }
+
+	return TRUE;
+Exit0:
+	return FALSE;
+}
+
 BOOL send_to_client(int32_t nConnServerAddr, uint64_t qwConnID, int32_t nMsgID, const Message* pMsg)
 {
     int32_t nRetCode = 0;
     SC_HEAD head;
-	char szDataBuff[MAX_SEND_DATA_BUFF_LEN];
 	int32_t nDataLen = sizeof(szDataBuff);
     int32_t nAllDataSize = 0;
     CONN_TRANSFER_MSG* msg = NULL;

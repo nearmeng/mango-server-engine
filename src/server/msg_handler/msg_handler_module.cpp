@@ -142,6 +142,42 @@ BOOL CMsgHandlerModule::send_error_code_to_client_by_sessionid(uint64_t qwSessio
 Exit0:
     return FALSE;
 }
+	
+BOOL CMsgHandlerModule::multicast_to_client(std::vector<CLIENT_SESSION*> vSession, int32_t nMsgID, const google::protobuf::Message* pMsg)
+{
+	int32_t nRetCode = 0;
+	std::map<int32_t, std::vector<uint64_t> > Target;	// conn_server --> conn_id list
+
+	LOG_PROCESS_ERROR(pMsg);
+
+	for (int32_t i = 0; i < vSession.size(); i++)
+	{
+		Target[vSession[i]->nConnServerAddr].push_back(vSession[i]->qwConnID);
+	}
+
+	LOG_PROCESS_ERROR(Target.size() > 0);
+
+	nRetCode = ::multicast_to_client(Target, nMsgID, pMsg);
+	LOG_PROCESS_ERROR(nRetCode);
+
+	return TRUE;
+Exit0:
+	return FALSE;
+}
+
+BOOL CMsgHandlerModule::broadcast_to_client(int32_t nMsgID, const google::protobuf::Message* pMsg)
+{
+	int32_t nRetCode = 0;
+
+	LOG_PROCESS_ERROR(pMsg);
+
+	nRetCode = ::broadcast_to_client(nMsgID, pMsg);
+	LOG_PROCESS_ERROR(nRetCode);
+
+	return TRUE;
+Exit0:
+	return FALSE;
+}
 
 BOOL CMsgHandlerModule::send_to_client(uint64_t qwSessionID, int32_t nMsgID, const google::protobuf::Message* pMsg)
 {

@@ -18,6 +18,8 @@
 
 #include "tbus/tbus_wrapper.h"
 
+BOOL broadcast_to_tconnd(int32_t nConnAddr, const char* pBuffer, uint32_t dwSize);
+
 void on_conn_start(uint64_t qwConnID, TFRAMEHEAD* pFrameHead, const char* pBuff, int32_t nSize)
 {
     int32_t nRetCode = 0;
@@ -181,6 +183,70 @@ Exit0:
     return;
 }
 
+void on_gs_multicast_msg(SSMSG_CONTEXT* pCtx, const char* pBuffer, size_t dwSize)
+{
+	int32_t nRetCode = 0;
+    CONN_SESSION* pSession = NULL;
+    CConnModule* pModule = NULL;
+	std::map<int32_t, TFRAMEHEAD> mFrameHeadMap;
+	CONN_MULTICAST_MSG* msg = (CONN_MULTICAST_MSG*)pBuffer;
+    
+	pModule = MG_GET_MODULE(CConnModule);
+    LOG_PROCESS_ERROR(pModule);
+
+	for (int32_t i = 0; i < msg->nConnIDCount; i++)
+	{
+		pSession = pModule->find_session(msg->qwConnID[i]);
+		LOG_CHECK_ERROR(pSession);
+
+		if(pSession == NULL)
+			continue;
+
+		if (mFrameHeadMap.find(pSession->nConnAddr) == mFrameHeadMap.end())
+		{
+			TFRAMEHEAD stFrameHead = { 0 };
+			stFrameHead.chCmd = TFRAMEHEAD_CMD_INPROC;
+			stFrameHead.stCmdData.stInProc.chValid = 1;
+
+			mFrameHeadMap[pSession->nConnAddr] = stFrameHead;
+		}
+
+		TFRAMEHEAD& stFrameHead = mFrameHeadMap[pSession->nConnAddr];
+		int16_t rCount = stFrameHead.stCmdData.stInProc.nCount;
+
+		stFrameHead.stCmdData.stInProc.astIdents[rCount].iConnIdx = pSession->nConnIndex;
+		stFrameHead.stCmdData.stInProc.astIdents[rCount].iID = pSession->nConnIndex;
+		rCount++;
+	}
+
+	for (std::map<int32_t, TFRAMEHEAD>::iterator it = mFrameHeadMap.begin(); it != mFrameHeadMap.end(); it++)
+	{
+		nRetCode = send_conn_msg(it->first, &(it->second), pBuffer, dwSize);
+		LOG_CHECK_ERROR(nRetCode);
+	}
+
+Exit0:
+	return;
+}
+
+void on_gs_broadcast_msg(SSMSG_CONTEXT* pCtx, const char* pBuffer, size_t dwSize)
+{
+	int32_t nRetCode = 0;
+    CConnModule* pModule = NULL;
+    CONN_BROADCAST_MSG* msg = (CONN_BROADCAST_MSG*)pBuffer;
+    
+	pModule = MG_GET_MODULE(CConnModule);
+    LOG_PROCESS_ERROR(pModule);
+
+	for (int32_t i = 0; i < pModule->get_tconnd_count(); i++)
+	{
+		nRetCode = broadcast_to_tconnd(pModule->get_tconnd_by_index(i), pBuffer, dwSize);
+		LOG_CHECK_ERROR(nRetCode);
+	}
+Exit0:
+	return;
+}
+
 void on_gs_transfer_msg(SSMSG_CONTEXT* pCtx, const char* pBuffer, size_t dwSize)
 {
     int32_t nRetCode = 0;
@@ -210,7 +276,8 @@ BOOL CConnModule::_init_msg_handler()
     register_conn_msg_handler(TFRAMEHEAD_CMD_INPROC, on_conn_proc);
     register_conn_msg_handler(TFRAMEHEAD_CMD_TCONND_STOP_NOTIFY, on_conn_stop_notify);
 
-    //multicast and broadcast to be done
+	register_server_msg_handler(conn_broadcast_msg, on_gs_broadcast_msg);
+	register_server_msg_handler(conn_multicast_msg, on_gs_multicast_msg);
 
     register_server_msg_handler(conn_transfer_msg, on_gs_transfer_msg);
     register_server_msg_handler(conn_ntf_event_ack, on_gs_ntf_event_ack);
@@ -275,6 +342,21 @@ BOOL send_to_client(CONN_SESSION* pSession, const char* pBuffer, uint32_t dwSize
     int32_t nRetCode = 0;
 
     nRetCode = send_to_tconnd(pSession, TFRAMEHEAD_CMD_INPROC, pBuffer, dwSize);
+    LOG_PROCESS_ERROR(nRetCode);
+
+    return TRUE;
+Exit0:
+    return FALSE;
+}
+
+BOOL broadcast_to_tconnd(int32_t nConnAddr, const char* pBuffer, uint32_t dwSize)
+{
+    int32_t nRetCode = 0;
+    TFRAMEHEAD FrameHead = { 0 };
+
+    FrameHead.chCmd = TFRAMEHEAD_CMD_BROADCAST;
+
+    nRetCode = send_conn_msg(nConnAddr, &FrameHead, pBuffer, dwSize);
     LOG_PROCESS_ERROR(nRetCode);
 
     return TRUE;
