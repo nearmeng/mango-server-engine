@@ -1,0 +1,8 @@
+/build
+*.pb.h
+*.pb.cc
+settings.json
+error.log
+.vscode
+/deploy
+docker/**/*

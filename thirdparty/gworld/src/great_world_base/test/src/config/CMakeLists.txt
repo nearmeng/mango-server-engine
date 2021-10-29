@@ -1,0 +1,30 @@
+set(TARGET json_test)
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+add_definitions(-g)
+
+
+option(USE_ASAN "use asan" OFF)
+
+if(USE_ASAN)
+  SET (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fno-omit-frame-pointer -fsanitize=address")
+  SET (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-omit-frame-pointer -fsanitize=address")
+  message("use asan")
+endif()
+
+
+add_executable(${TARGET} json_main.cpp)
+
+# link 右边的先被链接
+target_link_libraries(${TARGET} PUBLIC gw_cellmgr gw_mock gtest_3rd gtest_main_3rd)
+set_target_properties(${TARGET} PROPERTIES FOLDER "test")
+
+if(UNIX)
+  target_link_libraries(${TARGET} PUBLIC pthread)
+endif()
+
+if(USE_ASAN)
+  target_link_libraries(${TARGET} PRIVATE asan)
+endif()
+
+install(FILES config.json DESTINATION "${CMAKE_BINARY_DIR}/test/src/config")

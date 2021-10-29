@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<Space>
+    <width>8100</width>
+    <height>8100</height>
+    <Node>
+        <type>6</type>
+        <width>8100</width>
+        <height>8100</height>
+        <Node>
+            <type>5</type>
+            <minx>0</minx>
+            <miny>-8100</miny>
+            <maxx>8100</maxx>
+            <maxy>0</maxy>
+        </Node>
+    </Node>
+</Space>

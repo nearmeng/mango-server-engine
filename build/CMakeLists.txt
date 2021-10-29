@@ -100,6 +100,7 @@ include_directories (
 	${BASE_DIR}/thirdparty/gtest
 	${BASE_DIR}/thirdparty/gmock
     ${BASE_DIR}/thirdparty/curl/include
+	${BASE_DIR}/thirdparty/gworld/include
 )
 
 link_directories (
@@ -117,6 +118,7 @@ link_directories (
 	${BASE_DIR}/thirdparty/gtest/lib
 	${BASE_DIR}/thirdparty/gmock/lib
 	${BASE_DIR}/thirdparty/curl/lib
+	${BASE_DIR}/thirdparty/gworld/lib
 )
 
 pre_toluapp(${BASE_DIR}/src)
