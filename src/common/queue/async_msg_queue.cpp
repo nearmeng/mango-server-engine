@@ -162,7 +162,7 @@ BOOL CShmMsgQueue::pop_msg(int32_t& nMsgAddr, char* pBuffer, size_t &dwSize)
 	pRingBuffer = _shm_data();
 	LOG_PROCESS_ERROR(pRingBuffer);
 
-	LOG_PROCESS_ERROR(pRingBuffer->get_used_space() >= (dwSize + 2 * sizeof(int32_t)));
+	LOG_PROCESS_ERROR(pRingBuffer->get_used_space() > (2 * sizeof(int32_t)));
 
 	pRingBuffer->get_data((char*)&nMsgAddr, sizeof(nMsgAddr));
 	pRingBuffer->get_data((char*)&dwSize, sizeof(dwSize));
