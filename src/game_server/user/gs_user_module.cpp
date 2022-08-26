@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "module/gs_user_module.h"
+#include "user/gs_user_module.h"
 
 #include "config/global_config.h"
 #include "db/user_db_data.pb.h"

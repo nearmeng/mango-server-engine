@@ -1,4 +1,4 @@
-#include "object/role.h"
+#include "role.h"
 
 #ifndef _ROLE_INL_H_
 #define _ROLE_INL_H_

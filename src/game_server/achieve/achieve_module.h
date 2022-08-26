@@ -2,7 +2,7 @@
 #define _ACHIEVE_MODULE_H_
 
 #include "module/server_component.h"
-#include "component/achieve.h"
+#include "achieve/achieve.h"
 
 class CAchieveModule : public CComponentModule 
 {

@@ -1,7 +1,7 @@
 #include "stdafx.h"
-#include "component/achieve.h"
+#include "achieve/achieve.h"
 
-#include "module/role_module.h"
+#include "role/role_module.h"
 
 #include "protocol/proto_msgid.pb.h"
 #include "protocol/proto_head.pb.h"

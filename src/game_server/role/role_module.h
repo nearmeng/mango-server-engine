@@ -1,7 +1,7 @@
 #ifndef _ROLE_MODULE_H_
 #define _ROLE_MODULE_H_
 
-#include "object/role.h"
+#include "role/role.h"
 #include "module/server_module.h"
 #include "shm/shm_pool.h"
 

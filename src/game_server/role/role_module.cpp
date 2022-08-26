@@ -1,7 +1,7 @@
 #include "stdafx.h"
-#include "module/role_module.h"
-#include "module/gs_user_module.h"
-#include "module/session_module.h"
+#include "role/role_module.h"
+#include "user/gs_user_module.h"
+#include "session/session_module.h"
 
 #include "event/server_event.h"
 #include "define/bt_def.h"

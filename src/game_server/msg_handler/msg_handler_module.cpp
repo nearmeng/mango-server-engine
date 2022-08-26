@@ -10,9 +10,9 @@
 #include "protocol/proto_head.pb.h"
 #include "protocol/external_message.pb.h"
 
-#include "module/msg_handler_module.h"
-#include "module/session_module.h"
-#include "module/role_module.h"
+#include "msg_handler/msg_handler_module.h"
+#include "session/session_module.h"
+#include "role/role_module.h"
 
 MG_REGISTER_MODULE_PRE_INIT(CMsgHandlerModule);
 

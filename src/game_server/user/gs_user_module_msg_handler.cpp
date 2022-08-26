@@ -1,8 +1,8 @@
 #include "stdafx.h"
 
-#include "module/gs_user_module.h"
-#include "module/session_module.h"
-#include "module/msg_handler_module.h"
+#include "user/gs_user_module.h"
+#include "session/session_module.h"
+#include "msg_handler/msg_handler_module.h"
 
 #include "protocol/proto_msgid.pb.h"
 #include "protocol/external_message.pb.h"
@@ -10,7 +10,7 @@
 
 #include "gs_user_module_coro.h"
 
-#include "object/role.h"
+#include "role/role.h"
 
 BOOL do_g2c_sync_role_list(uint64_t qwSessionID, USER* pUser)
 {

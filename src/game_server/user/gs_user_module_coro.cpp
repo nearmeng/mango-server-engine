@@ -3,9 +3,9 @@
 
 #include "db_proxy_client/db_proxy_client.h"
 
-#include "module/gs_user_module.h"
-#include "module/session_module.h"
-#include "module/role_module.h"
+#include "user/gs_user_module.h"
+#include "session/session_module.h"
+#include "role/role_module.h"
 
 #include "protocol/game_online_msg.h"
 #include "gs_user_module_msg_handler.h"

@@ -69,6 +69,6 @@ private:
     CComponentContainer        m_ComponentCont;
 };
 
-#include "object/role_inl.h"
+#include "role_inl.h"
 
 #endif

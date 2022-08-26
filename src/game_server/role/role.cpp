@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "object/role.h"
+#include "role/role.h"
 
 #include "db/role_db_data.pb.h"
 #include "define/object_def.h"

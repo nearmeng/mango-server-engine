@@ -3,8 +3,8 @@
 #include "config/global_config.h"
 #include "time/time_mgr.h"
 
-#include "module/session_module.h"
-#include "module/msg_handler_module.h"
+#include "session/session_module.h"
+#include "msg_handler/msg_handler_module.h"
 
 #include "protocol/proto_msgid.pb.h"
 

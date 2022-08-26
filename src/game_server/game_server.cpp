@@ -12,9 +12,9 @@
 #include "define/role.h"
 #include "app/server_app.h"
 
-#include "module/session_module.h"
-#include "module/gs_user_module.h"
-#include "module/role_module.h"
+#include "session/session_module.h"
+#include "user/gs_user_module.h"
+#include "role/role_module.h"
 
 extern LUA_FUNC g_RegPackageList[];
 extern LUA_FUNC g_RegLuaFunc[];
@@ -363,7 +363,7 @@ Exit1:
 
     pServer->set_config(config);
 
-    nRetCode = pServer->init("test_server", argc, argv);
+    nRetCode = pServer->init("game_server", argc, argv);
     LOG_PROCESS_ERROR(nRetCode);
 
     pServer->run_mainloop();
