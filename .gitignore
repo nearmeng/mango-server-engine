@@ -257,3 +257,4 @@ bin/tools/tcm_apps/tcm/tcm_water_log/
 .vscode
 src/proto/protocol/proto_head.pb.h
 src/proto/protocol/proto_msgid.pb.h
+bin/test
