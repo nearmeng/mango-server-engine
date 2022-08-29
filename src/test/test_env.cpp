@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "test_env.h"
 
+#include "guid/guid.h"
 #include "coroutine/coro_stackless.h"
 
 void CTestEnv::SetUp()
@@ -13,9 +14,10 @@ void CTestEnv::SetUp()
 
 	load_global_server_config();
 	
-	CShmMgr::instance().init(0x1234, 10 * 1024 * 1024, false);
+	CShmMgr::instance().init(0x1234, 100 * 1024 * 1024, false);
 	CTimeMgr::instance().init(false);
 	CGlobalStacklessMgr::instance().init(12345, false);
+	guid_init(1, false);
 }
 
 void CTestEnv::TearDown()
@@ -24,4 +26,5 @@ void CTestEnv::TearDown()
 	CTimeMgr::instance().uninit();
     CShmMgr::instance().uninit();
 	CScriptMgr::instance().uninit();
+	guid_uninit();
 }

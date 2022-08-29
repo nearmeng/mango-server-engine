@@ -65,6 +65,7 @@ private:
 	uint64_t			m_qwLoadTick;
 	DEPEND_FUNC			m_pDependFunc;
 	BOOL				m_bExecuting;
+	BOOL				m_bScriptCache;
 
 	static int32_t _include(lua_State* L);
 	static int32_t _depend(lua_State* L);

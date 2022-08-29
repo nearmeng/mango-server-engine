@@ -61,5 +61,8 @@
 
 #include "curl/curl_client.h"
 
+#include "time/time_mgr.h"
+#include "queue/async_msg_queue.h"
+
 #endif   /* ----- #ifndef _COMMON_INC_H_  ----- */
 

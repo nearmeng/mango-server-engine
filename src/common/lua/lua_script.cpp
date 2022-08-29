@@ -37,6 +37,7 @@ CLuaScript::CLuaScript(void)
 	m_qwLoadTick = 0;
 	m_pDependFunc = NULL;
 	m_bExecuting = FALSE;
+	m_bScriptCache = FALSE;
 }
 
 CLuaScript::~CLuaScript(void)
@@ -271,8 +272,11 @@ BOOL CLuaScript::_load_from_file(const char* pcszFileName, BOOL bForce)
 		LOG_PROCESS_ERROR(nRetCode);
 	}
 
-	nRetCode = _save_into_cache(szFixedFileName, dwFileCRC);
-	LOG_CHECK_ERROR(nRetCode);
+	if (m_bScriptCache)
+	{
+		nRetCode = _save_into_cache(szFixedFileName, dwFileCRC);
+		LOG_CHECK_ERROR(nRetCode);
+	}
 
 Exit1:
 	nResult = TRUE;

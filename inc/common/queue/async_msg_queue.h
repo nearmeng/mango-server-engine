@@ -1,7 +1,11 @@
 #ifndef __ASYNC_MSG_QUEUE_H__
 #define __ASYNC_MSG_QUEUE_H__
 
-#define MAX_RING_BUFFER_SIZE	(64 * 1024 * 1024)
+#ifdef __linux__
+#define MAX_RING_BUFFER_SIZE	(4 * 1024 * 1024)
+#else
+#define MAX_RING_BUFFER_SIZE	(128 * 1024)
+#endif
 
 #include "shm/shm_pool.h"
 
