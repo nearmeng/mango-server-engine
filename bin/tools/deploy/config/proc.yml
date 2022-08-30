@@ -43,7 +43,7 @@ procs:
       tlog_config:
            text:
              - local
-  server:
+  game_server:
       layer: world
       func_id: 2
       deploy_unit: group_gs
@@ -119,7 +119,7 @@ proc_connect:
       peer2: router_server
       Mask: 63.0.0.0
     - peer1: router_server
-      peer2: server
+      peer2: game_server
       Mask: 63.0.0.0
       MaskCtrl: local
     - peer1: tconnd

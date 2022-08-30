@@ -46,7 +46,7 @@ void on_db_proxy_client_redis_req(SSMSG_CONTEXT* pCtx, const char* pBuffer, size
     pModule = MG_GET_MODULE(CRedisModule);
     LOG_PROCESS_ERROR(pModule);
 
-    pRedisClient = pModule->get_test_client();
+    pRedisClient = pModule->get_client();
     LOG_PROCESS_ERROR(pRedisClient);
 
     nRetCode = _unpack_redis_command(msg->szCommandBuffer, msg->nCommandSize, &stArgData);

@@ -1,14 +1,14 @@
 <TbusGCIM>
 <BusinessID>0</BusinessID>
 <AddrTemplet>6.8.8.10</AddrTemplet>
-<GCIMShmKey>669001</GCIMShmKey>
+<GCIMShmKey>667001</GCIMShmKey>
 <Channels>
     <Priority>8</Priority>
     <Address>1.0.3.1</Address>
     <Address>1.0.2.1</Address>
     <SendSize>4096000</SendSize>
     <RecvSize>4096000</RecvSize>
-    <Desc>router_server1_to_server1</Desc>
+    <Desc>router_server1_to_game_server1</Desc>
 </Channels>
 
 <Channels>

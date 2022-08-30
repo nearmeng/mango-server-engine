@@ -8,6 +8,7 @@
 
 #include "great_world_base/gamespace/gamespace_api.h"
 
+/*
 class GameSpaceAdapter : public gw::game::IGameSpaceAdapter
 {
 	virtual void Init(uint64_t& gapp_id, gw::GWString& config_path)
@@ -92,11 +93,12 @@ class GameSpaceAdapter : public gw::game::IGameSpaceAdapter
 		return 0;
 	}
 };
+*/
 
 BOOL CAchieve::init(void* pOwner)
 {
 	int32_t nRetCode = 0;
-	GameSpaceAdapter imp;
+	//GameSpaceAdapter imp;
 
     LOG_PROCESS_ERROR(pOwner);
 
@@ -105,8 +107,8 @@ BOOL CAchieve::init(void* pOwner)
 
     DBG("role sub module achieve is init");
 
-	nRetCode = gw::game::GameSpaceApi::Init(&imp);
-	LOG_PROCESS_ERROR(nRetCode);
+	//nRetCode = gw::game::GameSpaceApi::Init(&imp);
+	//LOG_PROCESS_ERROR(nRetCode);
 	
     return TRUE;
 Exit0:
@@ -117,7 +119,7 @@ BOOL CAchieve::uninit(void)
 {
     INF("role sub module achieve is uninit");
 
-	gw::game::GameSpaceApi::UnInit(false);
+	//gw::game::GameSpaceApi::UnInit(false);
 
     return TRUE;
 }

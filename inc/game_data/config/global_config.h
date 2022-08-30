@@ -69,6 +69,11 @@ struct SERVER_CONFIG
 
     struct DB_PROXY_CONFIG
     {
+		char	szClientName[128];
+		char	szRedisServerAddr[64];
+		int32_t nRedisPort;
+		char	szRedisPassword[64];
+
         int32_t nSyncConnectTimeout;
         int32_t nSyncDisConnectTimeout;
         int32_t nDBReqExpireTime;

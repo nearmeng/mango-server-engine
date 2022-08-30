@@ -16,18 +16,18 @@ public:
     virtual void on_frame(void);
     virtual void on_proc(void);
 
-    inline CRedisCli* get_test_client();
+    inline CRedisCli* get_client();
 
 private:
     BOOL _init_msg_handler();
 
 private:
-    CRedisCli* pTestRedisCli;
+    CRedisCli* pRedisCli;
 };
 
-inline CRedisCli* CRedisModule::get_test_client(void)
+inline CRedisCli* CRedisModule::get_client(void)
 {
-    return pTestRedisCli;
+    return pRedisCli;
 }
 
 #endif
