@@ -44,7 +44,7 @@ private:
 	BOOL _init_tconnd_addr(void);
 
 private:
-    CShmObjectPool<CONN_SESSION, uint64_t>  m_SessionMgr;
+    CShmObjectPool<uint64_t, CONN_SESSION>  m_SessionMgr;
 
 	int32_t									m_nTconndAddrCount;
 	int32_t									m_nTconndAddr[MAX_TCONND_COUNT];

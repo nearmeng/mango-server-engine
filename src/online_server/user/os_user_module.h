@@ -29,7 +29,7 @@ private:
     BOOL _init_msg_handler(void);
 
 private:
-    CShmObjectPool<OS_USER, uint64_t>   m_UserPool;
+    CShmObjectPool<uint64_t, OS_USER>   m_UserPool;
 };
 
 inline OS_USER* CUserModule::new_user(uint64_t qwUserID)

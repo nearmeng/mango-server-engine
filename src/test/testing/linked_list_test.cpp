@@ -13,7 +13,7 @@ TEST(LIST_TEST, COMMON_TEST)
 	int32_t nRetCode = 0;
 	LINK_HEAD Head = { 0 };
 
-    CShmObjectPool<SHM_TEST_DATA_LINK, int32_t> TestDataPool;
+    CShmObjectPool<int32_t, SHM_TEST_DATA_LINK> TestDataPool;
     nRetCode = TestDataPool.init(3, 10, false);
     ASSERT_TRUE(nRetCode);
 

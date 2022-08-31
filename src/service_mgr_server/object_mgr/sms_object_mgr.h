@@ -28,7 +28,7 @@ public:
 
 private:
 	static CSMSObjMgr	ms_Instance;
-	CShmObjectPool<SMS_OBJ, uint64_t>		m_SmsObjMgr;
+	CShmObjectPool<uint64_t, SMS_OBJ>		m_SmsObjMgr;
 };
 
 inline CSMSObjMgr& CSMSObjMgr::get_instance()

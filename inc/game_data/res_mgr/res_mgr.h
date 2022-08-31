@@ -65,7 +65,7 @@ private:
 private:
     static CResMgr<T>           ms_Instance;
 
-    CShmObjectPool<T, uint32_t>  m_ResPool;
+    CShmObjectPool<uint32_t, T>  m_ResPool;
     char                        m_szConfigName[COMMON_NAME_LEN];
     char                        m_szObjName[COMMON_NAME_LEN];
     char                        m_szPath[COMMON_NAME_LEN];

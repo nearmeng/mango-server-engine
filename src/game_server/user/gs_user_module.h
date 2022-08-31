@@ -89,7 +89,7 @@ private:
     };
 
 private:
-    CShmObjectPool<USER, uint64_t>      m_UserPool;
+    CShmObjectPool<uint64_t, USER>      m_UserPool;
 };
 
 inline USER* CUserModule::create_user(uint64_t qwUserID)

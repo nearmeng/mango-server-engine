@@ -37,7 +37,7 @@ private:
     };
 
 private:
-    CShmObjectPool<CRole, uint64_t>     m_RolePool;
+    CShmObjectPool<uint64_t, CRole>     m_RolePool;
 };
 
 inline CRole* CRoleModule::create_role(uint64_t qwRoleID)

@@ -24,7 +24,7 @@ public:
 
 private:
 	static CRsObjMgr							ms_Instance;
-	CShmObjectPool<RS_OBJ, uint64_t>			m_RsObjMgr;
+	CShmObjectPool<uint64_t, RS_OBJ>			m_RsObjMgr;
 };
 
 inline CRsObjMgr& CRsObjMgr::get_instance()

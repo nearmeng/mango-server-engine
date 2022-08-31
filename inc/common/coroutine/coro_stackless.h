@@ -144,7 +144,7 @@ private:
 
 private:
     static CCoroStacklessMgr<T>     ms_Instance;
-    CShmObjectPool<T, uint64_t>     m_CoroPool;
+    CShmObjectPool<uint64_t, T>     m_CoroPool;
     int32_t                         m_nMgrIndex;
 
     LINK_HEAD                       m_ReadyLinkHead;         //��ʼ����Э���б�

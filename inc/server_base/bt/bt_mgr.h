@@ -76,7 +76,7 @@ private:
 		BOOL operator()(uint32_t dwBtCtx, BT_CTX* pCtx);
 	};
 
-	CShmObjectPool<BT_CTX, uint32_t>	m_BtCtx;
+	CShmObjectPool<uint32_t, BT_CTX>	m_BtCtx;
 	CShmObject<BT_MGR_DATA>	m_BtMgrData;
 
 	struct OWNER_DATA

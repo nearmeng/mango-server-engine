@@ -41,7 +41,7 @@ private:
 private:
 	TIME_MGR_DATA*							m_pTimeMgr;
 	CShmObject<TIME_MGR_DATA>				m_ShmTimerMgr;
-	CShmObjectPool<TIMER_HANDLER, uint64_t> m_ShmTimerPool;
+	CShmObjectPool<uint64_t, TIMER_HANDLER> m_ShmTimerPool;
 
 	static CTimeMgr ms_Instance;
 };

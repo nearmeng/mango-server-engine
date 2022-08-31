@@ -53,7 +53,7 @@ private:
 	int32_t m_shm_type;
 };
 
-template<class T, class N>
+template<class N, class T>
 class CShmObjectPool
 {
 public:

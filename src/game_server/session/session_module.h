@@ -35,7 +35,7 @@ private:
 	};
 	TRAVERSE_SESSION	m_TraverseSession;
 
-    CShmObjectPool<CLIENT_SESSION, uint64_t>    m_ClientSessionPool;
+    CShmObjectPool<uint64_t, CLIENT_SESSION>    m_ClientSessionPool;
 };
 
 inline CLIENT_SESSION* CSessionModule::new_session(uint64_t qwSessionID)

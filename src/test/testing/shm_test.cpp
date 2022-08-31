@@ -35,7 +35,7 @@ TEST(SHM_TEST, ID_OBJECT_POOL_TEST)
 {
     BOOL nRetCode = 0;
 
-    CShmObjectPool<SHM_TEST_DATA, int32_t> TestDataPool;
+    CShmObjectPool<int32_t, SHM_TEST_DATA> TestDataPool;
 
     nRetCode = TestDataPool.init(1, 10, false);
     ASSERT_TRUE(nRetCode);

@@ -34,7 +34,7 @@ private:
 
 private:
 
-	CShmObjectPool<EVENT_INFO, int32_t>  m_EventPool;
+	CShmObjectPool<int32_t, EVENT_INFO>  m_EventPool;
 	EVENT_DEF ms_EventDefList[evtTotal];
 	static CEventMgr ms_Instance;
 };
@@ -101,7 +101,7 @@ private:
 
 private:
 	static CGlobalEventListMgr ms_Instance;
-	CShmObjectPool<CBTEventList, uint64_t>	m_GlobalEventListPool;
+	CShmObjectPool<uint64_t, CBTEventList>	m_GlobalEventListPool;
 };
 
 inline void CBTEventList::clear(void)

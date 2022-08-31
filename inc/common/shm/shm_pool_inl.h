@@ -2,8 +2,8 @@
 #ifndef  _SHM_POOL_INL_H_
 #define  _SHM_POOL_INL_H_
 
-template<class T, class N>
-int32_t CShmObjectPool<T, N>::_get_hash_map_count(int32_t unit_count)
+template<class N, class T>
+int32_t CShmObjectPool<N, T>::_get_hash_map_count(int32_t unit_count)
 {
 	int32_t count = 1;
 
@@ -16,8 +16,8 @@ int32_t CShmObjectPool<T, N>::_get_hash_map_count(int32_t unit_count)
 	return count;
 }
 
-template<class T, class N>
-int32_t CShmObjectPool<T, N>::_get_hash_index(N id, int32_t hash_map_count)
+template<class N, class T>
+int32_t CShmObjectPool<N, T>::_get_hash_index(N id, int32_t hash_map_count)
 {
 	uint64_t key = (uint64_t)id;
 
@@ -25,8 +25,8 @@ int32_t CShmObjectPool<T, N>::_get_hash_index(N id, int32_t hash_map_count)
 	return (key & (hash_map_count - 1));
 }
     
-template<class T, class N>
-inline SHM_UNIT_DATA* CShmObjectPool<T, N>::_get_unit_data(SHM_POOL* pool, SHM_UNIT_INDEX<N>* index)
+template<class N, class T>
+inline SHM_UNIT_DATA* CShmObjectPool<N, T>::_get_unit_data(SHM_POOL* pool, SHM_UNIT_INDEX<N>* index)
 {
     ptrdiff_t diff;
     SHM_UNIT_INDEX<N>* base_index = NULL;
@@ -41,8 +41,8 @@ Exit0:
     return NULL;
 }
 
-template<class T, class N>
-inline SHM_UNIT_INDEX<N>* CShmObjectPool<T, N>::_get_unit_index(SHM_POOL* pool, SHM_UNIT_DATA* data)
+template<class N, class T>
+inline SHM_UNIT_INDEX<N>* CShmObjectPool<N, T>::_get_unit_index(SHM_POOL* pool, SHM_UNIT_DATA* data)
 {
     ptrdiff_t diff;
     SHM_UNIT_DATA* base_data = NULL;
@@ -58,8 +58,8 @@ Exit0:
     return NULL;
 }
 
-template<class T, class N>
-BOOL CShmObjectPool<T, N>::init(int32_t shm_type, int32_t unit_count, BOOL is_resume)
+template<class N, class T>
+BOOL CShmObjectPool<N, T>::init(int32_t shm_type, int32_t unit_count, BOOL is_resume)
 {
 	SHM_POOL* pool = NULL;
 	int32_t hash_map_size = ALIGN8(sizeof(int64_t) * _get_hash_map_count(unit_count));
@@ -121,14 +121,14 @@ Exit0:
 	return FALSE;
 }
     
-template<class T, class N>
-inline BOOL CShmObjectPool<T, N>::uninit(void)
+template<class N, class T>
+inline BOOL CShmObjectPool<N, T>::uninit(void)
 {
     return TRUE;
 }
 
-template<class T, class N>
-inline int32_t CShmObjectPool<T, N>::get_count(void)
+template<class N, class T>
+inline int32_t CShmObjectPool<N, T>::get_count(void)
 {
 	SHM_POOL* pool = NULL;
 
@@ -140,8 +140,8 @@ Exit0:
 	return 0;
 }
 
-template<class T, class N>
-inline int32_t CShmObjectPool<T, N>::get_free_count(void)
+template<class N, class T>
+inline int32_t CShmObjectPool<N, T>::get_free_count(void)
 {
 	SHM_POOL* pool = NULL;
 	
@@ -153,8 +153,8 @@ Exit0:
 	return 0;
 }
 
-template<class T, class N>
-inline int32_t CShmObjectPool<T, N>::get_used_count(void)
+template<class N, class T>
+inline int32_t CShmObjectPool<N, T>::get_used_count(void)
 {
 	SHM_POOL* pool = NULL;
 	
@@ -166,8 +166,8 @@ Exit0:
 	return 0;
 }
 
-template<class T, class N>
-T* CShmObjectPool<T, N>::new_object(N id)
+template<class N, class T>
+T* CShmObjectPool<N, T>::new_object(N id)
 {
 	SHM_POOL* pool = NULL;
 	int32_t hash_map_index = 0;
@@ -218,8 +218,8 @@ Exit0:
 	return NULL;
 }
 
-template<class T, class N>
-BOOL CShmObjectPool<T, N>::delete_object(T* object)
+template<class N, class T>
+BOOL CShmObjectPool<N, T>::delete_object(T* object)
 {
 	SHM_POOL* pool = NULL;
 	SHM_UNIT_DATA* unit_data = (SHM_UNIT_DATA*)((char*)object - sizeof(SHM_UNIT_DATA));
@@ -264,8 +264,8 @@ Exit0:
 	return FALSE;
 }
 
-template<class T, class N>
-T* CShmObjectPool<T, N>::find_object(N id)
+template<class N, class T>
+T* CShmObjectPool<N, T>::find_object(N id)
 {
 	SHM_POOL* pool = NULL;
 	int32_t hash_map_index = 0;
@@ -294,8 +294,8 @@ Exit0:
 	return NULL;
 }
 
-template <class T, class N>
-inline T* CShmObjectPool<T, N>::get_first_object()
+template <class N, class T>
+inline T* CShmObjectPool<N, T>::get_first_object()
 {
     int32_t ret_code = 0;
     SHM_POOL* pool = NULL;
@@ -324,8 +324,8 @@ Exit0:
     return NULL;
 }
 
-template <class T, class N>
-inline T* CShmObjectPool<T, N>::get_next_object()
+template <class N, class T>
+inline T* CShmObjectPool<N, T>::get_next_object()
 {
     int32_t ret_code = 0;
     SHM_POOL* pool = NULL;
@@ -370,9 +370,9 @@ Exit0:
     return NULL;
 }
 
-template<class T, class N>
+template<class N, class T>
 template<class Func>
-inline int32_t CShmObjectPool<T, N>::traverse(Func& rFunc)
+inline int32_t CShmObjectPool<N, T>::traverse(Func& rFunc)
 {
 	int32_t ret_code = 0;
 	SHM_POOL* pool = NULL;

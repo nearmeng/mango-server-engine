@@ -18,7 +18,7 @@ public:
     BOOL del_component(CComponent* pComponent);
 
 private:
-    CShmObjectPool<CAchieve, uint64_t>  m_AchievePool;
+    CShmObjectPool<uint64_t, CAchieve>  m_AchievePool;
 };
 
 #endif
