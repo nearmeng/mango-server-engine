@@ -29,8 +29,9 @@ CClientMessageHandler::~CClientMessageHandler()
 
 BOOL CClientMessageHandler::init(void)
 {
+
 	s_MessageFuncList[sc_allow_login] = &CClientMessageHandler::on_allow_login;
-	s_MessageFuncList[sc_login] = &CClientMessageHandler::on_login;
+	s_MessageFuncList[sc_register] = &CClientMessageHandler::on_register;
     s_MessageFuncList[sc_sync_role_list] = &CClientMessageHandler::on_sync_role_list;
     s_MessageFuncList[sc_sync_role_data] = &CClientMessageHandler::on_sync_role_data;
     s_MessageFuncList[sc_error_code] = &CClientMessageHandler::on_recv_error_code;
@@ -92,14 +93,32 @@ void CClientMessageHandler::on_conn_stop(ROBOT_CONNECTION* pConn)
 {
 
 }
-	
+
 void CClientMessageHandler::on_allow_login(SC_HEAD* pSCHead, google::protobuf::Message* pMsg, CRobotUser* pUser)
+{
+	CS_REGISTER msg;
+	int32_t nRetCode = 0;
+	std::string sPass = pUser->get_conn()->sUserName + "_pass";
+
+	msg.set_user_account(pUser->get_conn()->sUserName.c_str());
+	msg.set_user_password(sPass.c_str());
+
+	nRetCode = send(pUser, cs_register, msg);
+	LOG_PROCESS_ERROR(nRetCode);
+
+Exit0:
+	return;
+}
+	
+void CClientMessageHandler::on_register(SC_HEAD* pSCHead, google::protobuf::Message* pMsg, CRobotUser* pUser)
 {
 	int32_t nRetCode = 0;
 	CS_LOGIN msg;
+	std::string sUserName = pUser->get_user_name();
+	std::string sUserPass = sUserName + "_pass";
 
-	//msg.set_userid(11111);
-	//msg.set_password("this is password");
+	msg.set_user_account(sUserName.c_str());
+	msg.set_user_password(sUserPass.c_str());
     msg.set_server_group(1);
 
 	nRetCode = send(pUser, cs_login, msg);
@@ -107,13 +126,6 @@ void CClientMessageHandler::on_allow_login(SC_HEAD* pSCHead, google::protobuf::M
 
 Exit0:
     return;
-}
-	
-void CClientMessageHandler::on_login(SC_HEAD* pSCHead, google::protobuf::Message* pMsg, CRobotUser* pUser)
-{
-	SC_LOGIN* msg = (SC_LOGIN*)pMsg;
-
-	INF("get login rsp, %s", msg->answer().c_str());
 }
     
 BOOL CClientMessageHandler::do_create_role(CRobotUser* pUser, const char* pcszRoleName)

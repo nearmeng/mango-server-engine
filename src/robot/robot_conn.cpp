@@ -98,12 +98,14 @@ int32_t CRobotConnMgr::connect(int32_t nUserID, const char* pcszUserName, const 
 			TGCP_ENCRYPT_METHOD_AES, TGCP_KEY_MAKING_INSVR, 64 * 1024);
 	LOG_PROCESS_ERROR(nRetCode == 0);
 
+	/*
 	stAccount.uType = TGCP_ACCOUNT_TYPE_QQ_OPENID;
 	stAccount.bFormat = TGCP_ACCOUNT_FORMAT_STRING;
 	strxcpy(stAccount.stAccountValue.szID, pcszUserName, sizeof(stAccount.stAccountValue.szID));
 
 	nRetCode = tgcpapi_set_account(pHandle, &stAccount);
 	LOG_PROCESS_ERROR(nRetCode == 0);
+	*/
 	
 	nRetCode = tgcpapi_start(pHandle, pcszSvrUrl);
 	LOG_PROCESS_ERROR(nRetCode == 0);

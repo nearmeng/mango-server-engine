@@ -12,6 +12,19 @@
 
 #include "role/role.h"
 
+BOOL do_g2c_register(uint64_t qwSessionID)
+{
+	int32_t nRetCode = 0;
+	SC_REGISTER msg;
+
+    nRetCode = g_MsgHandlerModule->send_to_client(qwSessionID, sc_register, &msg);
+    LOG_PROCESS_ERROR(nRetCode);
+
+	return TRUE;
+Exit0:
+	return FALSE;
+}
+
 BOOL do_g2c_sync_role_list(uint64_t qwSessionID, USER* pUser)
 {
     int32_t nRetCode = 0;
@@ -59,13 +72,12 @@ Exit0:
 
 void on_conn_start_event(CLIENT_SESSION* pSession)
 {
-    int32_t nRetCode = 0;
-    SC_ALLOW_LOGIN msg;
-
-    nRetCode = g_MsgHandlerModule->send_to_client(pSession, sc_allow_login, &msg);
-    LOG_PROCESS_ERROR(nRetCode);
-
+	int32_t nRetCode = 0;
     INF("recv conn %lld ntf start event from addr %d", pSession->qwConnID, pSession->nConnServerAddr);
+
+	SC_ALLOW_LOGIN msg;
+	nRetCode = g_MsgHandlerModule->send_to_client(pSession->qwConnID, sc_allow_login, &msg);
+	LOG_PROCESS_ERROR(nRetCode);
 
 Exit0:
     return;
@@ -130,18 +142,38 @@ Exit0:
     return;
 }
 
+void on_register(CLIENT_SESSION* pSession, const CS_HEAD* pHead, const google::protobuf::Message* pMsg)
+{
+	int32_t nRetCode = 0;
+	CS_REGISTER* msg = (CS_REGISTER*)pMsg;
+	CRegisterCoro* pCoro = NULL;
+
+	INF("register msg, user_account %s user password %s", msg->user_account().c_str(), msg->user_password().c_str());
+	
+	pCoro = CCoroStacklessMgr<CRegisterCoro>::instance().new_coro();
+	LOG_PROCESS_ERROR(pCoro);
+
+	pCoro->set_start_arg(msg->user_account().c_str(), msg->user_password().c_str(), pSession->qwConnID);
+	nRetCode = CCoroStacklessMgr<CRegisterCoro>::instance().start_coro(pCoro);
+	LOG_PROCESS_ERROR(nRetCode);
+
+Exit0:
+	return;
+}
+
 void on_login(CLIENT_SESSION* pSession, const CS_HEAD* pHead, const google::protobuf::Message* pMsg)
 {
 	int32_t nRetCode = 0;
 	CS_LOGIN* msg = (CS_LOGIN*)pMsg;
     CLoginCoro* pCoro = NULL;
 
-	INF("login msg, openid is %s", pSession->szOpenID);
+	INF("login msg, openid is %s user_account %s user_password %s", pSession->szOpenID, msg->user_account().c_str(),
+			msg->user_password().c_str());
         
     pCoro = CCoroStacklessMgr<CLoginCoro>::instance().new_coro();
     LOG_PROCESS_ERROR(pCoro);
 
-    pCoro->set_start_arg(pSession->szOpenID, pSession->qwConnID);
+    pCoro->set_start_arg(msg->user_account().c_str(), msg->user_password().c_str(), pSession->qwConnID);
     nRetCode = CCoroStacklessMgr<CLoginCoro>::instance().start_coro(pCoro);
     LOG_PROCESS_ERROR(nRetCode);
 
@@ -229,6 +261,7 @@ BOOL CUserModule::_init_msg_handler()
     g_MsgHandlerModule->register_conn_event_handler(cetStop, on_conn_stop_event);
     g_MsgHandlerModule->register_conn_event_handler(cetTimeout, on_conn_timeout_event);
     
+	g_MsgHandlerModule->register_client_msg_handler(cs_register, on_register);
     g_MsgHandlerModule->register_client_msg_handler(cs_login, on_login);
     g_MsgHandlerModule->register_client_msg_handler(cs_logout, on_logout);
     g_MsgHandlerModule->register_client_msg_handler(cs_create_role, on_create_role);

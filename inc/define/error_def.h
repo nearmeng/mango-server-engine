@@ -16,6 +16,7 @@ enum ERROR_DEF
     errLoginUserBanned,
     errLoginAlreadyLogin,
     errLoginRepeated,
+	errLoginPasswordError,
     errLogoutNormal,
     errLoginEnd             =   200,
 

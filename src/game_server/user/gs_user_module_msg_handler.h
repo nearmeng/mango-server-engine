@@ -3,6 +3,7 @@
 
 struct USER;
 
+BOOL do_g2c_register(uint64_t qwSessionID);
 BOOL do_g2c_sync_role_list(uint64_t qwSessionID, USER* pUser);
 BOOL do_g2c_sync_role_data(uint64_t qwSessionID, CRole* pRole);
 

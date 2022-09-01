@@ -22,6 +22,7 @@ public:
 	void on_conn_stop(ROBOT_CONNECTION* pConn);
 
 	void on_allow_login(SC_HEAD* pSCHead, google::protobuf::Message* pMsg, CRobotUser* pUser);
+	void on_register(SC_HEAD* pSCHead, google::protobuf::Message* pMsg, CRobotUser* pUser);
 	void on_login(SC_HEAD* pSCHead, google::protobuf::Message* pMsg, CRobotUser* pUser);
 	void on_sync_role_list(SC_HEAD* pSCHead, google::protobuf::Message* pMsg, CRobotUser* pUser);
 	void on_recv_error_code(SC_HEAD* pSCHead, google::protobuf::Message* pMsg, CRobotUser* pUser);

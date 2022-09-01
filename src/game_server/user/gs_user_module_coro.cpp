@@ -16,9 +16,54 @@ static char s_szUserData[MAX_USER_DATA_SIZE];
 static char s_szRoleData[MAX_ROLE_DATA_SIZE];
 static char s_szRoleBaseData[MAX_ROLE_DATA_SIZE/2];
 
-void CLoginCoro::set_start_arg(const char * pcszOpenID, uint64_t qwSessionID)
+void CRegisterCoro::set_start_arg(const char* pcszUserAccount, const char* pcszUserPassword, uint64_t qwSessionID)
 {
-    strxcpy(m_szOpenID, pcszOpenID, sizeof(m_szOpenID));
+	strxcpy(m_szUserAccount, pcszUserAccount, sizeof(m_szUserAccount));
+	strxcpy(m_szUserPassword, pcszUserPassword, sizeof(m_szUserPassword));
+	m_qwSessionID = qwSessionID;
+	m_pSessionModule = MG_GET_MODULE(CSessionModule);
+}
+
+BOOL CRegisterCoro::on_resume()
+{
+	m_pSessionModule = MG_GET_MODULE(CSessionModule);
+
+	return TRUE;
+}
+
+CORO_STATE CRegisterCoro::coro_process()
+{
+	int32_t nRetCode = 0;
+    redisReply* pReply = NULL;
+
+	CORO_BEGIN()
+
+    nRetCode = CDBProxyClient::instance().redis_command_coro("set user_account:%s %s", m_szUserAccount, m_szUserPassword);
+    LOG_PROCESS_ERROR(nRetCode);
+
+    CORO_YIELD()
+
+    LOG_PROCESS_ERROR(get_coro_ret_code() == crcSuccess);
+    LOG_PROCESS_ERROR(get_coro_reply().nReplyType == crtDB);
+
+    pReply = (redisReply*)(get_coro_reply().pReplyData);
+    LOG_PROCESS_ERROR(pReply);
+	LOG_PROCESS_ERROR(pReply->type == REDIS_REPLY_STATUS);
+	LOG_PROCESS_ERROR(pReply->integer == REDIS_OK);
+
+	nRetCode = do_g2c_register(m_qwSessionID);
+	LOG_PROCESS_ERROR(nRetCode);
+
+	CORO_END()
+
+Exit0:
+    return crsFailed;
+}
+
+void CLoginCoro::set_start_arg(const char * pcszUserAccount, const char* pcszUserPassword, uint64_t qwSessionID)
+{
+    strxcpy(m_szUserAccount, pcszUserAccount, sizeof(m_szUserAccount));
+	strxcpy(m_szUserPassword, pcszUserPassword, sizeof(m_szUserPassword));
     m_qwSessionID = qwSessionID;
     m_qwUserID = 0;
     m_pUserModule = MG_GET_MODULE(CUserModule);
@@ -42,10 +87,24 @@ CORO_STATE CLoginCoro::coro_process()
     uint32_t dwUserDataSize = 0;
     CLIENT_SESSION* pSession = NULL;
 
-    CORO_BEGIN()
+	CORO_BEGIN()
+
+	// check user passwd
+	nRetCode = CDBProxyClient::instance().redis_command_coro("get user_account:%s", m_szUserAccount);
+	LOG_PROCESS_ERROR(nRetCode);
+
+	CORO_YIELD()
+
+    LOG_PROCESS_ERROR(get_coro_ret_code() == crcSuccess);
+    LOG_PROCESS_ERROR(get_coro_reply().nReplyType == crtDB);
+
+    pReply = (redisReply*)(get_coro_reply().pReplyData);
+	LOG_PROCESS_ERROR(pReply);
+	LOG_PROCESS_ERROR(pReply->type == REDIS_REPLY_STRING);
+	LOG_PROCESS_ERROR_RET_CODE(strcmp(pReply->str, m_szUserPassword) == 0, errLoginPasswordError);
 
     // check is user first login
-    nRetCode = CDBProxyClient::instance().redis_command_coro("hmget user_data:%s userid data", m_szOpenID);
+    nRetCode = CDBProxyClient::instance().redis_command_coro("hmget user_data:%s userid data", m_szUserAccount);
     LOG_PROCESS_ERROR(nRetCode);
 
     CORO_YIELD()
@@ -74,7 +133,7 @@ CORO_STATE CLoginCoro::coro_process()
         LOG_PROCESS_ERROR(pReply);
         LOG_PROCESS_ERROR(pReply->type == REDIS_REPLY_INTEGER);
         
-        INF("user %s create user id %d", m_szOpenID, pReply->integer);
+        INF("user %s create user id %d", m_szUserAccount, pReply->integer);
         m_qwUserID = pReply->integer;
 
         //create user data
@@ -85,7 +144,7 @@ CORO_STATE CLoginCoro::coro_process()
         nRetCode = stUser.save_user(s_szUserData, dwUserDataSize);
         LOG_PROCESS_ERROR(nRetCode);
 
-        nRetCode = CDBProxyClient::instance().redis_command_coro("hmset user_data:%s userid %llu data %b", m_szOpenID, m_qwUserID, s_szUserData, (size_t)dwUserDataSize);
+        nRetCode = CDBProxyClient::instance().redis_command_coro("hmset user_data:%s userid %llu data %b", m_szUserAccount, m_qwUserID, s_szUserData, (size_t)dwUserDataSize);
         LOG_PROCESS_ERROR(nRetCode);
 
         CORO_YIELD()
@@ -130,7 +189,7 @@ CORO_STATE CLoginCoro::coro_process()
 
     //check user account valid
     // 1 white list
-    nRetCode = CDBProxyClient::instance().redis_command_coro("SISMEMBER user_white_list %s", m_szOpenID);
+    nRetCode = CDBProxyClient::instance().redis_command_coro("SISMEMBER user_white_list %s", m_szUserAccount);
     LOG_PROCESS_ERROR(nRetCode);
 
     CORO_YIELD()

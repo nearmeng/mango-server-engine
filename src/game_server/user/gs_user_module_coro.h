@@ -11,6 +11,23 @@ class CUserModule;
 class CRoleModule;
 class CSessionModule;
 
+class CRegisterCoro : public CCoroStackless
+{
+public:
+	CRegisterCoro() {};
+	virtual ~CRegisterCoro() {};
+
+	BOOL on_resume();
+	void set_start_arg(const char* pcszUserAccount, const char* pcszUserPassword, uint64_t qwSessionID);
+	virtual CORO_STATE coro_process();
+
+private:
+	uint64_t m_qwSessionID;
+	char m_szUserAccount[MAX_OPENID_LEN];
+	char m_szUserPassword[MAX_OPENID_LEN];
+	CSessionModule* m_pSessionModule;
+};
+
 class CLoginCoro : public CCoroStackless
 {
 public:
@@ -18,11 +35,12 @@ public:
     virtual ~CLoginCoro() {};
 
     BOOL on_resume();
-    void set_start_arg(const char* pcszOpenID, uint64_t qwSessionID);
+    void set_start_arg(const char* pcszUserAccount, const char* pcszUserPassword, uint64_t qwSessionID);
     virtual CORO_STATE coro_process();
 
 private:
-    char        m_szOpenID[MAX_OPENID_LEN];
+	char		m_szUserAccount[MAX_OPENID_LEN];
+	char		m_szUserPassword[MAX_OPENID_LEN];
     uint64_t    m_qwUserID;
     uint64_t    m_qwSessionID;
 

@@ -1,20 +1,26 @@
-
-message CS_LOGIN
-{
-    optional int32  server_group    =   1;
-}
-
-message CS_LOGOUT
-{
-}
-
 message SC_ALLOW_LOGIN
 {
 }
 
-message SC_LOGIN
+message CS_REGISTER
 {
-	optional string		answer	=		1;
+	optional string user_account	=	1;
+	optional string user_password	=	2;
+}
+
+message SC_REGISTER
+{
+}
+
+message CS_LOGIN
+{
+	optional string user_account	=	1;
+	optional string user_password	=	2;
+    optional int32  server_group    =   3;
+}
+
+message CS_LOGOUT
+{
 }
 
 message SC_ERROR_CODE
