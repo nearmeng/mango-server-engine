@@ -64,6 +64,7 @@ int32_t tbus_get_addr(void)
 	return g_nTbusHandle;
 }
 
+/*
 int32_t tbus_get_area(int32_t nTbusAddr)
 {
 	int32_t nArea = 0;
@@ -112,6 +113,7 @@ int32_t tbus_get_inst(int32_t nTbusAddr)
 Exit0:
 	return nInst;
 }
+*/
 
 const char* tbus_get_str(int32_t nTbusAddr)
 {

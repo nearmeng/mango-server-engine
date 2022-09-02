@@ -117,32 +117,34 @@ procs:
 proc_connect:
     - peer1: router_server
       peer2: router_server
-      Mask: 63.0.0.0
+      Mask: 255.0.0.0
     - peer1: router_server
       peer2: game_server
-      Mask: 63.0.0.0
-      MaskCtrl: local
+      Mask: 255.0.0.0
+      CtrlMask: local
     - peer1: tconnd
       peer2: conn_server
-      Mask: 63.0.0.1023
+      Mask: 255.0.0.255
     - peer1: router_server
       peer2: conn_server
-      Mask: 63.0.0.0
+      Mask: 255.0.0.0
+      CtrlMask: local
     - peer1: router_server
       peer2: db_proxy
-      Mask: 63.0.0.0
+      Mask: 255.0.0.0
+      CtrlMask: local
     - peer1: router_server
       peer2: service_mgr_server
-      Mask: 63.0.0.0
+      Mask: 255.0.0.0
     - peer1: router_server
       peer2: control_server
-      Mask: 63.0.0.0
-      MaskCtrl: local
+      Mask: 255.0.0.0
+      CtrlMask: local
     - peer1: router_server
       peer2: func_server
-      Mask: 63.0.0.0
-      MaskCtrl: local
+      Mask: 255.0.0.0
+      CtrlMask: local
     - peer1: router_server
       peer2: online_server
-      Mask: 63.0.0.0
-      MaskCtrl: local
+      Mask: 255.0.0.0
+      CtrlMask: local

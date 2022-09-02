@@ -524,8 +524,8 @@ def buildProcConnConfig():
         channel['ProcSet1'] = conn['peer1']
         channel['ProcSet2'] = conn['peer2']
         channel['Mask'] = conn['Mask']
-        if conn.has_key('MaskCtrl'):
-            channel['MaskCtrl'] = conn['MaskCtrl']
+        if conn.has_key('CtrlMask'):
+            channel['CtrlMask'] = conn['CtrlMask']
         if conn.has_key('recv_queue_size'):
             channel['RecvQueSize'] = conn['recv_queue_size']
         else:

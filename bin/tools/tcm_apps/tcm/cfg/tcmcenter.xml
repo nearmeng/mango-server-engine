@@ -29,7 +29,7 @@ TconndAddr: tcmcenter前端连接的tconnd进程地址
 -->
 
 <tcmcenter  BussinessID="0"
-    AddrTemple="world:6.zone:8.function:8.instance:10"
+    AddrTemple="world:8.zone:8.function:8.instance:8"
     ConfigSoName="../lib/tcm_so.so"
     ConfigBaseDir="../conf/confcreated"
     HostConfFile="../cfg/host.xml"

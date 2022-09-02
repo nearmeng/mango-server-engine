@@ -156,7 +156,7 @@ def generate_tbus_mgr_cfg():
     file = open("./tools/tbus_mgr/tbusmgr.xml", "w")
     file.write("<TbusGCIM>\n")
     file.write("<BusinessID>0</BusinessID>\n")
-    file.write("<AddrTemplet>6.8.8.10</AddrTemplet>\n")
+    file.write("<AddrTemplet>8.8.8.8</AddrTemplet>\n")
     file.write("<GCIMShmKey>%s</GCIMShmKey>\n" % tbus_key)
 
     for conn in procs_connect_config:

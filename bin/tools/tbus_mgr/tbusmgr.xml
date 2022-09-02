@@ -1,6 +1,6 @@
 <TbusGCIM>
 <BusinessID>0</BusinessID>
-<AddrTemplet>6.8.8.10</AddrTemplet>
+<AddrTemplet>8.8.8.8</AddrTemplet>
 <GCIMShmKey>667001</GCIMShmKey>
 <Channels>
     <Priority>8</Priority>
