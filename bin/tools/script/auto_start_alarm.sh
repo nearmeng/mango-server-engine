@@ -21,5 +21,5 @@ else
 		REPORT="$HOSTNAME $LOCALIP $4($2) auto resume"
 fi
 
-/usr/local/agenttools/agent/agentRepStr 1173831 "$REPORT"
+#/usr/local/agenttools/agent/agentRepStr 1173831 "$REPORT"
 

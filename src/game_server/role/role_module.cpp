@@ -49,10 +49,12 @@ BOOL CRoleModule::init(BOOL bResume)
     nEventID = CEventMgr::instance().create_c_event(evtRoleSyncData, 0, 0, _on_event_role_sync_data, 0);
     LOG_PROCESS_ERROR(nEventID != 0);
 
-    nRetCode = CGlobalEventListMgr::instance().register_global_event(nEventID);
-    LOG_PROCESS_ERROR(nRetCode);
-
-    if (bResume)
+	if (!bResume)
+	{
+		nRetCode = CGlobalEventListMgr::instance().register_global_event(nEventID);
+		LOG_PROCESS_ERROR(nRetCode);
+	}
+	else
     {
         TRAVERSE_ROLE_RESUME TraverseRoleResume;
         m_RolePool.traverse(TraverseRoleResume);

@@ -107,6 +107,9 @@ BOOL CShmObjectPool<N, T>::init(int32_t shm_type, int32_t unit_count, BOOL is_re
 	}
 	else
 	{
+		pool = CShmMgr::instance().get_pool(m_shm_type);
+		LOG_PROCESS_ERROR(pool);
+
 		for(int32_t i = 0; i < unit_count; i++)
 		{
 			SHM_UNIT_DATA* unit_data = (SHM_UNIT_DATA*)OFFSET2PTR(pool->data_offset + unit_size * i);
@@ -441,6 +444,9 @@ BOOL CShmObject<T>::init(int32_t shm_type, BOOL is_resume)
 	}
 	else
 	{
+		pool = CShmMgr::instance().get_pool(m_shm_type);
+		LOG_PROCESS_ERROR(pool);
+
 		SHM_UNIT_DATA* unit_data = (SHM_UNIT_DATA*)OFFSET2PTR(pool->data_offset);
 		assert(unit_data->fence == FENCE_NUM);
 		assert(unit_data->unit_serial == 1);
