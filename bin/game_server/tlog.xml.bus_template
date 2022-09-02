@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="GBK" standalone="yes" ?>
+    <TLOGConf version="2">
+    <Magic>1548 </Magic>
+    <PriorityHigh>NULL </PriorityHigh> 
+    <PriorityLow> $game_server_log_priority$ </PriorityLow>
+    <DelayInit>0 </DelayInit>
+    <SuppressError>0</SuppressError> 
+    <CategoryList type="TLOGCategory">
+    <Name>text</Name>
+    <PriorityHigh>NULL </PriorityHigh>
+    <PriorityLow>DEBUG </PriorityLow>
+    <LevelDispatch>0 </LevelDispatch>
+    <MustSucc>1</MustSucc>
+    <MaxMsgSize>0 </MaxMsgSize>
+    <Format>%d.%u [%p] %m%n</Format>
+    <ForwardCat></ForwardCat> 
+        <Device type="TLOGDevAny">
+            <Type>VEC</Type>
+            <Device>
+                <Vec> 
+                    <Count>2</Count>
+                        <Elements>
+                            <ID>0</ID>
+                            <Ctrl>0</Ctrl>
+                            <Type>FILE</Type>
+                            <Device>
+                               <File> 
+                                   <Pattern>$tlog_home$/game_server_text.log_$game_server_tbus$</Pattern>
+                                   <BuffSize>1024000</BuffSize>
+                                   <SizeLimit>10240000</SizeLimit>
+                                   <Precision>1</Precision>
+                                   <MaxRotate>0</MaxRotate>
+                                   <SyncTime>$tlog_write_interval$</SyncTime>
+                                   <NoFindlatest>0</NoFindlatest>
+                               </File>
+                            </Device>
+                        </Elements> 
+                        <Elements>
+                            <ID>0</ID>
+                            <Ctrl>0</Ctrl>
+                            <Type>NET</Type>
+                            <Device>
+                                <Net> 
+                                    <Url>$game_server_text_tlogd_addr$</Url>
+                                    <Sendbuff>1024000</Sendbuff>
+                                    <RecvBuff>1024000</RecvBuff>
+                                    <AutoReconnect>10</AutoReconnect>
+                                    <MaxRetry>20</MaxRetry>
+                                    <ConnTimeout>1000</ConnTimeout>
+                                    <SendTimeout>1000</SendTimeout>
+                                </Net>
+                            </Device>
+                        </Elements> 
+                </Vec>
+            </Device>
+        </Device>
+    </CategoryList> 
+    <CategoryList type="TLOGCategory">
+    <Name>text</Name>
+    <PriorityHigh>NULL </PriorityHigh>
+    <PriorityLow>DEBUG </PriorityLow>
+    <LevelDispatch>0 </LevelDispatch>
+    <MustSucc>1</MustSucc>
+    <MaxMsgSize>0 </MaxMsgSize>
+    <Format>%d.%u [%p] %m%n</Format>
+    <ForwardCat></ForwardCat> 
+        <Device type="TLOGDevAny">
+            <Type>VEC</Type>
+            <Device>
+                <Vec> 
+                    <Count>1</Count>
+                        <Elements>
+                            <ID>0</ID>
+                            <Ctrl>0</Ctrl>
+                            <Type>FILE</Type>
+                            <Device>
+                               <File> 
+                                   <Pattern>$tlog_home$/game_server_oss.log_$game_server_tbus$</Pattern>
+                                   <BuffSize>1024000</BuffSize>
+                                   <SizeLimit>10240000</SizeLimit>
+                                   <Precision>1</Precision>
+                                   <MaxRotate>0</MaxRotate>
+                                   <SyncTime>$tlog_write_interval$</SyncTime>
+                                   <NoFindlatest>0</NoFindlatest>
+                               </File>
+                            </Device>
+                        </Elements> 
+                </Vec>
+            </Device>
+        </Device>
+    </CategoryList> 
+    <CategoryList type="TLOGCategory">
+    <Name>text</Name>
+    <PriorityHigh>NULL </PriorityHigh>
+    <PriorityLow>DEBUG </PriorityLow>
+    <LevelDispatch>0 </LevelDispatch>
+    <MustSucc>1</MustSucc>
+    <MaxMsgSize>0 </MaxMsgSize>
+    <Format>%d.%u [%p] %m%n</Format>
+    <ForwardCat></ForwardCat> 
+        <Device type="TLOGDevAny">
+            <Type>VEC</Type>
+            <Device>
+                <Vec> 
+                    <Count>1</Count>
+                        <Elements>
+                            <ID>0</ID>
+                            <Ctrl>0</Ctrl>
+                            <Type>FILE</Type>
+                            <Device>
+                               <File> 
+                                   <Pattern>$tlog_home$/game_server_monlog.log_$game_server_tbus$</Pattern>
+                                   <BuffSize>1024000</BuffSize>
+                                   <SizeLimit>10240000</SizeLimit>
+                                   <Precision>1</Precision>
+                                   <MaxRotate>0</MaxRotate>
+                                   <SyncTime>$tlog_write_interval$</SyncTime>
+                                   <NoFindlatest>0</NoFindlatest>
+                               </File>
+                            </Device>
+                        </Elements> 
+                </Vec>
+            </Device>
+        </Device>
+    </CategoryList> 
+</TLOGConf>
