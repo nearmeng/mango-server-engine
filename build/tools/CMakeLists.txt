@@ -1,2 +1,4 @@
 add_subdirectory (robot)
-add_subdirectory (test)
+if (MSVC)
+	add_subdirectory (test)
+endif ()

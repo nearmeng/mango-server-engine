@@ -3,6 +3,7 @@
 
 #include "guid/guid.h"
 #include "coroutine/coro_stackless.h"
+#include "res_mgr/global_res_mgr.h"
 
 void CTestEnv::SetUp()
 {
@@ -18,6 +19,8 @@ void CTestEnv::SetUp()
 	CTimeMgr::instance().init(false);
 	CGlobalStacklessMgr::instance().init(12345, false);
 	guid_init(1, false);
+    CGlobalResMgr::instance().init(rlmCsv, false);
+
 }
 
 void CTestEnv::TearDown()
@@ -27,4 +30,5 @@ void CTestEnv::TearDown()
     CShmMgr::instance().uninit();
 	CScriptMgr::instance().uninit();
 	guid_uninit();
+    CGlobalResMgr::instance().uninit();
 }
