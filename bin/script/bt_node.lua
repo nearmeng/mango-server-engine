@@ -6,9 +6,26 @@ PARAM_FUNC_CACHE = PARAM_FUNC_CACHE or {};
 
 PARAM_ENV = {};
 
+setmetatable(PARAM_ENV, {
+	__index = function (t, k)
+		local v = _ENV[k];
+		return v;
+	end,
+
+	__newindex = function (t, k, v)
+		if string.sub(k, 1, 9) == 'ParamFunc' then
+			_ENV[k] = v;
+		else
+			error('cannot set global variable '..k..' in param function');
+		end
+	end,
+});
+
 PREFIX_LIST = PREFIX_LIST or {
-	[string.byte('LE')] = { flag = bptLocalEventVar },
-	[string.byte('LT')] = { flag = bptLocalTriggerVar },
+	[string.byte('E')] = { flag = bptLocalEventVar },
+	[string.byte('T')] = { flag = bptLocalTriggerVar },
+	[string.byte('R')] = { flag = bptRoleVar },
+	[string.byte('S')] = { flag = bptSceneVar },
 };
 
 function get_global_name(f)
@@ -245,6 +262,7 @@ function register_global_event(event_name, template_id, event_param, tree, debug
 		local event_id = create_bt_event(event_name..template_id..event_param, template_id, _G[event_name], tree_id, event_param, 0);
 		return c_register_global_event(event_id);
 	else
+	    warn( "create tree failed");
 		return false;
 	end
 end

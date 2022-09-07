@@ -39,11 +39,11 @@ private:
 	static CEventMgr ms_Instance;
 };
 
-class CBTEventList
+class CEventList
 {
 public:
-	CBTEventList() {};
-	~CBTEventList() {};
+	CEventList() {};
+	~CEventList() {};
 
 	BOOL init(int32_t nStartEventType, int32_t nEndEventType);
 	BOOL uninit(void);
@@ -53,7 +53,7 @@ public:
 	BOOL register_event(int32_t nEventID);
 	BOOL unregister_event(int32_t nEventID);
 
-	int32_t trigger_event(int32_t nEventType, int32_t nEventTemplateID, int32_t nEventParam, 
+	BOOL trigger_event(int32_t nEventType, int32_t nEventTemplateID, int32_t nEventParam, 
 		void* pOwner, uint64_t qwOwnerID, int64_t llTriggerVar0 = 0, int64_t llTriggerVar1 = 0, BOOL bRollBack = FALSE, BOOL bBreakOnFail = FALSE);
 	BOOL is_event_registed(int32_t nEventType, int32_t nEventTemplateID, int32_t nEventParam);
 
@@ -90,21 +90,21 @@ public:
 
 	BOOL register_global_event(int32_t nEventID);
 	BOOL unregister_global_event(int32_t nEventID);
-	int32_t trigger_global_event(int32_t nEventType, int32_t nEventTemplateID, int32_t nEventParam, void* pOwner, uint64_t qwOwnerID, 
+	BOOL trigger_global_event(int32_t nEventType, int32_t nEventTemplateID, int32_t nEventParam, void* pOwner, uint64_t qwOwnerID, 
 		int64_t llTriggerVar0 = 0, int64_t llTriggerVar1 = 0, BOOL bRollBack = FALSE, BOOL bBreakOnFail = FALSE);
 
 private:
 	struct TRAVERSE_BT_EVENT_LIST_RESUME
 	{
-		BOOL operator()(uint64_t qwEventListID, CBTEventList* pEventList);
+		BOOL operator()(uint64_t qwEventListID, CEventList* pEventList);
 	};
 
 private:
 	static CGlobalEventListMgr ms_Instance;
-	CShmObjectPool<uint64_t, CBTEventList>	m_GlobalEventListPool;
+	CShmObjectPool<uint64_t, CEventList>	m_GlobalEventListPool;
 };
 
-inline void CBTEventList::clear(void)
+inline void CEventList::clear(void)
 {
 	ms_nTriggerCounter = 0;
 	ms_nTriggerLayer = 0;

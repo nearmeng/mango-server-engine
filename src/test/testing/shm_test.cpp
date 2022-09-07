@@ -12,7 +12,7 @@ TEST(SHM_TEST, SHM_POOL_TEST)
 	int32_t nRetCode = 0;
 
 	CShmObject<SHM_TEST_DATA> ShmObject;
-	nRetCode = ShmObject.init(2, false);
+	nRetCode = ShmObject.init(101, false);
 	ASSERT_TRUE(nRetCode);
 
 	SHM_TEST_DATA* pData = ShmObject.get_obj();
@@ -37,7 +37,7 @@ TEST(SHM_TEST, ID_OBJECT_POOL_TEST)
 
     CShmObjectPool<int32_t, SHM_TEST_DATA> TestDataPool;
 
-    nRetCode = TestDataPool.init(1, 10, false);
+    nRetCode = TestDataPool.init(102, 10, false);
     ASSERT_TRUE(nRetCode);
 
     for (int i = 1; i <= 10; i++)

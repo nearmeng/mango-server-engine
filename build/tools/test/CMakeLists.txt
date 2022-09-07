@@ -13,13 +13,16 @@ if (MSVC)
 		optimized gtest.lib
 		debug game_data_d.lib
 		optimized game_data.lib
+		debug server_base_d.lib
+		optimized server_base.lib
 	)
 else ()
 	target_link_libraries (${TARGET_NAME} 
 		debug libgtestd.a
 		optimized libgtest.a
 		game_data
+		server_base
 	)
 endif ()
 
-add_dependencies (${TARGET_NAME} game_data)
+add_dependencies (${TARGET_NAME} game_data server_base)

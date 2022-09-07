@@ -134,6 +134,9 @@ int32_t CMGApp::_app_init(TAPPCTX* pCtx, void* pArg)
 		nRetCode = CScriptMgr::instance().register_package(g_ServerBasePackageList[i].pcszFuncName, g_ServerBasePackageList[i].pFunc);
 		LOG_PROCESS_ERROR(nRetCode);
 	}
+	
+	nRetCode = CScriptMgr::instance().register_func_list(g_ServerBaseLuaFunc);
+	LOG_PROCESS_ERROR(nRetCode);
 
 	//server config
 	nRetCode = load_global_server_config();

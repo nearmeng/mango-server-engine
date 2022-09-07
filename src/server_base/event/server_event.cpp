@@ -8,8 +8,8 @@
 #include "bt/bt_mgr.h"
 
 
-int32_t CBTEventList::ms_nTriggerLayer;
-int32_t CBTEventList::ms_nTriggerCounter;
+int32_t CEventList::ms_nTriggerLayer;
+int32_t CEventList::ms_nTriggerCounter;
 
 CEventMgr CEventMgr::ms_Instance;
 CGlobalEventListMgr CGlobalEventListMgr::ms_Instance;
@@ -194,7 +194,7 @@ Exit0:
 	return FALSE;
 }
 
-BOOL CBTEventList::init(int32_t nStartEventType, int32_t nEndEventType)
+BOOL CEventList::init(int32_t nStartEventType, int32_t nEndEventType)
 {
 	int32_t nRetCode = 0;
 
@@ -215,12 +215,12 @@ Exit0:
 	return FALSE;
 }
 
-BOOL CBTEventList::uninit(void)
+BOOL CEventList::uninit(void)
 {
 	return TRUE;
 }
 	
-BOOL CBTEventList::resume(void)
+BOOL CEventList::resume(void)
 {
 	int32_t nRetCode = 0;
 
@@ -235,7 +235,7 @@ Exit0:
 	return FALSE;
 }
 
-BOOL CBTEventList::register_event(int32_t nEventID)
+BOOL CEventList::register_event(int32_t nEventID)
 {
 	int32_t nRetCode = 0;
 	EVENT_INFO* pEvent = NULL;
@@ -259,7 +259,7 @@ Exit0:
 	return FALSE;
 }
 	
-BOOL CBTEventList::unregister_event(int32_t nEventID)
+BOOL CEventList::unregister_event(int32_t nEventID)
 {
 	int32_t nRetCode = 0;
 
@@ -291,18 +291,18 @@ Exit0:
 	return FALSE;
 }
 
-int32_t CBTEventList::trigger_event(int32_t nEventType, int32_t nEventTemplateID, int32_t nEventParam,
+BOOL CEventList::trigger_event(int32_t nEventType, int32_t nEventTemplateID, int32_t nEventParam,
 	void* pOwner, uint64_t qwOwnerID, int64_t llTriggerVar0, int64_t llTriggerVar1, BOOL bRollBack, BOOL bBreakOnFail)
 {
 	int32_t nRetCode = 0;
 	int32_t nOwnerType = 0;
-	int32_t nResult = errUnknown;
+	int32_t nResult = brvError;
 	BT_CTX Ctx;
 		
 	LOG_PROCESS_ERROR(nEventType >= m_nStartEventType & nEventType < m_nEndEventType);
 
 	if (m_nEventCount <= 0 || m_byTypeCountList[nEventType - m_nStartEventType] <= 0)
-		return brvSuccess;
+		return TRUE;
 
 	LOG_PROCESS_ERROR(ms_nTriggerLayer < MAX_EVENT_RECURSIVE_COUNT);
 
@@ -386,14 +386,14 @@ int32_t CBTEventList::trigger_event(int32_t nEventType, int32_t nEventTemplateID
 		m_bPendingDelete = FALSE;
 	}
 
-	return nResult;
+	return TRUE;
 
 Exit0:
 	CRI("failed to trigger event %d", nEventType);
-	return errUnknown;
+	return FALSE;
 }
 
-BOOL CBTEventList::is_event_registed(int32_t nEventType, int32_t nEventTemplateID, int32_t nEventParam)
+BOOL CEventList::is_event_registed(int32_t nEventType, int32_t nEventTemplateID, int32_t nEventParam)
 {
 	int32_t nRetCode = 0;
 
@@ -423,7 +423,7 @@ Exit0:
 	return FALSE;
 }
 
-BOOL CGlobalEventListMgr::TRAVERSE_BT_EVENT_LIST_RESUME::operator()(uint64_t qwEventListID, CBTEventList* pEventList)
+BOOL CGlobalEventListMgr::TRAVERSE_BT_EVENT_LIST_RESUME::operator()(uint64_t qwEventListID, CEventList* pEventList)
 {
 	int32_t nRetCode = 0;
 
@@ -461,7 +461,7 @@ BOOL CGlobalEventListMgr::register_global_event(int32_t nEventID)
 {
 	int32_t nRetCode = 0;
 	uint64_t qwEventListID = 0;
-	CBTEventList* pEventList = NULL;
+	CEventList* pEventList = NULL;
 	EVENT_INFO* pEvent = NULL;
 	int32_t nStartType = 0;
 	int32_t nEndType = 0;
@@ -497,7 +497,7 @@ BOOL CGlobalEventListMgr::unregister_global_event(int32_t nEventID)
 	EVENT_INFO* pEvent = NULL;
 	int32_t nStartType = 0;
 	uint64_t qwEventListID = 0;
-	CBTEventList* pEventList = NULL;
+	CEventList* pEventList = NULL;
 	
 	pEvent = CEventMgr::instance().find_event(nEventID);
 	LOG_PROCESS_ERROR(pEvent);
@@ -516,14 +516,13 @@ Exit0:
 	return FALSE;
 }
 
-int32_t CGlobalEventListMgr::trigger_global_event(int32_t nEventType, int32_t nEventTemplateID, int32_t nEventParam, void* pOwner, uint64_t qwOwnerID,
+BOOL CGlobalEventListMgr::trigger_global_event(int32_t nEventType, int32_t nEventTemplateID, int32_t nEventParam, void* pOwner, uint64_t qwOwnerID,
 	int64_t llTriggerVar0, int64_t llTriggerVar1, BOOL bRollBack, BOOL bBreakOnFail)
 {
 	int32_t nRetCode = 0;
-	int32_t nResult = errUnknown;
 	int32_t nStartType = 0;
 	uint64_t qwEventListID = 0;
-	CBTEventList* pEventList = NULL;
+	CEventList* pEventList = NULL;
 
 	LOG_PROCESS_ERROR(nEventType > evtInvalid && nEventType < evtTotal);
 
@@ -537,7 +536,7 @@ int32_t CGlobalEventListMgr::trigger_global_event(int32_t nEventType, int32_t nE
 				llTriggerVar0, llTriggerVar1, bRollBack, bBreakOnFail);
 	
 Exit0:
-	return nResult;
+	return FALSE;
 }
 
 //for lua func

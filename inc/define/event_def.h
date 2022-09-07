@@ -71,11 +71,11 @@ struct EVENT_INFO
 //事件基本定义
 struct EVENT_DEF
 {
-	int32_t			nEventType;
-	char			szName[COMMON_NAME_LEN];
-	int32_t			nOwnerType;
-	int32_t			nStartEventType;
-	int32_t			nEndEventType;
+	int32_t			nEventType;				 //事件类型
+	char			szName[COMMON_NAME_LEN]; //事件名字
+	int32_t			nOwnerType;				 //事件owner类型
+	int32_t			nStartEventType;	     //事件类型分段开始
+	int32_t			nEndEventType;			 //事件类型分段结束
 };
 
 //tolua_end

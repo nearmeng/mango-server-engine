@@ -14,7 +14,7 @@ TEST(LIST_TEST, COMMON_TEST)
 	LINK_HEAD Head = { 0 };
 
     CShmObjectPool<int32_t, SHM_TEST_DATA_LINK> TestDataPool;
-    nRetCode = TestDataPool.init(3, 10, false);
+    nRetCode = TestDataPool.init(100, 10, false);
     ASSERT_TRUE(nRetCode);
 
     SHM_TEST_DATA_LINK* pData1 = TestDataPool.new_object(123);

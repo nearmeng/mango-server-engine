@@ -1,1 +1,2 @@
 $hfile "../../../inc/define/bt_def.h"
+$hfile "../../../inc/define/event_def.h"

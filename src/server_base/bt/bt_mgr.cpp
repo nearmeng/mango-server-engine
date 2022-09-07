@@ -38,12 +38,12 @@ BOOL CBTMgr::init(REG_BT_OWNER_FUNC pBtOwnerFunc, BOOL bResume)
 
 	nRetCode = m_BtMgrData.init(stdBtMgrData, bResume);
 	LOG_PROCESS_ERROR(nRetCode);
-
-	nRetCode = (*pBtOwnerFunc)();
-	LOG_PROCESS_ERROR(nRetCode);
 	
 	m_pMgrData = m_BtMgrData.get_obj();
 	LOG_PROCESS_ERROR(m_pMgrData);
+
+	nRetCode = (*pBtOwnerFunc)();
+	LOG_PROCESS_ERROR(nRetCode);
 
 	m_pMgrData->pCurrentCtx = NULL;
 
@@ -51,6 +51,9 @@ BOOL CBTMgr::init(REG_BT_OWNER_FUNC pBtOwnerFunc, BOOL bResume)
 	{
 		m_pMgrData->nBtNodeUsedCount = 1;
 		m_pMgrData->nBtTreeUsedCount = 1;
+		m_pMgrData->bDebugEnabled = FALSE;
+		m_pMgrData->nBtCtxIDGenerator = 0;
+		m_pMgrData->nActionIDGenerator = batEnd;
 	}
 	else
 	{
@@ -807,8 +810,8 @@ Exit0:
 		{
 			BT_NODE* pNode = bt_get_node(rCtx.CallFrame[i].dwNode);
 			if (pNode)
-				CRI("[%d] node [%s] param {%d %d %d %d}", i, get_action_name(pNode->uType), 
-					pNode->nParam[0], pNode->nParam[1], pNode->nParam[2], pNode->nParam[3]);
+				CRI("[%d] node [%s] param {%d %d %d %d %d %d}", i, get_action_name(pNode->uType), 
+					pNode->nParam[0], pNode->nParam[1], pNode->nParam[2], pNode->nParam[3], pNode->nParam[4], pNode->nParam[5]);
 			else
 				CRI("[%d] unknown node", i);
 		}
@@ -968,7 +971,7 @@ int32_t CBTMgr::call_node_func(BT_CTX& rCtx, BT_NODE* pNode)
 			case bptLuaFunc:
 			{
 				char szFuncName[BT_COMMON_LEN];
-				snprintf(szFuncName, BT_COMMON_LEN, "ParamFunc%d", pNode->nParam[nIndex]);
+				snprintf(szFuncName, BT_COMMON_LEN, "ParamFunc%u", pNode->nParam[nIndex]);
 
 				nRetCode = rCtx.pScript->call_function(szFuncName, "o:d",
 					rCtx.pOwner, m_OwnerDataList[rCtx.uOwnerType].szName, nParam + nIndex);
@@ -979,21 +982,21 @@ int32_t CBTMgr::call_node_func(BT_CTX& rCtx, BT_NODE* pNode)
 			case bptSceneVar:
 			{
 				LOG_PROCESS_ERROR(m_OwnerDataList[rCtx.uOwnerType].pGetOwnerVarFunc);
-				nParam[nIndex] = m_OwnerDataList[rCtx.uOwnerType].pGetOwnerVarFunc(rCtx.qwOwnerID, uVarType, nIndex);
+				nParam[nIndex] = m_OwnerDataList[rCtx.uOwnerType].pGetOwnerVarFunc(rCtx.qwOwnerID, uVarType, pNode->nParam[nIndex]);
 				break;
 			}
 			case bptLocalEventVar:
 			{
 				LOG_PROCESS_ERROR(m_pMgrData->pCurrentCtx);
-				LOG_PROCESS_ERROR(nIndex >= 0 && nIndex < MAX_BT_EVENT_VAR_COUNT);
-				nParam[nIndex] = m_pMgrData->pCurrentCtx->llEventVarList[nIndex];
+				LOG_PROCESS_ERROR(pNode->nParam[nIndex] >= 0 && pNode->nParam[nIndex] < MAX_BT_EVENT_VAR_COUNT);
+				nParam[nIndex] = m_pMgrData->pCurrentCtx->llEventVarList[pNode->nParam[nIndex]];
 				break;
 			}
 			case bptLocalTriggerVar:
 			{
 				LOG_PROCESS_ERROR(m_pMgrData->pCurrentCtx);
-				LOG_PROCESS_ERROR(nIndex > 0 && nIndex < MAX_BT_TRIGGER_VAR_COUNT);
-				nParam[nIndex] = m_pMgrData->pCurrentCtx->llTriggerVarList[nIndex];
+				LOG_PROCESS_ERROR(pNode->nParam[nIndex] >= 0 && pNode->nParam[nIndex] < MAX_BT_TRIGGER_VAR_COUNT);
+				nParam[nIndex] = m_pMgrData->pCurrentCtx->llTriggerVarList[pNode->nParam[nIndex]];
 				break;
 			}
 			default:
@@ -1172,10 +1175,10 @@ int32_t CBTMgr::register_lua_action(const char* pcszName)
 	m_pMgrData->ActionDefList[m_pMgrData->nActionIDGenerator].pFunc = NULL;
 	strxcpy(m_pMgrData->ActionDefList[m_pMgrData->nActionIDGenerator].szName, pcszName, BT_ACTION_NAME_LEN);
 
-	InsRet = m_ActionName2Func.insert(std::make_pair(m_pMgrData->ActionDefList[m_pMgrData->nBtCtxIDGenerator].szName, m_pMgrData->ActionDefList + m_pMgrData->nBtCtxIDGenerator));
+	InsRet = m_ActionName2Func.insert(std::make_pair(m_pMgrData->ActionDefList[m_pMgrData->nActionIDGenerator].szName, m_pMgrData->ActionDefList + m_pMgrData->nActionIDGenerator));
 	LOG_PROCESS_ERROR(InsRet.second);
 
-	return m_pMgrData->nBtCtxIDGenerator++;
+	return m_pMgrData->nActionIDGenerator++;
 Exit0:
 	return btInvalid;
 }
@@ -1227,7 +1230,6 @@ BOOL CBTMgr::register_owner_data(int32_t nOwnerType, const char* pcszName, GET_O
 {
 	int32_t nRetCode = 0;
 
-	LOG_PROCESS_ERROR(m_pMgrData);
 	LOG_PROCESS_ERROR(pcszName);
 	LOG_PROCESS_ERROR(pGetOwnerFunc);
 	LOG_PROCESS_ERROR(pGetOwnerVarFunc);
