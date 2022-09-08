@@ -1,11 +1,5 @@
 #include "stdafx.h"
 
-
-
-
-
-
-
 int main(int argc, char* argv[])
 {
     int32_t nRetCode = 0;

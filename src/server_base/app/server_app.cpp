@@ -376,6 +376,7 @@ int32_t CMGApp::_app_proc(TAPPCTX* pCtx, void* pArg)
 int32_t CMGApp::_app_reload(TAPPCTX* pCtx, void* pArg)
 {
 	int32_t nRetCode = 0;
+	int32_t nScriptErrCount = 0;
 	int32_t nCurrTime = CTimeMgr::instance().get_time_sec();
 
 	LOG_PROCESS_ERROR(nCurrTime - ms_Instance->m_dwLastReloadTime >= MAX_SERVER_RELOAD_INTERVAL / 1000);
@@ -387,6 +388,10 @@ int32_t CMGApp::_app_reload(TAPPCTX* pCtx, void* pArg)
     //res
     nRetCode = CGlobalResMgr::instance().reload(FALSE);
     LOG_PROCESS_ERROR(nRetCode);
+
+	//script
+	nRetCode = CScriptMgr::instance().reload(nScriptErrCount, TRUE);
+	LOG_PROCESS_ERROR(nRetCode);
 
     //module cont
     for (int32_t nIndex = 0; nIndex < ms_Instance->m_ModuleCont.get_module_count(); nIndex++)
